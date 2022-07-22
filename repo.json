@@ -1,0 +1,22 @@
+[
+    {
+        "Author": "BitsOfAByte",
+        "Name": "GoodFriend",
+        "Punchline": "Instant friend login/logout notifications",
+        "Description": "Provides instant friend login/logout notifications with optional places to display them. Can also be set to only notify friends that share the same event phrase as you.",
+        "InternalName": "GoodFriend",
+        "AssemblyVersion": "0.0.2.0",
+        "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
+        "ApplicableVersion": "any",
+        "DalamudApiLevel": 6,
+        "DownloadLinkInstall": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+        "IsHide": false,
+        "IsTestingExclusive": false,
+        "DownloadLinkTesting": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+        "DownloadLinkUpdate": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+        "DownloadCount": 0,
+        "LastUpdated": "0",
+        "IconUrl": "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/icon.png",
+        "Changelog": ""
+    }
+]

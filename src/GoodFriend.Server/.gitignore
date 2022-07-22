@@ -1,0 +1,11 @@
+# Dist & Modules
+dist/
+node_modules/
+
+# Certificates
+SSL/**/*.pem
+SSL/**/*.key
+SSL/**/*.crt
+
+# MacOS
+.DS_Store
