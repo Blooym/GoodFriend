@@ -5,7 +5,7 @@
         "Punchline": "Instant friend login/logout notifications",
         "Description": "Provides instant friend login/logout notifications with optional places to display them. Can also be set to only notify friends that share the same event phrase as you.",
         "InternalName": "GoodFriend",
-        "AssemblyVersion": "0.0.2.0",
+        "AssemblyVersion": "1.0.0.0",
         "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
         "ApplicableVersion": "any",
         "DalamudApiLevel": 6,
