@@ -35,11 +35,8 @@ class SettingsScreen : IDisposable
 
         var showAdvanced = this._showAdvanced;
         var notificationType = Enum.GetName(typeof(NotificationType), Service.Configuration.NotificationType);
-        var APIUrl = Service.Configuration.APIUrl.ToString();
         var loginMessage = Service.Configuration.FriendLoggedInMessage;
         var logoutMessage = Service.Configuration.FriendLoggedOutMessage;
-        var localizableOutputDir = Service.Configuration.localizableOutputDir;
-        var eventSecret = Service.Configuration.EventSecret;
 
         // Draw the settings window.
         if (showAdvanced) ImGui.SetNextWindowSize(new Vector2(500, 260));
@@ -95,6 +92,10 @@ class SettingsScreen : IDisposable
 
             if (this._showAdvanced)
             {
+
+                var APIUrl = Service.Configuration.APIUrl.ToString();
+                var eventSecret = Service.Configuration.EventSecret;
+
                 // API URL input
                 if (ImGui.InputText(Loc.Localize("UI.Settings.APIURL", "API URL"), ref APIUrl, 64))
                 {
@@ -123,6 +124,8 @@ class SettingsScreen : IDisposable
                 }
 
 #if DEBUG
+                var localizableOutputDir = Service.Configuration.localizableOutputDir;
+
                 if (ImGui.InputText("Localizable Dir", ref localizableOutputDir, 1000))
                 {
                     Service.Configuration.localizableOutputDir = localizableOutputDir;

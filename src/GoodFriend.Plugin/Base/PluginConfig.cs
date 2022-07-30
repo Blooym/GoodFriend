@@ -45,10 +45,12 @@ class Configuration : IPluginConfiguration
     public string FriendLoggedOutMessage { get; set; } = Loc.Localize("Config.FriendLoggedOutMessage", "{0} has logged out.");
 
 
+#if DEBUG
     /// <summary>
     ///     The localization export path.
     /// </summary>
     public string localizableOutputDir { get; set; } = Service.PluginInterface.AssemblyLocation?.Directory?.FullName ?? "";
+#endif
 
 
     /// <summary>
