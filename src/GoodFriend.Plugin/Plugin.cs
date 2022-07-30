@@ -17,7 +17,7 @@ internal class KikoPlugin : IDalamudPlugin
     private protected APIClientManager _clientManager { get; init; }
     private protected SettingsScreen _settingsScreen { get; init; }
 
-    public unsafe KikoPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+    public KikoPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
         Service.Initialize(Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration());
@@ -56,7 +56,7 @@ internal class KikoPlugin : IDalamudPlugin
     /// <summary>
     ///     When the player logs in, connect to the events APi and send a login status update, and cache the current content id.
     /// </summary>
-    private void OnLogin(object? sender, EventArgs e)
+    private unsafe void OnLogin(object? sender, EventArgs e)
     {
         if (!this._clientManager.IsConnected) this._clientManager.Connect();
 
@@ -69,7 +69,12 @@ internal class KikoPlugin : IDalamudPlugin
 
             this._currentContentId = Service.ClientState.LocalContentId;
 
-            _clientManager.SendLogin(this._currentContentId);
+            this._clientManager.SendLogin(this._currentContentId);
+
+            // Show the total amount of friends online when logging in.
+            var onlineFriends = 0;
+            foreach (var friend in FriendList.Get()) { if (friend->IsOnline) onlineFriends++; }
+            this.Notify($"You have {onlineFriends} friends online.");
         });
     }
 

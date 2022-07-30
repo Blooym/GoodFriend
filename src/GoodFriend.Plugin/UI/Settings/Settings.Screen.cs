@@ -71,7 +71,7 @@ class SettingsScreen : IDisposable
                 try { string.Format(loginMessage, "test"); }
                 catch { error = true; }
 
-                if (!error)
+                if (!error && loginMessage.Contains("{0}"))
                 {
                     Service.Configuration.FriendLoggedInMessage = loginMessage;
                     Service.Configuration.Save();
@@ -85,14 +85,14 @@ class SettingsScreen : IDisposable
                 try { string.Format(logoutMessage, "test"); }
                 catch { error = true; }
 
-                if (!error)
+                if (!error && logoutMessage.Contains("{0}"))
                 {
                     Service.Configuration.FriendLoggedOutMessage = logoutMessage;
                     Service.Configuration.Save();
                 }
             }
 
-            ImGui.TextDisabled("Use the {0} placeholder for the friend name.");
+            ImGui.TextDisabled("{0} will be replaced by the friend name and must be present.");
 
             // Advanced settings
             ImGui.NewLine();
