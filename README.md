@@ -35,6 +35,11 @@ The security of player information was highly considered whilst designing this t
 - The official deployment uses HTTPs for all communication, and the server component is designed to use HTTPs on production builds
 - The plugin only listens for updates when the player is logged in, preventing any excess inbound traffic from the server
 
+## Caveats
+Due to the nature of this plugin, it is only able to recieve updates from other plugin users. This means that in order to recieve notifications for a friend they will also have to be running the plugin to communicate updates to the server. 
+
+Unfortunately, due to the way the in-game friends list system is designed, this is currently not able to be resolved as the friends list is only loaded when logging in, exiting a duty or whenever the social menu is opened.
+
 ## Installing
 This plugin is not on the official DalamudPlugins repository as of now, and depending on the review process may never be fully available. 
 
