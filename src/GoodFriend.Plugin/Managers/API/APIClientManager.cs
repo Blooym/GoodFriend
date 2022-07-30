@@ -128,7 +128,7 @@ class APIClientManager : IDisposable
                 PluginLog.Error($"APIClientManager: Failed to send login for {contentID} to {_loginUrl}: {task.Result.ReasonPhrase}");
 
             else if (task.IsCompleted)
-                PluginLog.Debug($"APIClientManager: Sent login for {contentID} to {_loginUrl}");
+                PluginLog.Log($"APIClientManager: Sent login for {contentID} to {_loginUrl}");
         });
     }
 
@@ -147,7 +147,7 @@ class APIClientManager : IDisposable
                 PluginLog.Error($"APIClientManager: Failed to send logout for {contentID} to {_logoutUrl} {task.Result.ReasonPhrase}");
 
             else if (task.IsCompleted)
-                PluginLog.Debug($"APIClientManager: Sent logout for {contentID} to {_logoutUrl}");
+                PluginLog.Log($"APIClientManager: Sent logout for {contentID} to {_logoutUrl}");
         });
     }
 
