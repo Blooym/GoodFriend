@@ -1,0 +1,38 @@
+{
+  "UI.Settings.NotificationType": {
+    "message": "Notification Type",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.LoginMessage": {
+    "message": "Login Message",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.LogoutMessage": {
+    "message": "LogoutMessage",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.ShowAdvanced": {
+    "message": "Show Advanced Settings",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.APIURL": {
+    "message": "API URL",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.EventSecret": {
+    "message": "Event Secret",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.EventSecret.Hint": {
+    "message": "Leave blank for public",
+    "description": "SettingsScreen.DrawSettingsWindow"
+  },
+  "UI.Settings.FriendLoggedInMessage": {
+    "message": "{0} has logged in.",
+    "description": "Configuration..ctor"
+  },
+  "Config.FriendLoggedOutMessage": {
+    "message": "{0} has logged out.",
+    "description": "Configuration..ctor"
+  }
+}

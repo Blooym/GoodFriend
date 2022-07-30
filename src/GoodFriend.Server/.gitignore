@@ -6,6 +6,3 @@ node_modules/
 SSL/**/*.pem
 SSL/**/*.key
 SSL/**/*.crt
-
-# MacOS
-.DS_Store

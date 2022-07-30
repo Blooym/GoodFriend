@@ -1,7 +1,9 @@
 namespace GoodFriend.Base;
 
-class PStrings
+static class PStrings
 {
     // Plugin Strings
-    public static string PluginName = "Good Friend";
+    public static string pluginName = "Good Friend";
+    public static string resourcePath = $"{Service.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
+    public static string localizationPath = resourcePath + "Localization\\";
 }

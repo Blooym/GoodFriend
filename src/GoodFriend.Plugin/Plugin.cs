@@ -5,6 +5,8 @@ using Dalamud.Plugin;
 using Dalamud.Game.Text.SeStringHandling;
 using System;
 using System.Threading.Tasks;
+using System.IO;
+using CheapLoc;
 using GoodFriend.Managers;
 using GoodFriend.UI.Settings;
 using GoodFriend.Utils;
@@ -12,7 +14,7 @@ using GoodFriend.Base;
 
 internal class KikoPlugin : IDalamudPlugin
 {
-    public string Name => PStrings.PluginName;
+    public string Name => PStrings.pluginName;
     private protected ulong _currentContentId;
     private protected APIClientManager _clientManager { get; init; }
     private protected SettingsScreen _settingsScreen { get; init; }
@@ -21,6 +23,7 @@ internal class KikoPlugin : IDalamudPlugin
     {
         pluginInterface.Create<Service>();
         Service.Initialize(Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration());
+        OnLanguageChange(Service.PluginInterface.UiLanguage);
 
         this._clientManager = new APIClientManager();
         this._settingsScreen = new SettingsScreen();
@@ -33,9 +36,10 @@ internal class KikoPlugin : IDalamudPlugin
         }
 
         // Event handlers.
-        _clientManager.DataRecieved += OnDataRecieved;
+        this._clientManager.DataRecieved += OnDataRecieved;
         Service.ClientState.Login += OnLogin;
         Service.ClientState.Logout += OnLogout;
+        Service.PluginInterface.LanguageChanged += OnLanguageChange;
         Service.PluginInterface.UiBuilder.Draw += DrawUI;
         Service.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
     }
@@ -62,33 +66,24 @@ internal class KikoPlugin : IDalamudPlugin
 
         Task.Run(() =>
         {
-            while (Service.ClientState.LocalContentId == 0)
-            {
-                Task.Delay(100).Wait();
-            }
+            while (Service.ClientState.LocalContentId == 0) Task.Delay(100).Wait();
 
+            // Cache the contentID of the player and send a login status update.
             this._currentContentId = Service.ClientState.LocalContentId;
-
             this._clientManager.SendLogin(this._currentContentId);
-
-            // Show the total amount of friends online when logging in.
-            var onlineFriends = 0;
-            foreach (var friend in FriendList.Get()) { if (friend->IsOnline) onlineFriends++; }
-            this.Notify($"You have {onlineFriends} friends online.");
         });
     }
-
 
     /// <summary>
     ///     When the player logs out, disconnect from the events API and send a logout status update and clear the current content id.
     /// </summary>
     private void OnLogout(object? sender, EventArgs e)
     {
+        // Disconnect from the veents API and send a logout status update, and clear the content id.
         if (this._clientManager.IsConnected) this._clientManager.Disconnect();
-        _clientManager.SendLogout(this._currentContentId);
+        this._clientManager.SendLogout(this._currentContentId);
         this._currentContentId = 0;
     }
-
 
     /// <summary>
     ///     Handles data recieved from the ClientManager 
@@ -112,14 +107,13 @@ internal class KikoPlugin : IDalamudPlugin
         else this.Notify(string.Format(Service.Configuration.FriendLoggedOutMessage, friend->Name.ToString()));
     }
 
-
     /// <summary>
     ///     Sends a notification to the user using their preferred notification type.
     /// </summary>
     private void Notify(string message)
     {
         if (Service.Configuration.NotificationType == NotificationType.Toast)
-            Service.PluginInterface.UiBuilder.AddNotification(message, PStrings.PluginName);
+            Service.PluginInterface.UiBuilder.AddNotification(message, PStrings.pluginName);
 
         else if (Service.Configuration.NotificationType == NotificationType.Chat)
         {
@@ -134,17 +128,27 @@ internal class KikoPlugin : IDalamudPlugin
             Service.Toast.ShowNormal(message);
     }
 
+    /// <summary>
+    ///    Event handler for when the language is changed, reloads the localization strings.
+    /// </summary>
+    private void OnLanguageChange(string language)
+    {
+        var uiLang = Service.PluginInterface.UiLanguage;
+        try { Loc.Setup(File.ReadAllText($"{PStrings.localizationPath}\\{uiLang}.json")); }
+        catch { Loc.SetupWithFallbacks(); }
+    }
 
     ///<summary>
     ///     Handles disposing of all resources used by the plugin.
     /// </summary>
     public void Dispose()
     {
-        _clientManager.DataRecieved -= OnDataRecieved;
+        this._clientManager.Dispose();
+        this._clientManager.DataRecieved -= OnDataRecieved;
         Service.ClientState.Login -= OnLogin;
         Service.ClientState.Logout -= OnLogout;
+        Service.PluginInterface.LanguageChanged -= OnLanguageChange;
         Service.PluginInterface.UiBuilder.Draw -= DrawUI;
         Service.PluginInterface.UiBuilder.OpenConfigUi -= DrawConfigUI;
-        _clientManager.Dispose();
     }
 }

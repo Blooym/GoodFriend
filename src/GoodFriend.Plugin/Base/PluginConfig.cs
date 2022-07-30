@@ -2,6 +2,7 @@ namespace GoodFriend.Base;
 
 using System;
 using Dalamud.Configuration;
+using CheapLoc;
 
 enum NotificationType
 {
@@ -35,13 +36,19 @@ class Configuration : IPluginConfiguration
     /// <summary>
     ///     The message to display when a friend logs in.
     /// </summary>
-    public string FriendLoggedInMessage { get; set; } = "{0} has logged in.";
+    public string FriendLoggedInMessage { get; set; } = Loc.Localize("UI.Settings.FriendLoggedInMessage", "{0} has logged in.");
 
 
     /// <summary>
     ///     The message to display when a friend is logs out.
     /// </summary>
-    public string FriendLoggedOutMessage { get; set; } = "{0} has logged out.";
+    public string FriendLoggedOutMessage { get; set; } = Loc.Localize("Config.FriendLoggedOutMessage", "{0} has logged out.");
+
+
+    /// <summary>
+    ///     The localization export path.
+    /// </summary>
+    public string localizableOutputDir { get; set; } = Service.PluginInterface.AssemblyLocation?.Directory?.FullName ?? "";
 
 
     /// <summary>
