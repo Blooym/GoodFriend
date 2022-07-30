@@ -1,4 +1,11 @@
-# GoodFriend Server Component
+<div align="center">
+
+<img src="../../.assets/icon.png" alt="Goodfriend Logo" width="15%">
+  
+# Good Friend Server Component
+
+</div>
+
 The GoodFriend server communicates with the plugin to allow clients to send login and logout events, and for other clients to recieve these events through the server. An instance is running by default and is already setup when the plugin is first installed, but if for whatever reason you need your own server, then read on.
 
 ## Prerequisites
