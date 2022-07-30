@@ -2,7 +2,7 @@
   "Author": "BitsOfAByte",
   "Name": "Good Friend",
   "Punchline": "Instant friend login/logout notifications",
-  "Description": "Provides instant friend login/logout notifications with customisable display settings. Can also be set to only notify friends that share the same event secret as you for closed circle notifications.",
+  "Description": "Provides instant friend login/logout notifications with other friends using the plugin with customisable display settings. Can also be set to only notify friends that share the same event secret as you for closed circle notifications.",
   "InternalName": "GoodFriend",
   "LoadPriority": 0,
   "DalamudApiLevel": 6,
