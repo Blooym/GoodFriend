@@ -3,7 +3,7 @@
         "Author": "BitsOfAByte",
         "Name": "GoodFriend",
         "Punchline": "Instant friend login/logout notifications",
-        "Description": "Provides instant friend login/logout notifications with optional places to display them. Can also be set to only notify friends that share the same event phrase as you.",
+        "Description": "Provides instant friend login/logout notifications with customisable display settings. Can also be set to only notify friends that share the same event secret as you for closed circle notifications.",
         "InternalName": "GoodFriend",
         "AssemblyVersion": "1.0.0.0",
         "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
