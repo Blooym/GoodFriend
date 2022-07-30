@@ -12,4 +12,4 @@ The Goodfriend plugin component communicates with the server to allow clients to
 - [Dotnet5](https://dotnet.microsoft.com)
 
 ## Building 
-To build the plugin, run `dotnet restore` and then `dotnet build`.
+To build the plugin, run `dotnet restore` and then `dotnet build`, if you are using Linux then you will have to set `DALAMUD_HOME` to your dalamud dev directory.
