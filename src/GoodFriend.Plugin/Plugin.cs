@@ -24,6 +24,7 @@ public sealed class GoodFriendPlugin : IDalamudPlugin
         pluginInterface.Create<Service>();
         Service.Initialize(Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration());
         OnLanguageChange(Service.PluginInterface.UiLanguage);
+        UpdateManager.UpdateResources();
 
         this._clientManager = new APIClientManager();
         this._settingsScreen = new SettingsScreen();
