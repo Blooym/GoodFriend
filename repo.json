@@ -2,8 +2,8 @@
     {
         "Author": "BitsOfAByte",
         "Name": "GoodFriend",
-        "Punchline": "Instant friend login/logout notifications",
-        "Description": "Provides instant friend login/logout notifications with other friends using the plugin with customisable display settings. Can also be set to only notify friends that share the same event secret as you for closed circle notifications.",
+        "Punchline": "Friend login & logout notifications (both sides must use GoodFriend)",
+        "Description": "Provides instant friend login/logout notifications with other friends using the plugin. Provides customisable messages & notification display settings and allows for \"private circles\" to be created using an event secret password.",
         "InternalName": "GoodFriend",
         "AssemblyVersion": "1.0.2.0",
         "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
