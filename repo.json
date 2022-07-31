@@ -1,22 +1,22 @@
 [
-    {
-        "Author": "BitsOfAByte",
-        "Name": "GoodFriend",
-        "Punchline": "Friend login & logout notifications (both sides must use GoodFriend)",
-        "Description": "Provides instant friend login/logout notifications with other friends using the plugin. Provides customisable messages & notification display settings and allows for private notification circles using a friendship code.",
-        "InternalName": "GoodFriend",
-        "AssemblyVersion": "1.0.3.0",
-        "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
-        "ApplicableVersion": "any",
-        "DalamudApiLevel": 6,
-        "DownloadLinkInstall": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
-        "IsHide": false,
-        "IsTestingExclusive": false,
-        "DownloadLinkTesting": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
-        "DownloadLinkUpdate": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
-        "DownloadCount": 0,
-        "LastUpdated": "0",
-        "IconUrl": "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/icon.png",
-        "Changelog": ""
-    }
+  {
+    "Author": "BitsOfAByte",
+    "Name": "GoodFriend",
+    "Punchline": "Friend login & logout notifications (both sides must use GoodFriend)",
+    "Description": "Provides instant friend login/logout notifications with other friends using the plugin. Provides customisable messages & notification display settings and allows for private notification circles using a friendship code.",
+    "InternalName": "GoodFriend",
+    "AssemblyVersion": "1.0.3.1",
+    "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 6,
+    "DownloadLinkInstall": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkTesting": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/BitsOfAByte/GoodFriend/releases/latest/download/latest.zip",
+    "DownloadCount": 0,
+    "LastUpdated": "0",
+    "IconUrl": "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/icon.png",
+    "Changelog": ""
+  }
 ]
