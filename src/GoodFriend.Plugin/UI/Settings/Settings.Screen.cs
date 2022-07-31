@@ -72,7 +72,7 @@ class SettingsScreen : IDisposable
             }
 
             // Logout message input
-            if (ImGui.InputText(Loc.Localize("UI.Settings.LogoutMessage", "LogoutMessage"), ref logoutMessage, 64))
+            if (ImGui.InputText(Loc.Localize("UI.Settings.LogoutMessage", "Logout Message"), ref logoutMessage, 64))
             {
                 bool error = false;
                 try { string.Format(logoutMessage, "test"); }

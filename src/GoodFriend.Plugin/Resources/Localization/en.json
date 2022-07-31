@@ -8,7 +8,7 @@
     "description": "SettingsScreen.DrawSettingsWindow"
   },
   "UI.Settings.LogoutMessage": {
-    "message": "LogoutMessage",
+    "message": "Logout Message",
     "description": "SettingsScreen.DrawSettingsWindow"
   },
   "UI.Settings.ShowAdvanced": {
