@@ -57,7 +57,7 @@ sealed class Configuration : IPluginConfiguration
     ///     The "salt" to use when hashing the ContentID.
     ///     Allows users to make their private own notification circles with other people.
     /// </summary>
-    public string EventSecret { get; set; } = "";
+    public string FriendshipCode { get; set; } = "";
 
 
     /// <summary>

@@ -94,7 +94,7 @@ sealed internal class SettingsScreen : IDisposable
             {
 
                 var APIUrl = Service.Configuration.APIUrl.ToString();
-                var eventSecret = Service.Configuration.EventSecret;
+                var friendshipCode = Service.Configuration.FriendshipCode;
 
                 // API URL input
                 if (ImGui.InputText(Loc.Localize("UI.Settings.APIURL", "API URL"), ref APIUrl, 64))
@@ -117,9 +117,9 @@ sealed internal class SettingsScreen : IDisposable
 
 
                 // Secret code input
-                if (ImGui.InputTextWithHint(Loc.Localize("UI.Settings.EventSecret", "Event Secret"), Loc.Localize("UI.Settings.EventSecret.Hint", "Leave blank for public"), ref eventSecret, 64))
+                if (ImGui.InputTextWithHint(Loc.Localize("UI.Settings.FriendshipCode", "Friendship Code"), Loc.Localize("UI.Settings.FriendshipCode.Hint", "Leave blank to get/recieve notifications from all friends"), ref friendshipCode, 64))
                 {
-                    Service.Configuration.EventSecret = eventSecret.Where(char.IsLetterOrDigit).Aggregate("", (current, c) => current + c);
+                    Service.Configuration.FriendshipCode = friendshipCode.Where(char.IsLetterOrDigit).Aggregate("", (current, c) => current + c);
                     Service.Configuration.Save();
                 }
 

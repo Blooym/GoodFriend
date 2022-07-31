@@ -19,12 +19,12 @@
     "message": "API URL",
     "description": "SettingsScreen.DrawSettingsWindow"
   },
-  "UI.Settings.EventSecret": {
-    "message": "Event Secret",
+  "UI.Settings.FriendshipCode": {
+    "message": "Friendship Code",
     "description": "SettingsScreen.DrawSettingsWindow"
   },
-  "UI.Settings.EventSecret.Hint": {
-    "message": "Leave blank for public",
+  "UI.Settings.FriendshipCode.Hint": {
+    "message": "Leave blank to get/recieve notifications from all friends",
     "description": "SettingsScreen.DrawSettingsWindow"
   },
   "UI.Settings.FriendLoggedInMessage": {
