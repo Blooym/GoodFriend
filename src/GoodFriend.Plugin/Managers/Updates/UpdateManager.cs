@@ -37,8 +37,8 @@ internal static class UpdateManager
 
                 // Create a new WebClient to download the data and some paths for installation.
                 var webClient = new WebClient();
-                var zipFile = Path.Combine(Path.GetTempPath(), "KikoGuide_Source.zip");
-                var sourcePath = Path.Combine(Path.GetTempPath(), "KikoGuide-main", "src", "Resources");
+                var zipFile = Path.Combine(Path.GetTempPath(), "GoodFriend.zip");
+                var sourcePath = Path.Combine(Path.GetTempPath(), "GoodFriend-main", "src", "Resources");
                 var targetPath = Path.Combine(PStrings.resourcePath);
 
                 // Download the file into the system temp directory to make sure it can be cleaned up by the OS incase of a crash.
@@ -53,7 +53,7 @@ internal static class UpdateManager
 
                 // Delete the temporary files.
                 File.Delete(zipFile);
-                Directory.Delete($"{Path.GetTempPath()}KikoGuide-main", true);
+                Directory.Delete($"{Path.GetTempPath()}GoodFriend-main", true);
 
                 // Broadcast an event indicating that the resources have been updated & refresh the UI.
                 ResourcesUpdated?.Invoke();
