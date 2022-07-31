@@ -6,7 +6,7 @@ public static class PStrings
     public static readonly string pluginName = "Good Friend";
 
     /// <summary> The repository to attempt to fetch the latest resource files from. Will always attempt to use "main" branch. </summary>
-    public static readonly string pluginRepository = "https://github.com/BitsOfAByte/KikoGuide/";
+    public static readonly string pluginRepository = "https://github.com/BitsOfAByte/GoodFriend/";
 
     /// <summary> The path to the plugin's resources folder with trailing slashes </summary>
     public static readonly string resourcePath = $"{Service.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
