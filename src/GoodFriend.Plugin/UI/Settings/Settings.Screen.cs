@@ -37,12 +37,30 @@ sealed internal class SettingsScreen : IDisposable
         var notificationType = Enum.GetName(typeof(NotificationType), Service.Configuration.NotificationType);
         var loginMessage = Service.Configuration.FriendLoggedInMessage;
         var logoutMessage = Service.Configuration.FriendLoggedOutMessage;
+        var hideSameFC = Service.Configuration.HideSameFC;
 
         // Draw the settings window.
-        if (showAdvanced) ImGui.SetNextWindowSize(new Vector2(500, 260));
-        else ImGui.SetNextWindowSize(new Vector2(500, 180));
-        if (ImGui.Begin(PStrings.pluginName, ref this._visible, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoCollapse))
+        if (showAdvanced) ImGui.SetNextWindowSize(new Vector2(500, 280));
+        else ImGui.SetNextWindowSize(new Vector2(500, 200));
+        if (ImGui.Begin(PStrings.pluginName, ref this._visible, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
         {
+            // Hide FC Members dropdown.
+            if (ImGui.BeginCombo(Loc.Localize("UI.Settings.HideSameFC", "Hide FC Members"), hideSameFC.ToString()))
+            {
+                if (ImGui.Selectable(Loc.Localize("UI.Settings.HideSameFC.True", "True"), hideSameFC))
+                {
+                    Service.Configuration.HideSameFC = true;
+                }
+                if (ImGui.Selectable(Loc.Localize("UI.Settings.HideSameFC.False", "False"), !hideSameFC))
+                {
+                    Service.Configuration.HideSameFC = false;
+                }
+
+                Service.Configuration.Save();
+                ImGui.EndCombo();
+            }
+
+
             // Notification type dropdown
             if (ImGui.BeginCombo(Loc.Localize("UI.Settings.NotificationType", "Notification Type"), notificationType))
             {
@@ -57,6 +75,7 @@ sealed internal class SettingsScreen : IDisposable
                 ImGui.EndCombo();
             }
 
+
             // Login message input
             if (ImGui.InputText(Loc.Localize("UI.Settings.LoginMessage", "Login Message"), ref loginMessage, 64))
             {
@@ -70,6 +89,7 @@ sealed internal class SettingsScreen : IDisposable
                     Service.Configuration.Save();
                 }
             }
+
 
             // Logout message input
             if (ImGui.InputText(Loc.Localize("UI.Settings.LogoutMessage", "Logout Message"), ref logoutMessage, 64))
@@ -96,6 +116,14 @@ sealed internal class SettingsScreen : IDisposable
                 var APIUrl = Service.Configuration.APIUrl.ToString();
                 var friendshipCode = Service.Configuration.FriendshipCode;
 
+                // Secret code input
+                if (ImGui.InputTextWithHint(Loc.Localize("UI.Settings.FriendshipCode", "Friendship Code"), Loc.Localize("UI.Settings.FriendshipCode.Hint", "Leave blank to get/recieve notifications from all friends"), ref friendshipCode, 64))
+                {
+                    Service.Configuration.FriendshipCode = friendshipCode.Where(char.IsLetterOrDigit).Aggregate("", (current, c) => current + c);
+                    Service.Configuration.Save();
+                }
+
+
                 // API URL input
                 if (ImGui.InputText(Loc.Localize("UI.Settings.APIURL", "API URL"), ref APIUrl, 64))
                 {
@@ -113,14 +141,6 @@ sealed internal class SettingsScreen : IDisposable
                         Service.Configuration.ResetApiUrl();
                         Service.Configuration.Save();
                     }
-                }
-
-
-                // Secret code input
-                if (ImGui.InputTextWithHint(Loc.Localize("UI.Settings.FriendshipCode", "Friendship Code"), Loc.Localize("UI.Settings.FriendshipCode.Hint", "Leave blank to get/recieve notifications from all friends"), ref friendshipCode, 64))
-                {
-                    Service.Configuration.FriendshipCode = friendshipCode.Where(char.IsLetterOrDigit).Aggregate("", (current, c) => current + c);
-                    Service.Configuration.Save();
                 }
 
 #if DEBUG

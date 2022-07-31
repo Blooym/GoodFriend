@@ -3,6 +3,7 @@ namespace GoodFriend;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Logging;
 using System;
 using System.Threading.Tasks;
 using System.IO;
@@ -103,6 +104,12 @@ public sealed class GoodFriendPlugin : IDalamudPlugin
         }
 
         if (friend == null) return;
+
+        if (friend->FreeCompany.ToString() == Service.ClientState?.LocalPlayer?.CompanyTag.ToString() && Service.Configuration.HideSameFC)
+        {
+            PluginLog.Debug($"Recieved update for {friend->Name} but ignored it due to sharing the same free company. (FC: {friend->FreeCompany})");
+            return;
+        }
 
         if (data.LoggedIn == true) this.Notify(string.Format(Service.Configuration.FriendLoggedInMessage, friend->Name.ToString()));
         else this.Notify(string.Format(Service.Configuration.FriendLoggedOutMessage, friend->Name.ToString()));

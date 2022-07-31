@@ -61,6 +61,12 @@ sealed class Configuration : IPluginConfiguration
 
 
     /// <summary>
+    ///     Wehether to hide notifications from players in the same free company.
+    /// </summary>
+    public bool HideSameFC { get; set; } = false;
+
+
+    /// <summary>
     ///    Saves the current configuration (and any modifications) to the config file.
     /// </summary>
     internal void Save()
