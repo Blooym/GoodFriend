@@ -12,14 +12,14 @@ using GoodFriend.UI.Settings;
 using GoodFriend.Utils;
 using GoodFriend.Base;
 
-internal class KikoPlugin : IDalamudPlugin
+public sealed class GoodFriendPlugin : IDalamudPlugin
 {
     public string Name => PStrings.pluginName;
-    private protected ulong _currentContentId;
-    private protected APIClientManager _clientManager { get; init; }
-    private protected SettingsScreen _settingsScreen { get; init; }
+    private ulong _currentContentId;
+    private APIClientManager _clientManager { get; init; }
+    private SettingsScreen _settingsScreen { get; init; }
 
-    public KikoPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+    public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<Service>();
         Service.Initialize(Service.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration());
@@ -48,13 +48,13 @@ internal class KikoPlugin : IDalamudPlugin
     /// <summary>
     ///     Event handler for when the plugin is told to draw the UI.
     /// </summary>
-    private protected void DrawUI() => this._settingsScreen.Draw();
+    private void DrawUI() => this._settingsScreen.Draw();
 
 
     /// <summary>
     ///     Event handler for when the UI is told to draw the config UI (Dalamud settings button)
     /// </summary>
-    private protected void DrawConfigUI() => this._settingsScreen.visible = !this._settingsScreen.visible;
+    private void DrawConfigUI() => this._settingsScreen.visible = !this._settingsScreen.visible;
 
 
     /// <summary>
@@ -131,7 +131,7 @@ internal class KikoPlugin : IDalamudPlugin
     /// <summary>
     ///    Event handler for when the language is changed, reloads the localization strings.
     /// </summary>
-    private void OnLanguageChange(string language)
+    public static void OnLanguageChange(string language)
     {
         var uiLang = Service.PluginInterface.UiLanguage;
         try { Loc.Setup(File.ReadAllText($"{PStrings.localizationPath}\\{uiLang}.json")); }

@@ -12,7 +12,7 @@ enum NotificationType
 }
 
 [Serializable]
-class Configuration : IPluginConfiguration
+sealed class Configuration : IPluginConfiguration
 {
     /// <summary> 
     ///     The current configuration version. Incremented whenever breaking changes are made to the configuration.

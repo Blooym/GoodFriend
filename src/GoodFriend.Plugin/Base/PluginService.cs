@@ -10,7 +10,7 @@ using Dalamud.Plugin;
 ///     Service is an internal class that provides internal access to necessary services.
 /// </summary>
 #pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework.
-sealed internal class Service
+internal class Service
 {
     [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; }
     [PluginService] internal static ClientState ClientState { get; private set; }

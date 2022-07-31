@@ -9,7 +9,7 @@ using Dalamud.Logging;
 using ImGuiNET;
 using CheapLoc;
 
-class SettingsScreen : IDisposable
+sealed internal class SettingsScreen : IDisposable
 {
     /// <summary>
     ///     Disposes of the settings window.

@@ -11,7 +11,7 @@ using GoodFriend.Utils;
 /// <summary>
 ///    The structure of the data that is received from the API for client events.
 /// </summary>
-class Update
+sealed internal class Update
 {
     public string? ContentID { get; set; }
     public bool? LoggedIn { get; set; }
@@ -20,7 +20,7 @@ class Update
 /// <summary>
 ///    Manages the client connection and data handling to/from the API.
 /// </summary>
-class APIClientManager : IDisposable
+sealed internal class APIClientManager : IDisposable
 {
     /// <summary> The Delegate that is used for DataReceieved. </summary>
     public delegate void DataRecievedDelegate(Update data);
@@ -28,13 +28,11 @@ class APIClientManager : IDisposable
     /// <summary> Fired when data is recieved from the API. </summary>
     public DataRecievedDelegate? DataRecieved;
 
-
     /// <summary> The Delegate that is used for Connection Estanlished events. </summary>
     public delegate void ConnectionEstablishedDelegate();
 
     /// <summary> Fired when data is first recieved from the API after a connection.</summary>
     public ConnectionEstablishedDelegate? ConnectionEstablished;
-
 
     /// <summary> // The Delegate that is used for Connection closed events. </summary> 
     public delegate void ConnectionClosedDelegate();
@@ -42,13 +40,11 @@ class APIClientManager : IDisposable
     /// <summary> Fired when the connection is terminated.</summary>
     public ConnectionClosedDelegate? ConnectionClosed;
 
-
     /// <summary> The Delegate that is used for when an error occurs whilst connecting </summary>
     public delegate void ConnectionErrorDelegate(Exception error);
 
     /// <summary> Fired when an error occurs whilst connecting. </summary>
     public ConnectionErrorDelegate? ConnectionError;
-
 
     /// <summary> The API URLs to manage events with. </summary>
     private static readonly string _apiUrl = Service.Configuration.APIUrl.ToString();
@@ -56,7 +52,6 @@ class APIClientManager : IDisposable
     private static readonly string _loginUrl = $"{_apiUrl}{_apiVersion}/login";
     private static readonly string _logoutUrl = $"{_apiUrl}{_apiVersion}/logout";
     private static readonly string _userEventsUrl = $"{_apiUrl}{_apiVersion}/events/users";
-
 
     /// <summary> The status of the connection. </summary>
     public bool IsConnected { get; private set; } = false;
@@ -70,7 +65,6 @@ class APIClientManager : IDisposable
     /// <summary> Fired when an error occurs whilst connecting. </summary>
     private void OnConnectionError(Exception error) => PluginLog.Error($"APIClientManager: {error.Message}");
 
-
     /// <summary>
     ///     Instantiates the APIClientManager.
     /// </summary>
@@ -80,7 +74,6 @@ class APIClientManager : IDisposable
         this.ConnectionClosed += OnConnectionClosed;
         this.ConnectionError += OnConnectionError;
     }
-
 
     /// <summary>
     ///     Opens the connection to the API.
@@ -92,7 +85,6 @@ class APIClientManager : IDisposable
         BeginConnection();
     }
 
-
     /// <summary>
     ///     Kills the connection to the API
     ///     It should be checked to see if there is an active connection before calling this.
@@ -103,7 +95,6 @@ class APIClientManager : IDisposable
         ConnectionClosed?.Invoke();
     }
 
-
     /// <summary>
     ///     Disposes of the ClientManager.
     /// </summary>
@@ -111,7 +102,6 @@ class APIClientManager : IDisposable
     {
         if (this.IsConnected) this.Disconnect();
     }
-
 
     /// <summary>
     ///     Send a login event to the API.
@@ -150,7 +140,6 @@ class APIClientManager : IDisposable
                 PluginLog.Log($"APIClientManager: Sent logout for {contentID} to {_logoutUrl}");
         });
     }
-
 
     /// <summary>
     ///     Starts listening for data from the API.

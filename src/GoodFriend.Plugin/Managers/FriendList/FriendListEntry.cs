@@ -21,86 +21,93 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
+namespace GoodFriend.Managers;
 
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Memory;
 using System;
 using System.Runtime.InteropServices;
 
-namespace GoodFriend.Managers
+/// <summary>
+/// An entry in a player's friend list.
+/// </summary>
+[StructLayout(LayoutKind.Explicit, Size = Size)]
+internal unsafe struct FriendListEntry
 {
-    /// <summary>
-    /// An entry in a player's friend list.
-    /// </summary>
-    [StructLayout(LayoutKind.Explicit, Size = Size)]
-    public unsafe struct FriendListEntry
-    {
-        internal const int Size = 96;
-        /// <summary>
-        /// The content ID of the friend.
-        /// </summary>
-        [FieldOffset(0)]
-        public readonly ulong ContentId;
-        [FieldOffset(13)]
-        public readonly byte OnlineStatus;
-        /// <summary>
-        /// The current world of the friend.
-        /// </summary>
-        [FieldOffset(22)]
-        public readonly ushort CurrentWorld;
-        /// <summary>
-        /// The home world of the friend.
-        /// </summary>
-        [FieldOffset(24)]
-        public readonly ushort HomeWorld;
-        /// <summary>
-        /// The job the friend is currently on.
-        /// </summary>
-        [FieldOffset(33)]
-        public readonly byte Job;
-        /// <summary>
-        /// The friend's raw SeString name. See <see cref="Name"/>.
-        /// </summary>
-        [FieldOffset(34)]
-        public fixed byte RawName[32];
-        /// <summary>
-        /// The friend's raw SeString free company tag. See <see cref="FreeCompany"/>.
-        /// </summary>
-        [FieldOffset(66)]
-        public fixed byte RawFreeCompany[5];
-        /// <summary>
-        /// The friend's name.
-        /// </summary>
-        public SeString Name
-        {
-            get
-            {
-                fixed (byte* ptr = this.RawName)
-                {
-                    return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
-                }
-            }
-        }
-        /// <summary>
-        /// The friend's free company tag.
-        /// </summary>
-        public SeString FreeCompany
-        {
-            get
-            {
-                fixed (byte* ptr = this.RawFreeCompany)
-                {
-                    return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
-                }
-            }
-        }
+    internal const int Size = 96;
 
-        public bool IsOnline
+    /// <summary>
+    ///     The content ID of the friend.
+    /// </summary>
+    [FieldOffset(0)]
+    public readonly ulong ContentId;
+
+    [FieldOffset(13)]
+    public readonly byte OnlineStatus;
+
+    /// <summary>
+    ///     The current world of the friend.
+    /// </summary>
+    [FieldOffset(22)]
+    public readonly ushort CurrentWorld;
+
+    /// <summary>
+    ///     The home world of the friend.
+    /// </summary>
+    [FieldOffset(24)]
+    public readonly ushort HomeWorld;
+
+    /// <summary>
+    ///     The job the friend is currently on.
+    /// </summary>
+    [FieldOffset(33)]
+    public readonly byte Job;
+
+    /// <summary>
+    ///     The friend's raw SeString name. See <see cref="Name"/>.
+    /// </summary>
+    [FieldOffset(34)]
+    public fixed byte RawName[32];
+
+    /// <summary>
+    ///     The friend's raw SeString free company tag. See <see cref="FreeCompany"/>.
+    /// </summary>
+    [FieldOffset(66)]
+    public fixed byte RawFreeCompany[5];
+
+    /// <summary>
+    ///     The friend's name.
+    /// </summary>
+    public SeString Name
+    {
+        get
         {
-            get
+            fixed (byte* ptr = this.RawName)
             {
-                return OnlineStatus == 0x80;
+                return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
             }
+        }
+    }
+
+    /// <summary>
+    ///     The friend's free company tag.
+    /// </summary>
+    public SeString FreeCompany
+    {
+        get
+        {
+            fixed (byte* ptr = this.RawFreeCompany)
+            {
+                return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
+            }
+        }
+    }
+
+    public bool IsOnline
+    {
+        get
+        {
+            return OnlineStatus == 0x80;
         }
     }
 }
