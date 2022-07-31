@@ -14,8 +14,8 @@ const port = process.env.PORT || 3000;
 
 // Setup the ratelimiter for the API
 const limiter = ratelimit({
-  windowMs: 60 * 1000,
-  max: 4,
+  windowMs: 60 * 5000,
+  max: 6,
   message: 'Too many requests from this IP, try again later',
 });
 
