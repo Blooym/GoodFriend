@@ -182,7 +182,6 @@ sealed internal class APIClientManager : IDisposable
 
         catch (Exception e)
         {
-            PluginLog.Error($"APIClientManager: An error occured with the connection to {_userEventsUrl}: {e}");
             if (IsConnected) Disconnect();
             ConnectionError?.Invoke(e);
         }
