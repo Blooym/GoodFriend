@@ -176,6 +176,8 @@ sealed internal class APIClientManager : IDisposable
 
             PluginLog.Log($"APIClientManager: Disconnected from {_userEventsUrl}");
 
+            if (this.IsConnected) ConnectionClosed?.Invoke();
+
             // We've reached the end of the stream, close up the connection.
             stream.Dispose();
         }

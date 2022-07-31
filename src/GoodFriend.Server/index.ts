@@ -11,6 +11,16 @@ import { keyFile, certFile } from './SSLConfig';
 // Create the express app & set the port to listen on
 const app = express().disable('x-powered-by');
 const port = process.env.PORT || 3000;
+const log = winston.createLogger(
+  {
+    level: 'info',
+    transports: [new winston.transports.Console()],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.printf((info) => `${info.level}: ${info.message}`),
+    ),
+  },
+);
 
 // Setup the ratelimiter for the API
 const limiter = ratelimit({
@@ -43,5 +53,5 @@ if (process.env.NODE_ENV === 'production' || process.env.SECURE === 'true') {
   const key = fs.readFileSync(keyFile);
   const cert = fs.readFileSync(certFile);
   const credentials = { key, cert };
-  https.createServer(credentials, app).listen(port);
-} else http.createServer(app).listen(port);
+  https.createServer(credentials, app).listen(port, () => { log.info(`HTTPS Server listening on port ${port}`); });
+} else http.createServer(app).listen(port, () => { log.info(`HTTP Server listening on port ${port}`); });
