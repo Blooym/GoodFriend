@@ -59,6 +59,7 @@ The security of the Client was greatly considered during design and as such both
 - The official API instance enforces a strict ratelimit on all requests to prevent abuse and ensure that any malicious actors cannot cause major issues.
 - The official API instance only allows communication over HTTPs and ignores all HTTP traffic. 
 - The Client will only listen for and send updates when strictly necessarily (eg. the Client will not be connected to the API when not logged in)
+- The Client (by default) will also use the GUID of the assembly as additional salt to make sure it is communicating with the same version (strict mode only)
 
 ## Contributions
 Contribution rules are a lot tighter on this project than most to help increase security of all the components involved. I am currently not accepting additional features that would require tweaks to the server component UNLESS they are strictly for increasing user security and privacy. If you have any concerns about security or privacy please open an issue and I will help resolve it the best way I can.
