@@ -16,8 +16,6 @@ public sealed class GoodFriendPlugin : IDalamudPlugin
 #if !DEBUG
         PluginService.ResourceManager.Update();
 #endif
-
-        Dalamud.Logging.PluginLog.Warning(Utils.Hashing.HashSHA512("1"));
     }
 
 

@@ -1,11 +1,11 @@
 namespace GoodFriend.UI.Screens.Settings;
 
 using System;
-using System.Linq;
-using System.Numerics;
 using System.Reflection;
+using System.Numerics;
+using Dalamud.Interface.Components;
+using Dalamud.Interface;
 using ImGuiNET;
-using CheapLoc;
 using GoodFriend.Base;
 using GoodFriend.UI.Components;
 using GoodFriend.Utils;
@@ -17,9 +17,9 @@ sealed public class SettingsScreen : IDisposable
 
     public void Draw() => DrawSettingsWindow();
     public void Dispose() => this.presenter.Dispose();
-    public void Show() => this.presenter.isVisible = true;
-    public void Hide() => this.presenter.isVisible = false;
 
+
+    /// <summary> Should advanced settings be drawn? </summary>
     private bool _showAdvanced = false;
 
     /// <summary> 
@@ -27,9 +27,50 @@ sealed public class SettingsScreen : IDisposable
     /// </summary>
     private void DrawSettingsWindow()
     {
-
         if (!presenter.isVisible) return;
 
+        ImGui.SetNextWindowSize(new Vector2(600, 320), ImGuiCond.Appearing);
+        if (ImGui.Begin(PStrings.pluginName, ref presenter.isVisible, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
+        {
+
+            this.DrawTopBar();
+            this.DrawNormSettings();
+            this.DrawAdvancedSettings();
+        }
+    }
+
+
+    /// <summary> Draws the buttons for the settings window. </summary>
+    private void DrawTopBar()
+    {
+
+#if DEBUG
+        this.presenter.dialogManager.Draw();
+        if (ImGui.Button("Export Localizable")) this.presenter.dialogManager.OpenFolderDialog("Select Export Directory", this.presenter.OnDirectoryPicked);
+#endif
+
+        // Top bar of settings.
+        ImGui.TextWrapped($"{PStrings.pluginName} v{Assembly.GetExecutingAssembly().GetName().Version} | {TStrings.SettingsAPIConnected(PluginService.APIClient.IsConnected)}");
+        ImGui.SameLine();
+
+        // Support button
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Heart)) Common.OpenLink(PStrings.supportButtonUrl);
+        Tooltips.AddTooltip(TStrings.SupportText());
+        ImGui.SameLine();
+
+        // Reconnect button
+        ImGui.BeginDisabled(presenter.reconnectCooldownActive | PluginService.ClientState.LocalPlayer == null);
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Plug)) presenter.ReconnectWithCooldown();
+        Tooltips.AddTooltip(TStrings.SettingsAPIReconnect());
+        ImGui.EndDisabled();
+
+        ImGui.Separator();
+    }
+
+
+    /// <summary> Draws the normal settings </summary>
+    private void DrawNormSettings()
+    {
         var showAdvanced = this._showAdvanced;
         var notificationType = Enum.GetName(typeof(NotificationType), PluginService.Configuration.NotificationType);
         var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
@@ -37,139 +78,129 @@ sealed public class SettingsScreen : IDisposable
         var hideSameFC = PluginService.Configuration.HideSameFC;
         var friendshipCode = PluginService.Configuration.FriendshipCode;
 
-        // Draw the settings window.
-        if (showAdvanced) ImGui.SetNextWindowSize(new Vector2(580, 320));
-        else ImGui.SetNextWindowSize(new Vector2(580, 250));
-        if (ImGui.Begin(PStrings.pluginName, ref presenter.isVisible, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
+        // Hide FC Members dropdown.
+        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC(), hideSameFC.ToString()))
         {
-            ImGui.TextDisabled($"{PStrings.pluginName} v{Assembly.GetExecutingAssembly().GetName().Version} | API Connected: {PluginService.APIClient.IsConnected}");
-
-            // Hide FC Members dropdown.
-            if (ImGui.BeginCombo(Loc.Localize("UI.Settings.HideSameFC", "Hide FC Members"), hideSameFC.ToString()))
+            if (ImGui.Selectable(TStrings.SettingsHideSameFCEnabled(), hideSameFC))
             {
-                if (ImGui.Selectable(Loc.Localize("UI.Settings.HideSameFC.Enabled", "Enabled"), hideSameFC))
-                {
-                    PluginService.Configuration.HideSameFC = true;
-                }
-                if (ImGui.Selectable(Loc.Localize("UI.Settings.HideSameFC.Disabled", "Disabled"), !hideSameFC))
-                {
-                    PluginService.Configuration.HideSameFC = false;
-                }
+                PluginService.Configuration.HideSameFC = true;
+            }
+            if (ImGui.Selectable(TStrings.SettingsHideSameFCDisabled(), !hideSameFC))
+            {
+                PluginService.Configuration.HideSameFC = false;
+            }
 
+            PluginService.Configuration.Save();
+            ImGui.EndCombo();
+        }
+        Tooltips.Questionmark(TStrings.SettingsHideSameTCTooltip());
+
+
+        // Notification type dropdown
+        if (ImGui.BeginCombo(TStrings.SettingsNotificationType(), notificationType))
+        {
+            foreach (var notification in Enum.GetNames(typeof(NotificationType)))
+            {
+                if (ImGui.Selectable(notification, notification == notificationType))
+                {
+                    PluginService.Configuration.NotificationType = (NotificationType)Enum.Parse(typeof(NotificationType), notification);
+                    PluginService.Configuration.Save();
+                }
+            }
+            ImGui.EndCombo();
+        }
+        Tooltips.Questionmark(TStrings.SettingsNotificationTypeTooltip());
+
+
+        // Login message input
+        if (ImGui.InputText(TStrings.SettingsLoginMessage(), ref loginMessage, 64))
+        {
+            bool error = false;
+            try { string.Format(loginMessage, "test"); }
+            catch { error = true; }
+
+            if (!error && loginMessage.Contains("{0}"))
+            {
+                PluginService.Configuration.FriendLoggedInMessage = loginMessage.Trim();
                 PluginService.Configuration.Save();
-                ImGui.EndCombo();
-            }
-            Tooltips.Questionmark("Should the plugin display notifications for members of your free company that you have added?");
-
-
-            // Notification type dropdown
-            if (ImGui.BeginCombo(Loc.Localize("UI.Settings.NotificationType", "Notification Type"), notificationType))
-            {
-                foreach (var notification in Enum.GetNames(typeof(NotificationType)))
-                {
-                    if (ImGui.Selectable(notification, notification == notificationType))
-                    {
-                        PluginService.Configuration.NotificationType = (NotificationType)Enum.Parse(typeof(NotificationType), notification);
-                        PluginService.Configuration.Save();
-                    }
-                }
-                ImGui.EndCombo();
-            }
-            Tooltips.Questionmark("The place to display notifications when a friend logs in or logs out.");
-
-
-            // Login message input
-            if (ImGui.InputText(Loc.Localize("UI.Settings.LoginMessage", "Login Message"), ref loginMessage, 64))
-            {
-                bool error = false;
-                try { string.Format(loginMessage, "test"); }
-                catch { error = true; }
-
-                if (!error && loginMessage.Contains("{0}"))
-                {
-                    PluginService.Configuration.FriendLoggedInMessage = loginMessage.Trim();
-                    PluginService.Configuration.Save();
-                }
-            }
-            Tooltips.Questionmark("The message to show when a friend logs in out.\n\n{0}: Name of the friend.");
-
-
-            // Logout message input
-            if (ImGui.InputText(Loc.Localize("UI.Settings.LogoutMessage", "Logout Message"), ref logoutMessage, 64))
-            {
-                bool error = false;
-                try { string.Format(logoutMessage, "test"); }
-                catch { error = true; }
-
-                if (!error && logoutMessage.Contains("{0}"))
-                {
-                    PluginService.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
-                    PluginService.Configuration.Save();
-                }
-            }
-            Tooltips.Questionmark("The message to show when a friend logs out.\n\n{0}: Name of the friend.");
-
-            // Secret code input
-            if (ImGui.InputTextWithHint(Loc.Localize("UI.Settings.FriendshipCode", "Friendship Code"), Loc.Localize("UI.Settings.FriendshipCode.Hint", "Leave blank to get/recieve notifications from all friends"), ref friendshipCode, 64))
-            {
-                PluginService.Configuration.FriendshipCode = friendshipCode.Where(char.IsLetterOrDigit).Aggregate("", (current, c) => current + c);
-                PluginService.Configuration.Save();
-            }
-            Tooltips.Questionmark("Your friend code determines which friends you send and recieve notifications from.\nOnly friends with matching codes will get notified of eachother");
-
-
-            // Advanced settings
-            ImGui.NewLine();
-            if (ImGui.Checkbox(Loc.Localize("UI.Settings.ShowAdvanced", "Show Advanced Settings"), ref showAdvanced)) this._showAdvanced = showAdvanced;
-
-            if (this._showAdvanced)
-            {
-
-                var APIUrl = PluginService.Configuration.APIUrl.ToString();
-                var saltMethod = PluginService.Configuration.SaltMethod;
-
-                // Salt Mode dropdown
-                if (ImGui.BeginCombo(Loc.Localize("UI.Settings.SaltMode", "Salt Mode"), saltMethod.ToString()))
-                {
-                    if (ImGui.Selectable(Loc.Localize("UI.Settings.SaltMode.Strict", "Strict"), saltMethod == SaltMethods.Strict))
-                    {
-                        PluginService.Configuration.SaltMethod = SaltMethods.Strict;
-                    }
-                    if (ImGui.Selectable(Loc.Localize("UI.Settings.SaltMode.Relaxed", "Relaxed"), saltMethod == SaltMethods.Relaxed))
-                    {
-                        PluginService.Configuration.SaltMethod = SaltMethods.Relaxed;
-                    }
-
-                    PluginService.Configuration.Save();
-                    ImGui.EndCombo();
-                }
-                if (saltMethod == SaltMethods.Relaxed) Tooltips.Warning("Relaxed salt mode is not recommended unless you are trying to interact with other plugins using the same API.\n\nYou will not recieve notifications from Strict users");
-                else Tooltips.Questionmark("Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues");
-
-
-                // API URL input
-                if (ImGui.InputText(Loc.Localize("UI.Settings.APIURL", "API URL"), ref APIUrl, 64))
-                {
-                    bool error = false;
-                    try { new Uri(APIUrl); }
-                    catch { error = true; }
-
-                    if (!error)
-                    {
-                        PluginService.Configuration.APIUrl = new Uri(APIUrl);
-                        PluginService.Configuration.Save();
-                    }
-                    else PluginService.Configuration.ResetApiUrl();
-                }
-                if (!APIUrl.StartsWith("https")) Tooltips.Warning("Warning: You are not using HTTPs for the API! This is VERY insecure and could lead to major security problems.");
-                else Tooltips.Questionmark("The API is used to send and recieve notifications from friends using the same API & Code.\n\nYou should not change this unless you know what you are doing.");
-
-#if DEBUG
-                this.presenter.dialogManager.Draw();
-                if (ImGui.Button("Export Localizable")) this.presenter.dialogManager.OpenFolderDialog("Select Export Directory", this.presenter.OnDirectoryPicked);
-#endif
-
             }
         }
+        Tooltips.Questionmark(TStrings.SettingsLoginMessageTooltip());
+
+
+        // Logout message input
+        if (ImGui.InputText(TStrings.SettingsLogoutMessage(), ref logoutMessage, 64))
+        {
+            bool error = false;
+            try { string.Format(logoutMessage, "test"); }
+            catch { error = true; }
+
+            if (!error && logoutMessage.Contains("{0}"))
+            {
+                PluginService.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
+                PluginService.Configuration.Save();
+            }
+        }
+        Tooltips.Questionmark(TStrings.SettingsLogoutMessageTooltip());
+
+
+        // Secret code input
+        if (ImGui.InputTextWithHint(TStrings.SettingsFriendshipCode(), TStrings.SettingsFriendshipCodeHint(), ref friendshipCode, 64))
+        {
+            PluginService.Configuration.FriendshipCode = friendshipCode;
+            PluginService.Configuration.Save();
+        }
+        Tooltips.Questionmark(TStrings.SettingsFriendshipCodeHint());
+
+
+        // Advanced settings
+        ImGui.NewLine();
+        if (ImGui.Checkbox(TStrings.SettingsShowAdvanced(), ref showAdvanced)) this._showAdvanced = showAdvanced;
+    }
+
+
+    /// <summary> Draws the advanced settings </summary>
+    private void DrawAdvancedSettings()
+    {
+        if (!this._showAdvanced) return;
+
+        var APIUrl = PluginService.Configuration.APIUrl.ToString();
+        var saltMethod = PluginService.Configuration.SaltMethod;
+
+        // Salt Mode dropdown
+        if (ImGui.BeginCombo(TStrings.SettingsSaltMode(), saltMethod.ToString()))
+        {
+            if (ImGui.Selectable(TStrings.SettingsSaltModeStrict(), saltMethod == SaltMethods.Strict))
+            {
+                PluginService.Configuration.SaltMethod = SaltMethods.Strict;
+            }
+            if (ImGui.Selectable(TStrings.SettingsSaltModeRelaxed(), saltMethod == SaltMethods.Relaxed))
+            {
+                PluginService.Configuration.SaltMethod = SaltMethods.Relaxed;
+            }
+
+            PluginService.Configuration.Save();
+            ImGui.EndCombo();
+        }
+        if (saltMethod == SaltMethods.Relaxed) Tooltips.Warning(TStrings.SettingsSaltModeWarning());
+        else Tooltips.Questionmark(TStrings.SettingsSaltModeTooltip());
+
+
+        // API URL input
+        if (ImGui.InputText(TStrings.SettingsAPIURL(), ref APIUrl, 64))
+        {
+            bool error = false;
+            try { new Uri(APIUrl); }
+            catch { error = true; }
+
+            if (!error)
+            {
+                PluginService.Configuration.APIUrl = new Uri(APIUrl);
+                PluginService.Configuration.Save();
+            }
+            else PluginService.Configuration.ResetApiUrl();
+        }
+        if (!APIUrl.StartsWith("https")) Tooltips.Warning(TStrings.SettingsAPINotHttps());
+        else Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip());
     }
 }

@@ -1,56 +1,4 @@
 {
-  "UI.Settings.HideSameFC": {
-    "message": "Hide FC Members",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.HideSameFC.Enabled": {
-    "message": "Enabled",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.HideSameFC.Disabled": {
-    "message": "Disabled",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.NotificationType": {
-    "message": "Notification Type",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.LoginMessage": {
-    "message": "Login Message",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.LogoutMessage": {
-    "message": "Logout Message",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.FriendshipCode": {
-    "message": "Friendship Code",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.FriendshipCode.Hint": {
-    "message": "Leave blank to get/recieve notifications from all friends",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.ShowAdvanced": {
-    "message": "Show Advanced Settings",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.SaltMode": {
-    "message": "Salt Mode",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.SaltMode.Strict": {
-    "message": "Strict",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.SaltMode.Relaxed": {
-    "message": "Relaxed",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
-  "UI.Settings.APIURL": {
-    "message": "API URL",
-    "description": "SettingsScreen.DrawSettingsWindow"
-  },
   "UI.Settings.FriendLoggedInMessage": {
     "message": "{0} has logged in.",
     "description": "Configuration..ctor"
@@ -58,5 +6,109 @@
   "Config.FriendLoggedOutMessage": {
     "message": "{0} has logged out.",
     "description": "Configuration..ctor"
+  },
+  "SupportText": {
+    "message": "Support the developer of {0}",
+    "description": "TStrings.SupportText"
+  },
+  "Settings.Title": {
+    "message": "{0} - Settings",
+    "description": "TStrings.SettingsTitle"
+  },
+  "Settings.APIConnected": {
+    "message": "API Connected: {0}",
+    "description": "TStrings.SettingsAPIConnected"
+  },
+  "Settings.HideSameFC": {
+    "message": "Hide FC Members",
+    "description": "TStrings.SettingsHideSameFC"
+  },
+  "Settings.HideSameFC.Enabled": {
+    "message": "Enabled",
+    "description": "TStrings.SettingsHideSameFCEnabled"
+  },
+  "Settings.HideSameFC.Disabled": {
+    "message": "Disabled",
+    "description": "TStrings.SettingsHideSameFCDisabled"
+  },
+  "Settings.HideSameFC.Tooltip": {
+    "message": "When enabled, you will not be notified when a friend in your free company logs in or out.",
+    "description": "TStrings.SettingsHideSameTCTooltip"
+  },
+  "Settings.NotificationType": {
+    "message": "Notification Type",
+    "description": "TStrings.SettingsNotificationType"
+  },
+  "Settings.NotificationType.Tooltip": {
+    "message": "The place to display notifications when a friend logs in or logs out.",
+    "description": "TStrings.SettingsNotificationTypeTooltip"
+  },
+  "Settings.LoginMessage": {
+    "message": "Login Message",
+    "description": "TStrings.SettingsLoginMessage"
+  },
+  "Settings.LoginMessage.Tooltip": {
+    "message": "The message to show when a friend logs in.\n\n{0}: Name of the friend.",
+    "description": "TStrings.SettingsLoginMessageTooltip"
+  },
+  "Settings.LogoutMessage": {
+    "message": "Logout Message",
+    "description": "TStrings.SettingsLogoutMessage"
+  },
+  "Settings.LogoutMessage.Tooltip": {
+    "message": "The message to show when a friend logs out.\n\n{0}: Name of the friend.",
+    "description": "TStrings.SettingsLogoutMessageTooltip"
+  },
+  "Settings.FriendshipCode": {
+    "message": "Friendship Code",
+    "description": "TStrings.SettingsFriendshipCode"
+  },
+  "Settings.FriendshipCode.Hint": {
+    "message": "Leave empty to send notifications to all friends",
+    "description": "TStrings.SettingsFriendshipCodeHint"
+  },
+  "Settings.FriendshipCode.Tooltip": {
+    "message": "Your friend code determines which friends you send and recieve notifications with.",
+    "description": "TStrings.SettingsFriendshipCodeTooltip"
+  },
+  "Settings.ShowAdvanced": {
+    "message": "Show Advanced Settings",
+    "description": "TStrings.SettingsShowAdvanced"
+  },
+  "Settings.SaltMode": {
+    "message": "Salt Mode",
+    "description": "TStrings.SettingsSaltMode"
+  },
+  "Settings.SaltMode.Strict": {
+    "message": "Strict (Recommended)",
+    "description": "TStrings.SettingsSaltModeStrict"
+  },
+  "Settings.SaltMode.Relaxed": {
+    "message": "Relaxed",
+    "description": "TStrings.SettingsSaltModeRelaxed"
+  },
+  "Settings.SaltMode.Tooltip": {
+    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues",
+    "description": "TStrings.SettingsSaltModeTooltip"
+  },
+  "Settings.SaltMode.Warning": {
+    "message": "Warning: Relaxed mode is not recommended unless you have an explicit reason for using it.\n\nYou will not recieve notifications from Strict mode users",
+    "description": "TStrings.SettingsSaltModeWarning"
+  },
+  "Settings.APIURL": {
+    "message": "API URL",
+    "description": "TStrings.SettingsAPIURL"
+  },
+  "Settings.APIURL.Tooltip": {
+    "message": "The API is used to send and recieve notifications from friends using the same API.\n\nYou should not change this unless you know what you are doing.",
+    "description": "TStrings.SettingsAPIURLTooltip"
+  },
+  "Settings.APIURL.NotHttps": {
+    "message": "Warning: You are not using HTTPs for the API! This is VERY insecure and could lead to major security problems.",
+    "description": "TStrings.SettingsAPINotHttps"
+  },
+  "Settings.API.Reconnect": {
+    "message": "Reconnect to the API",
+    "description": "TStrings.SettingsAPIReconnect"
   }
 }
