@@ -4,7 +4,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using GoodFriend.Base;
 
-public sealed class GoodFriendPlugin : IDalamudPlugin
+public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
 {
     public string Name => PStrings.pluginName;
 
@@ -16,6 +16,13 @@ public sealed class GoodFriendPlugin : IDalamudPlugin
 #if !DEBUG
         PluginService.ResourceManager.Update();
 #endif
+
+        // uid
+        Dalamud.Logging.PluginLog.Debug(System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString());
+        foreach (var friend in Managers.FriendList.Get())
+        {
+            Dalamud.Logging.PluginLog.Debug($"{friend->Name} - {Utils.Hashing.HashSHA512(friend->ContentId.ToString())}");
+        }
     }
 
 

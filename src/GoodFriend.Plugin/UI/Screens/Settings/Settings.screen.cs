@@ -7,15 +7,18 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface;
 using ImGuiNET;
 using GoodFriend.Base;
-using GoodFriend.UI.Components;
 using GoodFriend.Utils;
+using GoodFriend.Interfaces;
+using GoodFriend.UI.Components;
 
-sealed public class SettingsScreen : IDisposable
+sealed public class SettingsScreen : IScreen
 {
 
     public SettingsPresenter presenter = new SettingsPresenter();
 
     public void Draw() => DrawSettingsWindow();
+    public void Show() => presenter.isVisible = true;
+    public void Hide() => presenter.isVisible = false;
     public void Dispose() => this.presenter.Dispose();
 
 
@@ -79,7 +82,7 @@ sealed public class SettingsScreen : IDisposable
         var friendshipCode = PluginService.Configuration.FriendshipCode;
 
         // Hide FC Members dropdown.
-        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC(), hideSameFC.ToString()))
+        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC(), hideSameFC ? TStrings.SettingsHideSameFCEnabled() : TStrings.SettingsHideSameFCDisabled()))
         {
             if (ImGui.Selectable(TStrings.SettingsHideSameFCEnabled(), hideSameFC))
             {

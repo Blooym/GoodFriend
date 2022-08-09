@@ -80,7 +80,7 @@
     "description": "TStrings.SettingsSaltMode"
   },
   "Settings.SaltMode.Strict": {
-    "message": "Strict (Recommended)",
+    "message": "Strict",
     "description": "TStrings.SettingsSaltModeStrict"
   },
   "Settings.SaltMode.Relaxed": {

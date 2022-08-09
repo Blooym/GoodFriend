@@ -42,7 +42,7 @@ public static class TStrings
     public static string SettingsFriendshipCodeTooltip() => Loc.Localize("Settings.FriendshipCode.Tooltip", "Your friend code determines which friends you send and recieve notifications with.");
     public static string SettingsShowAdvanced() => Loc.Localize("Settings.ShowAdvanced", "Show Advanced Settings");
     public static string SettingsSaltMode() => Loc.Localize("Settings.SaltMode", "Salt Mode");
-    public static string SettingsSaltModeStrict() => Loc.Localize("Settings.SaltMode.Strict", "Strict (Recommended)");
+    public static string SettingsSaltModeStrict() => Loc.Localize("Settings.SaltMode.Strict", "Strict");
     public static string SettingsSaltModeRelaxed() => Loc.Localize("Settings.SaltMode.Relaxed", "Relaxed");
     public static string SettingsSaltModeTooltip() => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues");
     public static string SettingsSaltModeWarning() => Loc.Localize("Settings.SaltMode.Warning", "Warning: Relaxed mode is not recommended unless you have an explicit reason for using it.\n\nYou will not recieve notifications from Strict mode users");

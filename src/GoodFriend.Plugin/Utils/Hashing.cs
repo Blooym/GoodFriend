@@ -33,9 +33,11 @@ public static class Hashing
 
 
     /// <summary> Generates a SHA512 hash from the given string. </summary>
+    /// <param name="input"> The string to hash. </param>
+    /// <returns> The hashed string. </returns>
     public static string HashSHA512(string input)
     {
-        var salt = CreateSalt(SaltMethods.Strict);
+        var salt = CreateSalt(PluginService.Configuration.SaltMethod);
         var bytes = Encoding.UTF8.GetBytes(input + salt);
 
         return Convert.ToBase64String(SHA512.Create().ComputeHash(bytes));
