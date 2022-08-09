@@ -5,7 +5,7 @@
     "Punchline": "Friend login & logout notifications (both sides must use GoodFriend)",
     "Description": "Provides instant friend login/logout notifications with other friends using the plugin. Provides customisable messages & notification display settings and allows for private notification circles using a friendship code.",
     "InternalName": "GoodFriend",
-    "AssemblyVersion": "1.1.0.1",
+    "AssemblyVersion": "1.1.1.0",
     "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 6,
