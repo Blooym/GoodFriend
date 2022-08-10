@@ -16,11 +16,6 @@ const userEventHandler = (req: Request, res: Response, clients: Client) => {
     clients = clients.filter((client) => client.ID !== Date.now());
     res.end();
   });
-
-  process.on('SIGINT', () => {
-    res.end();
-    process.exit(0);
-  });
 };
 
 export default userEventHandler;

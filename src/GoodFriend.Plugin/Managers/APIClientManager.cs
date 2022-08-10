@@ -58,16 +58,16 @@ sealed public class APIClientManager : IDisposable
     /// <summary> The status of the connection. </summary>
     public bool IsConnected { get; private set; } = false;
 
-
     /// <summary> The status of re-connecting. </summary>
-    private bool IsReconnecting { get; set; } = false;
     private Timer _reconnectTimer = new Timer(60000);
+    private void _reconnectEventHandler(object sender, ElapsedEventArgs e) => this.Connect();
 
 
     /// <summary> Sets the connection to true when established. </summary>
     private void OnConnectionEstablished()
     {
         this.IsConnected = true;
+        this._reconnectTimer.Stop();
         PluginLog.Log($"APIClientManager: Connection Established");
     }
 
@@ -76,7 +76,7 @@ sealed public class APIClientManager : IDisposable
     private void OnConnectionClosed()
     {
         this.IsConnected = false;
-        this.IsReconnecting = false;
+        this._reconnectTimer.Stop();
         PluginLog.Log($"APIClientManager: Connection Closed");
     }
 
@@ -84,23 +84,7 @@ sealed public class APIClientManager : IDisposable
     /// <summary> Handle the connection error event by setting up auto-reconnect </summary>
     private void OnConnectionError(Exception error)
     {
-        if (this.IsReconnecting) return;
-        this.IsReconnecting = true;
-
-        PluginLog.Error($"APIClientManager: Connection error: {error.ToString()}");
-
-        this._reconnectTimer.Elapsed += (sender, e) =>
-        {
-            if (this.IsConnected || !this.IsReconnecting)
-            {
-                this._reconnectTimer.Stop();
-                this.IsReconnecting = false;
-                return;
-            }
-
-            this.Connect();
-        };
-
+        PluginLog.Error($"APIClientManager: Connection error: {error.Message}");
         this._reconnectTimer.Start();
     }
 
@@ -115,6 +99,7 @@ sealed public class APIClientManager : IDisposable
         this.ConnectionEstablished += OnConnectionEstablished;
         this.ConnectionClosed += OnConnectionClosed;
         this.ConnectionError += OnConnectionError;
+        this._reconnectTimer.Elapsed += _reconnectEventHandler;
 
         PluginLog.Debug("APIClientManager: Instantiation complete.");
     }
@@ -154,6 +139,7 @@ sealed public class APIClientManager : IDisposable
         this.ConnectionEstablished -= OnConnectionEstablished;
         this.ConnectionClosed -= OnConnectionClosed;
         this.ConnectionError -= OnConnectionError;
+        this._reconnectTimer.Elapsed -= _reconnectEventHandler;
         this._reconnectTimer.Dispose();
 
         PluginLog.Debug("APIClientManager: Successfully disposed.");
