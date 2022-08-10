@@ -56,6 +56,7 @@ Afterwards, run the following to run the container.
 ```
 docker run -d goodfriend-api
 ```
+*Note: if you are running on a Linux machine, you may need to add `--network="host"` to the command to forward the port.*
 Environment variables set in the `Dockerfile` will override the ones set in the `.env` file.
 
 ### Running (Non-Docker)
