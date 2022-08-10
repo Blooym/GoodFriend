@@ -53,20 +53,20 @@ sealed public class SettingsScreen : IScreen
 #endif
 
         // Top bar of settings.
-        ImGui.TextWrapped($"{PStrings.pluginName} v{Assembly.GetExecutingAssembly().GetName().Version} | {TStrings.SettingsAPIConnected(PluginService.APIClient.IsConnected)}");
+        ImGui.TextWrapped($"{PStrings.pluginName} ver.{Assembly.GetExecutingAssembly().GetName().Version} | {TStrings.SettingsAPIConnected(PluginService.APIClient.IsConnected)}");
         ImGui.SameLine();
+
+        // Reconnect button
+        ImGui.BeginDisabled(presenter.reconnectCooldownActive | PluginService.APIClient.IsConnected | PluginService.ClientState.LocalPlayer == null);
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Plug)) presenter.ReconnectWithCooldown();
+        Tooltips.AddTooltip(TStrings.SettingsAPIReconnect());
+        ImGui.EndDisabled();
+        ImGui.SameLine();
+
 
         // Support button
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Heart)) Common.OpenLink(PStrings.supportButtonUrl);
         Tooltips.AddTooltip(TStrings.SupportText());
-        ImGui.SameLine();
-
-        // Reconnect button
-        ImGui.BeginDisabled(presenter.reconnectCooldownActive | PluginService.ClientState.LocalPlayer == null);
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Plug)) presenter.ReconnectWithCooldown();
-        Tooltips.AddTooltip(TStrings.SettingsAPIReconnect());
-        ImGui.EndDisabled();
-
         ImGui.Separator();
     }
 

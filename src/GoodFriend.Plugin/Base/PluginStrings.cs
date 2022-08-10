@@ -49,5 +49,5 @@ public static class TStrings
     public static string SettingsAPIURL() => Loc.Localize("Settings.APIURL", "API URL");
     public static string SettingsAPIURLTooltip() => Loc.Localize("Settings.APIURL.Tooltip", "The API is used to send and recieve notifications from friends using the same API.\n\nYou should not change this unless you know what you are doing.");
     public static string SettingsAPINotHttps() => Loc.Localize("Settings.APIURL.NotHttps", "Warning: You are not using HTTPs for the API! This is VERY insecure and could lead to major security problems.");
-    public static string SettingsAPIReconnect() => Loc.Localize("Settings.API.Reconnect", "Reconnect to the API");
+    public static string SettingsAPIReconnect() => Loc.Localize("Settings.API.Reconnect", "Try reconnect to the API");
 }

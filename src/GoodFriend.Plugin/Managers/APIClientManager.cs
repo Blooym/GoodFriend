@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Web;
+using System.Timers;
 using Dalamud.Logging;
 using GoodFriend.Base;
 using GoodFriend.Utils;
@@ -47,7 +48,7 @@ sealed public class APIClientManager : IDisposable
     public event ConnectionErrorDelegate? ConnectionError;
 
     /// <summary> The API URLs to manage events with. </summary>
-    private static readonly Uri _apiUrl = PluginService.Configuration.APIUrl;
+    private static Uri _apiUrl = PluginService.Configuration.APIUrl;
     private static readonly string _apiVersion = "v1";
     private static readonly string _loginUrl = $"{_apiUrl}{_apiVersion}/login";
     private static readonly string _logoutUrl = $"{_apiUrl}{_apiVersion}/logout";
@@ -58,16 +59,50 @@ sealed public class APIClientManager : IDisposable
     public bool IsConnected { get; private set; } = false;
 
 
+    /// <summary> The status of re-connecting. </summary>
+    private bool IsReconnecting { get; set; } = false;
+    private Timer _reconnectTimer = new Timer(60000);
+
+
     /// <summary> Sets the connection to true when established. </summary>
-    private void OnConnectionEstablished() => this.IsConnected = true;
+    private void OnConnectionEstablished()
+    {
+        this.IsConnected = true;
+        PluginLog.Log($"APIClientManager: Connection Established");
+    }
 
 
     /// <summary> Sets the connection to false when closed, regardless of reason. </summary>
-    private void OnConnectionClosed() => this.IsConnected = false;
+    private void OnConnectionClosed()
+    {
+        this.IsConnected = false;
+        this.IsReconnecting = false;
+        PluginLog.Log($"APIClientManager: Connection Closed");
+    }
 
 
-    /// <summary> Fired when an error occurs whilst connecting. </summary>
-    private void OnConnectionError(Exception error) => PluginLog.Error($"APIClientManager: Connection error: {error.ToString()}");
+    /// <summary> Handle the connection error event by setting up auto-reconnect </summary>
+    private void OnConnectionError(Exception error)
+    {
+        if (this.IsReconnecting) return;
+        this.IsReconnecting = true;
+
+        PluginLog.Error($"APIClientManager: Connection error: {error.ToString()}");
+
+        this._reconnectTimer.Elapsed += (sender, e) =>
+        {
+            if (this.IsConnected || !this.IsReconnecting)
+            {
+                this._reconnectTimer.Stop();
+                this.IsReconnecting = false;
+                return;
+            }
+
+            this.Connect();
+        };
+
+        this._reconnectTimer.Start();
+    }
 
 
     /// <summary>
@@ -83,6 +118,7 @@ sealed public class APIClientManager : IDisposable
 
         PluginLog.Debug("APIClientManager: Instantiation complete.");
     }
+
 
     /// <summary>
     ///     Opens the connection to the API.
@@ -118,6 +154,7 @@ sealed public class APIClientManager : IDisposable
         this.ConnectionEstablished -= OnConnectionEstablished;
         this.ConnectionClosed -= OnConnectionClosed;
         this.ConnectionError -= OnConnectionError;
+        this._reconnectTimer.Dispose();
 
         PluginLog.Debug("APIClientManager: Successfully disposed.");
     }
@@ -172,6 +209,7 @@ sealed public class APIClientManager : IDisposable
         {
             // Try establishing a connection to the API.
             PluginLog.Log($"APIClientManager: Connecting to {_userEventsUrl}");
+
             var client = new HttpClient();
             client.Timeout = System.Threading.Timeout.InfiniteTimeSpan;
 

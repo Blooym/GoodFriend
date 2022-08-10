@@ -9,7 +9,7 @@ using GoodFriend.Managers;
 
 /// <summary> Provides access to necessary instances and services. </summary>
 #pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework here.
-internal class PluginService
+sealed internal class PluginService
 {
     // Dalamud Services & Instances
     [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; }

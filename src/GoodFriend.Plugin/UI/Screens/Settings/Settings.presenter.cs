@@ -24,12 +24,10 @@ sealed public class SettingsPresenter : IDisposable
     /// <summary> Attempts to reconnect to the API. </summary>
     public void ReconnectWithCooldown()
     {
-        if (this.reconnectCooldownActive) return;
+        if (this.reconnectCooldownActive || PluginService.APIClient.IsConnected) return;
 
-        if (PluginService.APIClient.IsConnected) PluginService.APIClient.Disconnect();
-        if (!PluginService.APIClient.IsConnected) PluginService.APIClient.Connect();
+        PluginService.APIClient.Connect();
 
-        // Start counting the reconnect timer.
         this.reconnectCooldownActive = true;
         Task.Run(() =>
         {
