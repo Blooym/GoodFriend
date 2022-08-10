@@ -2,7 +2,8 @@
 dist/
 node_modules/
 
-# Certificates
+# Secrets
+.env
 SSL/**/*.pem
 SSL/**/*.key
 SSL/**/*.crt

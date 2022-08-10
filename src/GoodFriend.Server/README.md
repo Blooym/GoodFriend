@@ -21,10 +21,10 @@ To deploy the API on your localhost, you can run `yarn start`. This will start a
 ---
 
 ## Deployment: Server
-There are more steps involved to deploying on a production server, but the process should be pretty similar to the localhost deployment.
+There are more steps involved to deploying on a production server, but the process shouldn't be too complicated.
 
-### Domain Name
-You will have to assign a domain name to your server so that it can be assigned a certificate. This will be the domain name that is used in the plugin to connect to the API.
+### Environment Variables / Config
+Change the file named `.env.example` to `.env` and fill in its values with the appropriate values for your server, please keep in mind that the `KEYFILE` and `CERTFILE` must be accessible by the node process when it is running, if you choose to use docker they must also be accessible by the docker container.
 
 ### Obtaining SSL Certificates
 The easiest way to obtain a SSL certificate is to use Let's Encrypt. This will automatically generate a certificate for you, and you can use it to deploy your server. 
@@ -44,20 +44,19 @@ sudo ln -s /etc/letsencrypt/live/<domain>/privkey.pem ./SSL/privkey.pem
 
 **Set Certificate Location**
 ```
-$EDITOR ./SSLConfig.ts
+$EDITOR ./.env
 ```
 
-### Starting the Server
-To start the server, set `NODE_ENV` to `production` or `SECURE=true` in your environment and then run `yarn start`.
+### Running (Docker)
+If you want to build and run the server inside of a container, first check the `Dockerfile` and adjust the port, then run the following to build the docker image.
+```
+docker build -t goodfriend-api .
+```
+Afterwards, run the following to run the container.
+```
+docker run -d goodfriend-api
+```
+Environment variables set in the `Dockerfile` will override the ones set in the `.env` file.
 
-Verify the server is running and using HTTPs by checking the domain associated with the API URL.
-
-### Keeping the server running
-To keep the server running in the background you can use a process manager like [PM2](https://pm2.io/) or [Forever](https://npmjs.com/package/forever).
-
----
-
-## Available Environment Variables
-- `PORT` - The port that the server will listen on. Defaults to `3000`.
-- `SECURE` - Whether or not the server should use SSL. Defaults to `false`.
-- `NODE_ENV` - The environment that the server will run in. Defaults to  `development`. (Production is mandatory SSL)
+### Running (Non-Docker)
+Set the values inside of the `.env` file and then run `yarn start` to start the server.
