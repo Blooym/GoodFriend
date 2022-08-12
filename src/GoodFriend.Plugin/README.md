@@ -6,10 +6,22 @@
 
 </div>
 
-The Goodfriend plugin component communicates with the server to allow clients to send login and logout events, and for other clients to recieve these events through the server. If you would like to build this locally, follow the steps below.
+The Goodfriend plugin component communicates with the server to allow clients to send login and logout events, and for other clients to recieve these events through the server.
 
-## Prerequisites
-- [Dotnet5](https://dotnet.microsoft.com)
+## Developing
 
-## Building 
-To build the plugin, run `dotnet restore` and then `dotnet build`, if you are using Linux then you will have to set `DALAMUD_HOME` to your dalamud dev directory.
+Please use the provided Dockerfile & development container provided in the root of the repository to setup dependencies for the project if you do not already have an existing environment setup for Dalamud/Dotnet development.
+
+# Building
+
+Development Build:
+
+```
+dotnet build
+```
+
+Release Build:
+
+```
+dotnet build -c Release
+```
