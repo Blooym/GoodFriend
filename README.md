@@ -82,4 +82,4 @@ Contributions are welcome if they are for one of the following:
 
 As of right now, it is preferred not to make pull requests that add new major features to the plugin as it is aimed to be as minimal as possible.
 
-If you would like to setup a development environment, it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool, as this will install all required dependencies for you and deploy a live-reloading development API to use to test the plugin against.
+If you would like to setup a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool which will automatically handle installing all the required dependencies for you and deploy a live-reloading development API to use to test the plugin against.

@@ -16,7 +16,7 @@ Once you have these prerequisites installed, you can install the GoodFriend serv
 
 --- 
 ## Deployment: Localhost
-To deploy the API on your localhost, you can run `yarn start`. This will start a server on port 3000 (by default). You can then set your plugin to use the local API by changing `Plugin Settings -> Show Advanced Settings -> API URL`. If you are not using SSL make sure you set it to use http not https.
+To deploy the API on your localhost, you can run `yarn start`. This will start a server on port 8000 (by default). You can then set your plugin to use the local API by changing `Plugin Settings -> Show Advanced Settings -> API URL`. If you are not using SSL make sure you set it to use http not https.
 
 ---
 
