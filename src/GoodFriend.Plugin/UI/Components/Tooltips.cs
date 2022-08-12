@@ -2,6 +2,7 @@ namespace GoodFriend.UI.Components;
 
 using ImGuiNET;
 
+/// <summary> Components for drawing tooltips. </summary>
 public static class Tooltips
 {
     /// <summary> Adds a tooltip on hover to the last item. </summary>

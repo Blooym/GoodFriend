@@ -1,233 +1,170 @@
 namespace GoodFriend.Managers;
 
 using System;
-using System.IO;
-using System.Net.Http;
-using System.Web;
-using System.Timers;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Dalamud.Game.ClientState;
 using Dalamud.Logging;
 using GoodFriend.Base;
 using GoodFriend.Utils;
+using GoodFriend.Types;
 
-/// <summary>
-///    The structure of the data that is received from the API for client events.
-/// </summary>
-sealed public class Update
+/// <summary> A friend status effect that structures all stored notifications. </summary>
+sealed public class FriendStatusEvent
 {
-    public string? ContentID { get; set; }
-    public bool? LoggedIn { get; set; }
+    public Guid EventID { get; set; }
+    public FriendListEntry Friend { get; set; }
+    public object? Event { get; set; }
+    public DateTime Time { get; set; }
 }
 
-/// <summary>
-///    Manages the client connection and data handling to/from the API.
-/// </summary>
+
+/// <summary> Manages an APIClient and its resources and handles events. </summary>
 sealed public class APIClientManager : IDisposable
 {
-    /// <summary> The Delegate that is used for DataReceieved. </summary>
-    public delegate void DataRecievedDelegate(Update data);
+    ////////////////////////////
+    /// Properties n' Fields ///
+    ////////////////////////////
 
-    /// <summary> Fired when data is recieved from the API. </summary>
-    public event DataRecievedDelegate? DataRecieved;
+    /// <summary> The current player ContentID, saved on login and cleared on logout. </summary>
+    private ulong _currentContentId = ulong.MinValue;
 
-    /// <summary> The Delegate that is used for Connection Estanlished events. </summary>
-    public delegate void ConnectionEstablishedDelegate();
+    /// <summary> THe API Client associated with the manager. </summary>
+    public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration.APIUrl);
 
-    /// <summary> Fired when data is first recieved from the API after a connection.</summary>
-    public event ConnectionEstablishedDelegate? ConnectionEstablished;
-
-    /// <summary> // The Delegate that is used for Connection closed events. </summary> 
-    public delegate void ConnectionClosedDelegate();
-
-    /// <summary> Fired when the connection is terminated.</summary>
-    public event ConnectionClosedDelegate? ConnectionClosed;
-
-    /// <summary> The Delegate that is used for when an error occurs whilst connecting </summary>
-    public delegate void ConnectionErrorDelegate(Exception error);
-
-    /// <summary> Fired when an error occurs whilst connecting. </summary>
-    public event ConnectionErrorDelegate? ConnectionError;
-
-    /// <summary> The API URLs to manage events with. </summary>
-    private static Uri _apiUrl = PluginService.Configuration.APIUrl;
-    private static readonly string _apiVersion = "v1";
-    private static readonly string _loginUrl = $"{_apiUrl}{_apiVersion}/login";
-    private static readonly string _logoutUrl = $"{_apiUrl}{_apiVersion}/logout";
-    private static readonly string _userEventsUrl = $"{_apiUrl}{_apiVersion}/events/users";
+    /// <summary> The ClientState associated with the manager </summary>
+    private readonly ClientState _clientState;
 
 
-    /// <summary> The status of the connection. </summary>
-    public bool IsConnected { get; private set; } = false;
+    //////////////////////////////
+    ///       Event  Log       ///
+    //////////////////////////////
 
-    /// <summary> The status of re-connecting. </summary>
-    private Timer _reconnectTimer = new Timer(60000);
-    private void _reconnectEventHandler(object sender, ElapsedEventArgs e) => this.Connect();
+    /// <summary> A log of the last 20 friend login/logout events. </summary>
+    private List<FriendStatusEvent> EventLog = new List<FriendStatusEvent>();
 
+    /// <summary> Get the event log. </summary>
+    public List<FriendStatusEvent> GetLog() => EventLog.Reverse<FriendStatusEvent>().ToList();
 
-    /// <summary> Sets the connection to true when established. </summary>
-    private void OnConnectionEstablished()
+    /// <summary> Clear the event log. </summary>
+    private void ClearLog() => this.EventLog = Enumerable.Empty<FriendStatusEvent>().ToList();
+
+    /// <summary> Add an event to the event log. </summary>
+    private void AddLog(FriendStatusEvent e)
     {
-        this.IsConnected = true;
-        this._reconnectTimer.Stop();
-        PluginLog.Log($"APIClientManager: Connection Established");
+        PluginLog.Verbose($"APIClientManager: Adding event {e.EventID} to the log.");
+        this.EventLog.Add(e);
+        if (this.EventLog.Count > 6) this.EventLog.RemoveAt(0);
     }
 
 
-    /// <summary> Sets the connection to false when closed, regardless of reason. </summary>
-    private void OnConnectionClosed()
+    ////////////////////////////
+    /// Construct n' Dispose ///
+    ////////////////////////////
+
+    /// <summary> Instantiates a new APINotifier </summary>
+    public APIClientManager(ClientState clientState)
     {
-        this.IsConnected = false;
-        this._reconnectTimer.Stop();
-        PluginLog.Log($"APIClientManager: Connection Closed");
+        PluginLog.Debug("APIClientManager: Initializing...");
+
+        this._clientState = clientState;
+
+        // Create event handlers
+        this.APIClient.DataRecieved += OnDataRecieved;
+        this._clientState.Login += OnLogin;
+        this._clientState.Logout += OnLogout;
+
+        // If the player is logged in already, connect & set their ID.
+        if (this._clientState.LocalPlayer != null)
+        {
+            this.APIClient.OpenStream();
+            this._currentContentId = this._clientState.LocalContentId;
+        }
+
+        PluginLog.Debug("APIClientManager: Successfully initialized.");
     }
 
-
-    /// <summary> Handle the connection error event by setting up auto-reconnect </summary>
-    private void OnConnectionError(Exception error)
-    {
-        PluginLog.Error($"APIClientManager: Connection error: {error.Message}");
-        this._reconnectTimer.Start();
-    }
-
-
-    /// <summary>
-    ///     Instantiates the APIClientManager.
-    /// </summary>
-    public APIClientManager()
-    {
-        PluginLog.Debug("APIClientManager: Instantiating...");
-
-        this.ConnectionEstablished += OnConnectionEstablished;
-        this.ConnectionClosed += OnConnectionClosed;
-        this.ConnectionError += OnConnectionError;
-        this._reconnectTimer.Elapsed += _reconnectEventHandler;
-
-        PluginLog.Debug("APIClientManager: Instantiation complete.");
-    }
-
-
-    /// <summary>
-    ///     Opens the connection to the API.
-    ///     It should be checked to see if there is not an active connection before calling this.
-    /// </summary>
-    public void Connect()
-    {
-        if (IsConnected) throw new InvalidOperationException("An active connection has already been established.");
-        BeginConnection();
-    }
-
-
-    /// <summary>
-    ///     Kills the connection to the API
-    ///     It should be checked to see if there is an active connection before calling this.
-    /// </summary>
-    public void Disconnect()
-    {
-        if (!IsConnected) throw new InvalidOperationException("There is no active connection to disconnect from.");
-        ConnectionClosed?.Invoke();
-    }
-
-
-    /// <summary>
-    ///     Disposes of the ClientManager.
-    /// </summary>
+    /// <summary> Disposes of the APINotifier and its resources. </summary>
     public void Dispose()
     {
-        PluginLog.Debug("APIClientManager: Disposing...");
-
-        if (this.IsConnected) this.Disconnect();
-
-        this.ConnectionEstablished -= OnConnectionEstablished;
-        this.ConnectionClosed -= OnConnectionClosed;
-        this.ConnectionError -= OnConnectionError;
-        this._reconnectTimer.Elapsed -= _reconnectEventHandler;
-        this._reconnectTimer.Dispose();
-
-        PluginLog.Debug("APIClientManager: Successfully disposed.");
+        this.APIClient.Dispose();
+        this.APIClient.DataRecieved -= OnDataRecieved;
+        this._clientState.Login -= OnLogin;
+        this._clientState.Logout -= OnLogout;
     }
 
 
-    /// <summary>
-    ///     Send a login event to the API.
-    /// </summary>
-    public void SendLogin(ulong contentID)
+    ////////////////////////////
+    ///    Event Handlers    /// 
+    ////////////////////////////
+
+    /// <summary> Handles the login event by opening the APIClient stream and sending a login  </summary>
+    private unsafe void OnLogin(object? sender, EventArgs e)
     {
-        string ID = HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()));
-        new HttpClient().PostAsync($"{_loginUrl}/{ID}", new StringContent(string.Empty)).ContinueWith(task =>
+        if (!this.APIClient.IsConnected) this.APIClient.OpenStream();
+
+        Task.Run(() =>
         {
-            if (task.IsFaulted)
-                PluginLog.Error($"APIClientManager: Failed to send login for player to {_loginUrl}: {task.Exception?.Message}");
+            while (this._clientState.LocalContentId == 0) Task.Delay(100).Wait();
 
-            else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Error($"APIClientManager: Failed to send login for player to {_loginUrl}: {task.Result.ReasonPhrase}");
-
-            else if (task.IsCompleted)
-                PluginLog.Log($"APIClientManager: Sent login for player to {_loginUrl}");
+            // Cache the contentID of the player and send a login status update.
+            this._currentContentId = this._clientState.LocalContentId;
+            this.APIClient.SendLogin(this._currentContentId);
         });
     }
 
 
-    /// <summary>
-    ///     Send a logout event to the API.
-    /// </summary>
-    public void SendLogout(ulong contentID)
+    /// <summary> Handles the logout event by closing the APIClient stream and sending a logout </summary>
+    private void OnLogout(object? sender, EventArgs e)
     {
-        string ID = HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()));
-        new HttpClient().PostAsync($"{_logoutUrl}/{ID}", new StringContent(string.Empty)).ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-                PluginLog.Error($"APIClientManager: Failed to send logout for player to {_logoutUrl}: {task.Exception?.Message}");
-
-            else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Error($"APIClientManager: Failed to send logout for player to {_logoutUrl} {task.Result.ReasonPhrase}");
-
-            else if (task.IsCompleted)
-                PluginLog.Log($"APIClientManager: Sent logout for playerto {_logoutUrl}");
-        });
+        if (this.APIClient.IsConnected) this.APIClient.CloseStream();
+        this.APIClient.SendLogout(this._currentContentId);
+        this._currentContentId = 0;
+        this.ClearLog();
     }
 
 
-    /// <summary>
-    ///     Starts listening for data from the API.
-    /// </summary>
-    private async void BeginConnection()
+    /// <summary> Handles data recieved from the APIClient. </summary> 
+    private unsafe void OnDataRecieved(UpdatePayload data)
     {
-        try
+        // Generate a unique ID for this event so we can identify it in logs.
+        var eventID = Guid.NewGuid();
+
+        PluginLog.Verbose($"APIClientManager: [{eventID}] Processing inbound event.");
+
+        // Process the data recieved.
+        FriendListEntry* friend = default;
+        foreach (var x in FriendList.Get())
+            if (Hashing.HashSHA512(x->ContentId.ToString()) == data.ContentID) { friend = x; break; }
+
+        // Client does not have a friend with the given contentID/hashed contentID.
+        if (friend == null || data == null)
         {
-            // Try establishing a connection to the API.
-            PluginLog.Log($"APIClientManager: Connecting to {_userEventsUrl}");
-
-            var client = new HttpClient();
-            client.Timeout = System.Threading.Timeout.InfiniteTimeSpan;
-
-            var stream = await client.GetStreamAsync($"{_userEventsUrl}");
-            var reader = new StreamReader(stream);
-
-            // Connection established! Start listening for data.
-            ConnectionEstablished?.Invoke();
-
-            // Wait for data to be recieved.
-            while (!reader.EndOfStream && IsConnected)
-            {
-                // New message recieved! Parse it.
-                var message = reader.ReadLine();
-                if (message == null || message == " ") continue;
-
-                // Remove any SSE (Server-Sent Events) filler characters.
-                message = message.Replace("data: ", "").Trim();
-
-                // Deserialize the object and fire the DataRecieved event if its valid.
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<Update>(message);
-                if (data != null && data.LoggedIn != null && data.ContentID != null) DataRecieved?.Invoke(data);
-            }
-
-            // We've reached the end of the stream, close up the connection.
-            stream.Dispose();
+            PluginLog.Verbose($"APIClientManager: [{eventID}] No friend found from data, ignoring");
+            return;
         }
 
-        catch (Exception e)
+        // Client has a friend with the given contentID, but shares a free company with them and asked to not be notified.
+        if (friend->FreeCompany.ToString() == this._clientState?.LocalPlayer?.CompanyTag.ToString() && PluginService.Configuration.HideSameFC)
         {
-            if (IsConnected) Disconnect();
-            ConnectionError?.Invoke(e);
+            PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name} but ignored it due to sharing the same free company. (FC: {friend->FreeCompany})");
+            return;
         }
+
+        // Add the event to the log
+        this.AddLog(new FriendStatusEvent()
+        {
+            EventID = eventID,
+            Friend = *friend,
+            Event = data.LoggedIn ? "Login" : "Logout",
+            Time = DateTime.Now
+        });
+
+        // Notify the client 
+        PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name}:{friend->HomeWorld}, notifying...");
+        Notifications.ShowPreferred(data.LoggedIn ?
+            string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
+            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany));
     }
 }

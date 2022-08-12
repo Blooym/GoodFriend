@@ -1,18 +1,21 @@
-# Set the image to use
 FROM node:alpine
-
-# Set up a folder for the app
 WORKDIR /api
 
-# Copy the app into the container
-COPY . .
-
-# Install dependencies
+# Copy & Install Depencencies
+COPY ["package.json", "yarn.lock", "./"]
 RUN yarn
 
-# This port will take precedence over the port in .env
-ENV PORT=8080
-EXPOSE ${PORT}
+# Copy project in & build it
+COPY . .
+RUN ["yarn", "build"]
 
-# Run the app
-CMD ["yarn", "start"]
+# Remove all un-needed files for a production build (.ts files, dev-deps, etc.)
+RUN ["find", ".", "-type", "f", "-name", "*.ts", "-delete"]
+RUN ["rm", "-rf", "node_modules"]
+RUN ["find", ".", "-type", "d", "-empty", "-delete"]
+
+# Install only production dependencies
+RUN ["yarn", "--production"]
+
+# When the container is run, start the app.
+CMD ["node", "."]

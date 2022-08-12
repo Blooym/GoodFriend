@@ -11,10 +11,6 @@
     "message": "Support the developer of {0}",
     "description": "TStrings.SupportText"
   },
-  "Settings.Title": {
-    "message": "{0} - Settings",
-    "description": "TStrings.SettingsTitle"
-  },
   "Settings.APIConnected": {
     "message": "API Connected: {0}",
     "description": "TStrings.SettingsAPIConnected"
@@ -108,7 +104,7 @@
     "description": "TStrings.SettingsAPINotHttps"
   },
   "Settings.API.Reconnect": {
-    "message": "Reconnect to the API",
+    "message": "Try reconnect to the API",
     "description": "TStrings.SettingsAPIReconnect"
   }
 }

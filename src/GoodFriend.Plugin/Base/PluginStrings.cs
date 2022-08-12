@@ -17,16 +17,27 @@ public static class PStrings
 
     public static readonly string supportButtonUrl = "https://github.com/sponsors/BitsOfAByte";
 
-    public static readonly Uri apiURL = new Uri("https://aether.bitsofabyte.dev/");
+    public static readonly Uri defaultAPIUrl = new Uri("https://aether.bitsofabyte.dev/");
 }
 
 
 /// <summary> A collection of strings used for user facing messages and are translated by the plugin. </summary>
 public static class TStrings
 {
-    public static string SupportText() => String.Format(Loc.Localize("SupportText", "Support the developer of {0}"), PStrings.pluginName);
-    public static string SettingsTitle() => String.Format(Loc.Localize("Settings.Title", "{0} - Settings"), PStrings.pluginName);
-    public static string SettingsAPIConnected(bool status) => String.Format(Loc.Localize("Settings.APIConnected", "API Connected: {0}"), status);
+    public static string SettingsTabSettings() => Loc.Localize("Settings.Tab.Settings", "Settings");
+    public static string SettingsTabConnection() => Loc.Localize("Settings.Tab.Connection", "Connection");
+    public static string SettingsTabDebug() => Loc.Localize("Settings.Tab.Debug", "Debug");
+    public static string SettingsSupportText() => Loc.Localize("Settings.Support", "Donate / Support");
+    public static string SettingsAPIConnected() => Loc.Localize("Settings.Connection.APIConnected", "You are connected to the API and recieving events");
+    public static string SettingsAPIConnectedDesc() => Loc.Localize("Settings.Connections.APIConnected.Desc", "You will see friend events in the log below when you recieve them.");
+    public static string SettingsAPIDisconnected() => Loc.Localize("Settings.Connection.APIDisconnected", "You are not connected to the API are not recieving events.");
+    public static string SettingsAPIDisconnectedDesc() => Loc.Localize("Settings.Connection.APIDisconnectedDesc", "You should be automatically reconnected when the API becomes available, if you wish to reconnect manually you can try use the button below. For more information about why you're not connected, check /xllog");
+    public static string SettingsAPITryReconnect() => Loc.Localize("Settings.Connection.TryReconnect", "Attempt to reconnect");
+    public static string SettingsAPINotLoggedIn() => Loc.Localize("Settings.Connection.NotLoggedIn", "You must log in to a character to connect to the API");
+    public static string SettingsAPILogTitle() => Loc.Localize("Settings.Connection.Log", "Event Log");
+    public static string SettingsAPILogTime() => Loc.Localize("Settings.Connection.Log.Time", "Time");
+    public static string SettingsAPILogPlayer() => Loc.Localize("Settings.Connection.Log.Player", "Player");
+    public static string SettingsAPILogEvent() => Loc.Localize("Settings.Connection.Log.Event", "Event");
     public static string SettingsHideSameFC() => Loc.Localize("Settings.HideSameFC", "Hide FC Members");
     public static string SettingsHideSameFCEnabled() => Loc.Localize("Settings.HideSameFC.Enabled", "Enabled");
     public static string SettingsHideSameFCDisabled() => Loc.Localize("Settings.HideSameFC.Disabled", "Disabled");
@@ -42,12 +53,7 @@ public static class TStrings
     public static string SettingsFriendshipCodeTooltip() => Loc.Localize("Settings.FriendshipCode.Tooltip", "Your friend code determines which friends you send and recieve notifications with.");
     public static string SettingsShowAdvanced() => Loc.Localize("Settings.ShowAdvanced", "Show Advanced Settings");
     public static string SettingsSaltMode() => Loc.Localize("Settings.SaltMode", "Salt Mode");
-    public static string SettingsSaltModeStrict() => Loc.Localize("Settings.SaltMode.Strict", "Strict");
-    public static string SettingsSaltModeRelaxed() => Loc.Localize("Settings.SaltMode.Relaxed", "Relaxed");
     public static string SettingsSaltModeTooltip() => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues");
-    public static string SettingsSaltModeWarning() => Loc.Localize("Settings.SaltMode.Warning", "Warning: Relaxed mode is not recommended unless you have an explicit reason for using it.\n\nYou will not recieve notifications from Strict mode users");
     public static string SettingsAPIURL() => Loc.Localize("Settings.APIURL", "API URL");
-    public static string SettingsAPIURLTooltip() => Loc.Localize("Settings.APIURL.Tooltip", "The API is used to send and recieve notifications from friends using the same API.\n\nYou should not change this unless you know what you are doing.");
-    public static string SettingsAPINotHttps() => Loc.Localize("Settings.APIURL.NotHttps", "Warning: You are not using HTTPs for the API! This is VERY insecure and could lead to major security problems.");
-    public static string SettingsAPIReconnect() => Loc.Localize("Settings.API.Reconnect", "Try reconnect to the API");
+    public static string SettingsAPIURLTooltip() => Loc.Localize("Settings.APIURL.Tooltip", "The API used to handle events.");
 }

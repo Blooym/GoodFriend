@@ -16,6 +16,7 @@ public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
 #if !DEBUG
         PluginService.ResourceManager.Update();
 #endif
+
     }
 
 

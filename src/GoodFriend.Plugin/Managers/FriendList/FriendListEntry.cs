@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 /// An entry in a player's friend list.
 /// </summary>
 [StructLayout(LayoutKind.Explicit, Size = Size)]
-internal unsafe struct FriendListEntry
+public unsafe struct FriendListEntry
 {
     internal const int Size = 96;
 

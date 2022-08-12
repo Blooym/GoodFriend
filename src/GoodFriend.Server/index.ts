@@ -5,14 +5,14 @@ import fs from 'fs';
 import https from 'https';
 import http from 'http';
 import router from './Routes/v1';
-import logger from './logger';
+import logger from './Utils/Logger';
 
 // Inject .env variables into process.env
 require('dotenv').config();
 
 // Create the express app & set the port to listen on
 const app = express().disable('x-powered-by');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 // Setup the ratelimiter for the API
 const limiter = ratelimit({
@@ -27,12 +27,17 @@ app.use(logger);
 app.use('/v1', router);
 app.get('/', (_, res) => res.sendStatus(200));
 
-// Create the server
-if (process.env.NODE_ENV === 'production' && process.env.KEYFILE && process.env.CERTFILE) {
-  const key = fs.readFileSync(process.env.KEYFILE);
-  const cert = fs.readFileSync(process.env.CERTFILE);
+// If a keyfile & certfile have been specified, use https
+const { KEYFILE, CERTFILE, NODE_ENV } = process.env;
+if (KEYFILE && CERTFILE) {
+  const key = fs.readFileSync(KEYFILE);
+  const cert = fs.readFileSync(CERTFILE);
   const credentials = { key, cert };
-  https.createServer(credentials, app).listen(port, () => { console.log(`Listening on port HTTPS:${port}`); });
+  https.createServer(credentials, app).listen(port, () => { console.log(`[SECURE] Listening on port HTTPS:${port}`); });
 }
-else if (process.env.NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`Listening on port HTTPS:${port}`); }); }
-else { http.createServer(app).listen(port, () => { console.log(`Listening on port HTTP:${port}`); }); }
+
+// If no key/cert files have been specified and this is prod, assume the local machine handles SSL.
+else if (NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`[SECURE] Listening on port HTTPS:${port}`); }); }
+
+// Otherwise, just run as a regular HTTP server.
+else { http.createServer(app).listen(port, () => { console.log(`[INSECURE] Listening on port HTTP:${port}`); }); }

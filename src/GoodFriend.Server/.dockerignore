@@ -1,0 +1,9 @@
+# Folders
+node_modules/
+dist/
+log/
+
+# Other Unwanted Files
+*.md
+*.log
+*.git*

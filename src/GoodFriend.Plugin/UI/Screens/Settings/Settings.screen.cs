@@ -1,74 +1,167 @@
 namespace GoodFriend.UI.Screens.Settings;
 
 using System;
-using System.Reflection;
 using System.Numerics;
-using Dalamud.Interface.Components;
-using Dalamud.Interface;
 using ImGuiNET;
 using GoodFriend.Base;
 using GoodFriend.Utils;
 using GoodFriend.Interfaces;
 using GoodFriend.UI.Components;
+using GoodFriend.Managers;
 
 sealed public class SettingsScreen : IScreen
 {
-
+    /// <summary> The associated presenter for this screen. </summary>
     public SettingsPresenter presenter = new SettingsPresenter();
 
-    public void Draw() => DrawSettingsWindow();
+    public void Draw() { if (!this.presenter.isVisible) return; this.DrawRoot(); }
     public void Show() => presenter.isVisible = true;
     public void Hide() => presenter.isVisible = false;
     public void Dispose() => this.presenter.Dispose();
 
 
-    /// <summary> Should advanced settings be drawn? </summary>
-    private bool _showAdvanced = false;
+    /////////////////////////////
+    ///      Core Windows     ///
+    /////////////////////////////
 
-    /// <summary> 
-    ///     Draws the settings window.
-    /// </summary>
-    private void DrawSettingsWindow()
+    /// <summary> Draws all elements associated with the root of the screen. </summary>
+    private void DrawRoot()
     {
-        if (!presenter.isVisible) return;
-
-        ImGui.SetNextWindowSize(new Vector2(600, 320), ImGuiCond.Appearing);
-        if (ImGui.Begin(PStrings.pluginName, ref presenter.isVisible, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
+        ImGui.SetNextWindowSize(new Vector2(600, 350), ImGuiCond.FirstUseEver);
+        if (ImGui.Begin(PStrings.pluginName, ref this.presenter.isVisible, ImGuiWindowFlags.NoResize))
         {
+            if (ImGui.BeginTabBar("##TabBar", ImGuiTabBarFlags.Reorderable))
+            {
 
-            this.DrawTopBar();
-            this.DrawNormSettings();
-            this.DrawAdvancedSettings();
+                this.DrawSettingsTab();
+                this.DrawConnectionTab();
+#if DEBUG
+                this.DrawDebugWindow();
+#endif
+                ImGui.EndTabBar();
+            }
+
+            ImGui.End();
         }
     }
 
 
-    /// <summary> Draws the buttons for the settings window. </summary>
-    private void DrawTopBar()
+    /// <summary> Draws the configuration child tab. </summary>
+    private void DrawSettingsTab()
     {
+        if (ImGui.BeginTabItem(TStrings.SettingsTabSettings()))
+        {
+            this.DrawNormSettings();
+            if (this._showAdvanced) this.DrawAdvancedSettings();
+            ImGui.EndTabItem();
+        }
+    }
+
+
+    /// <summary> Draws the connection child tab. </summary>
+    private void DrawConnectionTab()
+    {
+        if (ImGui.BeginTabItem(TStrings.SettingsTabConnection()))
+        {
+            ImGui.BeginChild("##ConnectionTab");
+
+            // Player is connected to the API
+            if (PluginService.APIClientManager.APIClient.IsConnected)
+            {
+                Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected());
+                ImGui.TextWrapped(TStrings.SettingsAPIConnectedDesc());
+                ImGui.Dummy(new Vector2(0, 5));
+                if (ImGui.Button(TStrings.SettingsSupportText())) Common.OpenLink(PStrings.supportButtonUrl);
+
+                ImGui.Dummy(new Vector2(0, 15));
+                this.DrawEventTable();
+            }
+
+            // Player is not logged in & not connected
+            else if (!PluginService.ClientState.IsLoggedIn) ImGui.TextWrapped(TStrings.SettingsAPINotLoggedIn());
+
+            // Player is logged in & not connected
+            else
+            {
+                Colours.TextWrappedColoured(Colours.Error, TStrings.SettingsAPIDisconnected());
+                ImGui.TextWrapped(TStrings.SettingsAPIDisconnectedDesc());
+                ImGui.BeginDisabled(this.presenter.ReconnectButtonDisabled);
+                ImGui.Dummy(new Vector2(0, 5));
+                if (ImGui.Button(TStrings.SettingsAPITryReconnect())) this.presenter.ReconnectWithCooldown();
+                ImGui.EndDisabled();
+            }
+
+            ImGui.EndChild();
+            ImGui.EndTabItem();
+        }
+    }
+
 
 #if DEBUG
-        this.presenter.dialogManager.Draw();
-        if (ImGui.Button("Export Localizable")) this.presenter.dialogManager.OpenFolderDialog("Select Export Directory", this.presenter.OnDirectoryPicked);
+    /// <summary> Draws the debug child window </summary>
+    private unsafe void DrawDebugWindow()
+    {
+        if (ImGui.BeginTabItem(TStrings.SettingsTabDebug()))
+        {
+            ImGui.BeginChild("##DebugTab");
+
+            // Draw the dialog manage & Export Localization Button for CheapLOC.
+            this.presenter.dialogManager.Draw();
+            if (ImGui.Button("Export Localizable")) this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
+
+            // Draw a list of every friend and their ID for API Debugging.
+            ImGui.TextDisabled("Detected Friends - Click to Copy Hash");
+            ImGui.Separator();
+            ImGui.BeginChild("##Friends");
+
+            foreach (var friend in FriendList.Get())
+                if (ImGui.Selectable(friend->Name.ToString())) ImGui.SetClipboardText(Hashing.HashSHA512(friend->ContentId.ToString()));
+
+            ImGui.EndChild();
+            ImGui.EndChild();
+        }
+    }
 #endif
 
-        // Top bar of settings.
-        ImGui.TextWrapped($"{PStrings.pluginName} ver.{Assembly.GetExecutingAssembly().GetName().Version} | {TStrings.SettingsAPIConnected(PluginService.APIClient.IsConnected)}");
-        ImGui.SameLine();
 
-        // Reconnect button
-        ImGui.BeginDisabled(presenter.reconnectCooldownActive | PluginService.APIClient.IsConnected | PluginService.ClientState.LocalPlayer == null);
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Plug)) presenter.ReconnectWithCooldown();
-        Tooltips.AddTooltip(TStrings.SettingsAPIReconnect());
-        ImGui.EndDisabled();
-        ImGui.SameLine();
+    /////////////////////////////
+    ///     Sub-Components    ///
+    /////////////////////////////
 
+    /// <summary> Draws the event log table </summary>
+    private void DrawEventTable()
+    {
+        try
+        {
+            ImGui.TextDisabled(TStrings.SettingsAPILogTitle());
+            ImGui.Separator();
+            ImGui.BeginChild("##EventLogTable");
+            ImGui.BeginTable("##EventLogTable", 3);
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogTime());
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogPlayer());
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogEvent());
+            ImGui.TableHeadersRow();
 
-        // Support button
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.Heart)) Common.OpenLink(PStrings.supportButtonUrl);
-        Tooltips.AddTooltip(TStrings.SupportText());
-        ImGui.Separator();
+            foreach (var entry in this.presenter.FetchAPILog())
+            {
+                ImGui.TableNextRow();
+                ImGui.TableSetColumnIndex(0);
+                ImGui.Text(entry.Time.ToString("HH:mm:ss"));
+                ImGui.TableSetColumnIndex(1);
+                ImGui.Text(entry.Friend.Name.ToString());
+                ImGui.TableSetColumnIndex(2);
+                ImGui.Text(entry?.Event?.ToString() ?? "?");
+            }
+
+            ImGui.EndTable();
+            ImGui.EndChild();
+        }
+        catch { }
     }
+
+
+    /// <summary> Should advanced settings be drawn? </summary>
+    private bool _showAdvanced = false;
 
 
     /// <summary> Draws the normal settings </summary>
@@ -153,7 +246,7 @@ sealed public class SettingsScreen : IScreen
             PluginService.Configuration.FriendshipCode = friendshipCode;
             PluginService.Configuration.Save();
         }
-        Tooltips.Questionmark(TStrings.SettingsFriendshipCodeHint());
+        Tooltips.Questionmark(TStrings.SettingsFriendshipCodeTooltip());
 
 
         // Advanced settings
@@ -165,45 +258,37 @@ sealed public class SettingsScreen : IScreen
     /// <summary> Draws the advanced settings </summary>
     private void DrawAdvancedSettings()
     {
-        if (!this._showAdvanced) return;
-
         var APIUrl = PluginService.Configuration.APIUrl.ToString();
         var saltMethod = PluginService.Configuration.SaltMethod;
 
         // Salt Mode dropdown
         if (ImGui.BeginCombo(TStrings.SettingsSaltMode(), saltMethod.ToString()))
         {
-            if (ImGui.Selectable(TStrings.SettingsSaltModeStrict(), saltMethod == SaltMethods.Strict))
+            foreach (var method in Enum.GetValues(typeof(SaltMethods)))
             {
-                PluginService.Configuration.SaltMethod = SaltMethods.Strict;
-            }
-            if (ImGui.Selectable(TStrings.SettingsSaltModeRelaxed(), saltMethod == SaltMethods.Relaxed))
-            {
-                PluginService.Configuration.SaltMethod = SaltMethods.Relaxed;
+                if (ImGui.Selectable(method.ToString(), saltMethod == (SaltMethods)method))
+                {
+                    PluginService.Configuration.SaltMethod = (SaltMethods)method;
+                }
             }
 
             PluginService.Configuration.Save();
             ImGui.EndCombo();
         }
-        if (saltMethod == SaltMethods.Relaxed) Tooltips.Warning(TStrings.SettingsSaltModeWarning());
-        else Tooltips.Questionmark(TStrings.SettingsSaltModeTooltip());
+        Tooltips.Questionmark(TStrings.SettingsSaltModeTooltip());
 
 
         // API URL input
         if (ImGui.InputText(TStrings.SettingsAPIURL(), ref APIUrl, 64))
         {
+            // Validate the URL and save it if it is valid.
             bool error = false;
             try { new Uri(APIUrl); }
             catch { error = true; }
 
-            if (!error)
-            {
-                PluginService.Configuration.APIUrl = new Uri(APIUrl);
-                PluginService.Configuration.Save();
-            }
+            if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); }
             else PluginService.Configuration.ResetApiUrl();
         }
-        if (!APIUrl.StartsWith("https")) Tooltips.Warning(TStrings.SettingsAPINotHttps());
-        else Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip());
+        Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip());
     }
 }

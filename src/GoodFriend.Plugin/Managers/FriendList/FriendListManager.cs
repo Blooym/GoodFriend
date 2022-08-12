@@ -31,7 +31,7 @@ using System;
 /// <summary>
 /// The class containing friend list functionality
 /// </summary>
-internal static class FriendList
+public static class FriendList
 {
     // Updated: 5.58-HF1
     private const int InfoOffset = 0x28;

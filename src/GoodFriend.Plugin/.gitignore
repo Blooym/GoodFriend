@@ -1,3 +1,7 @@
+# Build Directories
 obj/
 bin/
+
+# Dalamud Local Lib
 Dalamud/
+Dalamud.zip

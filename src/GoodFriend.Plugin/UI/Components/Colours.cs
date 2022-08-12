@@ -3,8 +3,10 @@ namespace GoodFriend.UI.Components;
 using System.Numerics;
 using ImGuiNET;
 
+/// <summary> Components for drawing colours </summary>
 public static class Colours
 {
+    public static Vector4 Success = new Vector4(0.2f, 0.8f, 0.2f, 1.0f);
     public static Vector4 Error = new Vector4(1.0f, 0.0f, 0.0f, 1.0f);
     public static Vector4 Warning = new Vector4(1.0f, 0.5f, 0.0f, 1.0f);
     public static Vector4 Grey = new Vector4(0.5f, 0.5f, 0.5f, 1.0f);

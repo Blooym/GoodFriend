@@ -1,4 +1,4 @@
-# Dist & Modules
+# Fplders
 dist/
 node_modules/
 
@@ -7,3 +7,8 @@ node_modules/
 SSL/**/*.pem
 SSL/**/*.key
 SSL/**/*.crt
+
+# Logs
+log/
+*.log
+*.out

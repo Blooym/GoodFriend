@@ -1,0 +1,37 @@
+{
+	"dockerFile": "Dockerfile",
+	"forwardPorts": [
+		8000
+	],
+	"updateRemoteUserUID": true,
+	"containerUser": "dev",
+	"remoteUser": "dev",
+	"postStartCommand": "cd src/GoodFriend.Server && yarn && nohup bash -c 'yarn watch &'",
+	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../../",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csharp",
+				"esbenp.prettier-vscode",
+				"wayou.vscode-todo-highlight",
+				"dbaeumer.vscode-eslint",
+				"vivaxy.vscode-conventional-commits",
+				"rangav.vscode-thunder-client"
+			],
+			"settings": {
+				"thunder-client.requestTimeout": 10000,
+				"editor.formatOnSave": true
+			}
+		}
+	},
+	// Enable me to use your local $DALAMUD_HOME files instead of the container's.
+	// "mounts": [
+	// 	"type=bind,src=${localEnv:DALAMUD_HOME},dst=/dependencies/dalamud,ro=true"
+	// ],
+	"portsAttributes": {
+		"8000": {
+			"label": "API Dev Server [Live Refresh]",
+			"protocol": "http"
+		}
+	}
+}

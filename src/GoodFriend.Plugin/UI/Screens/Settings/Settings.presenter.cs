@@ -4,9 +4,11 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Dalamud.Interface.ImGuiFileDialog;
-using GoodFriend.Base;
 using CheapLoc;
+using GoodFriend.Base;
+using GoodFriend.Managers;
 
 sealed public class SettingsPresenter : IDisposable
 {
@@ -14,6 +16,17 @@ sealed public class SettingsPresenter : IDisposable
 
     public bool isVisible = false;
 
+
+    /////////////////////////////
+    ///   APIClient Log Data  ///
+    /////////////////////////////
+
+    public List<FriendStatusEvent> FetchAPILog() => PluginService.APIClientManager.GetLog();
+
+
+    /////////////////////////////
+    /// Reconnection  Methods ///
+    /////////////////////////////
 
     /// <summary> The cooldown before a user can reconnect to the API. </summary>
     private int _reconnectCooldown = 30;
@@ -24,9 +37,9 @@ sealed public class SettingsPresenter : IDisposable
     /// <summary> Attempts to reconnect to the API. </summary>
     public void ReconnectWithCooldown()
     {
-        if (this.reconnectCooldownActive || PluginService.APIClient.IsConnected) return;
+        if (this.reconnectCooldownActive || PluginService.APIClientManager.APIClient.IsConnected) return;
 
-        PluginService.APIClient.Connect();
+        PluginService.APIClientManager.APIClient.OpenStream();
 
         this.reconnectCooldownActive = true;
         Task.Run(() =>
@@ -35,6 +48,14 @@ sealed public class SettingsPresenter : IDisposable
             this.reconnectCooldownActive = false;
         });
     }
+
+
+    /////////////////////////////
+    ///     Other Methods     ///
+    /////////////////////////////
+
+    /// <summary> Should the reconnect button be disabled or not. </summary>
+    public bool ReconnectButtonDisabled => this.reconnectCooldownActive || PluginService.ClientState.LocalPlayer == null || PluginService.APIClientManager.APIClient.IsConnected;
 
 
 #if DEBUG
