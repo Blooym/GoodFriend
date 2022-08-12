@@ -22,7 +22,7 @@ A server/plugin tool for providing friend notifications to players in-game witho
 
 GoodFriend is a plugin written for the [Dalamud](https://github.com/goatcorp/Dalamud) plugin framework which allows players to recieve notifications when their in-game friends login and logout, as this feature is not provided natively.
 
-This repository is split into two sub-components, the [Server](src/GoodFriend.Server/) component and the [Plugin](src/GoodFriend.Plugin/) component. More information about these sub components can be found inside of the their respective README.md files within their folder.
+This repository is split into two sub-components, the [Server](src/GoodFriend.Server/) component and the Plugin component. More information about these sub components can be found inside of the their respective README.md files within their folder.
 
 ## Caveats
 
@@ -69,17 +69,17 @@ The security of the Client was greatly considered during design and as such both
 
 ### Logs & Privacy
 
-When making a request to the official API instance, some things are logged both to the STDOUT and a log file for the sake of finding bugs & preventing abuse. More sensitive information such as IP addresses are not logged. You can view the API log handler [here](src/GoodFriend.Server/Utils/Logger.ts).
+When making a request to the official API instance, some things are logged both to the STDOUT and a log file for the sake of finding bugs & preventing abuse. More sensitive information like IP addresses is not retained. You can view the sourcecode for the API log handler [here](src/GoodFriend.Server/Utils/Logger.ts).
 
 ## Contributions
 
 Contributions are welcome if they are for one of the following:
 
-- Improve the security of the plugin / server (deployment, vulnerabilites, etc)
-- Fix existing bugs or bad UI/UX design within the plugin.
-- Improve performance of existing features
-- Help improve the look and layout of the codebase
+- Improving the security of the plugin / server (deployment, vulnerabilites, etc)
+- Fixing existing bugs or bad UI/UX design within the plugin.
+- Improving performance of existing features
+- Helping improve the look and layout of the codebase
 
 As of right now, it is preferred not to make pull requests that add new major features to the plugin as it is aimed to be as minimal as possible.
 
-If you would like to setup a development environment, please use the provided Dockerfile and Devcontainer configuration with a compliant tool, as this will install all required dependencies for you and deploy a live-reloading development server on your localhost to test against.
+If you would like to setup a development environment, it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool, as this will install all required dependencies for you and deploy a live-reloading development API to use to test the plugin against.
