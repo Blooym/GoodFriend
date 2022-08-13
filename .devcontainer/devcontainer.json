@@ -4,8 +4,7 @@
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
-	"postStartCommand": "cd src/GoodFriend.Server && yarn && nohup bash -c 'yarn watch &'",
-	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../../",
+	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn && nohup sh -c 'yarn watch &' && cd ../../",
 	"customizations": {
 		"vscode": {
 			"extensions": [
