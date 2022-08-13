@@ -1,8 +1,6 @@
 {
 	"dockerFile": "Dockerfile",
-	"forwardPorts": [
-		8000
-	],
+	"forwardPorts": [8000],
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",

@@ -55,5 +55,5 @@ public static class TStrings
     public static string SettingsSaltMode() => Loc.Localize("Settings.SaltMode", "Salt Mode");
     public static string SettingsSaltModeTooltip() => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues");
     public static string SettingsAPIURL() => Loc.Localize("Settings.APIURL", "API URL");
-    public static string SettingsAPIURLTooltip() => Loc.Localize("Settings.APIURL.Tooltip", "The API used to handle events.");
+    public static string SettingsAPIURLTooltip() => Loc.Localize("Settings.APIURL.Tooltip", "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.");
 }

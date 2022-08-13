@@ -1,10 +1,13 @@
 # Folders
 node_modules/
 dist/
-log/
+logs/
+__tests__/
 
 # Other Unwanted Files
-*.md
-*.log
-*.git*
-Dockerfile
+**/*.md
+**/*.log
+**/*.git
+**/*.example
+**/*.out
+**/**Dockerfile

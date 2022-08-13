@@ -30,7 +30,7 @@ sealed public class SettingsScreen : IScreen
         ImGui.SetNextWindowSize(new Vector2(600, 350), ImGuiCond.FirstUseEver);
         if (ImGui.Begin(PStrings.pluginName, ref this.presenter.isVisible, ImGuiWindowFlags.NoResize))
         {
-            if (ImGui.BeginTabBar("##TabBar", ImGuiTabBarFlags.Reorderable))
+            if (ImGui.BeginTabBar("##TabBar"))
             {
 
                 this.DrawSettingsTab();
