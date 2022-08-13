@@ -30,6 +30,9 @@ RUN chmod -R 550 ${WORKDIR}
 RUN mkdir -p ${WORKDIR}/logs -m 770
 RUN chown -R ${USER}:${USER} ${WORKDIR}
 
+# Remove chmod/chown to prevent permission overriding.
+RUN rm /bin/chmod /bin/chown
+
 # Create a volume for the logs.
 VOLUME ${WORKDIR}/logs
 
