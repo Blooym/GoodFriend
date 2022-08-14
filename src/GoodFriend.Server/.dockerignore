@@ -11,3 +11,4 @@ __tests__/
 **/*.example
 **/*.out
 **/**Dockerfile
+**/**docker-compose.yml

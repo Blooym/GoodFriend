@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  api:
+    container_name: gf-api
+    env_file:
+      - .env
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "${DOCKER_HOST_PORT:-8000}:${APP_PORT:-8000}"
+    volumes:
+      - logs:/api/logs:rw
+
+volumes:
+  logs:
+    driver: local
+

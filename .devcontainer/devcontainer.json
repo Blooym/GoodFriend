@@ -21,10 +21,6 @@
 			}
 		}
 	},
-	// Enable me to use your local $DALAMUD_HOME files instead of the container's.
-	// "mounts": [
-	// 	"type=bind,src=${localEnv:DALAMUD_HOME},dst=/dependencies/dalamud,ro=true"
-	// ],
 	"portsAttributes": {
 		"8000": {
 			"label": "API Dev Server [Live Refresh]",

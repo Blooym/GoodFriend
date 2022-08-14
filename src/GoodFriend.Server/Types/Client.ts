@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 type Client = {
-    ID: number,
+    ID: string;
     res: Response
 }[];
 

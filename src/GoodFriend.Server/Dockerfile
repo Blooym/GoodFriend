@@ -27,14 +27,11 @@ RUN adduser --disabled-password --gecos "" -H ${USER}
 
 # Give the user access to the workdir and lock down permissions.
 RUN chmod -R 550 ${WORKDIR}
-RUN mkdir -p ${WORKDIR}/logs -m 770
+RUN mkdir -p ${WORKDIR}/logs -m 777
 RUN chown -R ${USER}:${USER} ${WORKDIR}
 
 # Remove chmod/chown to prevent permission overriding.
 RUN rm /bin/chmod /bin/chown
-
-# Create a volume for the logs.
-VOLUME ${WORKDIR}/logs
 
 # Set the user and entry command.
 USER ${USER}

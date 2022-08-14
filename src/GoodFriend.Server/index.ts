@@ -1,43 +1,36 @@
 /* eslint-disable no-console */
-import ratelimit from 'express-rate-limit';
 import express from 'express';
 import fs from 'fs';
 import https from 'https';
 import http from 'http';
-import router from './Routes/v1';
-import logger from './Utils/Logger';
 
-// Inject .env variables into process.env
+import ratelimitter from '@middleware/Ratelimiter';
+import logger from '@middleware/Logger';
+import router from '@routes/v1';
+
 require('dotenv').config();
 
-// Create the express app & set the port to listen on
-const app = express().disable('x-powered-by');
-const port = process.env.PORT || 8000;
+const port = process.env.APP_PORT || 8000;
+const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
-// Setup the ratelimiter for the API
-const limiter = ratelimit({
-  windowMs: 60 * 5000,
-  max: 6,
-  message: 'Too many requests from this IP, try again later',
-});
+const app = express()
+  .use(ratelimitter)
+  .use(logger)
+  .use(router)
+  .use('/v1', router)
+  .disable('x-powered-by')
+  .get('/', (req, res) => res.sendStatus(200));
 
-// Middlewares and routes
-app.use(limiter);
-app.use(logger);
-app.use('/v1', router);
-app.get('/', (_, res) => res.sendStatus(200));
-
-// If a keyfile & certfile have been specified, use https
-const { KEYFILE, CERTFILE, NODE_ENV } = process.env;
-if (KEYFILE && CERTFILE) {
-  const key = fs.readFileSync(KEYFILE);
-  const cert = fs.readFileSync(CERTFILE);
+// IF we've got a SSL files to use, start a HTTPs server with them.
+if (SSL_KEYFILE && SSL_CERTFILE) {
+  const key = fs.readFileSync(SSL_KEYFILE);
+  const cert = fs.readFileSync(SSL_CERTFILE);
   const credentials = { key, cert };
-  https.createServer(credentials, app).listen(port, () => { console.log(`[SECURE] Listening on port HTTPS:${port}`); });
+  https.createServer(credentials, app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); });
 }
 
-// If no key/cert files have been specified and this is prod, assume the local machine handles SSL.
-else if (NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`[SECURE] Listening on port HTTPS:${port}`); }); }
+// If we're in production with no SSL files, start a HTTPs and let the host handle it.
+else if (NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); }); }
 
-// Otherwise, just run as a regular HTTP server.
-else { http.createServer(app).listen(port, () => { console.log(`[INSECURE] Listening on port HTTP:${port}`); }); }
+// Otherwise, start a HTTP server.
+else { http.createServer(app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); }); }
