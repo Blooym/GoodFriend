@@ -301,7 +301,7 @@ public class APIClient : IDisposable
                 PluginLog.Error($"APIClient: Failed to send logout for player to {this._httpClient.BaseAddress}{_logoutEndpoint}: {task.Result.ReasonPhrase}");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent logout for player to {this._httpClient}{_logoutEndpoint}");
+                PluginLog.Log($"APIClient: Sent logout for player to {this._httpClient.BaseAddress}{_logoutEndpoint}");
         });
     }
 }
