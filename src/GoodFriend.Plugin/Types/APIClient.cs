@@ -235,7 +235,11 @@ public class APIClient : IDisposable
             stream.Close();
             stream.Dispose();
 
-            this.CloseStream();
+            if (reader.EndOfStream && IsConnected)
+            {
+                PluginLog.Log("APIClient: Connection closed by server.");
+                this.CloseStream();
+            }
         }
 
         catch (Exception e)
