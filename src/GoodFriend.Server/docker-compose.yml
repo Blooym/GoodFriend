@@ -3,6 +3,7 @@ version: '3'
 services:
   api:
     container_name: gf-api
+    restart: always
     env_file:
       - .env
     build:
