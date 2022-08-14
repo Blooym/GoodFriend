@@ -4,8 +4,10 @@ import fs from 'fs';
 import https from 'https';
 import http from 'http';
 
-import ratelimitter from '@middleware/Ratelimiter';
-import logger from '@middleware/Logger';
+import Ratelimitter from '@middleware/Ratelimiter';
+import Logger from '@middleware/Logger';
+import HeaderSettings from '@middleware/HeaderSettings';
+
 import router from '@routes/v1';
 
 require('dotenv').config();
@@ -14,11 +16,11 @@ const port = process.env.APP_PORT || 8000;
 const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
 const app = express()
-  .use(ratelimitter)
-  .use(logger)
+  .use(Ratelimitter)
+  .use(Logger)
+  .use(HeaderSettings)
   .use(router)
   .use('/v1', router)
-  .disable('x-powered-by')
   .get('/', (req, res) => res.sendStatus(200));
 
 // IF we've got a SSL files to use, start a HTTPs server with them.
