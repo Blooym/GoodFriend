@@ -69,7 +69,7 @@ public class APIClient : IDisposable
     /// <summary> Handles a connection closer (on-error). </summary>
     private void OnConnectionError(Exception error)
     {
-        PluginLog.Error($"APIClient: Connection error: {error}");
+        PluginLog.Error($"APIClient: Connection error: {error.Message}");
 
         // Start attempting to reconnect to the API.
         this.IsConnected = false;
@@ -253,12 +253,21 @@ public class APIClient : IDisposable
     private int GetConnectedClients()
     {
         var connected = 0;
-        this._httpClient.GetStringAsync(_clientCountEndpoint).ContinueWith(async (t) =>
+        this._httpClient.GetAsync(_clientCountEndpoint).ContinueWith(async (task) =>
         {
-            var response = await t;
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientAmountPayload>(response);
-            if (json == null) connected = 0;
-            else connected = json.clients;
+            if (task.IsFaulted)
+                PluginLog.Error($"APIClient: Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Exception?.Message}");
+
+            else if (!task.Result.IsSuccessStatusCode)
+                PluginLog.Warning($"APIClient:  Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Result.ReasonPhrase}");
+
+            else if (task.IsCompleted)
+            {
+                var response = await task.Result.Content.ReadAsStringAsync();
+                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientAmountPayload>(response);
+                if (json == null) connected = this.ConnectedClients;
+                else connected = json.clients;
+            }
         }).Wait();
 
         PluginLog.Debug($"APIClient: API reports {connected} clients connected.");
@@ -279,13 +288,13 @@ public class APIClient : IDisposable
         this._httpClient.PostAsync($"{_loginEndpoint}{this.HashAndEncode(contentID.ToString())}", new StringContent(string.Empty)).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send login for player to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient: Failed to send login to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
 
             else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Error($"APIClient: Failed to send login for player to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Result.ReasonPhrase}");
+                PluginLog.Warning($"APIClient: Failed to send login to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Result.ReasonPhrase}");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent login for player to {this._httpClient.BaseAddress}{_loginEndpoint}");
+                PluginLog.Log($"APIClient: Sent login to {this._httpClient.BaseAddress}{_loginEndpoint}");
         });
     }
 
@@ -295,13 +304,13 @@ public class APIClient : IDisposable
         this._httpClient.PostAsync($"{_logoutEndpoint}{this.HashAndEncode(contentID.ToString())}", new StringContent(string.Empty)).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send logout for player to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient: Failed to send logout to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
 
             else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Error($"APIClient: Failed to send logout for player to {this._httpClient.BaseAddress}{_logoutEndpoint}: {task.Result.ReasonPhrase}");
+                PluginLog.Warning($"APIClient: Failed to send logout to {this._httpClient.BaseAddress}{_logoutEndpoint}: {task.Result.ReasonPhrase}");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent logout for player to {this._httpClient.BaseAddress}{_logoutEndpoint}");
+                PluginLog.Log($"APIClient: Sent logout to {this._httpClient.BaseAddress}{_logoutEndpoint}");
         });
     }
 }
