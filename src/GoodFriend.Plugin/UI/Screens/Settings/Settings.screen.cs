@@ -49,7 +49,7 @@ sealed public class SettingsScreen : IScreen
     /// <summary> Draws the configuration child tab. </summary>
     private void DrawSettingsTab()
     {
-        if (ImGui.BeginTabItem(TStrings.SettingsTabSettings()))
+        if (ImGui.BeginTabItem(TStrings.SettingsTabSettings))
         {
             this.DrawNormSettings();
             if (this._showAdvanced) this.DrawAdvancedSettings();
@@ -61,34 +61,32 @@ sealed public class SettingsScreen : IScreen
     /// <summary> Draws the connection child tab. </summary>
     private void DrawConnectionTab()
     {
-        if (ImGui.BeginTabItem(TStrings.SettingsTabConnection()))
+        if (ImGui.BeginTabItem(TStrings.SettingsTabConnection))
         {
             ImGui.BeginChild("##ConnectionTab");
 
             // Player is connected to the API
             if (PluginService.APIClientManager.APIClient.IsConnected)
             {
-                Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected());
-                Colours.TextWrappedColoured(Colours.Grey, $"Connected Clients: {PluginService.APIClientManager.APIClient.ConnectedClients}");
-                ImGui.TextWrapped(TStrings.SettingsAPIConnectedDesc());
+                Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected);
+                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(PluginService.APIClientManager.APIClient.ConnectedClients));
                 ImGui.Dummy(new Vector2(0, 5));
-                if (ImGui.Button(TStrings.SettingsSupportText())) Common.OpenLink(PStrings.supportButtonUrl);
-
+                if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
                 ImGui.Dummy(new Vector2(0, 15));
                 this.DrawEventTable();
             }
 
             // Player is not logged in & not connected
-            else if (!PluginService.ClientState.IsLoggedIn) ImGui.TextWrapped(TStrings.SettingsAPINotLoggedIn());
+            else if (!PluginService.ClientState.IsLoggedIn) ImGui.TextWrapped(TStrings.SettingsAPINotLoggedIn);
 
             // Player is logged in & not connected
             else
             {
-                Colours.TextWrappedColoured(Colours.Error, TStrings.SettingsAPIDisconnected());
-                ImGui.TextWrapped(TStrings.SettingsAPIDisconnectedDesc());
+                Colours.TextWrappedColoured(Colours.Error, TStrings.SettingsAPIDisconnected);
+                ImGui.TextWrapped(TStrings.SettingsAPIDisconnectedDesc);
                 ImGui.BeginDisabled(this.presenter.ReconnectButtonDisabled);
                 ImGui.Dummy(new Vector2(0, 5));
-                if (ImGui.Button(TStrings.SettingsAPITryReconnect())) this.presenter.ReconnectWithCooldown();
+                if (ImGui.Button(TStrings.SettingsAPITryReconnect)) this.presenter.ReconnectWithCooldown();
                 ImGui.EndDisabled();
             }
 
@@ -102,7 +100,7 @@ sealed public class SettingsScreen : IScreen
     /// <summary> Draws the debug child window </summary>
     private unsafe void DrawDebugWindow()
     {
-        if (ImGui.BeginTabItem(TStrings.SettingsTabDebug()))
+        if (ImGui.BeginTabItem(TStrings.SettingsTabDebug))
         {
             ImGui.BeginChild("##DebugTab");
 
@@ -134,13 +132,14 @@ sealed public class SettingsScreen : IScreen
     {
         try
         {
-            ImGui.TextDisabled(TStrings.SettingsAPILogTitle());
+            ImGui.TextDisabled(TStrings.SettingsAPILogTitle);
             ImGui.Separator();
+            ImGui.TextWrapped(TStrings.SettingsAPILogDesc);
             ImGui.BeginChild("##EventLogTable");
             ImGui.BeginTable("##EventLogTable", 3);
-            ImGui.TableSetupColumn(TStrings.SettingsAPILogTime());
-            ImGui.TableSetupColumn(TStrings.SettingsAPILogPlayer());
-            ImGui.TableSetupColumn(TStrings.SettingsAPILogEvent());
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogTime);
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogPlayer);
+            ImGui.TableSetupColumn(TStrings.SettingsAPILogEvent);
             ImGui.TableHeadersRow();
 
             foreach (var entry in this.presenter.FetchAPILog())
@@ -176,13 +175,13 @@ sealed public class SettingsScreen : IScreen
         var friendshipCode = PluginService.Configuration.FriendshipCode;
 
         // Hide FC Members dropdown.
-        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC(), hideSameFC ? TStrings.SettingsHideSameFCEnabled() : TStrings.SettingsHideSameFCDisabled()))
+        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC, hideSameFC ? TStrings.SettingsHideSameFCEnabled : TStrings.SettingsHideSameFCDisabled))
         {
-            if (ImGui.Selectable(TStrings.SettingsHideSameFCEnabled(), hideSameFC))
+            if (ImGui.Selectable(TStrings.SettingsHideSameFCEnabled, hideSameFC))
             {
                 PluginService.Configuration.HideSameFC = true;
             }
-            if (ImGui.Selectable(TStrings.SettingsHideSameFCDisabled(), !hideSameFC))
+            if (ImGui.Selectable(TStrings.SettingsHideSameFCDisabled, !hideSameFC))
             {
                 PluginService.Configuration.HideSameFC = false;
             }
@@ -190,11 +189,11 @@ sealed public class SettingsScreen : IScreen
             PluginService.Configuration.Save();
             ImGui.EndCombo();
         }
-        Tooltips.Questionmark(TStrings.SettingsHideSameTCTooltip());
+        Tooltips.Questionmark(TStrings.SettingsHideSameTCTooltip);
 
 
         // Notification type dropdown
-        if (ImGui.BeginCombo(TStrings.SettingsNotificationType(), notificationType))
+        if (ImGui.BeginCombo(TStrings.SettingsNotificationType, notificationType))
         {
             foreach (var notification in Enum.GetNames(typeof(NotificationType)))
             {
@@ -206,11 +205,11 @@ sealed public class SettingsScreen : IScreen
             }
             ImGui.EndCombo();
         }
-        Tooltips.Questionmark(TStrings.SettingsNotificationTypeTooltip());
+        Tooltips.Questionmark(TStrings.SettingsNotificationTypeTooltip);
 
 
         // Login message input
-        if (ImGui.InputText(TStrings.SettingsLoginMessage(), ref loginMessage, 64))
+        if (ImGui.InputText(TStrings.SettingsLoginMessage, ref loginMessage, 64))
         {
             bool error = false;
             try { string.Format(loginMessage, "test"); }
@@ -222,11 +221,11 @@ sealed public class SettingsScreen : IScreen
                 PluginService.Configuration.Save();
             }
         }
-        Tooltips.Questionmark(TStrings.SettingsLoginMessageTooltip());
+        Tooltips.Questionmark(TStrings.SettingsLoginMessageTooltip);
 
 
         // Logout message input
-        if (ImGui.InputText(TStrings.SettingsLogoutMessage(), ref logoutMessage, 64))
+        if (ImGui.InputText(TStrings.SettingsLogoutMessage, ref logoutMessage, 64))
         {
             bool error = false;
             try { string.Format(logoutMessage, "test"); }
@@ -238,21 +237,21 @@ sealed public class SettingsScreen : IScreen
                 PluginService.Configuration.Save();
             }
         }
-        Tooltips.Questionmark(TStrings.SettingsLogoutMessageTooltip());
+        Tooltips.Questionmark(TStrings.SettingsLogoutMessageTooltip);
 
 
         // Secret code input
-        if (ImGui.InputTextWithHint(TStrings.SettingsFriendshipCode(), TStrings.SettingsFriendshipCodeHint(), ref friendshipCode, 64))
+        if (ImGui.InputTextWithHint(TStrings.SettingsFriendshipCode, TStrings.SettingsFriendshipCodeHint, ref friendshipCode, 64))
         {
             PluginService.Configuration.FriendshipCode = friendshipCode;
             PluginService.Configuration.Save();
         }
-        Tooltips.Questionmark(TStrings.SettingsFriendshipCodeTooltip());
+        Tooltips.Questionmark(TStrings.SettingsFriendshipCodeTooltip);
 
 
         // Advanced settings
         ImGui.NewLine();
-        if (ImGui.Checkbox(TStrings.SettingsShowAdvanced(), ref showAdvanced)) this._showAdvanced = showAdvanced;
+        if (ImGui.Checkbox(TStrings.SettingsShowAdvanced, ref showAdvanced)) this._showAdvanced = showAdvanced;
     }
 
 
@@ -263,7 +262,7 @@ sealed public class SettingsScreen : IScreen
         var saltMethod = PluginService.Configuration.SaltMethod;
 
         // Salt Mode dropdown
-        if (ImGui.BeginCombo(TStrings.SettingsSaltMode(), saltMethod.ToString()))
+        if (ImGui.BeginCombo(TStrings.SettingsSaltMode, saltMethod.ToString()))
         {
             foreach (var method in Enum.GetValues(typeof(SaltMethods)))
             {
@@ -276,11 +275,11 @@ sealed public class SettingsScreen : IScreen
             PluginService.Configuration.Save();
             ImGui.EndCombo();
         }
-        Tooltips.Questionmark(TStrings.SettingsSaltModeTooltip());
+        Tooltips.Questionmark(TStrings.SettingsSaltModeTooltip);
 
 
         // API URL input
-        if (ImGui.InputText(TStrings.SettingsAPIURL(), ref APIUrl, 64))
+        if (ImGui.InputText(TStrings.SettingsAPIURL, ref APIUrl, 64))
         {
             // Validate the URL and save it if it is valid.
             bool error = false;
@@ -290,6 +289,6 @@ sealed public class SettingsScreen : IScreen
             if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); }
             else PluginService.Configuration.ResetApiUrl();
         }
-        Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip());
+        Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip);
     }
 }

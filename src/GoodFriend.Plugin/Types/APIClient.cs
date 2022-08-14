@@ -252,26 +252,34 @@ public class APIClient : IDisposable
     /// <summary> Fetches the amount of clients connected to the API. </summary>
     private int GetConnectedClients()
     {
-        var connected = 0;
-        this._httpClient.GetAsync(_clientCountEndpoint).ContinueWith(async (task) =>
+        int connected = 0;
+        var task = this._httpClient.GetAsync(_clientCountEndpoint).ContinueWith(async (task) =>
         {
             if (task.IsFaulted)
+            {
                 PluginLog.Error($"APIClient: Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Exception?.Message}");
+                connected = this.ConnectedClients;
+            }
 
             else if (!task.Result.IsSuccessStatusCode)
+            {
                 PluginLog.Warning($"APIClient:  Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Result.ReasonPhrase}");
+                connected = this.ConnectedClients;
+            }
 
             else if (task.IsCompleted)
             {
                 var response = await task.Result.Content.ReadAsStringAsync();
                 var json = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientAmountPayload>(response);
                 if (json == null) connected = this.ConnectedClients;
-                else connected = json.clients;
+                else { connected = json.clients; }
             }
-        }).Wait();
+        });
 
-        PluginLog.Debug($"APIClient: API reports {connected} clients connected.");
-        return connected;
+        task.Wait();
+
+        if (task.IsCompletedSuccessfully) { PluginLog.Debug($"APIClient: API reports {connected} clients connected."); return connected; }
+        else { return this.ConnectedClients; }
     }
 
 

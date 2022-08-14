@@ -4,8 +4,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Dalamud.Game.ClientState;
 using Dalamud.Logging;
+using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
+using Dalamud.Game.ClientState;
 using GoodFriend.Base;
 using GoodFriend.Utils;
 using GoodFriend.Types;
@@ -55,8 +56,21 @@ sealed public class APIClientManager : IDisposable
     {
         PluginLog.Verbose($"APIClientManager: Adding event {e.EventID} to the log.");
         this.EventLog.Add(e);
-        if (this.EventLog.Count > 6) this.EventLog.RemoveAt(0);
+        if (this.EventLog.Count > 20) this.EventLog.RemoveAt(0);
     }
+
+
+    ////////////////////////////
+    ///    Event Handlers    ///
+    ////////////////////////////
+
+    /// <summary> Handles the APIClient error event. </summary>
+
+    private void OnAPIClientError(Exception e) => Notifications.Show(TStrings.ConnectionError, NotificationType.Toast, ToastType.Error);
+
+    /// <summary> Handles the APIClient connected event. </summary>
+    private void OnAPIClientConnected() => Notifications.Show(TStrings.ConnectionSuccessful, NotificationType.Toast, ToastType.Success);
+
 
 
     ////////////////////////////
@@ -72,6 +86,8 @@ sealed public class APIClientManager : IDisposable
 
         // Create event handlers
         this.APIClient.DataRecieved += OnDataRecieved;
+        this.APIClient.ConnectionError += OnAPIClientError;
+        this.APIClient.ConnectionEstablished += OnAPIClientConnected;
         this._clientState.Login += OnLogin;
         this._clientState.Logout += OnLogout;
 
