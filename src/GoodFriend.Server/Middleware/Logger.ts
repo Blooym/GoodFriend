@@ -2,6 +2,7 @@ import winston from 'winston';
 import expresswinston from 'express-winston';
 
 export default expresswinston.logger({
+  ignoreRoute: (req) => req.path.includes('/clients') || req.path.includes('/events/'),
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
