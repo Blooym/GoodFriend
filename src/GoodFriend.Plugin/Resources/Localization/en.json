@@ -7,104 +7,144 @@
     "message": "{0} has logged out.",
     "description": "Configuration..ctor"
   },
-  "SupportText": {
-    "message": "Support the developer of {0}",
-    "description": "TStrings.SupportText"
+  "Connection.Successful": {
+    "message": "Successfully connected to the API.",
+    "description": "TStrings.get_ConnectionSuccessful"
   },
-  "Settings.APIConnected": {
-    "message": "API Connected: {0}",
-    "description": "TStrings.SettingsAPIConnected"
+  "Connection.Error": {
+    "message": "An error occurred while connecting to the API.",
+    "description": "TStrings.get_ConnectionError"
+  },
+  "Settings.Tab.Settings": {
+    "message": "Settings",
+    "description": "TStrings.get_SettingsTabSettings"
+  },
+  "Settings.Tab.Connection": {
+    "message": "Connection",
+    "description": "TStrings.get_SettingsTabConnection"
+  },
+  "Settings.Tab.Debug": {
+    "message": "Debug",
+    "description": "TStrings.get_SettingsTabDebug"
+  },
+  "Settings.Support": {
+    "message": "Donate / Support",
+    "description": "TStrings.get_SettingsSupportText"
+  },
+  "Settings.Connection.APIConnected": {
+    "message": "You are connected to the API and recieving events",
+    "description": "TStrings.get_SettingsAPIConnected"
+  },
+  "Settings.Connection.APIOnlineUsers": {
+    "message": "Online Users: {0}",
+    "description": "TStrings.SettingsAPIOnlineUsers"
+  },
+  "Settings.Connection.APIDisconnected": {
+    "message": "You are not connected to the API are not recieving events.",
+    "description": "TStrings.get_SettingsAPIDisconnected"
+  },
+  "Settings.Connection.APIDisconnectedDesc": {
+    "message": "You should be automatically reconnected when the API becomes available, if you wish to reconnect manually you can try use the button below. For more information about why you're not connected, check /xllog",
+    "description": "TStrings.get_SettingsAPIDisconnectedDesc"
+  },
+  "Settings.Connection.TryReconnect": {
+    "message": "Attempt to reconnect",
+    "description": "TStrings.get_SettingsAPITryReconnect"
+  },
+  "Settings.Connection.NotLoggedIn": {
+    "message": "You must log in to a character to connect to the API",
+    "description": "TStrings.get_SettingsAPINotLoggedIn"
+  },
+  "Settings.Connection.Log": {
+    "message": "Event Log",
+    "description": "TStrings.get_SettingsAPILogTitle"
+  },
+  "Settings.Connections.Log.Desc": {
+    "message": "You will see friend events in the log below when you recieve them.",
+    "description": "TStrings.get_SettingsAPILogDesc"
+  },
+  "Settings.Connection.Log.Time": {
+    "message": "Time",
+    "description": "TStrings.get_SettingsAPILogTime"
+  },
+  "Settings.Connection.Log.Player": {
+    "message": "Player",
+    "description": "TStrings.get_SettingsAPILogPlayer"
+  },
+  "Settings.Connection.Log.Event": {
+    "message": "Event",
+    "description": "TStrings.get_SettingsAPILogEvent"
   },
   "Settings.HideSameFC": {
     "message": "Hide FC Members",
-    "description": "TStrings.SettingsHideSameFC"
+    "description": "TStrings.get_SettingsHideSameFC"
   },
   "Settings.HideSameFC.Enabled": {
     "message": "Enabled",
-    "description": "TStrings.SettingsHideSameFCEnabled"
+    "description": "TStrings.get_SettingsHideSameFCEnabled"
   },
   "Settings.HideSameFC.Disabled": {
     "message": "Disabled",
-    "description": "TStrings.SettingsHideSameFCDisabled"
+    "description": "TStrings.get_SettingsHideSameFCDisabled"
   },
   "Settings.HideSameFC.Tooltip": {
     "message": "When enabled, you will not be notified when a friend in your free company logs in or out.",
-    "description": "TStrings.SettingsHideSameTCTooltip"
+    "description": "TStrings.get_SettingsHideSameTCTooltip"
   },
   "Settings.NotificationType": {
     "message": "Notification Type",
-    "description": "TStrings.SettingsNotificationType"
+    "description": "TStrings.get_SettingsNotificationType"
   },
   "Settings.NotificationType.Tooltip": {
     "message": "The place to display notifications when a friend logs in or logs out.",
-    "description": "TStrings.SettingsNotificationTypeTooltip"
+    "description": "TStrings.get_SettingsNotificationTypeTooltip"
   },
   "Settings.LoginMessage": {
     "message": "Login Message",
-    "description": "TStrings.SettingsLoginMessage"
+    "description": "TStrings.get_SettingsLoginMessage"
   },
   "Settings.LoginMessage.Tooltip": {
     "message": "The message to show when a friend logs in.\n\n{0}: Name of the friend.",
-    "description": "TStrings.SettingsLoginMessageTooltip"
+    "description": "TStrings.get_SettingsLoginMessageTooltip"
   },
   "Settings.LogoutMessage": {
     "message": "Logout Message",
-    "description": "TStrings.SettingsLogoutMessage"
+    "description": "TStrings.get_SettingsLogoutMessage"
   },
   "Settings.LogoutMessage.Tooltip": {
     "message": "The message to show when a friend logs out.\n\n{0}: Name of the friend.",
-    "description": "TStrings.SettingsLogoutMessageTooltip"
+    "description": "TStrings.get_SettingsLogoutMessageTooltip"
   },
   "Settings.FriendshipCode": {
     "message": "Friendship Code",
-    "description": "TStrings.SettingsFriendshipCode"
+    "description": "TStrings.get_SettingsFriendshipCode"
   },
   "Settings.FriendshipCode.Hint": {
     "message": "Leave empty to send notifications to all friends",
-    "description": "TStrings.SettingsFriendshipCodeHint"
+    "description": "TStrings.get_SettingsFriendshipCodeHint"
   },
   "Settings.FriendshipCode.Tooltip": {
     "message": "Your friend code determines which friends you send and recieve notifications with.",
-    "description": "TStrings.SettingsFriendshipCodeTooltip"
+    "description": "TStrings.get_SettingsFriendshipCodeTooltip"
   },
   "Settings.ShowAdvanced": {
     "message": "Show Advanced Settings",
-    "description": "TStrings.SettingsShowAdvanced"
+    "description": "TStrings.get_SettingsShowAdvanced"
   },
   "Settings.SaltMode": {
     "message": "Salt Mode",
-    "description": "TStrings.SettingsSaltMode"
-  },
-  "Settings.SaltMode.Strict": {
-    "message": "Strict",
-    "description": "TStrings.SettingsSaltModeStrict"
-  },
-  "Settings.SaltMode.Relaxed": {
-    "message": "Relaxed",
-    "description": "TStrings.SettingsSaltModeRelaxed"
+    "description": "TStrings.get_SettingsSaltMode"
   },
   "Settings.SaltMode.Tooltip": {
     "message": "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues",
-    "description": "TStrings.SettingsSaltModeTooltip"
-  },
-  "Settings.SaltMode.Warning": {
-    "message": "Warning: Relaxed mode is not recommended unless you have an explicit reason for using it.\n\nYou will not recieve notifications from Strict mode users",
-    "description": "TStrings.SettingsSaltModeWarning"
+    "description": "TStrings.get_SettingsSaltModeTooltip"
   },
   "Settings.APIURL": {
     "message": "API URL",
-    "description": "TStrings.SettingsAPIURL"
+    "description": "TStrings.get_SettingsAPIURL"
   },
   "Settings.APIURL.Tooltip": {
-    "message": "The API is used to send and recieve notifications from friends using the same API.\n\nYou should not change this unless you know what you are doing.",
-    "description": "TStrings.SettingsAPIURLTooltip"
-  },
-  "Settings.APIURL.NotHttps": {
-    "message": "Warning: You are not using HTTPs for the API! This is VERY insecure and could lead to major security problems.",
-    "description": "TStrings.SettingsAPINotHttps"
-  },
-  "Settings.API.Reconnect": {
-    "message": "Try reconnect to the API",
-    "description": "TStrings.SettingsAPIReconnect"
+    "message": "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.",
+    "description": "TStrings.get_SettingsAPIURLTooltip"
   }
 }
