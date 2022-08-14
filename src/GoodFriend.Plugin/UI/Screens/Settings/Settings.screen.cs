@@ -69,6 +69,7 @@ sealed public class SettingsScreen : IScreen
             if (PluginService.APIClientManager.APIClient.IsConnected)
             {
                 Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected());
+                Colours.TextWrappedColoured(Colours.Grey, $"Connected Clients: {PluginService.APIClientManager.APIClient.ConnectedClients}");
                 ImGui.TextWrapped(TStrings.SettingsAPIConnectedDesc());
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText())) Common.OpenLink(PStrings.supportButtonUrl);

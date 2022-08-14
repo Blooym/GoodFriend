@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && tsc-alias && node .",
     "build": "tsc && tsc-alias",
-    "watch": "tsc-watch --onSuccess && tsc-alias && \"node .\"",
+    "watch": "tsc-watch --onSuccess && tsc-alias && node .",
     "lint": "eslint"
   },
   "dependencies": {

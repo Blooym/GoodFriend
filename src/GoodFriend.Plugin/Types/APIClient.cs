@@ -10,12 +10,6 @@ using Dalamud.Logging;
 using GoodFriend.Base;
 using GoodFriend.Utils;
 
-/// <summary> The structure of the data that is received from the API for client events. </summary>
-sealed public class UpdatePayload
-{
-    public string? ContentID { get; set; }
-    public bool LoggedIn { get; set; }
-}
 
 /// <summary> An API client to built to communicate with the GoodFriend API. </summary>
 public class APIClient : IDisposable
@@ -54,7 +48,9 @@ public class APIClient : IDisposable
         PluginLog.Log($"APIClient: Connection Established");
 
         // Set the state to connected and stop any reconnect timers.
+        this.ConnectedClients = this.GetConnectedClients();
         this.IsConnected = true;
+        this._clientCountTimer.Start();
         this._reconnectTimer.Stop();
     }
 
@@ -66,13 +62,14 @@ public class APIClient : IDisposable
         // Set the state to disconnected & stop any reconnect timers.
         this.IsConnected = false;
         this._httpClient.CancelPendingRequests();
+        this._clientCountTimer.Stop();
         this._reconnectTimer.Stop();
     }
 
     /// <summary> Handles a connection closer (on-error). </summary>
     private void OnConnectionError(Exception error)
     {
-        PluginLog.Error($"APIClient: Connection error: {error.Message}");
+        PluginLog.Error($"APIClient: Connection error: {error}");
 
         // Start attempting to reconnect to the API.
         this.IsConnected = false;
@@ -99,6 +96,9 @@ public class APIClient : IDisposable
 
     /// <summary> The place to send get user events data from the API. </summary>
     private const string _userEventEndpoint = "events/users/";
+
+    /// <summary> The place to get the amount of clients connected to the API. </summary>
+    private const string _clientCountEndpoint = "clients/";
 
 
     ////////////////////////////
@@ -131,6 +131,15 @@ public class APIClient : IDisposable
     /// <summary> The event handler for handling reconnection attempts. </summary>
     private void OnTryReconnect(object sender, ElapsedEventArgs e) => this.OpenStream();
 
+    /// <summary> The amount of clients connected to the API. </summary>
+    public int ConnectedClients { get; private set; } = 0;
+
+    /// <summary> The timer for fetching the amount of clients connected to the API. </summary>
+    private Timer _clientCountTimer = new Timer(60000);
+
+    /// <summary> The event handler for fetching the amount of clients connected to the API. </summary>
+    private void OnGetClientCount(object sender, ElapsedEventArgs e) { this.ConnectedClients = this.GetConnectedClients(); }
+
 
     ////////////////////////////
     /// Construct n' Dispose ///
@@ -145,6 +154,7 @@ public class APIClient : IDisposable
         this.ConnectionClosed += OnConnectionClosed;
         this.ConnectionError += OnConnectionError;
         this._reconnectTimer.Elapsed += OnTryReconnect;
+        this._clientCountTimer.Elapsed += OnGetClientCount;
         this.ConfigureHttpClient();
     }
 
@@ -159,10 +169,16 @@ public class APIClient : IDisposable
         this.ConnectionClosed -= OnConnectionClosed;
         this.ConnectionError -= OnConnectionError;
         this._reconnectTimer.Elapsed -= OnTryReconnect;
+        this._clientCountTimer.Elapsed -= OnGetClientCount;
+
+        // Cancel pending requests.
+        this._httpClient.CancelPendingRequests();
 
         // Dispose of all other resources.
         this._reconnectTimer.Dispose();
+        this._clientCountTimer.Dispose();
         this._httpClient.Dispose();
+
 
         PluginLog.Debug("APIClient: Successfully disposed.");
     }
@@ -176,14 +192,14 @@ public class APIClient : IDisposable
     public void OpenStream()
     {
         if (IsConnected) throw new InvalidOperationException("An active connection has already been established.");
-        BeginStreamConnection();
+        this.BeginStreamConnection();
     }
 
     /// <summary> Closes the connection stream to the API, throws error if not connected. </summary>
     public void CloseStream()
     {
         if (!IsConnected) throw new InvalidOperationException("There is no active connection to disconnect from.");
-        ConnectionClosed?.Invoke();
+        this.ConnectionClosed?.Invoke();
     }
 
     /// <summary> Starts listening for data from the API </summary>
@@ -198,14 +214,15 @@ public class APIClient : IDisposable
             using var reader = new StreamReader(stream);
 
             // Connection established! Start listening for data.
-            ConnectionEstablished?.Invoke();
+            this.ConnectionEstablished?.Invoke();
 
             // Wait for data to be recieved.
             while (!reader.EndOfStream && IsConnected)
             {
-                // New message recieved! Parse it.
+                // Read the message, if its null or just a colon (:) then skip it.
+                // Colon indicates a heartbeat message.
                 var message = reader.ReadLine();
-                if (message == null || message == " ") continue;
+                if (message == null || message.Trim() == ":") continue;
 
                 // Remove any SSE (Server-Sent Events) filler characters.
                 message = message.Replace("data: ", "").Trim();
@@ -215,15 +232,33 @@ public class APIClient : IDisposable
                 if (data != null && data.ContentID != null) DataRecieved?.Invoke(data);
             }
 
-            // We've reached the end of the stream, close up the connection.
+            stream.Close();
             stream.Dispose();
+
+            this.CloseStream();
         }
 
         catch (Exception e)
         {
             if (IsConnected) CloseStream();
-            ConnectionError?.Invoke(e);
+            this.ConnectionError?.Invoke(e);
         }
+    }
+
+    /// <summary> Fetches the amount of clients connected to the API. </summary>
+    private int GetConnectedClients()
+    {
+        var connected = 0;
+        this._httpClient.GetStringAsync(_clientCountEndpoint).ContinueWith(async (t) =>
+        {
+            var response = await t;
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientAmountPayload>(response);
+            if (json == null) connected = 0;
+            else connected = json.clients;
+        }).Wait();
+
+        PluginLog.Debug($"APIClient: API reports {connected} clients connected.");
+        return connected;
     }
 
 
@@ -265,4 +300,17 @@ public class APIClient : IDisposable
                 PluginLog.Log($"APIClient: Sent logout for player to {this._httpClient}{_logoutEndpoint}");
         });
     }
+}
+
+/// <summary> The structure of the data that is received from the API for client events. </summary>
+sealed public class UpdatePayload
+{
+    public string? ContentID { get; set; }
+    public bool LoggedIn { get; set; }
+}
+
+/// <summary> The structure of the data that is received from the API for client counts. </summary>
+sealed public class ClientAmountPayload
+{
+    public int clients { get; set; }
 }
