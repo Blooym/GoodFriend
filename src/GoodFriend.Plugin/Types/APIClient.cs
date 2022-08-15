@@ -86,7 +86,7 @@ public class APIClient : IDisposable
     private Uri _apiUrl;
 
     /// <summary> The version of the API to use. </summary>
-    private const string _apiVersion = "v1/";
+    private const string _apiVersion = "v2/";
 
     /// <summary> The place to send login data to the API. </summary>
     private const string _loginEndpoint = "login/";
