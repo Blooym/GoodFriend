@@ -1,4 +1,3 @@
-// v1 routes
 import { Router } from 'express';
 
 import Client from '@mtypes/Client';

@@ -1,8 +1,9 @@
 import winston from 'winston';
-import expresswinston from 'express-winston';
+import expressWinston from 'express-winston';
 
-export default expresswinston.logger({
-  ignoreRoute: (req, res) => req.path.includes('/clients') || req.path.includes('/events/') || res.statusCode === 404,
+export const logger = expressWinston.logger({
+  ignoreRoute: (req) => req.path.includes('/clients') || req.path.includes('/events/'),
+  level: 'info',
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
@@ -19,4 +20,17 @@ export default expresswinston.logger({
       ),
     }),
   ],
+});
+
+export const errorLogger = expressWinston.errorLogger({
+  level: 'error',
+  transports: [
+    new winston.transports.File({
+      filename: 'logs/error.log',
+    }),
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json(),
+  ),
 });

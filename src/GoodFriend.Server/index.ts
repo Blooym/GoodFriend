@@ -5,10 +5,11 @@ import https from 'https';
 import http from 'http';
 
 import Ratelimitter from '@middleware/Ratelimiter';
-import Logger from '@middleware/Logger';
+import { logger, errorLogger } from '@middleware/Logger';
 import HeaderSettings from '@middleware/HeaderSettings';
 
 import router from '@routes/v1';
+import ErrorHandler from '@middleware/ErrorHandler';
 
 require('dotenv').config();
 
@@ -16,14 +17,16 @@ const port = process.env.APP_PORT || 8000;
 const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
 const app = express()
-  .use(Ratelimitter)
-  .use(Logger)
   .use(HeaderSettings)
-  .use(router)
+  .use(Ratelimitter)
+  .use(logger)
+  .get('/', (req, res) => res.sendStatus(200))
   .use('/v1', router)
-  .get('/', (req, res) => res.sendStatus(200));
+  .get('*', (req, res) => res.sendStatus(404))
+  .use(errorLogger)
+  .use(ErrorHandler);
 
-// IF we've got a SSL files to use, start a HTTPs server with them.
+// If we've got a SSL files to use, start a HTTPs server with them.
 if (SSL_KEYFILE && SSL_CERTFILE) {
   const key = fs.readFileSync(SSL_KEYFILE);
   const cert = fs.readFileSync(SSL_CERTFILE);
@@ -35,4 +38,4 @@ if (SSL_KEYFILE && SSL_CERTFILE) {
 else if (NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); }); }
 
 // Otherwise, start a HTTP server.
-else { http.createServer(app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); }); }
+else { http.createServer(app).listen(port, () => { console.log(`[HTTP] Listening on port ${port}`); }); }
