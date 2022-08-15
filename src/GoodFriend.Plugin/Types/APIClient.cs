@@ -323,7 +323,7 @@ public class APIClient : IDisposable
     /// <summary> Send a logout event to the API/Logout endpoint. </summary>
     public void SendLogout(ulong contentID)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, _loginEndpoint);
+        var request = new HttpRequestMessage(HttpMethod.Put, _logoutEndpoint);
         request.Headers.Add("Player-ID", Hashing.HashSHA512(contentID.ToString()));
         this._httpClient.SendAsync(request).ContinueWith(task =>
         {
