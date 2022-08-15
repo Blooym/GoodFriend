@@ -86,7 +86,7 @@ public class APIClient : IDisposable
     private Uri _apiUrl;
 
     /// <summary> The version of the API to use. </summary>
-    private const string _apiVersion = "v2/";
+    private const string _apiVersion = "v1/";
 
     /// <summary> The place to send login data to the API. </summary>
     private const string _loginEndpoint = "login/";
@@ -188,11 +188,11 @@ public class APIClient : IDisposable
     ///   Utility Methods    ///
     ////////////////////////////
 
-    /// <summary> IsDeprecated returns if the API returned the "Deprecated" header. </summary>
+    /// <summary> Adds a warning to the log when the API reports itself as deprecated. </summary>
     private void WarnOnDeprecated(HttpResponseMessage response)
     {
         if (response.Headers.Contains("Deprecated") && response.Headers.GetValues("Deprecated").First() == "true")
-            PluginLog.Warning("APIClient: API reports that this version of the API is deprecated, you should update to the latest version.");
+            PluginLog.Warning("APIClient: API reports that this version of the API is deprecated and will be removed in the future, consider updating.");
     }
 
 
@@ -286,8 +286,6 @@ public class APIClient : IDisposable
                 if (json == null) connected = this.ConnectedClients;
                 else { connected = json.clients; }
             }
-
-            WarnOnDeprecated(task.Result);
         });
 
         task.Wait();
