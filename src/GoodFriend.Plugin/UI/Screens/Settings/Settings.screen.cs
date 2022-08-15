@@ -66,10 +66,10 @@ sealed public class SettingsScreen : IScreen
             ImGui.BeginChild("##ConnectionTab");
 
             // Player is connected to the API
-            if (PluginService.APIClientManager.APIClient.IsConnected)
+            if (this.presenter.APIIsConnected)
             {
                 Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected);
-                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(PluginService.APIClientManager.APIClient.ConnectedClients));
+                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients));
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
                 ImGui.Dummy(new Vector2(0, 15));
@@ -281,13 +281,14 @@ sealed public class SettingsScreen : IScreen
         // API URL input
         if (ImGui.InputText(TStrings.SettingsAPIURL, ref APIUrl, 64))
         {
-            // Validate the URL and save it if it is valid.
+            if (APIUrl == PluginService.Configuration.APIUrl.ToString()) return;
+
             bool error = false;
             try { new Uri(APIUrl); }
             catch { error = true; }
 
             if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); }
-            else PluginService.Configuration.ResetApiUrl();
+            else { PluginService.Configuration.ResetApiUrl(); }
         }
         Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip);
     }

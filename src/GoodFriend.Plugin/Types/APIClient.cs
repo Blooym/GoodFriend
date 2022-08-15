@@ -2,7 +2,7 @@ namespace GoodFriend.Types;
 
 using System;
 using System.IO;
-using System.Web;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Timers;
@@ -83,10 +83,10 @@ public class APIClient : IDisposable
     ////////////////////////////
 
     /// <summary> The base of the API URL. </summary>
-    private readonly Uri _apiUrl;
+    private Uri _apiUrl;
 
     /// <summary> The version of the API to use. </summary>
-    private const string _apiVersion = "v1/";
+    private const string _apiVersion = "v2/";
 
     /// <summary> The place to send login data to the API. </summary>
     private const string _loginEndpoint = "login/";
@@ -111,10 +111,10 @@ public class APIClient : IDisposable
     /// <summary> Configures the HTTP client. </summary>
     private void ConfigureHttpClient()
     {
-        this._httpClient.BaseAddress = new Uri(this._apiUrl + _apiVersion);
         this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
         this._httpClient.Timeout = TimeSpan.FromSeconds(10);
-        PluginLog.Debug($"APIClient: HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Agent: {this._httpClient.DefaultRequestHeaders.UserAgent}");
+        this._httpClient.BaseAddress = new Uri(this._apiUrl + _apiVersion);
+        PluginLog.Debug($"APIClient: HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
     }
 
 
@@ -135,7 +135,7 @@ public class APIClient : IDisposable
     public int ConnectedClients { get; private set; } = 0;
 
     /// <summary> The timer for fetching the amount of clients connected to the API. </summary>
-    private Timer _clientCountTimer = new Timer(60000);
+    private Timer _clientCountTimer = new Timer(120000);
 
     /// <summary> The event handler for fetching the amount of clients connected to the API. </summary>
     private void OnGetClientCount(object sender, ElapsedEventArgs e) { this.ConnectedClients = this.GetConnectedClients(); }
@@ -181,6 +181,18 @@ public class APIClient : IDisposable
 
 
         PluginLog.Debug("APIClient: Successfully disposed.");
+    }
+
+
+    ////////////////////////////
+    ///   Utility Methods    ///
+    ////////////////////////////
+
+    /// <summary> IsDeprecated returns if the API returned the "Deprecated" header. </summary>
+    private void WarnOnDeprecated(HttpResponseMessage response)
+    {
+        if (response.Headers.Contains("Deprecated") && response.Headers.GetValues("Deprecated").First() == "true")
+            PluginLog.Warning("APIClient: API reports that this version of the API is deprecated, you should update to the latest version.");
     }
 
 
@@ -274,6 +286,8 @@ public class APIClient : IDisposable
                 if (json == null) connected = this.ConnectedClients;
                 else { connected = json.clients; }
             }
+
+            WarnOnDeprecated(task.Result);
         });
 
         task.Wait();
@@ -287,13 +301,13 @@ public class APIClient : IDisposable
     ///   API Data Sending   ///
     ////////////////////////////
 
-    /// <summary> Hashes and URL encodes the given data. </summary>
-    private string HashAndEncode(string data) => HttpUtility.UrlEncode(Hashing.HashSHA512(data));
 
     /// <summary> Send a login event to the configured API/Login endpoint. </summary>
     public void SendLogin(ulong contentID)
     {
-        this._httpClient.PostAsync($"{_loginEndpoint}{this.HashAndEncode(contentID.ToString())}", new StringContent(string.Empty)).ContinueWith(task =>
+        var request = new HttpRequestMessage(HttpMethod.Put, _loginEndpoint);
+        request.Headers.Add("Player-ID", Hashing.HashSHA512(contentID.ToString()));
+        this._httpClient.SendAsync(request).ContinueWith(task =>
         {
             if (task.IsFaulted)
                 PluginLog.Error($"APIClient: Failed to send login to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
@@ -303,13 +317,17 @@ public class APIClient : IDisposable
 
             else if (task.IsCompleted)
                 PluginLog.Log($"APIClient: Sent login to {this._httpClient.BaseAddress}{_loginEndpoint}");
+
+            WarnOnDeprecated(task.Result);
         });
     }
 
     /// <summary> Send a logout event to the API/Logout endpoint. </summary>
     public void SendLogout(ulong contentID)
     {
-        this._httpClient.PostAsync($"{_logoutEndpoint}{this.HashAndEncode(contentID.ToString())}", new StringContent(string.Empty)).ContinueWith(task =>
+        var request = new HttpRequestMessage(HttpMethod.Put, _loginEndpoint);
+        request.Headers.Add("Player-ID", Hashing.HashSHA512(contentID.ToString()));
+        this._httpClient.SendAsync(request).ContinueWith(task =>
         {
             if (task.IsFaulted)
                 PluginLog.Error($"APIClient: Failed to send logout to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
@@ -319,6 +337,8 @@ public class APIClient : IDisposable
 
             else if (task.IsCompleted)
                 PluginLog.Log($"APIClient: Sent logout to {this._httpClient.BaseAddress}{_logoutEndpoint}");
+
+            WarnOnDeprecated(task.Result);
         });
     }
 }

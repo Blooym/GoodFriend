@@ -54,8 +54,14 @@ sealed public class SettingsPresenter : IDisposable
     ///     Other Methods     ///
     /////////////////////////////
 
+    /// <summary> Gets the current API client count </summary>
+    public int APIClients => PluginService.APIClientManager.APIClient.ConnectedClients;
+
+    /// <summary> Gets the current API connection status </summary>
+    public bool APIIsConnected => PluginService.APIClientManager.APIClient.IsConnected;
+
     /// <summary> Should the reconnect button be disabled or not. </summary>
-    public bool ReconnectButtonDisabled => this.reconnectCooldownActive || PluginService.ClientState.LocalPlayer == null || PluginService.APIClientManager.APIClient.IsConnected;
+    public bool ReconnectButtonDisabled => this.reconnectCooldownActive || PluginService.ClientState.LocalPlayer == null || this.APIIsConnected;
 
 
 #if DEBUG
