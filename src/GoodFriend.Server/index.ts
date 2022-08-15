@@ -7,9 +7,11 @@ import http from 'http';
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
 import HeaderSettings from '@middleware/HeaderSettings';
-
-import router from '@routes/v1';
 import ErrorHandler from '@middleware/ErrorHandler';
+
+import globalRouter from '@routes/Global';
+import v1Router from '@routes/v1';
+import v2Router from '@routes/v2';
 
 require('dotenv').config();
 
@@ -20,8 +22,9 @@ const app = express()
   .use(HeaderSettings)
   .use(Ratelimitter)
   .use(logger)
-  .get('/', (req, res) => res.sendStatus(200))
-  .use('/v1', router)
+  .use('/', globalRouter)
+  .use('/v1', v1Router)
+  .use('/v2', v2Router)
   .get('*', (req, res) => res.sendStatus(404))
   .use(errorLogger)
   .use(ErrorHandler);
