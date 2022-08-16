@@ -4,7 +4,7 @@ import Client from '@mtypes/Client';
 import isValidID from '@utils/Validators';
 
 export default (req: Request, res: Response, clients: Client) => {
-  const ContentID = req.header('Player-ID') ?? '';
+  const ContentID = req.header('Player-ID') ?? String.fromCharCode(0);
 
   if (!isValidID(ContentID)) res.sendStatus(400);
   else {
