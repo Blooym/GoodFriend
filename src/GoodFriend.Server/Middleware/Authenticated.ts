@@ -5,6 +5,12 @@ const AUTHENTICATED_HEADERS = {
   Pragma: 'no-cache',
 };
 
+/**
+ * Sets the given endpoint as authenticated.
+ * @param req The request object.
+ * @param res The response object.
+ * @param next The next middleware function to call.
+ */
 export default (req: Request, res: Response, next: NextFunction) => {
   if (process.env.DISABLE_AUTH_ENDPOINTS === 'true') { res.sendStatus(404); return; }
 

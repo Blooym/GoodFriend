@@ -1,6 +1,9 @@
 import winston from 'winston';
 import expressWinston from 'express-winston';
 
+/**
+ * Logs all requests to the server.
+ */
 export const logger = expressWinston.logger({
   level: 'info',
   transports: [
@@ -21,6 +24,9 @@ export const logger = expressWinston.logger({
   ],
 });
 
+/**
+ * Logs all errors thrown by the application.
+ */
 export const errorLogger = expressWinston.errorLogger({
   level: 'error',
   transports: [

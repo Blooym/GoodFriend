@@ -3,14 +3,14 @@ import express from 'express';
 import fs from 'fs';
 import https from 'https';
 import http from 'http';
+import compression from 'compression';
+import helmet from 'helmet';
 
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
-import HeaderSettings from '@middleware/HeaderSettings';
 import ErrorHandler from '@middleware/ErrorHandler';
 
 import globalRouter from '@routes/Global';
-import v1Router from '@routes/v1';
 import v2Router from '@routes/v2';
 
 require('dotenv').config();
@@ -19,11 +19,11 @@ const port = process.env.APP_PORT || 8000;
 const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
 const app = express()
-  .use(HeaderSettings)
+  .use(helmet())
+  .use(compression())
   .use(Ratelimitter)
   .use(logger)
   .use('/', globalRouter)
-  .use('/v1', v1Router)
   .use('/v2', v2Router)
   .get('*', (req, res) => res.sendStatus(404))
   .use(errorLogger)
