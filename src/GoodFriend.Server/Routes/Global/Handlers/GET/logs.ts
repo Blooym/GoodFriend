@@ -17,13 +17,15 @@ const showAllFiles = (req: Request, res: Response) => {
     } else {
       const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
 
-      res.send(files.map((file) => ({
-        name: file,
-        size: fs.statSync(`${LOGDIR}/${file}`).size,
-        download: `${url}?file=${file}&type=download`,
-        view: `${url}?file=${file}&type=plain`,
-        json: `${url}?file=${file}&type=json`,
-      })));
+      res.send(
+        files.map((file) => ({
+          name: file,
+          size: fs.statSync(`${LOGDIR}/${file}`).size,
+          download: `${url}?file=${file}&type=download`,
+          view: `${url}?file=${file}&type=plain`,
+          json: `${url}?file=${file}&type=json`,
+        })),
+      );
     }
   });
 };
@@ -44,21 +46,28 @@ const showLogFile = (req: Request, res: Response, logFile: string) => {
   const file = fs.readFileSync(logFile);
   let content = file.toString().split('\n').slice(0, contentLimit).join('\n');
   content = sortType === 'desc' ? content.split('\n').reverse().join('\n') : content;
-  content = contentFilter ? content.split('\n').filter((line) => line.includes(contentFilter.toString())).join('\n') : content;
+  content = contentFilter
+    ? content
+      .split('\n')
+      .filter((line) => line.includes(contentFilter.toString()))
+      .join('\n')
+    : content;
   content = content.trimEnd();
 
   // Return it as the requested type or fallback to plain text.
-  switch (returnType)
-  {
+  switch (returnType) {
     case 'json':
       res.json({
         file: req.query.file,
         size: file.length,
-        contents: content.split('\n').map((line) => (line)),
+        contents: content.split('\n').map((line) => line),
       });
       break;
     case 'download':
-      res.setHeader('Content-disposition', `attachment; filename=${req.query.file}`);
+      res.setHeader(
+        'Content-disposition',
+        `attachment; filename=${req.query.file}`,
+      );
       res.setHeader('Content-type', 'text/plain');
       res.send(content);
       break;
@@ -88,7 +97,10 @@ export default (req: Request, res: Response) => {
   const reqFile = req.query.file;
 
   // No specific file requested, show all files
-  if (!reqFile) { showAllFiles(req, res); return; }
+  if (!reqFile) {
+    showAllFiles(req, res);
+    return;
+  }
 
   // Specific file requested, fetch and validate first
   const logFile = `${LOGDIR}/${req.query.file}`;

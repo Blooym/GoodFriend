@@ -7,7 +7,8 @@
     "start": "tsc && tsc-alias && node .",
     "build": "tsc && tsc-alias",
     "watch": "tsc-watch --onSuccess && tsc-alias && node .",
-    "lint": "eslint"
+    "test": "lint-staged && tsc --noEmit",
+    "prepare": "cd ../../ && husky install ./src/GoodFriend.Server/.husky"
   },
   "dependencies": {
     "dotenv": "^16.0.1",
@@ -26,6 +27,8 @@
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "tsc-alias": "^1.7.0",
     "tsc-watch": "^5.0.3"
   }
