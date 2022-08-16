@@ -3,9 +3,9 @@ import { Router } from 'express';
 import Client from '@mtypes/Client';
 
 import logoutHandler from '@routes/v2/Handlers/PUT/logout';
-import userEventHandler from '@routes/v1/Handlers/GET/events/users';
+import userEventHandler from '@routes/v2/Handlers/GET/events/users';
 import loginHandler from '@routes/v2/Handlers/PUT/login';
-import clientsHandler from '@routes/v1/Handlers/GET/clients';
+import clientsHandler from '@routes/v2/Handlers/GET/clients';
 
 const router = Router();
 
