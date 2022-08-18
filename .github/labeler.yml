@@ -5,7 +5,7 @@ changes | ci:
   - ".github/workflows/**/*"
 
 changes | plugin:
-  - "src/GoodFriend.Plugin/**/*.cs"
+  - "src/GoodFriend.Plugin/**/*"
 
 changes | server:
-  - "src/GoodFriend.Server/**/*.cs"
+  - "src/GoodFriend.Server/**/*"
