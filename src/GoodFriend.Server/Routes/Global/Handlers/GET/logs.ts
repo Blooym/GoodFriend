@@ -16,16 +16,13 @@ const showAllFiles = (req: Request, res: Response) => {
       res.status(500).send(err);
     } else {
       const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-
-      res.send(
-        files.map((file) => ({
-          name: file,
-          size: fs.statSync(`${LOGDIR}/${file}`).size,
-          download: `${url}?file=${file}&type=download`,
-          view: `${url}?file=${file}&type=plain`,
-          json: `${url}?file=${file}&type=json`,
-        })),
-      );
+      res.send(files.map((file) => ({
+        name: file,
+        size: fs.statSync(`${LOGDIR}/${file}`).size,
+        download: `${url}?file=${file}&type=download`,
+        view: `${url}?file=${file}&type=plain`,
+        json: `${url}?file=${file}&type=json`,
+      })).filter((file) => file.name.endsWith('.log')));
     }
   });
 };

@@ -9,6 +9,6 @@ SSL/**/*.key
 SSL/**/*.crt
 
 # Logs
-log/
+logs/
 *.log
 *.out
