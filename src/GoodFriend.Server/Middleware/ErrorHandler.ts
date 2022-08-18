@@ -8,6 +8,6 @@ import { NextFunction, Request, Response } from 'express';
  * @param next The next middleware function to call.
  */
 export default (err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.sendStatus(500);
+  // res.sendStatus(500)
   next(err);
 };

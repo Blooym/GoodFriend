@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { v4 } from 'uuid';
 
-import Client from '@mtypes/Client';
+import ClientStore from '@data/ClientStore';
 
-const HEARTBEAT_INTERVAL = 30000;
+const HEARTBEAT_INTERVAL = 2000;
 const HEADERS = {
   'Content-Type': 'text/event-stream',
   'Cache-Control': 'no-cache',
@@ -11,8 +11,7 @@ const HEADERS = {
   'X-Accel-Buffering': 'no',
 };
 
-export default (req: Request, res: Response, clients: Client) => {
-  // Assign the client a unique ID and setup a heartbeat.
+export default (req: Request, res: Response, clients: ClientStore) => {
   const UUID = v4();
   const interval = setInterval(() => {
     res.write(':\n\n');
@@ -21,12 +20,11 @@ export default (req: Request, res: Response, clients: Client) => {
   // Send the client a response and add them to the list of clients.
   res.writeHead(200, HEADERS);
   res.write(':\n\n');
-  clients.push({ ID: UUID, res });
+  clients.addKey(UUID, res);
 
-  // When the connection is closed remove, dispose of resources & remove the client.
   res.on('close', () => {
     res.end();
-    clients.splice(clients.findIndex((client) => client.ID === UUID), 1);
+    clients.delKey(UUID);
     clearInterval(interval);
   });
 };
