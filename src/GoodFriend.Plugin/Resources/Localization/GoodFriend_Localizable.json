@@ -79,17 +79,25 @@
     "message": "Hide FC Members",
     "description": "TStrings.get_SettingsHideSameFC"
   },
-  "Settings.HideSameFC.Enabled": {
-    "message": "Enabled",
-    "description": "TStrings.get_SettingsHideSameFCEnabled"
-  },
-  "Settings.HideSameFC.Disabled": {
-    "message": "Disabled",
-    "description": "TStrings.get_SettingsHideSameFCDisabled"
-  },
   "Settings.HideSameFC.Tooltip": {
     "message": "When enabled, you will not be notified when a friend in your free company logs in or out.",
     "description": "TStrings.get_SettingsHideSameTCTooltip"
+  },
+  "Settings.APIEventNotifications": {
+    "message": "API Event Notifications",
+    "description": "TStrings.get_SettingsAPIEventNotifications"
+  },
+  "Settings.APIEventNotifications.Tooltip": {
+    "message": "Show toast notifications for events from the API (eg. connection errors, etc)",
+    "description": "TStrings.get_SettingsAPIEventNotificationsTooltip"
+  },
+  "Settings.Enabled": {
+    "message": "Enabled",
+    "description": "TStrings.get_SettingsEnabled"
+  },
+  "Settings.Disabled": {
+    "message": "Disabled",
+    "description": "TStrings.get_SettingsDisabled"
   },
   "Settings.NotificationType": {
     "message": "Notification Type",
@@ -136,7 +144,7 @@
     "description": "TStrings.get_SettingsSaltMode"
   },
   "Settings.SaltMode.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues",
+    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.",
     "description": "TStrings.get_SettingsSaltModeTooltip"
   },
   "Settings.APIURL": {

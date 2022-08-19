@@ -64,13 +64,27 @@ sealed public class APIClientManager : IDisposable
     ///    Event Handlers    ///
     ////////////////////////////
 
-    /// <summary> Handles the APIClient error event. </summary>
+    private bool _hasConnectedSinceError = true;
 
-    private void OnAPIClientError(Exception e) => Notifications.Show(TStrings.ConnectionError, NotificationType.Toast, ToastType.Error);
+    /// <summary> Handles the APIClient error event. </summary>
+    private void OnAPIClientError(Exception e)
+    {
+        if (_hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
+        {
+            this._hasConnectedSinceError = false;
+            Notifications.Show(TStrings.ConnectionError, NotificationType.Toast, ToastType.Error);
+        }
+    }
 
     /// <summary> Handles the APIClient connected event. </summary>
-    private void OnAPIClientConnected() => Notifications.Show(TStrings.ConnectionSuccessful, NotificationType.Toast, ToastType.Success);
-
+    private void OnAPIClientConnected()
+    {
+        if (PluginService.Configuration.ShowAPIEvents)
+        {
+            this._hasConnectedSinceError = true;
+            Notifications.Show(TStrings.ConnectionSuccessful, NotificationType.Toast, ToastType.Success);
+        }
+    }
 
 
     ////////////////////////////
@@ -181,6 +195,6 @@ sealed public class APIClientManager : IDisposable
         PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name}:{friend->HomeWorld}, notifying...");
         Notifications.ShowPreferred(data.LoggedIn ?
             string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
-            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany));
+            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
     }
 }

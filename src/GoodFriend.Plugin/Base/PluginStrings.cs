@@ -42,9 +42,11 @@ public static class TStrings
     public static string SettingsAPILogPlayer => Loc.Localize("Settings.Connection.Log.Player", "Player");
     public static string SettingsAPILogEvent => Loc.Localize("Settings.Connection.Log.Event", "Event");
     public static string SettingsHideSameFC => Loc.Localize("Settings.HideSameFC", "Hide FC Members");
-    public static string SettingsHideSameFCEnabled => Loc.Localize("Settings.HideSameFC.Enabled", "Enabled");
-    public static string SettingsHideSameFCDisabled => Loc.Localize("Settings.HideSameFC.Disabled", "Disabled");
     public static string SettingsHideSameTCTooltip => Loc.Localize("Settings.HideSameFC.Tooltip", "When enabled, you will not be notified when a friend in your free company logs in or out.");
+    public static string SettingsAPIEventNotifications => Loc.Localize("Settings.APIEventNotifications", "API Event Notifications");
+    public static string SettingsAPIEventNotificationsTooltip => Loc.Localize("Settings.APIEventNotifications.Tooltip", "Show toast notifications for events from the API (eg. connection errors, etc)");
+    public static string SettingsEnabled => Loc.Localize("Settings.Enabled", "Enabled");
+    public static string SettingsDisabled => Loc.Localize("Settings.Disabled", "Disabled");
     public static string SettingsNotificationType => Loc.Localize("Settings.NotificationType", "Notification Type");
     public static string SettingsNotificationTypeTooltip => Loc.Localize("Settings.NotificationType.Tooltip", "The place to display notifications when a friend logs in or logs out.");
     public static string SettingsLoginMessage => Loc.Localize("Settings.LoginMessage", "Login Message");
@@ -56,7 +58,7 @@ public static class TStrings
     public static string SettingsFriendshipCodeTooltip => Loc.Localize("Settings.FriendshipCode.Tooltip", "Your friend code determines which friends you send and recieve notifications with.");
     public static string SettingsShowAdvanced => Loc.Localize("Settings.ShowAdvanced", "Show Advanced Settings");
     public static string SettingsSaltMode => Loc.Localize("Settings.SaltMode", "Salt Mode");
-    public static string SettingsSaltModeTooltip => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly\nRelaxed: Validation is done using Friend Code\n\nKeep this on strict if you are not having any issues");
+    public static string SettingsSaltModeTooltip => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.");
     public static string SettingsAPIURL => Loc.Localize("Settings.APIURL", "API URL");
     public static string SettingsAPIURLTooltip => Loc.Localize("Settings.APIURL.Tooltip", "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.");
 }

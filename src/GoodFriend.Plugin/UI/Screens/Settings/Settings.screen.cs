@@ -172,16 +172,17 @@ sealed public class SettingsScreen : IScreen
         var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
         var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
         var hideSameFC = PluginService.Configuration.HideSameFC;
+        var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
         var friendshipCode = PluginService.Configuration.FriendshipCode;
 
         // Hide FC Members dropdown.
-        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC, hideSameFC ? TStrings.SettingsHideSameFCEnabled : TStrings.SettingsHideSameFCDisabled))
+        if (ImGui.BeginCombo(TStrings.SettingsHideSameFC, hideSameFC ? TStrings.SettingsEnabled : TStrings.SettingsDisabled))
         {
-            if (ImGui.Selectable(TStrings.SettingsHideSameFCEnabled, hideSameFC))
+            if (ImGui.Selectable(TStrings.SettingsEnabled, hideSameFC))
             {
                 PluginService.Configuration.HideSameFC = true;
             }
-            if (ImGui.Selectable(TStrings.SettingsHideSameFCDisabled, !hideSameFC))
+            if (ImGui.Selectable(TStrings.SettingsDisabled, !hideSameFC))
             {
                 PluginService.Configuration.HideSameFC = false;
             }
@@ -190,6 +191,24 @@ sealed public class SettingsScreen : IScreen
             ImGui.EndCombo();
         }
         Tooltips.Questionmark(TStrings.SettingsHideSameTCTooltip);
+
+
+        // Show api events dropdown.
+        if (ImGui.BeginCombo(TStrings.SettingsAPIEventNotifications, showAPIEvents ? TStrings.SettingsEnabled : TStrings.SettingsDisabled))
+        {
+            if (ImGui.Selectable(TStrings.SettingsEnabled, showAPIEvents))
+            {
+                PluginService.Configuration.ShowAPIEvents = true;
+            }
+            if (ImGui.Selectable(TStrings.SettingsDisabled, !showAPIEvents))
+            {
+                PluginService.Configuration.ShowAPIEvents = false;
+            }
+
+            PluginService.Configuration.Save();
+            ImGui.EndCombo();
+        }
+        Tooltips.Questionmark(TStrings.SettingsAPIEventNotificationsTooltip);
 
 
         // Notification type dropdown

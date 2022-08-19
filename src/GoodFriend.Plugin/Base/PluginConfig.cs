@@ -35,6 +35,9 @@ sealed public class Configuration : IPluginConfiguration
     /// <summary> Whether or not to hide notifications for the same free company. </summary>
     public bool HideSameFC { get; set; } = true;
 
+    /// <summary> Whether or not to show API events as notifications </summary>
+    public bool ShowAPIEvents { get; set; } = false;
+
 
     ///////////////////////
     // Security Settings //
