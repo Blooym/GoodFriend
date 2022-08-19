@@ -129,7 +129,7 @@ public class APIClient : IDisposable
     private Timer _reconnectTimer = new Timer(60000);
 
     /// <summary> The event handler for handling reconnection attempts. </summary>
-    private void OnTryReconnect(object sender, ElapsedEventArgs e) => this.OpenStream();
+    private void OnTryReconnect(object? sender, ElapsedEventArgs e) => this.OpenStream();
 
     /// <summary> The amount of clients connected to the API. </summary>
     public int ConnectedClients { get; private set; } = 0;
@@ -138,7 +138,7 @@ public class APIClient : IDisposable
     private Timer _clientCountTimer = new Timer(120000);
 
     /// <summary> The event handler for fetching the amount of clients connected to the API. </summary>
-    private void OnGetClientCount(object sender, ElapsedEventArgs e) { this.ConnectedClients = this.GetConnectedClients(); }
+    private void OnGetClientCount(object? sender, ElapsedEventArgs e) { this.ConnectedClients = this.GetConnectedClients(); }
 
 
     ////////////////////////////
