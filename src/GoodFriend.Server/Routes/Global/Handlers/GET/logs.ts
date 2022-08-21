@@ -76,16 +76,11 @@ const showLogFile = (req: Request, res: Response, logFile: string) => {
 };
 
 /**
- * Validates the log file path to make sure it doesn't escape the logs directory
- * or try and invalid files.
+ * Returns if the requested log file is available & valid to be accessed.
  * @param res The response object to send the response to.
  * @param logFile The full log file path to validate.
  */
-const validLogFile = (res: Response, logFile: string) => {
-  if (!path.parse(logFile).dir.endsWith(LOGDIR) || !logFile.endsWith('.log')) {
-    res.sendStatus(403);
-  }
-};
+const validLogFile = (res: Response, logFile: string) => path.parse(logFile).dir.endsWith(LOGDIR) && logFile.endsWith('.log');
 
 /**
  * Handles the GET request to the /logs endpoint.
@@ -99,11 +94,10 @@ export default (req: Request, res: Response) => {
     return;
   }
 
-  // Specific file requested, fetch and validate first
+  // If the file is valid, send it, otherwise return a 404.
   const logFile = `${LOGDIR}/${req.query.file}`;
-  validLogFile(res, logFile);
-
-  // File is valid, check if it exists and show it
-  if (fs.existsSync(logFile)) showLogFile(req, res, logFile);
-  else res.status(404).send(`File ${reqFile} not found.`);
+  if (validLogFile(res, logFile)) {
+    if (fs.existsSync(logFile)) showLogFile(req, res, logFile);
+    else res.status(404).send(`File ${reqFile} not found.`);
+  } else res.sendStatus(404);
 };

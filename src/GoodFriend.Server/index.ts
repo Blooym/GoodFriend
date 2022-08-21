@@ -8,7 +8,6 @@ import helmet from 'helmet';
 
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
-import ErrorHandler from '@middleware/ErrorHandler';
 
 import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
@@ -26,8 +25,7 @@ const app = express()
   .use('/', globalRouter)
   .use('/v2', v2Router)
   .get('*', (req, res) => res.sendStatus(404))
-  .use(errorLogger)
-  .use(ErrorHandler);
+  .use(errorLogger);
 
 // If we've got a SSL files to use, start a HTTPs server with them.
 if (SSL_KEYFILE && SSL_CERTFILE) {
