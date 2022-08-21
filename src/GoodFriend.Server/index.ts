@@ -5,6 +5,7 @@ import https from 'https';
 import http from 'http';
 import compression from 'compression';
 import helmet from 'helmet';
+import 'dotenv/config';
 
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
@@ -12,9 +13,7 @@ import { logger, errorLogger } from '@middleware/Logger';
 import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
 
-require('dotenv').config();
-
-const port = process.env.APP_PORT || 8000;
+const port = process.env.PORT || 8000;
 const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
 const app = express()

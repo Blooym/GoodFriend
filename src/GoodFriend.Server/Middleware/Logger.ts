@@ -1,9 +1,10 @@
 import winston from 'winston';
 import expressWinston from 'express-winston';
 import 'winston-daily-rotate-file';
+import 'dotenv/config';
 
-const MAX_DAYS_KEEP = '7d';
-const LOG_DIR = 'logs';
+const LOG_PATH = process.env.LOG_PATH || 'logs';
+const LOG_DAYS_TO_KEEP = process.env.LOG_DAYS_TO_KEEP || '7d';
 
 /**
  * Logs all requests to the server.
@@ -19,9 +20,9 @@ export const logger = expressWinston.logger({
       ),
     }),
     new winston.transports.DailyRotateFile({
-      filename: `${LOG_DIR}/events-%DATE%`,
+      filename: `${LOG_PATH}/events-%DATE%`,
       extension: '.log',
-      maxFiles: MAX_DAYS_KEEP,
+      maxFiles: LOG_DAYS_TO_KEEP,
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level}: ${info.message} ${info.meta.res.statusCode} ${info.meta.responseTime}ms [${info.meta.req.headers['user-agent']}]`),
@@ -37,9 +38,9 @@ export const errorLogger = expressWinston.errorLogger({
   level: 'error',
   transports: [
     new winston.transports.DailyRotateFile({
-      filename: `${LOG_DIR}/errors-%DATE%`,
+      filename: `${LOG_PATH}/errors-%DATE%`,
       extension: '.log',
-      maxFiles: MAX_DAYS_KEEP,
+      maxFiles: LOG_DAYS_TO_KEEP,
       format: winston.format.combine(
         winston.format.json(),
       ),
