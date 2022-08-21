@@ -15,7 +15,6 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "no-param-reassign" : "off",        
         "import/no-unresolved": "off",
         "brace-style": "off"
     }
