@@ -19,7 +19,7 @@ export const logger = expressWinston.logger({
       ),
     }),
     new winston.transports.DailyRotateFile({
-      filename: `${LOG_DIR}/event.log`,
+      filename: `${LOG_DIR}/events-%DATE%`,
       extension: '.log',
       maxFiles: MAX_DAYS_KEEP,
       format: winston.format.combine(
@@ -37,7 +37,7 @@ export const errorLogger = expressWinston.errorLogger({
   level: 'error',
   transports: [
     new winston.transports.DailyRotateFile({
-      filename: `${LOG_DIR}/error.log`,
+      filename: `${LOG_DIR}/errors-%DATE%`,
       extension: '.log',
       maxFiles: MAX_DAYS_KEEP,
       format: winston.format.combine(
