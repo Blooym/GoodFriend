@@ -11,18 +11,29 @@ const LOGDIR = `${process.cwd()}/logs`;
  * @param res The response object to send the response to.
  */
 const showAllFiles = (req: Request, res: Response) => {
+  // Make the dir if it doesnt exist already, this shouldn't usually happen.
+  if (!fs.existsSync(LOGDIR)) {
+    fs.mkdirSync(LOGDIR);
+  }
+
+  // Read the directory and return all files.
   fs.readdir(LOGDIR, (err, files) => {
     if (err) {
       res.status(500).send(err);
     } else {
       const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      res.send(files.map((file) => ({
+      const resp = files.map((file) => ({
         name: file,
         size: fs.statSync(`${LOGDIR}/${file}`).size,
         download: `${url}?file=${file}&type=download`,
         view: `${url}?file=${file}&type=plain`,
         json: `${url}?file=${file}&type=json`,
-      })).filter((file) => file.name.endsWith('.log')));
+      })).filter((file) => file.name.endsWith('.log'));
+
+      // Send back the response if its not null, otherwise send a message.
+      if (resp.length > 0) {
+        res.json(resp);
+      } else res.status(404).send('No log were detected.');
     }
   });
 };
