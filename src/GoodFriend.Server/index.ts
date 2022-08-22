@@ -5,17 +5,15 @@ import https from 'https';
 import http from 'http';
 import compression from 'compression';
 import helmet from 'helmet';
+import 'dotenv/config';
 
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
-import ErrorHandler from '@middleware/ErrorHandler';
 
 import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
 
-require('dotenv').config();
-
-const port = process.env.APP_PORT || 8000;
+const port = process.env.PORT || 8000;
 const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
 
 const app = express()
@@ -26,8 +24,7 @@ const app = express()
   .use('/', globalRouter)
   .use('/v2', v2Router)
   .get('*', (req, res) => res.sendStatus(404))
-  .use(errorLogger)
-  .use(ErrorHandler);
+  .use(errorLogger);
 
 // If we've got a SSL files to use, start a HTTPs server with them.
 if (SSL_KEYFILE && SSL_CERTFILE) {

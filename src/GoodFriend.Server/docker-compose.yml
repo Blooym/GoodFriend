@@ -6,13 +6,15 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - LOG_PATH=/api/logs
     build:
       dockerfile: Dockerfile
       context: .
     ports:
-      - "${DOCKER_HOST_PORT:-8000}:${APP_PORT:-8000}"
+      - "${DOCKER_HOST_PORT:-8000}:${PORT:-8000}"
     volumes:
-      - logs:/api/logs:rw
+      - logs:/api/logs
 
 volumes:
   logs:

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 
-const LOGDIR = `${process.cwd()}/logs`;
+const LOG_PATH = process.env.LOG_PATH || 'logs';
 
 /**
  * Returns all log files inside of the log directory.
@@ -11,18 +11,31 @@ const LOGDIR = `${process.cwd()}/logs`;
  * @param res The response object to send the response to.
  */
 const showAllFiles = (req: Request, res: Response) => {
-  fs.readdir(LOGDIR, (err, files) => {
+  // Make the dir if it doesnt exist already, this shouldn't usually happen.
+  if (!fs.existsSync(LOG_PATH)) {
+    fs.mkdirSync(LOG_PATH);
+  }
+
+  // Read the directory and return all files.
+  fs.readdir(LOG_PATH, (err, files) => {
     if (err) {
       res.status(500).send(err);
     } else {
       const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      res.send(files.map((file) => ({
+      const resp = files.map((file) => ({
         name: file,
-        size: fs.statSync(`${LOGDIR}/${file}`).size,
-        download: `${url}?file=${file}&type=download`,
-        view: `${url}?file=${file}&type=plain`,
-        json: `${url}?file=${file}&type=json`,
-      })).filter((file) => file.name.endsWith('.log')));
+        size: fs.statSync(`${LOG_PATH}/${file}`).size,
+        view: {
+          download: `${url}?file=${file}&type=download`,
+          plain: `${url}?file=${file}&type=plain`,
+          json: `${url}?file=${file}&type=json`,
+        },
+      })).filter((file) => file.name.endsWith('.log'));
+
+      // Send back the response if its not null, otherwise send a message.
+      if (resp.length > 0) {
+        res.json(resp);
+      } else res.status(404).send('No log were detected.');
     }
   });
 };
@@ -76,16 +89,11 @@ const showLogFile = (req: Request, res: Response, logFile: string) => {
 };
 
 /**
- * Validates the log file path to make sure it doesn't escape the logs directory
- * or try and invalid files.
+ * Returns if the requested log file is available & valid to be accessed.
  * @param res The response object to send the response to.
  * @param logFile The full log file path to validate.
  */
-const validLogFile = (res: Response, logFile: string) => {
-  if (!path.parse(logFile).dir.endsWith(LOGDIR) || !logFile.endsWith('.log')) {
-    res.sendStatus(403);
-  }
-};
+const validLogFile = (res: Response, logFile: string) => path.parse(logFile).dir.endsWith(LOG_PATH) && logFile.endsWith('.log');
 
 /**
  * Handles the GET request to the /logs endpoint.
@@ -99,11 +107,10 @@ export default (req: Request, res: Response) => {
     return;
   }
 
-  // Specific file requested, fetch and validate first
-  const logFile = `${LOGDIR}/${req.query.file}`;
-  validLogFile(res, logFile);
-
-  // File is valid, check if it exists and show it
-  if (fs.existsSync(logFile)) showLogFile(req, res, logFile);
-  else res.status(404).send(`File ${reqFile} not found.`);
+  // If the file is valid, send it, otherwise return a 404.
+  const logFile = `${LOG_PATH}/${req.query.file}`;
+  if (validLogFile(res, logFile)) {
+    if (fs.existsSync(logFile)) showLogFile(req, res, logFile);
+    else res.status(404).send(`File ${reqFile} not found.`);
+  } else res.sendStatus(404);
 };
