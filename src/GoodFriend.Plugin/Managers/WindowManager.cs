@@ -5,20 +5,28 @@ using Dalamud.Logging;
 using GoodFriend.Base;
 using GoodFriend.UI.Screens.Settings;
 
-/// <summary> Initializes and manages all windows and window-events for the plugin. </summary>
+/// <summary>
+///     Initializes and manages all windows and window-events for the plugin.
+/// </summary>
 sealed public class WindowManager : IDisposable
 {
     public readonly SettingsScreen Settings = new SettingsScreen();
 
-    /// <summary> Draws all windows for the draw event. </summary>
+    /// <summary>
+    ///     Draws all windows for the draw event.
+    /// </summary>
     private void OnDraw() => Settings.Draw();
 
 
-    /// <summary> Opens/Closes the plugin configuration screen. </summary> 
+    /// <summary>
+    ///     Opens/Closes the plugin configuration screen. 
+    /// </summary> 
     private void OnOpenConfigUI() => Settings.presenter.isVisible = !Settings.presenter.isVisible;
 
 
-    /// <summary> Initializes the WindowManager and associated resources. </summary>
+    /// <summary>
+    ///     Initializes the WindowManager and associated resources.
+    /// </summary>
     public WindowManager()
     {
         PluginLog.Debug("WindowManager: Initializing...");
@@ -30,7 +38,9 @@ sealed public class WindowManager : IDisposable
     }
 
 
-    /// <summary> Disposes of the WindowManager and associated resources. </summary>
+    /// <summary>
+    ///     Disposes of the WindowManager and associated resources.
+    /// </summary>
     public void Dispose()
     {
         PluginLog.Debug("WindowManager: Disposing...");

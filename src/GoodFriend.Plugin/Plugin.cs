@@ -6,21 +6,27 @@ using GoodFriend.Base;
 
 public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
 {
+    /// <summary> 
+    ///     The plugin name, fetched from PStrings.
+    /// </summary>
     public string Name => PStrings.pluginName;
 
+    /// <summary>
+    ///     The plugin's main entry point.
+    /// </summary>
     public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<PluginService>();
         PluginService.Initialize();
 
-#if !DEBUG
+        // #if !DEBUG
         PluginService.ResourceManager.Update();
-#endif
+        // #endif
     }
 
 
     /// <summary>
-    /// Handles disposing of all resources used by the plugin.
+    ///     Handles disposing of all resources used by the plugin.
     /// </summary>
     public void Dispose() => PluginService.Dispose();
 }

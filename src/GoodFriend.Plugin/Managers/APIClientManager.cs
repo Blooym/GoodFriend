@@ -11,7 +11,9 @@ using GoodFriend.Base;
 using GoodFriend.Utils;
 using GoodFriend.Types;
 
-/// <summary> A friend status effect that structures all stored notifications. </summary>
+/// <summary>
+///     A friend status update that structures all stored notifications.
+/// </summary>
 sealed public class FriendStatusEvent
 {
     public Guid EventID { get; set; }
@@ -21,20 +23,28 @@ sealed public class FriendStatusEvent
 }
 
 
-/// <summary> Manages an APIClient and its resources and handles events. </summary>
+/// <summary>
+///     Manages an APIClient and its resources and handles events.
+/// </summary>
 sealed public class APIClientManager : IDisposable
 {
     ////////////////////////////
     /// Properties n' Fields ///
     ////////////////////////////
 
-    /// <summary> The current player ContentID, saved on login and cleared on logout. </summary>
+    /// <summary> 
+    ///     The current player ContentID, saved on login and cleared on logout.
+    /// </summary>
     private ulong _currentContentId = ulong.MinValue;
 
-    /// <summary> THe API Client associated with the manager. </summary>
+    /// <summary> 
+    ///     The API Client associated with the manager.
+    /// </summary>
     public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration.APIUrl);
 
-    /// <summary> The ClientState associated with the manager </summary>
+    /// <summary>
+    ///     The ClientState associated with the manager
+    /// </summary>
     private readonly ClientState _clientState;
 
 
@@ -42,16 +52,24 @@ sealed public class APIClientManager : IDisposable
     ///       Event  Log       ///
     //////////////////////////////
 
-    /// <summary> A log of the last 20 friend login/logout events. </summary>
+    /// <summary>
+    ///     A log of the last 20 friend login/logout events.
+    /// </summary>
     private List<FriendStatusEvent> EventLog = new List<FriendStatusEvent>();
 
-    /// <summary> Get the event log. </summary>
+    /// <summary>
+    ///     Get the event log.
+    /// </summary>
     public List<FriendStatusEvent> GetLog() => EventLog.Reverse<FriendStatusEvent>().ToList();
 
-    /// <summary> Clear the event log. </summary>
+    /// <summary>
+    ///     Clear the event log.
+    /// </summary>
     private void ClearLog() => this.EventLog = Enumerable.Empty<FriendStatusEvent>().ToList();
 
-    /// <summary> Add an event to the event log. </summary>
+    /// <summary>
+    ///     Add an event to the event log.
+    /// </summary>
     private void AddLog(FriendStatusEvent e)
     {
         PluginLog.Verbose($"APIClientManager: Adding event {e.EventID} to the log.");
@@ -64,9 +82,15 @@ sealed public class APIClientManager : IDisposable
     ///    Event Handlers    ///
     ////////////////////////////
 
+    /// <summary>
+    ///     Stores if the API has connected since the last time an error was shown.
+    ///     If not, hide the error.
+    /// </summary>
     private bool _hasConnectedSinceError = true;
 
-    /// <summary> Handles the APIClient error event. </summary>
+    /// <summary>
+    ///     Handles the APIClient error event.
+    /// </summary>
     private void OnAPIClientError(Exception e)
     {
         if (_hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
@@ -76,7 +100,9 @@ sealed public class APIClientManager : IDisposable
         }
     }
 
-    /// <summary> Handles the APIClient connected event. </summary>
+    /// <summary> 
+    ///     Handles the APIClient connected event.
+    /// </summary>
     private void OnAPIClientConnected()
     {
         if (PluginService.Configuration.ShowAPIEvents)
@@ -91,7 +117,9 @@ sealed public class APIClientManager : IDisposable
     /// Construct n' Dispose ///
     ////////////////////////////
 
-    /// <summary> Instantiates a new APINotifier </summary>
+    /// <summary>
+    ///     Instantiates a new APINotifier. 
+    /// </summary>
     public APIClientManager(ClientState clientState)
     {
         PluginLog.Debug("APIClientManager: Initializing...");
@@ -115,7 +143,9 @@ sealed public class APIClientManager : IDisposable
         PluginLog.Debug("APIClientManager: Successfully initialized.");
     }
 
-    /// <summary> Disposes of the APINotifier and its resources. </summary>
+    /// <summary>
+    ///     Disposes of the APINotifier and its resources.
+    /// </summary>
     public void Dispose()
     {
         this.APIClient.Dispose();
@@ -129,7 +159,9 @@ sealed public class APIClientManager : IDisposable
     ///    Event Handlers    /// 
     ////////////////////////////
 
-    /// <summary> Handles the login event by opening the APIClient stream and sending a login  </summary>
+    /// <summary>
+    ///     Handles the login event by opening the APIClient stream and sending a login.
+    /// </summary>
     private unsafe void OnLogin(object? sender, EventArgs e)
     {
         if (!this.APIClient.IsConnected) this.APIClient.OpenStream();
@@ -145,7 +177,9 @@ sealed public class APIClientManager : IDisposable
     }
 
 
-    /// <summary> Handles the logout event by closing the APIClient stream and sending a logout </summary>
+    /// <summary>
+    ///     Handles the logout event by closing the APIClient stream and sending a logout.
+    /// </summary>
     private void OnLogout(object? sender, EventArgs e)
     {
         if (this.APIClient.IsConnected) this.APIClient.CloseStream();
@@ -155,7 +189,9 @@ sealed public class APIClientManager : IDisposable
     }
 
 
-    /// <summary> Handles data recieved from the APIClient. </summary> 
+    /// <summary>
+    ///     Handles data recieved from the APIClient.
+    /// </summary> 
     private unsafe void OnDataRecieved(UpdatePayload data)
     {
         // Generate a unique ID for this event so we can identify it in logs.

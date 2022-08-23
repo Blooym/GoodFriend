@@ -29,7 +29,7 @@ using System;
 
 
 /// <summary>
-/// The class containing friend list functionality
+///     The class containing friend list functionality
 /// </summary>
 public static class FriendList
 {

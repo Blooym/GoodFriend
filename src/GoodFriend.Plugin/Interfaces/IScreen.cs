@@ -2,7 +2,9 @@ namespace GoodFriend.Interfaces;
 
 using System;
 
-/// <summary> Specifies the implementation necessary for a screen </summary>
+/// <summary>
+///     Provides a common interface that screens must implement for the window manager.
+/// </summary>
 public interface IScreen : IDisposable
 {
     void Draw();

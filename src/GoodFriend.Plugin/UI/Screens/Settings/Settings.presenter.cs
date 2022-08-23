@@ -28,13 +28,19 @@ sealed public class SettingsPresenter : IDisposable
     /// Reconnection  Methods ///
     /////////////////////////////
 
-    /// <summary> The cooldown before a user can reconnect to the API. </summary>
+    /// <summary>
+    ///     The cooldown before a user can reconnect to the API.
+    /// </summary>
     private int _reconnectCooldown = 30;
 
-    /// <summary> If the reconnect cooldown is current active or not. </summary>
+    /// <summary>
+    ///     If the reconnect cooldown is current active or not.
+    /// </summary>
     public bool reconnectCooldownActive = false;
 
-    /// <summary> Attempts to reconnect to the API. </summary>
+    /// <summary>
+    ///     Attempts to reconnect to the API.
+    /// </summary>
     public void ReconnectWithCooldown()
     {
         if (this.reconnectCooldownActive || PluginService.APIClientManager.APIClient.IsConnected) return;
@@ -54,21 +60,31 @@ sealed public class SettingsPresenter : IDisposable
     ///     Other Methods     ///
     /////////////////////////////
 
-    /// <summary> Gets the current API client count </summary>
+    /// <summary> 
+    /// Gets the current API client count.
+    /// </summary>
     public int APIClients => PluginService.APIClientManager.APIClient.ConnectedClients;
 
-    /// <summary> Gets the current API connection status </summary>
+    /// <summary>
+    ///     Gets the current API connection status.
+    /// </summary>
     public bool APIIsConnected => PluginService.APIClientManager.APIClient.IsConnected;
 
-    /// <summary> Should the reconnect button be disabled or not. </summary>
+    /// <summary>
+    ///     Should the reconnect button be disabled or not.
+    /// </summary>
     public bool ReconnectButtonDisabled => this.reconnectCooldownActive || PluginService.ClientState.LocalPlayer == null || this.APIIsConnected;
 
 
 #if DEBUG
-    /// <summary> The dialog manager for the settings window. </summary>
+    /// <summary>
+    ///     The dialog manager for the settings window.
+    /// </summary>
     public FileDialogManager dialogManager = new FileDialogManager();
 
-    /// <summary> The callback for when the user selects an export directory </summary>
+    /// <summary>
+    ///     The callback for when the user selects an export directory. 
+    /// </summary>
     public void OnDirectoryPicked(bool success, string path)
     {
         if (!success) return;

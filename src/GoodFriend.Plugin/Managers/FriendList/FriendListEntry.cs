@@ -29,7 +29,7 @@ using System;
 using System.Runtime.InteropServices;
 
 /// <summary>
-/// An entry in a player's friend list.
+///     An entry in a player's friend list.
 /// </summary>
 [StructLayout(LayoutKind.Explicit, Size = Size)]
 public unsafe struct FriendListEntry

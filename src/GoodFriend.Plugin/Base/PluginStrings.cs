@@ -4,24 +4,56 @@ using System;
 using CheapLoc;
 
 
-/// <summary> A collection of read-only strings used by the plugin. </summary>
+/// <summary> 
+///     A collection of read-only strings used by the plugin.
+/// </summary>
 public static class PStrings
 {
+    /// <summary> 
+    ///    This is the name that will be shown in all UI elements, does not change InternalName.
+    /// </summary>
     public static readonly string pluginName = "Good Friend";
 
-    public static readonly string pluginRepository = "https://github.com/BitsOfAByte/GoodFriend/";
+    /// <summary>
+    ///     The repository to linked to this plugin.
+    /// </summary>
+    public static readonly string repoUrl = "https://github.com/BitsOfAByte/GoodFriend/";
 
-    public static readonly string resourcePath = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
+    /// <summary>
+    ///     The production branch of the repository.
+    /// </summary>
+    public static readonly string repoBranch = "main";
 
-    public static readonly string localizationPath = resourcePath + "Localization\\";
+    /// <summary>
+    ///     The resources directory relative to the base of the repository.
+    /// </summary>
+    internal static readonly string repoResourcesDir = "src/GoodFriend.Plugin/Resources/";
 
+    /// <summary>
+    ///     The resources directory relative to the base of the repository.
+    /// </summary>
+    public static readonly string pluginResourcesDir = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
+
+    /// <summary>
+    ///     The path to the plugin's resources folder with trailing slashes, relative to the plugin assembly location with trailing slashes.
+    /// </summary>
+    public static readonly string pluginlocalizationDir = pluginResourcesDir + "Localization\\";
+
+    /// <summary>
+    ///     The support button URL.
+    /// </summary>
     public static readonly string supportButtonUrl = "https://github.com/sponsors/BitsOfAByte";
 
+    /// <summary>
+    ///     The default API url to use.
+    /// </summary>
     public static readonly Uri defaultAPIUrl = new Uri("https://aether.bitsofabyte.dev/");
 }
 
 
-/// <summary> A collection of strings used for user facing messages and are translated by the plugin. </summary>
+/// <summary> 
+///     A collection translatable strings.
+/// </summary>
 public static class TStrings
 {
     public static string ConnectionSuccessful => Loc.Localize("Connection.Successful", "Successfully connected to the API.");

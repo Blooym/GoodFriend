@@ -35,7 +35,9 @@ sealed internal class PluginService
     ///  Config  Methods ///
     ////////////////////////
 
-    /// <summary> Initializes the service class. </summary>
+    /// <summary>
+    ///     Initializes the service class.
+    /// </summary>
     internal static void Initialize()
     {
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -44,7 +46,9 @@ sealed internal class PluginService
         APIClientManager = new APIClientManager(ClientState);
     }
 
-    /// <summary> Disposes of the service class. </summary>
+    /// <summary>
+    ///     Disposes of the service class.
+    /// </summary>
     internal static void Dispose()
     {
         WindowManager.Dispose();

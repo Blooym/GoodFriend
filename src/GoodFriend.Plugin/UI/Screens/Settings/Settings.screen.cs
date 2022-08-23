@@ -11,7 +11,6 @@ using GoodFriend.Managers;
 
 sealed public class SettingsScreen : IScreen
 {
-    /// <summary> The associated presenter for this screen. </summary>
     public SettingsPresenter presenter = new SettingsPresenter();
 
     public void Draw() { if (!this.presenter.isVisible) return; this.DrawRoot(); }
@@ -24,7 +23,9 @@ sealed public class SettingsScreen : IScreen
     ///      Core Windows     ///
     /////////////////////////////
 
-    /// <summary> Draws all elements associated with the root of the screen. </summary>
+    /// <summary>
+    ///     Draws all elements associated with the root of the screen.
+    /// </summary>
     private void DrawRoot()
     {
         ImGui.SetNextWindowSize(new Vector2(600, 350), ImGuiCond.FirstUseEver);
@@ -46,7 +47,9 @@ sealed public class SettingsScreen : IScreen
     }
 
 
-    /// <summary> Draws the configuration child tab. </summary>
+    /// <summary>
+    ///     Draws the configuration child tab.
+    /// </summary>
     private void DrawSettingsTab()
     {
         if (ImGui.BeginTabItem(TStrings.SettingsTabSettings))
@@ -58,7 +61,9 @@ sealed public class SettingsScreen : IScreen
     }
 
 
-    /// <summary> Draws the connection child tab. </summary>
+    /// <summary>
+    ///     Draws the connection child tab.
+    /// </summary>
     private void DrawConnectionTab()
     {
         if (ImGui.BeginTabItem(TStrings.SettingsTabConnection))
@@ -97,7 +102,9 @@ sealed public class SettingsScreen : IScreen
 
 
 #if DEBUG
-    /// <summary> Draws the debug child window </summary>
+    /// <summary>
+    ///     Draws the debug child window.
+    /// </summary>
     private unsafe void DrawDebugWindow()
     {
         if (ImGui.BeginTabItem(TStrings.SettingsTabDebug))
@@ -127,7 +134,9 @@ sealed public class SettingsScreen : IScreen
     ///     Sub-Components    ///
     /////////////////////////////
 
-    /// <summary> Draws the event log table </summary>
+    /// <summary> 
+    ///     Draws the event log table.
+    /// </summary>
     private void DrawEventTable()
     {
         try
@@ -160,11 +169,15 @@ sealed public class SettingsScreen : IScreen
     }
 
 
-    /// <summary> Should advanced settings be drawn? </summary>
+    /// <summary>
+    ///     Should advanced settings be drawn? 
+    /// </summary>
     private bool _showAdvanced = false;
 
 
-    /// <summary> Draws the normal settings </summary>
+    /// <summary>
+    ///     Draws the normal settings. 
+    /// </summary>
     private void DrawNormSettings()
     {
         var showAdvanced = this._showAdvanced;

@@ -23,19 +23,29 @@ sealed public class Configuration : IPluginConfiguration
     // Generic  Settings //
     ///////////////////////
 
-    /// <summary> The notification type to use for friend notifications. </summary>
+    /// <summary>
+    ///     The notification type to use for friend notifications.
+    /// </summary>
     public NotificationType NotificationType { get; set; } = NotificationType.Chat;
 
-    /// <summary> The message to display when a friend logs in. </summary>
+    /// <summary>
+    ///     The message to display when a friend logs in.
+    /// </summary>
     public string FriendLoggedInMessage { get; set; } = Loc.Localize("UI.Settings.FriendLoggedInMessage", "{0} has logged in.");
 
-    /// <summary> The message to display when a friend logs out. </summary>
+    /// <summary>
+    ///     The message to display when a friend logs out.
+    /// </summary>
     public string FriendLoggedOutMessage { get; set; } = Loc.Localize("Config.FriendLoggedOutMessage", "{0} has logged out.");
 
-    /// <summary> Whether or not to hide notifications for the same free company. </summary>
+    /// <summary> 
+    ///     Whether or not to hide notifications for the same free company.
+    /// </summary>
     public bool HideSameFC { get; set; } = true;
 
-    /// <summary> Whether or not to show API events as notifications </summary>
+    /// <summary>
+    ///     Whether or not to show API events as notifications.
+    /// </summary>
     public bool ShowAPIEvents { get; set; } = false;
 
 
@@ -43,13 +53,19 @@ sealed public class Configuration : IPluginConfiguration
     // Security Settings //
     ///////////////////////
 
-    /// <summary> The "salt" to use when hashing the ContentIDs of players. </summary>
+    /// <summary> 
+    ///     The "salt" to use when hashing the ContentIDs of players.
+    /// </summary>
     public string FriendshipCode { get; set; } = "";
 
-    /// <summary> The salt method to use when hashing </summary>
+    /// <summary>
+    ///     The salt method to use when hashing.
+    /// </summary>
     public SaltMethods SaltMethod { get; set; } = SaltMethods.Strict;
 
-    /// <summary> The API to communicate with </summary>
+    /// <summary>
+    ///     The API to communicate with.
+    /// </summary>
     public Uri APIUrl { get; set; } = PStrings.defaultAPIUrl;
 
 
@@ -57,9 +73,13 @@ sealed public class Configuration : IPluginConfiguration
     //      Methods      //
     ///////////////////////
 
-    /// <summary> Saves the current configuration (and any modifications) to the config file. </summary>
+    /// <summary>
+    ///     Saves the current configuration (and any modifications) to the config file.
+    /// </summary>
     public void Save() => PluginService.PluginInterface.SavePluginConfig(this);
 
-    /// <summary> Resets the API URL to the default and saves. </summary>
+    /// <summary>
+    ///     Resets the API URL to the default and saves.
+    /// </summary>
     public void ResetApiUrl() { APIUrl = PStrings.defaultAPIUrl; Save(); }
 }
