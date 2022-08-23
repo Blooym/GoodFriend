@@ -15,7 +15,9 @@ public enum NotificationType
 [Serializable]
 sealed public class Configuration : IPluginConfiguration
 {
-    /// <summary>  The current configuration version, incremented on breaking changes. </summary>
+    /// <summary>
+    ///     The current configuration version, incremented on breaking changes.
+    /// </summary>
     public int Version { get; set; } = 0;
 
 
