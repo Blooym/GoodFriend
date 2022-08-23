@@ -1,13 +1,9 @@
 {
   "Author": "BitsOfAByte",
   "Name": "Good Friend",
+  "InternalName": "GoodFriend",
   "Punchline": "Friend login & logout notifications between GoodFriend users",
   "Description": "Instant friend login/logout notifications with other friends using the plugin. Provides customisable messages & notification display settings. Concerned about privacy or want to only send & recieve notifications with certain friends? Use a friendship code to only notify those friends of your status changes.",
-  "InternalName": "GoodFriend",
-  "LoadPriority": 0,
-  "DalamudApiLevel": 6,
-  "AssemblyVersion": "1.1.7.0",
   "RepoUrl": "https://github.com/BitsOfAByte/GoodFriend",
-  "ApplicableVersion": "any",
   "Tags": ["Friends", "Notification"]
 }
