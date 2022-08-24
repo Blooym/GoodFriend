@@ -6,8 +6,6 @@ services:
     restart: always
     env_file:
       - .env
-    environment:
-      - LOG_PATH=/api/logs
     build:
       dockerfile: Dockerfile
       context: .

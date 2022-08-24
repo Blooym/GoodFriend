@@ -3,7 +3,7 @@ import expressWinston from 'express-winston';
 import 'winston-daily-rotate-file';
 import 'dotenv/config';
 
-const LOG_PATH = process.env.LOG_PATH || 'logs';
+const LOG_PATH = 'logs';
 const LOG_DAYS_TO_KEEP = process.env.LOG_DAYS_TO_KEEP || '7d';
 
 /**

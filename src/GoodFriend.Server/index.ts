@@ -14,7 +14,7 @@ import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
 
 const port = process.env.PORT || 8000;
-const { SSL_KEYFILE, SSL_CERTFILE, NODE_ENV } = process.env;
+const { SSL_KEYFILE, SSL_CERTFILE } = process.env;
 
 const app = express()
   .use(helmet())
@@ -26,7 +26,7 @@ const app = express()
   .get('*', (req, res) => res.sendStatus(404))
   .use(errorLogger);
 
-// If we've got a SSL files to use, start a HTTPs server with them.
+// If there is an SSL keyfile and certfile set, use HTTPS.
 if (SSL_KEYFILE && SSL_CERTFILE) {
   const key = fs.readFileSync(SSL_KEYFILE);
   const cert = fs.readFileSync(SSL_CERTFILE);
@@ -34,8 +34,5 @@ if (SSL_KEYFILE && SSL_CERTFILE) {
   https.createServer(credentials, app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); });
 }
 
-// If we're in production with no SSL files, start a HTTPs and let the host handle it.
-else if (NODE_ENV === 'production') { https.createServer(app).listen(port, () => { console.log(`[HTTPS] Listening on port ${port}`); }); }
-
-// Otherwise, start a HTTP server.
+// Otherwise, start an insecure server and allow the SSL connection to be handled elsewhere.
 else { http.createServer(app).listen(port, () => { console.log(`[HTTP] Listening on port ${port}`); }); }
