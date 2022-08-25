@@ -94,9 +94,9 @@ sealed public class SettingsScreen : IScreen
                 ImGui.BeginDisabled(this.presenter.ReconnectButtonDisabled);
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsAPITryReconnect)) this.presenter.ReconnectWithCooldown();
+                ImGui.EndDisabled();
                 ImGui.SameLine();
                 this.DrawStatusButton();
-                ImGui.EndDisabled();
             }
 
             ImGui.EndChild();
