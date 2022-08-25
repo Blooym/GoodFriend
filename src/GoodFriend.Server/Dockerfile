@@ -2,7 +2,7 @@
 # -------------------
 # --  Build Stage  --
 # -------------------
-FROM node:alpine as build
+FROM node:lts-alpine as build
 WORKDIR /build
 
 # Install dev dependencies and install them.
@@ -18,7 +18,7 @@ RUN ["yarn", "build"]
 # -------------------
 # -- Runtime Stage --
 # -------------------
-FROM node:alpine as runtime
+FROM node:lts-alpine as runtime
 WORKDIR /app
 
 # Install production dependencies.
