@@ -26,6 +26,9 @@ const app = express()
   .get('*', (req, res) => res.sendStatus(404))
   .use(errorLogger);
 
+// if TRUST_PROXY is set, trust proxies.
+if (process.env.TRUST_PROXY) app.set('trust proxy', true);
+
 // If there is an SSL keyfile and certfile set, use HTTPS.
 if (SSL_KEYFILE && SSL_CERTFILE) {
   const key = fs.readFileSync(SSL_KEYFILE);
