@@ -31,6 +31,10 @@
     "message": "Donate / Support",
     "description": "TStrings.get_SettingsSupportText"
   },
+  "Settings.ViewStatus": {
+    "message": "View Status",
+    "description": "TStrings.get_SettingsViewStatusText"
+  },
   "Settings.Connection.APIConnected": {
     "message": "You are connected to the API and recieving events",
     "description": "TStrings.get_SettingsAPIConnected"

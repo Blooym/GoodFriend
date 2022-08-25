@@ -77,6 +77,8 @@ sealed public class SettingsScreen : IScreen
                 Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients));
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
+                ImGui.SameLine();
+                this.DrawStatusButton();
                 ImGui.Dummy(new Vector2(0, 15));
                 this.DrawEventTable();
             }
@@ -92,6 +94,8 @@ sealed public class SettingsScreen : IScreen
                 ImGui.BeginDisabled(this.presenter.ReconnectButtonDisabled);
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsAPITryReconnect)) this.presenter.ReconnectWithCooldown();
+                ImGui.SameLine();
+                this.DrawStatusButton();
                 ImGui.EndDisabled();
             }
 
@@ -323,5 +327,13 @@ sealed public class SettingsScreen : IScreen
             else { PluginService.Configuration.ResetApiUrl(); }
         }
         Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip);
+    }
+
+    private void DrawStatusButton()
+    {
+        if (PluginService.Configuration.APIUrl == PStrings.defaultAPIUrl && PStrings.statusPageUrl != string.Empty)
+        {
+            if (ImGui.Button(TStrings.SettingsViewStatusText)) Common.OpenLink(PStrings.statusPageUrl);
+        }
     }
 }
