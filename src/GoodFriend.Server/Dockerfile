@@ -1,34 +1,42 @@
-FROM node:alpine
 
-# Setup work directory for the app.
-ENV WORKDIR /api
-WORKDIR ${WORKDIR}
+# -------------------
+# --  Build Stage  --
+# -------------------
+FROM node:alpine as build
+WORKDIR /build
 
-# Copy dependency files and install dependencies. 
+# Install dev dependencies and install them.
 COPY ["package.json", "yarn.lock", "./"]
-RUN yarn
+RUN yarn install
 
-# Copy app files run build.
+# Copy app files and build.
 COPY . .
 RUN ["yarn", "build"]
 
-# Remove all non=production files.
-RUN ["rm", "-rf", "node_modules"]
-RUN ["find", ".", "-type", "f", "-name", "*.ts", "-delete"]
-RUN ["find", ".", "-type", "d", "-empty", "-delete"]
 
-# Reinstall dependencies in production mode.
+
+# -------------------
+# -- Runtime Stage --
+# -------------------
+FROM node:alpine as runtime
+WORKDIR /app
+
+# Install production dependencies.
+COPY ["package.json", "yarn.lock", "./"]
 RUN ["yarn", "--production"]
-RUN ["rm", "tsconfig.json", "yarn.lock"]
 
-# Create a user for the container.
+# Copy over build files from build stage and environment files.
+COPY --from=build /build/dist .
+COPY .env .
+
+# Create a user and group for the app.
 ENV USER prod
 RUN adduser --disabled-password --gecos "" -H ${USER}
 
 # Give the user access to the workdir and lock down permissions.
-RUN chmod -R 550 ${WORKDIR}
-RUN mkdir -p ${WORKDIR}/logs -m 777
-RUN chown -R ${USER}:${USER} ${WORKDIR}
+RUN chmod -R 550 .
+RUN mkdir -p ./logs -m 777
+RUN chown -R ${USER}:${USER} .
 
 # Remove chmod/chown to prevent permission overriding.
 RUN rm /bin/chmod /bin/chown

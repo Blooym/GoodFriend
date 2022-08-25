@@ -2,14 +2,3 @@
 node_modules/
 dist/
 logs/
-__tests__/
-
-# Other Unwanted Files
-**/*.md
-**/*.log
-**/*.git
-**/*.example
-**/*.out
-**/**Dockerfile
-**/**docker-compose.yml
-**/**.sh
