@@ -2,22 +2,21 @@ namespace GoodFriend.UI.Screens.Settings;
 
 using System;
 using System.Numerics;
+using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using GoodFriend.Base;
 using GoodFriend.Utils;
-using GoodFriend.Interfaces;
 using GoodFriend.UI.Components;
 using GoodFriend.Managers;
 
-sealed public class SettingsScreen : IScreen
+sealed public class SettingsScreen : Window, IDisposable
 {
     public SettingsPresenter presenter = new SettingsPresenter();
 
-    public void Draw() { if (!this.presenter.isVisible) return; this.DrawRoot(); }
-    public void Show() => presenter.isVisible = true;
-    public void Hide() => presenter.isVisible = false;
-    public void Dispose() => this.presenter.Dispose();
+    public SettingsScreen() : base($"{PStrings.pluginName}", ImGuiWindowFlags.NoResize)
+    { Size = new Vector2(600, 350); SizeCondition = ImGuiCond.FirstUseEver; RespectCloseHotkey = true; }
 
+    public void Dispose() => this.presenter.Dispose();
 
     /////////////////////////////
     ///      Core Windows     ///
@@ -26,26 +25,20 @@ sealed public class SettingsScreen : IScreen
     /// <summary>
     ///     Draws all elements associated with the root of the screen.
     /// </summary>
-    private void DrawRoot()
+    public override void Draw()
     {
-        ImGui.SetNextWindowSize(new Vector2(600, 350), ImGuiCond.FirstUseEver);
-        if (ImGui.Begin(PStrings.pluginName, ref this.presenter.isVisible, ImGuiWindowFlags.NoResize))
+        if (ImGui.BeginTabBar("##TabBar"))
         {
-            if (ImGui.BeginTabBar("##TabBar"))
-            {
-
-                this.DrawSettingsTab();
-                this.DrawConnectionTab();
+            this.DrawSettingsTab();
+            this.DrawConnectionTab();
 #if DEBUG
-                this.DrawDebugWindow();
+            this.DrawDebugWindow();
 #endif
-                ImGui.EndTabBar();
-            }
-
-            ImGui.End();
+            ImGui.EndTabBar();
         }
-    }
 
+        ImGui.End();
+    }
 
     /// <summary>
     ///     Draws the configuration child tab.
@@ -59,7 +52,6 @@ sealed public class SettingsScreen : IScreen
             ImGui.EndTabItem();
         }
     }
-
 
     /// <summary>
     ///     Draws the connection child tab.
@@ -172,12 +164,10 @@ sealed public class SettingsScreen : IScreen
         catch { }
     }
 
-
     /// <summary>
     ///     Should advanced settings be drawn? 
     /// </summary>
     private bool _showAdvanced = false;
-
 
     /// <summary>
     ///     Draws the normal settings. 
@@ -290,8 +280,9 @@ sealed public class SettingsScreen : IScreen
         if (ImGui.Checkbox(TStrings.SettingsShowAdvanced, ref showAdvanced)) this._showAdvanced = showAdvanced;
     }
 
-
-    /// <summary> Draws the advanced settings </summary>
+    /// <summary>
+    ///     Draws the advanced settings.
+    /// </summary>
     private void DrawAdvancedSettings()
     {
         var APIUrl = PluginService.Configuration.APIUrl.ToString();

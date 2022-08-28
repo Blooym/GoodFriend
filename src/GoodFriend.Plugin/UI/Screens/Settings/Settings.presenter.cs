@@ -14,8 +14,6 @@ sealed public class SettingsPresenter : IDisposable
 {
     public void Dispose() { }
 
-    public bool isVisible = false;
-
 
     /////////////////////////////
     ///   APIClient Log Data  ///
