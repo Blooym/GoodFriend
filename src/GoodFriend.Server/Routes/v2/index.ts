@@ -18,3 +18,4 @@ router.get('/clients', (req, res) => clientsHandler(req, res, sseClients));
 router.get('/events/users', (req, res) => userEventHandler(req, res, sseClients));
 
 export default router;
+export { sseClients };
