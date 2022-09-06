@@ -2,7 +2,6 @@ namespace GoodFriend.Base;
 
 using System;
 using Dalamud.Configuration;
-using CheapLoc;
 using GoodFriend.Utils;
 
 public enum NotificationType
@@ -33,12 +32,12 @@ sealed public class Configuration : IPluginConfiguration
     /// <summary>
     ///     The message to display when a friend logs in.
     /// </summary>
-    public string FriendLoggedInMessage { get; set; } = Loc.Localize("UI.Settings.FriendLoggedInMessage", "{0} has logged in.");
+    public string FriendLoggedInMessage { get; set; } = "{0} has logged in.";
 
     /// <summary>
     ///     The message to display when a friend logs out.
     /// </summary>
-    public string FriendLoggedOutMessage { get; set; } = Loc.Localize("Config.FriendLoggedOutMessage", "{0} has logged out.");
+    public string FriendLoggedOutMessage { get; set; } = "{0} has logged out.";
 
     /// <summary> 
     ///     Whether or not to hide notifications for the same free company.

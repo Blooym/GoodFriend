@@ -1,8 +1,4 @@
 {
-  "UI.Settings.FriendLoggedInMessage": {
-    "message": "{0} has logged in.",
-    "description": "Configuration..ctor"
-  },
   "Config.FriendLoggedOutMessage": {
     "message": "{0} has logged out.",
     "description": "Configuration..ctor"
