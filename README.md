@@ -66,4 +66,4 @@ Contributions are welcome for the plugin as long as they remain in-scope and fol
 If you would like to setup a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool which will automatically handle installing all the required dependencies for you and deploy a development API to use to test the plugin against.
 
 ### Translation & Localizations
-If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crowdin.com/project/goodfriend).
+If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend).
