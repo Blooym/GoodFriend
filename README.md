@@ -8,6 +8,7 @@ A server/plugin tool for providing friend notifications to players in-game witho
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
 [![Online Users](https://img.shields.io/badge/dynamic/json?url=https://aether.bitsofabyte.dev/v2/clients&label=API%20Online%20Users&query=clients&colour=green)](https://github.com/BitsOfAByte/GoodFriend)
+[![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
 [![Latest Release](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Release)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
 [![Latest Preview](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=orange&include_prereleases&label=Testing)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
 
@@ -59,6 +60,10 @@ Security and privacy was greatly considered during design and as such both the p
 
 ## Contributions
 
+### Code Changes
 Contributions are welcome for the plugin as long as they remain in-scope and follow the Dalamud rules for submission. It is preferred you open an issue beforehand if you wish to work on something.
 
 If you would like to setup a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool which will automatically handle installing all the required dependencies for you and deploy a development API to use to test the plugin against.
+
+### Translation & Localizations
+If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crowdin.com/project/goodfriend).
