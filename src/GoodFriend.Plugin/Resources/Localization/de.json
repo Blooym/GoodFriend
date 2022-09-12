@@ -1,158 +1,158 @@
 {
   "Config.FriendLoggedOutMessage": {
-    "message": "{0} has logged out.",
+    "message": "{0} hat sich ausgeloggt.",
     "description": "Configuration..ctor"
   },
   "Connection.Successful": {
-    "message": "Successfully connected to the API.",
+    "message": "Erfolgreich mit der API verbunden.",
     "description": "TStrings.get_ConnectionSuccessful"
   },
   "Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
+    "message": "Beim Verbinden mit der API ist ein Fehler aufgetreten.",
     "description": "TStrings.get_ConnectionError"
   },
   "Settings.Tab.Settings": {
-    "message": "Settings",
+    "message": "Einstellungen",
     "description": "TStrings.get_SettingsTabSettings"
   },
   "Settings.Tab.Connection": {
-    "message": "Connection",
+    "message": "Verbindung",
     "description": "TStrings.get_SettingsTabConnection"
   },
   "Settings.Tab.Debug": {
-    "message": "Debug",
+    "message": "Debuggen",
     "description": "TStrings.get_SettingsTabDebug"
   },
   "Settings.Support": {
-    "message": "Donate / Support",
+    "message": "Spenden / Unterstützung",
     "description": "TStrings.get_SettingsSupportText"
   },
   "Settings.ViewStatus": {
-    "message": "View Status",
+    "message": "Anzeigestatus",
     "description": "TStrings.get_SettingsViewStatusText"
   },
   "Settings.Connection.APIConnected": {
-    "message": "You are connected to the API and recieving events",
+    "message": "Du bist mit der API verbunden und empfängst Ereignisse.",
     "description": "TStrings.get_SettingsAPIConnected"
   },
   "Settings.Connection.APIOnlineUsers": {
-    "message": "Online Users: {0}",
+    "message": "Benutzer Online: {0}",
     "description": "TStrings.SettingsAPIOnlineUsers"
   },
   "Settings.Connection.APIDisconnected": {
-    "message": "You are not connected to the API are not recieving events.",
+    "message": "Du bist nicht der API verbunden und empfängst keine Ereignisse.",
     "description": "TStrings.get_SettingsAPIDisconnected"
   },
   "Settings.Connection.APIDisconnectedDesc": {
-    "message": "You should be automatically reconnected when the API becomes available, if you wish to reconnect manually you can try use the button below. For more information about why you're not connected, check /xllog",
+    "message": "Du solltest automatisch Wiederverbunden werden, sobald die API verfügbar ist. Wenn Du die Verbindung manuell wiederherstellen möchtest, kannst Du das über die Schaltfläche unten versuchen. Weitere Informationen dazu, warum Du nicht verbunden bist, findest Du im Chat mithilfe des Kommandos /xllog",
     "description": "TStrings.get_SettingsAPIDisconnectedDesc"
   },
   "Settings.Connection.TryReconnect": {
-    "message": "Attempt to reconnect",
+    "message": "Erneut versuchen zu verbinden",
     "description": "TStrings.get_SettingsAPITryReconnect"
   },
   "Settings.Connection.NotLoggedIn": {
-    "message": "You must log in to a character to connect to the API",
+    "message": "Du musst dich mit einem Charakter einloggen, um dich mit der API zu verbinden.",
     "description": "TStrings.get_SettingsAPINotLoggedIn"
   },
   "Settings.Connection.Log": {
-    "message": "Event Log",
+    "message": "Ereignisprotokoll",
     "description": "TStrings.get_SettingsAPILogTitle"
   },
   "Settings.Connections.Log.Desc": {
-    "message": "You will see friend events in the log below when you recieve them.",
+    "message": "Du wirst Ereignisse für Freunde im Protokoll unten sehen, wenn Du welche erhälst.",
     "description": "TStrings.get_SettingsAPILogDesc"
   },
   "Settings.Connection.Log.Time": {
-    "message": "Time",
+    "message": "Zeit",
     "description": "TStrings.get_SettingsAPILogTime"
   },
   "Settings.Connection.Log.Player": {
-    "message": "Player",
+    "message": "Spieler",
     "description": "TStrings.get_SettingsAPILogPlayer"
   },
   "Settings.Connection.Log.Event": {
-    "message": "Event",
+    "message": "Ereignis",
     "description": "TStrings.get_SettingsAPILogEvent"
   },
   "Settings.HideSameFC": {
-    "message": "Hide FC Members",
+    "message": "FG-Mitglieder ausblenden",
     "description": "TStrings.get_SettingsHideSameFC"
   },
   "Settings.HideSameFC.Tooltip": {
-    "message": "When enabled, you will not be notified when a friend in your free company logs in or out.",
+    "message": "Wenn aktiviert, wirst Du nicht benachrichtigt, wenn ein Freund aus deiner Freien Gesellschaft ein- oder ausloggt.",
     "description": "TStrings.get_SettingsHideSameTCTooltip"
   },
   "Settings.APIEventNotifications": {
-    "message": "API Event Notifications",
+    "message": "API-Ereignisbenachrichtigungen",
     "description": "TStrings.get_SettingsAPIEventNotifications"
   },
   "Settings.APIEventNotifications.Tooltip": {
-    "message": "Show toast notifications for events from the API (eg. connection errors, etc)",
+    "message": "Toastbenachrichtigungen für Ereignisse von der API anzeigen (z. B. Verbindungsfehler usw.)",
     "description": "TStrings.get_SettingsAPIEventNotificationsTooltip"
   },
   "Settings.Enabled": {
-    "message": "Enabled",
+    "message": "Aktiviert",
     "description": "TStrings.get_SettingsEnabled"
   },
   "Settings.Disabled": {
-    "message": "Disabled",
+    "message": "Deaktiviert",
     "description": "TStrings.get_SettingsDisabled"
   },
   "Settings.NotificationType": {
-    "message": "Notification Type",
+    "message": "Benachrichtigungstyp",
     "description": "TStrings.get_SettingsNotificationType"
   },
   "Settings.NotificationType.Tooltip": {
-    "message": "The place to display notifications when a friend logs in or logs out.",
+    "message": "Der Ort, an dem Benachrichtigungen angezeigt werden, wenn sich ein Freund ein- oder ausloggt.",
     "description": "TStrings.get_SettingsNotificationTypeTooltip"
   },
   "Settings.LoginMessage": {
-    "message": "Login Message",
+    "message": "Login-Nachricht",
     "description": "TStrings.get_SettingsLoginMessage"
   },
   "Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\n\n{0}: Name of the friend.",
+    "message": "Die Nachricht, die angezeigt wird, wenn sich ein Freund einloggt.\n\n{0}: Name des Freundes.",
     "description": "TStrings.get_SettingsLoginMessageTooltip"
   },
   "Settings.LogoutMessage": {
-    "message": "Logout Message",
+    "message": "Logout-Nachricht",
     "description": "TStrings.get_SettingsLogoutMessage"
   },
   "Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\n\n{0}: Name of the friend.",
+    "message": "Die Nachricht, die angezeigt wird, wenn sich ein Freund ausloggt.\n\n{0}: Name des Freundes.",
     "description": "TStrings.get_SettingsLogoutMessageTooltip"
   },
   "Settings.FriendshipCode": {
-    "message": "Friendship Code",
+    "message": "Freundschaftscode",
     "description": "TStrings.get_SettingsFriendshipCode"
   },
   "Settings.FriendshipCode.Hint": {
-    "message": "Leave empty to send notifications to all friends",
+    "message": "Leer lassen, um Benachrichtigungen an alle Freunde zu senden.",
     "description": "TStrings.get_SettingsFriendshipCodeHint"
   },
   "Settings.FriendshipCode.Tooltip": {
-    "message": "Your friend code determines which friends you send and recieve notifications with.",
+    "message": "Dein Freundescode bestimmt, mit welchen Freunden Du Benachrichtigungen sendest und empfängst.",
     "description": "TStrings.get_SettingsFriendshipCodeTooltip"
   },
   "Settings.ShowAdvanced": {
-    "message": "Show Advanced Settings",
+    "message": "Zeige erweiterte Einstellungen",
     "description": "TStrings.get_SettingsShowAdvanced"
   },
   "Settings.SaltMode": {
-    "message": "Salt Mode",
+    "message": "Salzmodus",
     "description": "TStrings.get_SettingsSaltMode"
   },
   "Settings.SaltMode.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.",
+    "message": "Streng: Die Validierung erfolgt sowohl über den Friend Code als auch über die Plugin-Assembly (beide Benutzer müssen dieselbe Version des Plugins verwenden).\nEntspannt: Die Validierung erfolgt nur mit Friend Code (Benutzer können Ereignisse von jedem Plugin mit der API erhalten)\n\nBelasse dies auf Streng für die höchste Sicherheit.",
     "description": "TStrings.get_SettingsSaltModeTooltip"
   },
   "Settings.APIURL": {
-    "message": "API URL",
+    "message": "API-URL",
     "description": "TStrings.get_SettingsAPIURL"
   },
   "Settings.APIURL.Tooltip": {
-    "message": "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.",
+    "message": "Die API, an die alle Ereignisse gesendet und von der sie empfangen werden. Änderungen werden erst wirksam, wenn das Plugin neu geladen wurde.",
     "description": "TStrings.get_SettingsAPIURLTooltip"
   }
 }
