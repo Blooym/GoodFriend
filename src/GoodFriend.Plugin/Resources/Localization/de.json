@@ -52,7 +52,7 @@
     "description": "TStrings.get_SettingsAPITryReconnect"
   },
   "Settings.Connection.NotLoggedIn": {
-    "message": "Du musst dich mit einem Charakter einloggen, um dich mit der API zu verbinden.",
+    "message": "Du musst dich mit einem Charakter einloggen, um dich mit der API zu verbinden",
     "description": "TStrings.get_SettingsAPINotLoggedIn"
   },
   "Settings.Connection.Log": {
@@ -128,7 +128,7 @@
     "description": "TStrings.get_SettingsFriendshipCode"
   },
   "Settings.FriendshipCode.Hint": {
-    "message": "Leer lassen, um Benachrichtigungen an alle Freunde zu senden.",
+    "message": "Leer lassen, um Benachrichtigungen an alle Freunde zu senden",
     "description": "TStrings.get_SettingsFriendshipCodeHint"
   },
   "Settings.FriendshipCode.Tooltip": {
