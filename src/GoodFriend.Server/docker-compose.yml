@@ -12,7 +12,7 @@ services:
     ports:
       - "${DOCKER_HOST_PORT:-8000}:${PORT:-8000}"
     volumes:
-      - logs:/api/logs
+      - logs:/app/logs
 
 volumes:
   logs:

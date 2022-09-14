@@ -1,46 +1,54 @@
-
 # -------------------
 # --  Build Stage  --
 # -------------------
 FROM node:lts-alpine as build
 WORKDIR /build
 
-# Install dev dependencies and install them.
+# Install global build dependencies
+RUN npm i -g npm@latest pkg
+
+
+# Install dev dependencies & transpile typescript to javascript
 COPY ["package.json", "yarn.lock", "./"]
 RUN yarn install
-
-# Copy app files and build.
 COPY . .
 RUN ["yarn", "build"]
+
+
+# Build a production executable.
+RUN rm -rf node_modules
+RUN yarn install --production
+RUN pkg -C Brotli -t node16-alpine-x64 ./dist/index.js -o server \
+    && chmod +x ./server
 
 
 
 # -------------------
 # -- Runtime Stage --
 # -------------------
-FROM node:lts-alpine as runtime
+FROM alpine:latest as runtime
 WORKDIR /app
 
-# Install production dependencies.
-COPY ["package.json", "yarn.lock", "./"]
-RUN ["yarn", "--production"]
-
-# Copy over build files from build stage and environment files.
-COPY --from=build /build/dist .
+# Copy over the executable and import env variables.
+COPY --from=build /build/server .
 COPY .env .
 
-# Create a user and group for the app.
+
+# Prepare a user to run the app as.
 ENV USER prod
 RUN adduser --disabled-password --gecos "" -H ${USER}
 
-# Give the user access to the workdir and lock down permissions.
+
+# Hand over ownership to the user.
 RUN chmod -R 550 .
 RUN mkdir -p ./logs -m 777
 RUN chown -R ${USER}:${USER} .
 
-# Remove chmod/chown to prevent permission overriding.
+
+# Remove chmod and chown from the image to prevent overrides.
 RUN rm /bin/chmod /bin/chown
+
 
 # Set the user and entry command.
 USER ${USER}
-CMD ["node", "."]
+CMD ["./server"]
