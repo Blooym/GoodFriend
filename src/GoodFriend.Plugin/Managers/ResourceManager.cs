@@ -106,7 +106,7 @@ sealed public class ResourceManager : IDisposable
     {
         PluginLog.Debug($"ResourceManager: Setting up resources for language {language}...");
 
-        try { Loc.Setup(File.ReadAllText($"{PStrings.pluginlocalizationDir}\\Plugin\\{language}.json")); }
+        try { Loc.Setup(File.ReadAllText($"{PStrings.pluginlocalizationDir}{language}.json")); }
         catch { Loc.SetupWithFallbacks(); }
 
         PluginLog.Debug("ResourceManager: Resources setup.");
