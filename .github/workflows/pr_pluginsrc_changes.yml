@@ -81,7 +81,7 @@ jobs:
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                      |
             
             identifier: preview-build
-          comment_includes: "preview build"
+          comment_includes: "preview-build"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Edit Comment (Failure)
