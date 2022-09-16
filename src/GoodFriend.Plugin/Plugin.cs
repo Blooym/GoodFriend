@@ -9,8 +9,8 @@ public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
     /// <summary> 
     ///     The plugin name, fetched from PStrings.
     /// </summary>
-    public string Name => PStrings.pluginName;
-
+    public string Name => "this is a test :)"
+    
     /// <summary>
     ///     The plugin's main entry point.
     /// </summary>
