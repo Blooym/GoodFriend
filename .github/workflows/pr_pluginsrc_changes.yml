@@ -60,10 +60,9 @@ jobs:
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
-        working-directory: src/GoodFriend.Plugin
         with:
           name: build
-          path: bin/
+          path: ./src/GoodFriend.Plugin/bin/
           
       - name: Edit Comment (Success)
         uses: thollander/actions-comment-pull-request@v1
