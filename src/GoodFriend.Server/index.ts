@@ -3,15 +3,16 @@ import express from 'express';
 import http from 'http';
 import compression from 'compression';
 import helmet from 'helmet';
-import 'dotenv/config';
+import { PORT, TRUST_PROXY } from '@base/environment';
 
 import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
+import RequireSessionIdentifier from '@middleware/RequireSessionIdentifier';
+import Deprecated from '@middleware/Deprecated';
 
 import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
-
-const port = process.env.PORT || 8000;
+import v3Router from '@routes/v3';
 
 const app = express()
   .use(helmet())
@@ -19,11 +20,11 @@ const app = express()
   .use(Ratelimitter)
   .use(logger)
   .use('/', globalRouter)
-  .use('/v2', v2Router)
-  .get('*', (req, res) => res.sendStatus(404))
+  .use('/v2', Deprecated, v2Router)
+  .use('/v3', RequireSessionIdentifier, v3Router)
   .use(errorLogger);
 
 // if TRUST_PROXY is set, trust proxies.
-if (process.env.TRUST_PROXY) app.set('trust proxy', true);
+if (TRUST_PROXY) app.set('trust proxy', true);
 
-http.createServer(app).listen(port, () => { console.log(`[HTTP] Listening on port ${port}`); });
+http.createServer(app).listen(PORT, () => { console.log(`[HTTP] Listening on port ${PORT}`); });
