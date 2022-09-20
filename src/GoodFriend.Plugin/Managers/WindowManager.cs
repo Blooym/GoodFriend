@@ -1,6 +1,8 @@
 namespace GoodFriend.Managers;
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Logging;
 using Dalamud.Interface.Windowing;
 using GoodFriend.Base;
@@ -11,20 +13,12 @@ using GoodFriend.UI.Screens.Settings;
 /// </summary>
 sealed public class WindowManager : IDisposable
 {
-    public WindowSystem WindowSystem = new WindowSystem("GoodFriend");
+    private readonly WindowSystem _windowSystem = new WindowSystem(PStrings.pluginName);
 
-    /// <summary>
-    ///     Draws all windows for the draw event.
-    /// </summary>
-    private void OnDraw() => WindowSystem.Draw();
-
-    /// <summary>
-    ///     Opens/Closes the plugin configuration screen. 
-    /// </summary> 
-    private void OnOpenConfigUI()
+    private readonly List<Window> _windows = new()
     {
-        if (WindowSystem.GetWindow(PStrings.pluginName) is SettingsScreen window) window.IsOpen = !window.IsOpen;
-    }
+        new SettingsScreen(),
+    };
 
     /// <summary>
     ///     Initializes the WindowManager and associated resources.
@@ -33,11 +27,29 @@ sealed public class WindowManager : IDisposable
     {
         PluginLog.Debug("WindowManager: Initializing...");
 
-        WindowSystem.AddWindow(new SettingsScreen());
-        PluginService.PluginInterface.UiBuilder.Draw += OnDraw;
+        foreach (var window in this._windows)
+        {
+            PluginLog.Log($"WindowManager: Registering window: {window.WindowName}");
+            this._windowSystem.AddWindow(window);
+        }
+
+        PluginService.PluginInterface.UiBuilder.Draw += OnDrawUI;
         PluginService.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUI;
 
         PluginLog.Debug("WindowManager: Successfully initialized.");
+    }
+
+    /// <summary>
+    ///     Draws all windows for the draw event.
+    /// </summary>
+    private void OnDrawUI() => _windowSystem.Draw();
+
+    /// <summary>
+    ///     Opens/Closes the plugin configuration screen. 
+    /// </summary> 
+    private void OnOpenConfigUI()
+    {
+        if (this._windowSystem.GetWindow(PStrings.pluginName) is SettingsScreen window) window.IsOpen = !window.IsOpen;
     }
 
     /// <summary>
@@ -47,10 +59,17 @@ sealed public class WindowManager : IDisposable
     {
         PluginLog.Debug("WindowManager: Disposing...");
 
-        this.WindowSystem.RemoveAllWindows();
-        PluginService.PluginInterface.UiBuilder.Draw -= OnDraw;
+        PluginService.PluginInterface.UiBuilder.Draw -= OnDrawUI;
         PluginService.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUI;
 
-        PluginLog.Debug("WindowManager: Successfully disposed.");
+        foreach (var window in this._windows.OfType<IDisposable>())
+        {
+            PluginLog.Debug($"WindowManager: Disposing of {window.GetType().Name}...");
+            window.Dispose();
+        }
+
+        this._windowSystem.RemoveAllWindows();
+
+        PluginLog.Debug("WindowManager: Successfully disposed all windows.");
     }
 }

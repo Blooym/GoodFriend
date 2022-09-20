@@ -11,16 +11,25 @@ using GoodFriend.Managers;
 
 sealed public class SettingsScreen : Window, IDisposable
 {
-    public SettingsPresenter presenter = new SettingsPresenter();
+    public SettingsPresenter presenter;
 
-    public SettingsScreen() : base($"{PStrings.pluginName}", ImGuiWindowFlags.NoResize)
-    { Size = new Vector2(600, 350); SizeCondition = ImGuiCond.FirstUseEver; RespectCloseHotkey = true; }
-
-    public void Dispose() => this.presenter.Dispose();
 
     /////////////////////////////
-    ///      Core Windows     ///
+    ///     Window Settings   ///
     /////////////////////////////
+
+    /// <summary>
+    ///     Instantiate a new settings screen using Dalamud Windowing
+    /// </summary>
+    public SettingsScreen() : base($"{PStrings.pluginName}")
+    {
+        Size = new Vector2(600, 350);
+
+        Flags |= ImGuiWindowFlags.NoCollapse;
+        Flags |= ImGuiWindowFlags.NoResize;
+
+        presenter = new SettingsPresenter();
+    }
 
     /// <summary>
     ///     Draws all elements associated with the root of the screen.
@@ -36,9 +45,15 @@ sealed public class SettingsScreen : Window, IDisposable
 #endif
             ImGui.EndTabBar();
         }
-
-        ImGui.End();
     }
+
+    public void Dispose() => this.presenter.Dispose();
+
+
+
+    /////////////////////////////
+    ///      Core Windows     ///
+    /////////////////////////////
 
     /// <summary>
     ///     Draws the configuration child tab.
