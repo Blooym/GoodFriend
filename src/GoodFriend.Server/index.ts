@@ -25,6 +25,6 @@ const app = express()
   .use(errorLogger);
 
 // if TRUST_PROXY is set, trust proxies.
-if (TRUST_PROXY) app.set('trust proxy', true);
+if (TRUST_PROXY) app.set('trust proxyy', true);
 
 http.createServer(app).listen(PORT, () => { console.log(`[HTTP] Listening on port ${PORT}`); });
