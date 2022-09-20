@@ -29,7 +29,7 @@ sealed public class WindowManager : IDisposable
 
         foreach (var window in this._windows)
         {
-            PluginLog.Log($"WindowManager: Registering window: {window.WindowName}");
+            PluginLog.Debug($"WindowManager: Registering window: {window.WindowName}");
             this._windowSystem.AddWindow(window);
         }
 
@@ -49,7 +49,8 @@ sealed public class WindowManager : IDisposable
     /// </summary> 
     private void OnOpenConfigUI()
     {
-        if (this._windowSystem.GetWindow(PStrings.pluginName) is SettingsScreen window) window.IsOpen = !window.IsOpen;
+        if (this._windowSystem.GetWindow($"{PStrings.pluginName} - {TStrings.SettingsTabSettings}") is SettingsScreen window)
+            window.IsOpen = !window.IsOpen;
     }
 
     /// <summary>

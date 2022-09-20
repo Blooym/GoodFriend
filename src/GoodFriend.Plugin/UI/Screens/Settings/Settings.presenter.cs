@@ -65,7 +65,6 @@ sealed public class SettingsPresenter : IDisposable
     /// </summary>
     public int APIClients()
     {
-        // if the last request was a minute ago, update the client count.
         if (this._lastClientsRequest < DateTimeOffset.Now.ToUnixTimeSeconds() - 60)
         {
             this._lastClientsRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
