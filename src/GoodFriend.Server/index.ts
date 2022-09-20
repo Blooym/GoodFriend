@@ -26,5 +26,4 @@ const app = express()
 // if TRUST_PROXY is set, trust proxies.
 if (process.env.TRUST_PROXY) app.set('trust proxy', true);
 
-// Otherwise, start an insecure server and allow the SSL connection to be handled elsewhere.
-else { http.createServer(app).listen(port, () => { console.log(`[HTTP] Listening on port ${port}`); }); }
+http.createServer(app).listen(port, () => { console.log(`[HTTP] Listening on port ${port}`); });
