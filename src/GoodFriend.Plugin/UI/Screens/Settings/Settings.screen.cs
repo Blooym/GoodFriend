@@ -23,7 +23,7 @@ sealed public class SettingsScreen : Window, IDisposable
     /// </summary>
     public SettingsScreen() : base($"{PStrings.pluginName} - {TStrings.SettingsTabSettings}")
     {
-        Size = new Vector2(600, 350);
+        Size = new Vector2(620, 350);
 
         Flags |= ImGuiWindowFlags.NoCollapse;
         Flags |= ImGuiWindowFlags.NoResize;
@@ -300,6 +300,7 @@ sealed public class SettingsScreen : Window, IDisposable
     private void DrawAdvancedSettings()
     {
         var APIUrl = PluginService.Configuration.APIUrl.ToString();
+        var APIBearerToken = PluginService.Configuration.APIBearerToken;
         var saltMethod = PluginService.Configuration.SaltMethod;
 
         // Salt Mode dropdown
@@ -332,6 +333,16 @@ sealed public class SettingsScreen : Window, IDisposable
             else { PluginService.Configuration.ResetApiUrl(); }
         }
         Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip);
+
+
+        // API Key input
+        if (ImGui.InputTextWithHint(TStrings.SettingsAPIToken, TStrings.SettingsAPITokenHint, ref APIBearerToken, 128))
+        {
+            if (APIBearerToken == PluginService.Configuration.APIBearerToken) return;
+            PluginService.Configuration.APIBearerToken = APIBearerToken;
+            PluginService.Configuration.Save();
+        }
+        Tooltips.Questionmark(TStrings.SettingsAPITokenTooltip);
     }
 
     private void DrawStatusButton()
@@ -340,5 +351,6 @@ sealed public class SettingsScreen : Window, IDisposable
         {
             if (ImGui.Button(TStrings.SettingsViewStatusText)) Common.OpenLink(PStrings.statusPageUrl);
         }
+        else ImGui.Dummy(Vector2.Zero);
     }
 }

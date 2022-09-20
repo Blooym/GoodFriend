@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
 using System.Reflection;
 using System.Timers;
 using Dalamud.Logging;
@@ -109,19 +110,19 @@ public class APIClient : IDisposable
     private Uri _apiUrl;
 
     /// <summary>
+    ///     The API key to use for authentication.
+    /// </summary>
+    private string? _authToken;
+
+    /// <summary>
     ///     The version of the API to use.
     /// </summary>
-    private const string _apiVersion = "v2/";
+    private string _apiVersion = "v3/";
 
     /// <summary>
     ///     The place to send login data to the API.
     /// </summary>
-    private const string _loginEndpoint = "login/";
-
-    /// <summary>
-    ///     The place to send logout data to the API.
-    /// </summary>
-    private const string _logoutEndpoint = "logout/";
+    private const string _loginStateEndpoint = "loginstate";
 
     /// <summary>
     ///     The place to send get user events data from the API.
@@ -149,6 +150,8 @@ public class APIClient : IDisposable
     private void ConfigureHttpClient()
     {
         this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
+        this._httpClient.DefaultRequestHeaders.Add("session-identifier", Guid.NewGuid().ToString());
+        if (this._authToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._authToken}");
         this._httpClient.Timeout = TimeSpan.FromSeconds(10);
         this._httpClient.BaseAddress = new Uri(this._apiUrl + _apiVersion);
         PluginLog.Debug($"APIClient: HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
@@ -189,12 +192,14 @@ public class APIClient : IDisposable
     /// Construct n' Dispose ///
     ////////////////////////////
 
+
     /// <summary>
     ///     Instantiates a new APIClient
     /// </summary>
-    public APIClient(Uri url)
+    public APIClient(Uri url, string? auth = null)
     {
         this._apiUrl = url;
+        this._authToken = auth;
 
         this.ConnectionEstablished += OnConnectionEstablished;
         this.ConnectionClosed += OnConnectionClosed;
@@ -330,7 +335,7 @@ public class APIClient : IDisposable
 
             else if (!task.Result.IsSuccessStatusCode)
             {
-                PluginLog.Warning($"APIClient:  Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Result.ReasonPhrase}");
+                PluginLog.Warning($"APIClient:  Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
                 connected = this.ConnectedClients;
             }
 
@@ -354,46 +359,27 @@ public class APIClient : IDisposable
     ///   API Data Sending   ///
     ////////////////////////////
 
-
     /// <summary>
     ///     Send a login event to the configured API/Login endpoint.
     /// </summary>
-    public void SendLogin(ulong contentID)
+    public void SendLoginStatechange(ulong contentID, LoginState loginState)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, _loginEndpoint);
-        request.Headers.Add("Player-ID", Hashing.HashSHA512(contentID.ToString()));
+        var request = new HttpRequestMessage
+        (
+            HttpMethod.Put,
+            $"{_loginStateEndpoint}?state={Enum.GetName(loginState)}&contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}"
+        );
+
         this._httpClient.SendAsync(request).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send login to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient: Failed to send status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}: {task.Exception?.Message}");
 
             else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Warning($"APIClient: Failed to send login to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Result.ReasonPhrase}");
+                PluginLog.Warning($"APIClient: Failed to send status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent login to {this._httpClient.BaseAddress}{_loginEndpoint}");
-
-            WarnOnDeprecated(task.Result);
-        });
-    }
-
-    /// <summary>
-    ///     Send a logout event to the API/Logout endpoint.
-    /// </summary>
-    public void SendLogout(ulong contentID)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Put, _logoutEndpoint);
-        request.Headers.Add("Player-ID", Hashing.HashSHA512(contentID.ToString()));
-        this._httpClient.SendAsync(request).ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send logout to {this._httpClient.BaseAddress}{_loginEndpoint}: {task.Exception?.Message}");
-
-            else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Warning($"APIClient: Failed to send logout to {this._httpClient.BaseAddress}{_logoutEndpoint}: {task.Result.ReasonPhrase}");
-
-            else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent logout to {this._httpClient.BaseAddress}{_logoutEndpoint}");
+                PluginLog.Log($"APIClient: Sent status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}");
 
             WarnOnDeprecated(task.Result);
         });
@@ -406,7 +392,7 @@ public class APIClient : IDisposable
 sealed public class UpdatePayload
 {
     public string? ContentID { get; set; }
-    public bool LoggedIn { get; set; }
+    public LoginState LoginState { get; set; }
 }
 
 /// <summary>
@@ -415,4 +401,10 @@ sealed public class UpdatePayload
 sealed public class ClientAmountPayload
 {
     public int clients { get; set; }
+}
+
+public enum LoginState
+{
+    LoggedIn = 0,
+    LoggedOut = 1
 }

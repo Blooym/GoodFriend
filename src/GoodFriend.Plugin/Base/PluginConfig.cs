@@ -69,6 +69,11 @@ sealed public class Configuration : IPluginConfiguration
     /// </summary>
     public Uri APIUrl { get; set; } = PStrings.defaultAPIUrl;
 
+    /// <summary>
+    ///     The API token to use when communicating with the API.
+    /// </summary>
+    public string APIBearerToken { get; set; } = string.Empty;
+
 
     ///////////////////////
     //      Methods      //
