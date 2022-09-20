@@ -7,6 +7,7 @@ on:
       - '**.ts'
       - '**Dockerfile'
       - '.github/workflows/pr_serversrc_changes.yml'    
+    types: [ready_for_review, opened, synchronize, reopened]
 
 jobs:
   Docker-Image-Build:
@@ -24,6 +25,6 @@ jobs:
         context: ./src/GoodFriend.Server/
         file: ./src/GoodFriend.Server/Dockerfile
         push: false
-        tags: ${{ github.repository }}:latest
+        tags: testbuild/testbuild:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
