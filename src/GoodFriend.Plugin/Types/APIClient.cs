@@ -68,9 +68,7 @@ public class APIClient : IDisposable
         PluginLog.Log($"APIClient: Connection Established");
 
         // Set the state to connected and stop any reconnect timers.
-        this.ConnectedClients = this.GetConnectedClients();
         this.IsConnected = true;
-        this._clientCountTimer.Start();
         this._reconnectTimer.Stop();
     }
 
@@ -84,7 +82,6 @@ public class APIClient : IDisposable
         // Set the state to disconnected & stop any reconnect timers.
         this.IsConnected = false;
         this._httpClient.CancelPendingRequests();
-        this._clientCountTimer.Stop();
         this._reconnectTimer.Stop();
     }
 
@@ -183,14 +180,9 @@ public class APIClient : IDisposable
     public int ConnectedClients { get; private set; } = 0;
 
     /// <summary>
-    ///     The timer for fetching the amount of clients connected to the API.
+    ///     Force fetch the amount of clients connected to the API.
     /// </summary>
-    private Timer _clientCountTimer = new Timer(120000);
-
-    /// <summary>
-    ///     The event handler for fetching the amount of clients connected to the API.
-    /// </summary>
-    private void OnGetClientCount(object? sender, ElapsedEventArgs e) { this.ConnectedClients = this.GetConnectedClients(); }
+    public void GetClientCount() { this.ConnectedClients = this.GetConnectedClients(); }
 
 
     ////////////////////////////
@@ -208,7 +200,6 @@ public class APIClient : IDisposable
         this.ConnectionClosed += OnConnectionClosed;
         this.ConnectionError += OnConnectionError;
         this._reconnectTimer.Elapsed += OnTryReconnect;
-        this._clientCountTimer.Elapsed += OnGetClientCount;
         this.ConfigureHttpClient();
     }
 
@@ -225,14 +216,12 @@ public class APIClient : IDisposable
         this.ConnectionClosed -= OnConnectionClosed;
         this.ConnectionError -= OnConnectionError;
         this._reconnectTimer.Elapsed -= OnTryReconnect;
-        this._clientCountTimer.Elapsed -= OnGetClientCount;
 
         // Cancel pending requests.
         this._httpClient.CancelPendingRequests();
 
         // Dispose of all other resources.
         this._reconnectTimer.Dispose();
-        this._clientCountTimer.Dispose();
         this._httpClient.Dispose();
 
 

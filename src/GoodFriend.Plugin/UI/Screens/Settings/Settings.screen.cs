@@ -50,7 +50,6 @@ sealed public class SettingsScreen : Window, IDisposable
     public void Dispose() => this.presenter.Dispose();
 
 
-
     /////////////////////////////
     ///      Core Windows     ///
     /////////////////////////////
@@ -81,7 +80,7 @@ sealed public class SettingsScreen : Window, IDisposable
             if (this.presenter.APIIsConnected)
             {
                 Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected);
-                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients));
+                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients()));
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
                 ImGui.SameLine();
