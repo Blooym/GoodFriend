@@ -13,7 +13,7 @@ using GoodFriend.UI.Screens.Settings;
 /// </summary>
 sealed public class WindowManager : IDisposable
 {
-    private readonly WindowSystem _windowSystem = new WindowSystem("GoodFriend");
+    private readonly WindowSystem _windowSystem = new WindowSystem(PStrings.pluginName);
 
     private readonly List<Window> _windows = new()
     {
@@ -29,6 +29,7 @@ sealed public class WindowManager : IDisposable
 
         foreach (var window in this._windows)
         {
+            PluginLog.Log($"WindowManager: Registering window: {window.WindowName}");
             this._windowSystem.AddWindow(window);
         }
 

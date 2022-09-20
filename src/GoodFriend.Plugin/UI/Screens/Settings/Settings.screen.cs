@@ -21,7 +21,7 @@ sealed public class SettingsScreen : Window, IDisposable
     /// <summary>
     ///     Instantiate a new settings screen using Dalamud Windowing
     /// </summary>
-    public SettingsScreen() : base($"{PStrings.pluginName} - {TStrings.SettingsTabSettings}")
+    public SettingsScreen() : base($"{PStrings.pluginName}")
     {
         Size = new Vector2(600, 350);
 
