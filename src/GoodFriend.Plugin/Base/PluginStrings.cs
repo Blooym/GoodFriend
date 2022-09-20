@@ -100,4 +100,7 @@ public static class TStrings
     public static string SettingsSaltModeTooltip => Loc.Localize("Settings.SaltMode.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.");
     public static string SettingsAPIURL => Loc.Localize("Settings.APIURL", "API URL");
     public static string SettingsAPIURLTooltip => Loc.Localize("Settings.APIURL.Tooltip", "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.");
+    public static string SettingsAPIToken => Loc.Localize("Settings.APIToken", "API Key");
+    public static string SettingsAPITokenTooltip => Loc.Localize("Settings.APIToken.Tooltip", "The API bearer token to use when connecting to the API. Changes do not apply until the plugin has been reloaded.");
+    public static string SettingsAPITokenHint => Loc.Localize("Settings.APIToken.Hint", "You can leave this empty unless you are facing authentication issues.");
 }

@@ -40,7 +40,7 @@ sealed public class APIClientManager : IDisposable
     /// <summary> 
     ///     The API Client associated with the manager.
     /// </summary>
-    public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration.APIUrl);
+    public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration.APIUrl, PluginService.Configuration.APIBearerToken);
 
     /// <summary>
     ///     The ClientState associated with the manager
@@ -172,7 +172,7 @@ sealed public class APIClientManager : IDisposable
 
             // Cache the contentID of the player and send a login status update.
             this._currentContentId = this._clientState.LocalContentId;
-            this.APIClient.SendLogin(this._currentContentId);
+            this.APIClient.SendLoginStatechange(this._currentContentId, LoginState.LoggedIn);
         });
     }
 
@@ -183,7 +183,7 @@ sealed public class APIClientManager : IDisposable
     private void OnLogout(object? sender, EventArgs e)
     {
         if (this.APIClient.IsConnected) this.APIClient.CloseStream();
-        this.APIClient.SendLogout(this._currentContentId);
+        this.APIClient.SendLoginStatechange(this._currentContentId, LoginState.LoggedOut);
         this._currentContentId = 0;
         this.ClearLog();
     }
@@ -223,13 +223,13 @@ sealed public class APIClientManager : IDisposable
         {
             EventID = eventID,
             Friend = *friend,
-            Event = data.LoggedIn ? "Login" : "Logout",
+            Event = data.LoginState == LoginState.LoggedIn ? "Login" : "Logout",
             Time = DateTime.Now
         });
 
         // Notify the client 
         PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name}:{friend->HomeWorld}, notifying...");
-        Notifications.ShowPreferred(data.LoggedIn ?
+        Notifications.ShowPreferred(data.LoginState == LoginState.LoggedIn ?
             string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
             : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
     }

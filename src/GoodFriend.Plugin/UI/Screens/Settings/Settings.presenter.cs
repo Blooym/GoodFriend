@@ -58,10 +58,21 @@ sealed public class SettingsPresenter : IDisposable
     ///     Other Methods     ///
     /////////////////////////////
 
+    private long _lastClientsRequest = 0;
+
     /// <summary> 
     /// Gets the current API client count.
     /// </summary>
-    public int APIClients => PluginService.APIClientManager.APIClient.ConnectedClients;
+    public int APIClients()
+    {
+        if (this._lastClientsRequest < DateTimeOffset.Now.ToUnixTimeSeconds() - 60)
+        {
+            this._lastClientsRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
+            PluginService.APIClientManager.APIClient.GetClientCount();
+        }
+
+        return PluginService.APIClientManager.APIClient.ConnectedClients;
+    }
 
     /// <summary>
     ///     Gets the current API connection status.

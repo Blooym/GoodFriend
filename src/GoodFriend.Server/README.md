@@ -8,6 +8,9 @@
 
 The GoodFriend server communicates with the plugin to allow clients to send login and logout events, and for other clients to recieve these events through the server. An instance is running by default and is already setup when the plugin is first installed, but if for whatever reason you need your own server, then read on.
 
+> **Warning**   
+> This documentation has not been updated in a while and may be inaccurate.
+
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/)
 - [Yarn](https://yarnpkg.com/getting-started/install)

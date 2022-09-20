@@ -3,8 +3,9 @@ import expressWinston from 'express-winston';
 import 'winston-daily-rotate-file';
 import 'dotenv/config';
 
+import { LOG_DAYS_TO_KEEP } from '@base/environment';
+
 const LOG_PATH = 'logs';
-const LOG_DAYS_TO_KEEP = process.env.LOG_DAYS_TO_KEEP || '7d';
 
 /**
  * Logs all requests to the server.

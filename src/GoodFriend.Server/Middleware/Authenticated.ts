@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { AUTH_TOKEN } from '@base/environment';
 
 const AUTHENTICATED_HEADERS = {
   'Cache-Control': 'no-store, no-cache, must-revalidate',
@@ -12,13 +13,10 @@ const AUTHENTICATED_HEADERS = {
  * @param next The next middleware function to call.
  */
 export default (req: Request, res: Response, next: NextFunction) => {
-  if (process.env.DISABLE_AUTH_ENDPOINTS === 'true') { res.sendStatus(404); return; }
-
   res.header(AUTHENTICATED_HEADERS);
 
-  const { AUTH_TOKEN } = process.env;
-  const authorization = req.header('authorization');
+  const authorization = req.headers.authorization?.replace('Bearer ', '');
 
-  if (authorization && authorization === AUTH_TOKEN) next();
+  if (authorization === AUTH_TOKEN) next();
   else res.sendStatus(401);
 };

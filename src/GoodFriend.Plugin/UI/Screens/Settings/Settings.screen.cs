@@ -11,16 +11,25 @@ using GoodFriend.Managers;
 
 sealed public class SettingsScreen : Window, IDisposable
 {
-    public SettingsPresenter presenter = new SettingsPresenter();
+    public SettingsPresenter presenter;
 
-    public SettingsScreen() : base($"{PStrings.pluginName}", ImGuiWindowFlags.NoResize)
-    { Size = new Vector2(600, 350); SizeCondition = ImGuiCond.FirstUseEver; RespectCloseHotkey = true; }
-
-    public void Dispose() => this.presenter.Dispose();
 
     /////////////////////////////
-    ///      Core Windows     ///
+    ///     Window Settings   ///
     /////////////////////////////
+
+    /// <summary>
+    ///     Instantiate a new settings screen using Dalamud Windowing
+    /// </summary>
+    public SettingsScreen() : base($"{PStrings.pluginName} - {TStrings.SettingsTabSettings}")
+    {
+        Size = new Vector2(620, 350);
+
+        Flags |= ImGuiWindowFlags.NoCollapse;
+        Flags |= ImGuiWindowFlags.NoResize;
+
+        presenter = new SettingsPresenter();
+    }
 
     /// <summary>
     ///     Draws all elements associated with the root of the screen.
@@ -36,9 +45,14 @@ sealed public class SettingsScreen : Window, IDisposable
 #endif
             ImGui.EndTabBar();
         }
-
-        ImGui.End();
     }
+
+    public void Dispose() => this.presenter.Dispose();
+
+
+    /////////////////////////////
+    ///      Core Windows     ///
+    /////////////////////////////
 
     /// <summary>
     ///     Draws the configuration child tab.
@@ -66,7 +80,7 @@ sealed public class SettingsScreen : Window, IDisposable
             if (this.presenter.APIIsConnected)
             {
                 Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected);
-                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients));
+                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients()));
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
                 ImGui.SameLine();
@@ -286,6 +300,7 @@ sealed public class SettingsScreen : Window, IDisposable
     private void DrawAdvancedSettings()
     {
         var APIUrl = PluginService.Configuration.APIUrl.ToString();
+        var APIBearerToken = PluginService.Configuration.APIBearerToken;
         var saltMethod = PluginService.Configuration.SaltMethod;
 
         // Salt Mode dropdown
@@ -318,6 +333,16 @@ sealed public class SettingsScreen : Window, IDisposable
             else { PluginService.Configuration.ResetApiUrl(); }
         }
         Tooltips.Questionmark(TStrings.SettingsAPIURLTooltip);
+
+
+        // API Key input
+        if (ImGui.InputTextWithHint(TStrings.SettingsAPIToken, TStrings.SettingsAPITokenHint, ref APIBearerToken, 128))
+        {
+            if (APIBearerToken == PluginService.Configuration.APIBearerToken) return;
+            PluginService.Configuration.APIBearerToken = APIBearerToken;
+            PluginService.Configuration.Save();
+        }
+        Tooltips.Questionmark(TStrings.SettingsAPITokenTooltip);
     }
 
     private void DrawStatusButton()
@@ -326,5 +351,6 @@ sealed public class SettingsScreen : Window, IDisposable
         {
             if (ImGui.Button(TStrings.SettingsViewStatusText)) Common.OpenLink(PStrings.statusPageUrl);
         }
+        else ImGui.Dummy(Vector2.Zero);
     }
 }

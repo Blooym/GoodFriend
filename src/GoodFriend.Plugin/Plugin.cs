@@ -19,9 +19,9 @@ public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
         pluginInterface.Create<PluginService>();
         PluginService.Initialize();
 
-        // #if !DEBUG
+#if !DEBUG
         PluginService.ResourceManager.Update();
-        // #endif
+#endif
     }
 
 
