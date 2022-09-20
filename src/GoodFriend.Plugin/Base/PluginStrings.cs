@@ -68,7 +68,6 @@ public static class TStrings
     public static string SettingsTabConnection => Loc.Localize("Settings.Tab.Connection", "Connection");
     public static string SettingsTabDebug => Loc.Localize("Settings.Tab.Debug", "Debug");
     public static string SettingsSupportText => Loc.Localize("Settings.Support", "Donate / Support");
-    public static string SettingsSavedSuccess = Loc.Localize("Settings.Saved", "Settings saved successfully.");
     public static string SettingsViewStatusText => Loc.Localize("Settings.ViewStatus", "View Status");
     public static string SettingsAPIConnected => Loc.Localize("Settings.Connection.APIConnected", "You are connected to the API and recieving events");
     public static string SettingsAPIOnlineUsers(int i) => String.Format(Loc.Localize("Settings.Connection.APIOnlineUsers", "Online Users: {0}"), i);
