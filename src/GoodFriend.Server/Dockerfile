@@ -5,19 +5,19 @@ FROM node:lts-alpine as build
 WORKDIR /build
 
 # Install global build dependencies
-RUN npm i -g npm@latest pkg
+RUN npm i -g pkg
 
 
 # Install dev dependencies & transpile typescript to javascript
 COPY ["package.json", "yarn.lock", "./"]
-RUN yarn install
+RUN yarn install --production=false
 COPY . .
-RUN ["yarn", "build"]
+RUN yarn build
 
 
 # Build a production executable.
 RUN rm -rf node_modules
-RUN yarn install --production
+RUN yarn install --production=true
 RUN pkg -C Brotli -t node16-alpine-x64 ./dist/index.js -o server \
     && chmod +x ./server
 
@@ -31,7 +31,7 @@ WORKDIR /app
 
 # Copy over the executable and import env variables.
 COPY --from=build /build/server .
-COPY .env .
+COPY .env* .
 
 
 # Prepare a user to run the app as.
