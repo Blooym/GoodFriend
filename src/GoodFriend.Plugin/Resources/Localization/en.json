@@ -152,7 +152,7 @@
     "description": "TStrings.get_SettingsAPIURL"
   },
   "Settings.APIURL.Tooltip": {
-    "message": "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been.",
+    "message": "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.",
     "description": "TStrings.get_SettingsAPIURLTooltip"
   },
   "Settings.APIToken": {
@@ -160,7 +160,7 @@
     "description": "TStrings.get_SettingsAPIToken"
   },
   "Settings.APIToken.Tooltip": {
-    "message": "The API bearer token to use when connecting to the API. Changes do not apply until the plugin has been.",
+    "message": "The API bearer token to use when connecting to the API. Changes do not apply until the plugin has been reloaded.",
     "description": "TStrings.get_SettingsAPITokenTooltip"
   },
   "Settings.APIToken.Hint":
