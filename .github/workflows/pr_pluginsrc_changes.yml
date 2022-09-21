@@ -23,14 +23,14 @@ jobs:
           message: |
             ### Building ${{ github.repository}} <span aria-hidden="true">🚧</span>
             Please wait, this could take several minutes to complete. This comment will be edited when finished.
-
+            
             |  Name | Detail |
             |---------------------------------|-------------------------------------------------------------------------------------|
             | **Commit** 						          | ${{ github.sha }}                                                                   |
             | **Logs** 							          | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} |
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
-
+            
             identifier: preview-build
           comment_includes: "preview-build"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,18 +69,18 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ### Build Complete for ${{ github.repository }} <span aria-hidden="true">✅</span>
+            ### Build Complete for ${{ github.repository }} <span aria-hidden="true">⚡</span>
             All builds finished without issues and any artifact(s) have been uploaded.
-
+            
             |  Name | Detail |
             |---------------------------------|------------------------------------------------------------------------------------|
             | **Commit** 						          | ${{ github.sha }}                                                                  |
             | **Logs** 							  | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}        |
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                      |
-
+            
             *Please review the code before downloading any artifacts for security reasons.* 
-
+            
             identifier: preview-build
           comment_includes: "preview-build"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -90,17 +90,16 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ### Build Failed for ${{ github.repository }} <span aria-hidden="true">❌</span>
+            ### Build Failed for ${{ github.repository }} <span aria-hidden="true">⚠️</span>
             Something went wrong when running a build, please view the logs for more information about this.
-
-
+            
             |  Name | Detail |
             |---------------------------------|-------------------------------------------------------------------------------------|
             | **Commit** 						          | ${{ github.sha }}                                                                   |
             | **Logs** 							          | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} |
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
-
+            
             identifier: preview-build
           comment_includes: "preview-build"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
