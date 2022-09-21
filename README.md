@@ -50,13 +50,11 @@ A general flow of how this plugin would provide a login notification is as follo
 
 Security and privacy was greatly considered during design and as such both the plugin and the server implement some methods to ensure the safety and privacy of all users, some examples are:
 
-- All information that could be used to link a client back to an in-game player is hashed before being sent to the server.
-- The plugin uses additional salt such as the assembly GUID (by default) and a user-entered friend code to make the hash more unpredicable by the server to prevent rainbow tables of ContentIDs
-- The official server instance enforces strict ratelimiting to prevent any spammed abusive requests. 
+- No majorly identifying information is stored or processed on the server side without being hashed beforehand.
+- Additional salting is applied wherever possible using things like the plugin assembly GUID and the users' friend code to make the hash more unpredicable.
+- The official server instance enforces strict ratelimiting.
 - The official server is secured behind HTTPs and a reverse proxy.
-- The plugin will automatically disconnect from the API event stream(s) when it is not strictly necessary to be connected.
-- The plugin only transmits essential information for the server to process.
-- The server tries to keep logs of all inbound requests to a minimum where possible, and automatically performs any cleanup of old logs after a certain amount of time.
+- The plugin will automatically disconnect from any unnecessary API event streams as soon as possible.
 
 ## Contributions
 
