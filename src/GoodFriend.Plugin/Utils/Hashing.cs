@@ -43,5 +43,3 @@ public static class Hashing
         return Convert.ToBase64String(SHA512.Create().ComputeHash(bytes));
     }
 }
-
-

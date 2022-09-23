@@ -8,6 +8,7 @@ using System.Web;
 using System.Reflection;
 using System.Timers;
 using Dalamud.Logging;
+using Newtonsoft.Json;
 using GoodFriend.Base;
 using GoodFriend.Utils;
 
@@ -292,7 +293,7 @@ public class APIClient : IDisposable
                 message = message.Replace("data: ", "").Trim();
 
                 // Deserialize the object and fire the DataRecieved event if its valid.
-                var data = Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePayload>(message);
+                var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
                 if (data != null && data.ContentID != null) DataRecieved?.Invoke(data);
             }
 
@@ -343,9 +344,9 @@ public class APIClient : IDisposable
             else if (task.IsCompleted)
             {
                 var response = await task.Result.Content.ReadAsStringAsync();
-                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientAmountPayload>(response);
+                var json = JsonConvert.DeserializeObject<ClientAmountPayload>(response);
                 if (json == null) connected = this.ConnectedClients;
-                else { connected = json.clients; }
+                else connected = json.clients;
             }
         });
 
