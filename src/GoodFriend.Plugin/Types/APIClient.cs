@@ -107,17 +107,12 @@ public class APIClient : IDisposable
     /// <summary> 
     ///     The base of the API URL.
     /// </summary>
-    private Uri _apiUrl;
-
-    /// <summary>
-    ///     The API key to use for authentication.
-    /// </summary>
-    private string? _authToken;
+    private readonly Configuration _configuration;
 
     /// <summary>
     ///     The version of the API to use.
     /// </summary>
-    private string _apiVersion = "v3/";
+    private const string _apiVersion = "v3/";
 
     /// <summary>
     ///     The place to send login data to the API.
@@ -151,9 +146,9 @@ public class APIClient : IDisposable
     {
         this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
         this._httpClient.DefaultRequestHeaders.Add("session-identifier", Guid.NewGuid().ToString());
-        if (this._authToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._authToken}");
+        if (this._configuration.APIBearerToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._configuration.APIBearerToken}");
         this._httpClient.Timeout = TimeSpan.FromSeconds(10);
-        this._httpClient.BaseAddress = new Uri(this._apiUrl + _apiVersion);
+        this._httpClient.BaseAddress = new Uri(this._configuration.APIUrl + _apiVersion);
         PluginLog.Debug($"APIClient: HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
     }
 
@@ -183,9 +178,9 @@ public class APIClient : IDisposable
     public int ConnectedClients { get; private set; } = 0;
 
     /// <summary>
-    ///     Force fetch the amount of clients connected to the API.
+    ///     Force fetch the amount of clients connected to the API and return the value.
     /// </summary>
-    public void GetClientCount() { this.ConnectedClients = this.GetConnectedClients(); }
+    public int GetClientCount() { this.ConnectedClients = this.GetConnectedClients(); return this.ConnectedClients; }
 
 
     ////////////////////////////
@@ -196,10 +191,9 @@ public class APIClient : IDisposable
     /// <summary>
     ///     Instantiates a new APIClient
     /// </summary>
-    public APIClient(Uri url, string? auth = null)
+    public APIClient(Configuration config)
     {
-        this._apiUrl = url;
-        this._authToken = auth;
+        this._configuration = config;
 
         this.ConnectionEstablished += OnConnectionEstablished;
         this.ConnectionClosed += OnConnectionClosed;
@@ -325,17 +319,24 @@ public class APIClient : IDisposable
     private int GetConnectedClients()
     {
         int connected = 0;
-        var task = this._httpClient.GetAsync(_clientCountEndpoint).ContinueWith(async (task) =>
+
+        var request = new HttpRequestMessage
+        (
+            HttpMethod.Get,
+            $"{_clientCountEndpoint}"
+        );
+
+        var task = this._httpClient.SendAsync(request).ContinueWith(async (task) =>
         {
             if (task.IsFaulted)
             {
-                PluginLog.Error($"APIClient: Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient: Failed to get connected clients from {request.RequestUri}: {task.Exception?.Message}");
                 connected = this.ConnectedClients;
             }
 
             else if (!task.Result.IsSuccessStatusCode)
             {
-                PluginLog.Warning($"APIClient:  Failed to get connected clients from {this._httpClient.BaseAddress}{_clientCountEndpoint}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
+                PluginLog.Warning($"APIClient:  Failed to get connected clients from {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
                 connected = this.ConnectedClients;
             }
 
@@ -350,7 +351,7 @@ public class APIClient : IDisposable
 
         task.Wait();
 
-        if (task.IsCompletedSuccessfully) { PluginLog.Debug($"APIClient: API reports {connected} clients connected."); return connected; }
+        if (task.IsCompletedSuccessfully) { PluginLog.Debug($"APIClient: {request.RequestUri} reports {connected} clients connected."); return connected; }
         else { return this.ConnectedClients; }
     }
 
@@ -373,13 +374,13 @@ public class APIClient : IDisposable
         this._httpClient.SendAsync(request).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient: Failed to send status update to{request.RequestUri}: {task.Exception?.Message}");
 
             else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Warning($"APIClient: Failed to send status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
+                PluginLog.Warning($"APIClient: Failed to send status update to {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent status update to {this._httpClient.BaseAddress}{_loginStateEndpoint}");
+                PluginLog.Log($"APIClient: Sent status update to {request.RequestUri}");
 
             WarnOnDeprecated(task.Result);
         });

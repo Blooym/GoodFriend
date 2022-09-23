@@ -32,15 +32,19 @@ sealed public class APIClientManager : IDisposable
     /// Properties n' Fields ///
     ////////////////////////////
 
-    /// <summary> 
-    ///     The current player ContentID, saved on login and cleared on logout.
+    /// <summary>
+    ///    The current player ContentID, saved on login and cleared on logout.
     /// </summary>
-    private ulong _currentContentId = ulong.MinValue;
+    private ulong _currentContentId = 0;
+
+    /// <summary>
+    ///    The current player homeworldID, saved on login and cleared on logout.
+    /// </summary>
 
     /// <summary> 
     ///     The API Client associated with the manager.
     /// </summary>
-    public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration.APIUrl, PluginService.Configuration.APIBearerToken);
+    public APIClient APIClient { get; private set; } = new APIClient(PluginService.Configuration);
 
     /// <summary>
     ///     The ClientState associated with the manager
@@ -136,8 +140,8 @@ sealed public class APIClientManager : IDisposable
         // If the player is logged in already, connect & set their ID.
         if (this._clientState.LocalPlayer != null)
         {
-            this.APIClient.OpenStream();
             this._currentContentId = this._clientState.LocalContentId;
+            this.APIClient.OpenStream();
         }
 
         PluginLog.Debug("APIClientManager: Successfully initialized.");

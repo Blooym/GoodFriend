@@ -68,7 +68,7 @@ sealed public class SettingsPresenter : IDisposable
         if (this._lastClientsRequest < DateTimeOffset.Now.ToUnixTimeSeconds() - 60)
         {
             this._lastClientsRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
-            PluginService.APIClientManager.APIClient.GetClientCount();
+            return PluginService.APIClientManager.APIClient.GetClientCount();
         }
 
         return PluginService.APIClientManager.APIClient.ConnectedClients;

@@ -123,7 +123,7 @@ sealed public class SettingsScreen : Window, IDisposable
 
             // Draw the dialog manage & Export Localization Button for CheapLOC.
             this.presenter.dialogManager.Draw();
-            if (ImGui.Button("Export Localizable")) this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
+            if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0))) this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
 
             // Draw a list of every friend and their ID for API Debugging.
             ImGui.TextDisabled("Detected Friends - Click to Copy Hash");
