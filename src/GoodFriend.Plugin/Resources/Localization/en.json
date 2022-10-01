@@ -1,8 +1,4 @@
 {
-  "Config.FriendLoggedOutMessage": {
-    "message": "{0} has logged out.",
-    "description": "Configuration..ctor"
-  },
   "Connection.Successful": {
     "message": "Successfully connected to the API.",
     "description": "TStrings.get_ConnectionSuccessful"
@@ -74,6 +70,14 @@
   "Settings.Connection.Log.Event": {
     "message": "Event",
     "description": "TStrings.get_SettingsAPILogEvent"
+  },
+  "Settings.Connection.Log.Login": {
+    "message": "Login",
+    "description": "TStrings.get_SettingsAPILoginEvent"
+  },
+  "Settings.Connection.Log.Logout": {
+    "message": "Logout",
+    "description": "TStrings.get_SettingsAPILogoutEvent"
   },
   "Settings.HideSameFC": {
     "message": "Hide FC Members",
@@ -156,15 +160,14 @@
     "description": "TStrings.get_SettingsAPIURLTooltip"
   },
   "Settings.APIToken": {
-    "message": "API Token",
+    "message": "API Key",
     "description": "TStrings.get_SettingsAPIToken"
   },
   "Settings.APIToken.Tooltip": {
     "message": "The API bearer token to use when connecting to the API. Changes do not apply until the plugin has been reloaded.",
     "description": "TStrings.get_SettingsAPITokenTooltip"
   },
-  "Settings.APIToken.Hint":
-  {
+  "Settings.APIToken.Hint": {
     "message": "You can leave this empty unless you are facing authentication issues.",
     "description": "TStrings.get_SettingsAPITokenHint"
   }
