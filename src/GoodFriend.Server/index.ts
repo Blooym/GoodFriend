@@ -9,6 +9,7 @@ import Ratelimitter from '@middleware/Ratelimiter';
 import { logger, errorLogger } from '@middleware/Logger';
 import RequireSessionIdentifier from '@middleware/RequireSessionIdentifier';
 import Deprecated from '@middleware/Deprecated';
+import PreventBannedUseragent from '@middleware/PreventBannedUseragent';
 
 import globalRouter from '@routes/Global';
 import v2Router from '@routes/v2';
@@ -19,6 +20,7 @@ const app = express()
   .use(compression())
   .use(Ratelimitter)
   .use(logger)
+  .use(PreventBannedUseragent)
   .use('/', globalRouter)
   .use('/v2', Deprecated, v2Router)
   .use('/v3', RequireSessionIdentifier, v3Router)
