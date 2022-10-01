@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 } from 'uuid';
+
 import Client from '@mtypes/Client';
 
 const HEARTBEAT_INTERVAL = 30000;
@@ -16,7 +17,7 @@ export default (req: Request, res: Response, clients: Client) => {
     res.write(':\n\n');
   }, HEARTBEAT_INTERVAL);
 
-  const UUID = req.header('session-identifier') || v4();
+  const UUID = v4();
 
   // Send the client a response and add them to the list of clients.
   res.writeHead(200, HEADERS);

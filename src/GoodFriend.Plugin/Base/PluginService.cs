@@ -44,6 +44,8 @@ sealed internal class PluginService
         ResourceManager = new ResourceManager();
         WindowManager = new WindowManager();
         APIClientManager = new APIClientManager(ClientState);
+
+        Configuration.Save();
     }
 
     /// <summary>

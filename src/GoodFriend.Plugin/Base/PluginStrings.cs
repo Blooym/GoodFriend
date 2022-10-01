@@ -80,6 +80,8 @@ public static class TStrings
     public static string SettingsAPILogTime => Loc.Localize("Settings.Connection.Log.Time", "Time");
     public static string SettingsAPILogPlayer => Loc.Localize("Settings.Connection.Log.Player", "Player");
     public static string SettingsAPILogEvent => Loc.Localize("Settings.Connection.Log.Event", "Event");
+    public static string SettingsAPILoginEvent => Loc.Localize("Settings.Connection.Log.Login", "Login");
+    public static string SettingsAPILogoutEvent => Loc.Localize("Settings.Connection.Log.Logout", "Logout");
     public static string SettingsHideSameFC => Loc.Localize("Settings.HideSameFC", "Hide FC Members");
     public static string SettingsHideSameTCTooltip => Loc.Localize("Settings.HideSameFC.Tooltip", "When enabled, you will not be notified when a friend in your free company logs in or out.");
     public static string SettingsAPIEventNotifications => Loc.Localize("Settings.APIEventNotifications", "API Event Notifications");

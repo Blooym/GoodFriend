@@ -23,13 +23,13 @@ sealed public class ResourceManager : IDisposable
     /// </summary>
     public ResourceManager()
     {
-        PluginLog.Debug("ResourceManager: Initializing...");
+        PluginLog.Debug("ResourceManager(ResourceManager): Initializing...");
 
         Setup(PluginService.PluginInterface.UiLanguage);
         PluginService.PluginInterface.LanguageChanged += Setup;
         ResourcesUpdated += OnResourceUpdate;
 
-        PluginLog.Debug("ResourceManager: Initialization complete.");
+        PluginLog.Debug("ResourceManager(ResourceManager): Initialization complete.");
     }
 
 
@@ -38,12 +38,12 @@ sealed public class ResourceManager : IDisposable
     /// </summary>
     public void Dispose()
     {
-        PluginLog.Debug("ResourceManager: Disposing...");
+        PluginLog.Debug("ResourceManager(Dispose): Disposing...");
 
         PluginService.PluginInterface.LanguageChanged -= Setup;
         ResourcesUpdated -= OnResourceUpdate;
 
-        PluginLog.Debug("ResourceManager: Successfully disposed.");
+        PluginLog.Debug("ResourceManager(Dispose): Successfully disposed.");
     }
 
 
@@ -61,7 +61,7 @@ sealed public class ResourceManager : IDisposable
         {
             try
             {
-                PluginLog.Debug($"ResourceManager: Opening new thread to handle resource download.");
+                PluginLog.Debug($"ResourceManager(Update): Opening new thread to handle resource download.");
 
                 // Download the files from the repository and extract them into the temp directory.
                 using var client = new HttpClient();
@@ -84,7 +84,7 @@ sealed public class ResourceManager : IDisposable
                 // Broadcast an event indicating that the resources have been updated.
                 ResourcesUpdated?.Invoke();
             }
-            catch (Exception e) { PluginLog.Error($"ResourceManager: Error updating resource files: {e.Message}"); }
+            catch (Exception e) { PluginLog.Error($"ResourceManager(Update): Error updating resource files: {e.Message}"); }
         }).Start();
     }
 
@@ -94,7 +94,7 @@ sealed public class ResourceManager : IDisposable
     /// </summary>
     private void OnResourceUpdate()
     {
-        PluginLog.Debug($"ResourceManager: Resources updated.");
+        PluginLog.Debug($"ResourceManager(OnResourceUpdate): Resources updated.");
         Setup(PluginService.PluginInterface.UiLanguage);
     }
 
@@ -104,11 +104,11 @@ sealed public class ResourceManager : IDisposable
     /// </summary>
     private void Setup(string language)
     {
-        PluginLog.Debug($"ResourceManager: Setting up resources for language {language}...");
+        PluginLog.Debug($"ResourceManager(Setup): Setting up resources for language {language}...");
 
         try { Loc.Setup(File.ReadAllText($"{PStrings.pluginlocalizationDir}{language}.json")); }
         catch { Loc.SetupWithFallbacks(); }
 
-        PluginLog.Debug("ResourceManager: Resources setup.");
+        PluginLog.Debug("ResourceManager(Setup): Resources setup.");
     }
 }

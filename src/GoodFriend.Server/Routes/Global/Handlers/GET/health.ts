@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { freemem, totalmem, cpus } from 'os';
 
-import { sseClients } from '@routes/v2';
-
 export default (req: Request, res: Response) => {
   const data = {
     processUptime: process.uptime(),
@@ -15,11 +13,6 @@ export default (req: Request, res: Response) => {
       usage: process.cpuUsage().user / process.cpuUsage().system,
       threads: cpus().length,
       speed: cpus()[0].speed,
-    },
-    routes: {
-      v2: {
-        clients: sseClients.length,
-      },
     },
   };
 

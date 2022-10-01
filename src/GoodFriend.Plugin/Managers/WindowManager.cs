@@ -25,18 +25,18 @@ sealed public class WindowManager : IDisposable
     /// </summary>
     public WindowManager()
     {
-        PluginLog.Debug("WindowManager: Initializing...");
+        PluginLog.Debug("WindowManager(WindowManager): Initializing...");
 
         foreach (var window in this._windows)
         {
-            PluginLog.Debug($"WindowManager: Registering window: {window.WindowName}");
+            PluginLog.Debug($"WindowManager(WindowManager): Registering window: {window.WindowName}");
             this._windowSystem.AddWindow(window);
         }
 
         PluginService.PluginInterface.UiBuilder.Draw += OnDrawUI;
         PluginService.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUI;
 
-        PluginLog.Debug("WindowManager: Successfully initialized.");
+        PluginLog.Debug("WindowManager(WindowManager): Successfully initialized.");
     }
 
     /// <summary>
@@ -58,19 +58,19 @@ sealed public class WindowManager : IDisposable
     /// </summary>
     public void Dispose()
     {
-        PluginLog.Debug("WindowManager: Disposing...");
+        PluginLog.Debug("WindowManager(Dispose): Disposing...");
 
         PluginService.PluginInterface.UiBuilder.Draw -= OnDrawUI;
         PluginService.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUI;
 
         foreach (var window in this._windows.OfType<IDisposable>())
         {
-            PluginLog.Debug($"WindowManager: Disposing of {window.GetType().Name}...");
+            PluginLog.Debug($"WindowManager(Dispose): Disposing of {window.GetType().Name}...");
             window.Dispose();
         }
 
         this._windowSystem.RemoveAllWindows();
 
-        PluginLog.Debug("WindowManager: Successfully disposed all windows.");
+        PluginLog.Debug("WindowManager(Dispose): Successfully disposed all windows.");
     }
 }

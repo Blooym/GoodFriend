@@ -38,6 +38,17 @@ sealed public class APIClientManager : IDisposable
     private ulong _currentContentId = 0;
 
     /// <summary>
+    ///    The current player HomeworldID. Saved on login and cleared on logout.
+    /// </summary>
+    private uint _currentHomeworldId = 0;
+
+    /// <summary>
+    ///    The current player TerritoryID. Saved on login/zone change and cleared on logout.
+    /// </summary>
+    private uint _currentTerritoryId = 0;
+
+
+    /// <summary>
     ///    The current player homeworldID, saved on login and cleared on logout.
     /// </summary>
 
@@ -76,7 +87,7 @@ sealed public class APIClientManager : IDisposable
     /// </summary>
     private void AddLog(FriendStatusEvent e)
     {
-        PluginLog.Verbose($"APIClientManager: Adding event {e.EventID} to the log.");
+        PluginLog.Verbose($"APIClientManager(AddLog): Adding event {e.EventID} to the log.");
         this.EventLog.Add(e);
         if (this.EventLog.Count > 20) this.EventLog.RemoveAt(0);
     }
@@ -126,7 +137,7 @@ sealed public class APIClientManager : IDisposable
     /// </summary>
     public APIClientManager(ClientState clientState)
     {
-        PluginLog.Debug("APIClientManager: Initializing...");
+        PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
 
         this._clientState = clientState;
 
@@ -136,15 +147,18 @@ sealed public class APIClientManager : IDisposable
         this.APIClient.ConnectionEstablished += OnAPIClientConnected;
         this._clientState.Login += OnLogin;
         this._clientState.Logout += OnLogout;
+        this._clientState.TerritoryChanged += OnTerritoryChange;
 
         // If the player is logged in already, connect & set their ID.
         if (this._clientState.LocalPlayer != null)
         {
             this._currentContentId = this._clientState.LocalContentId;
+            this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
+            this._currentTerritoryId = this._clientState.TerritoryType;
             this.APIClient.OpenStream();
         }
 
-        PluginLog.Debug("APIClientManager: Successfully initialized.");
+        PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
     }
 
     /// <summary>
@@ -172,11 +186,15 @@ sealed public class APIClientManager : IDisposable
 
         Task.Run(() =>
         {
-            while (this._clientState.LocalContentId == 0) Task.Delay(100).Wait();
+            while (this._clientState.LocalContentId == 0 || this._clientState.LocalPlayer == null)
+                Task.Delay(100).Wait();
+
 
             // Cache the contentID of the player and send a login status update.
             this._currentContentId = this._clientState.LocalContentId;
-            this.APIClient.SendLoginStatechange(this._currentContentId, LoginState.LoggedIn);
+            this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
+            this._currentTerritoryId = this._clientState.TerritoryType;
+            this.APIClient.SendLogin(this._currentContentId, this._currentHomeworldId, this._currentTerritoryId);
         });
     }
 
@@ -187,9 +205,20 @@ sealed public class APIClientManager : IDisposable
     private void OnLogout(object? sender, EventArgs e)
     {
         if (this.APIClient.IsConnected) this.APIClient.CloseStream();
-        this.APIClient.SendLoginStatechange(this._currentContentId, LoginState.LoggedOut);
+        this.APIClient.SendLogout(this._currentContentId, this._currentHomeworldId, this._currentTerritoryId);
         this._currentContentId = 0;
+        this._currentHomeworldId = 0;
+        this._currentTerritoryId = 0;
         this.ClearLog();
+    }
+
+
+    /// <summary>
+    ///     Handles the territory change event.
+    /// </summary>
+    private void OnTerritoryChange(object? sender, ushort newId)
+    {
+        if (this.APIClient.IsConnected) this._currentTerritoryId = newId;
     }
 
 
@@ -201,7 +230,7 @@ sealed public class APIClientManager : IDisposable
         // Generate a unique ID for this event so we can identify it in logs.
         var eventID = Guid.NewGuid();
 
-        PluginLog.Verbose($"APIClientManager: [{eventID}] Processing inbound event.");
+        PluginLog.Verbose($"APIClientManager(OnDataRecieved): [{eventID}] Processing inbound event.");
 
         // Process the data recieved.
         FriendListEntry* friend = default;
@@ -211,14 +240,14 @@ sealed public class APIClientManager : IDisposable
         // Client does not have a friend with the given contentID/hashed contentID.
         if (friend == null || data == null)
         {
-            PluginLog.Verbose($"APIClientManager: [{eventID}] No friend found from data, ignoring");
+            PluginLog.Verbose($"APIClientManager(OnDataRecieved): [{eventID}] No friend found from data, ignoring");
             return;
         }
 
         // Client has a friend with the given contentID, but shares a free company with them and asked to not be notified.
         if (friend->FreeCompany.ToString() == this._clientState?.LocalPlayer?.CompanyTag.ToString() && PluginService.Configuration.HideSameFC)
         {
-            PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name} but ignored it due to sharing the same free company. (FC: {friend->FreeCompany})");
+            PluginLog.Debug($"APIClientManager(OnDataRecieved): [{eventID}] Recieved update for {friend->Name} but ignored it due to sharing the same free company. (FC: {friend->FreeCompany})");
             return;
         }
 
@@ -227,13 +256,13 @@ sealed public class APIClientManager : IDisposable
         {
             EventID = eventID,
             Friend = *friend,
-            Event = data.LoginState == LoginState.LoggedIn ? "Login" : "Logout",
+            Event = data.LoggedIn ? TStrings.SettingsAPILoginEvent : TStrings.SettingsAPILogoutEvent,
             Time = DateTime.Now
         });
 
         // Notify the client 
-        PluginLog.Debug($"APIClientManager: [{eventID}] Recieved update for {friend->Name}:{friend->HomeWorld}, notifying...");
-        Notifications.ShowPreferred(data.LoginState == LoginState.LoggedIn ?
+        PluginLog.Debug($"APIClientManager(OnDataRecieved): [{eventID}] Recieved update for {friend->Name}:{friend->HomeWorld}, notifying...");
+        Notifications.ShowPreferred(data.LoggedIn ?
             string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
             : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
     }

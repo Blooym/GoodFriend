@@ -67,7 +67,7 @@ public class APIClient : IDisposable
     /// </summary>
     private void OnConnectionEstablished()
     {
-        PluginLog.Log($"APIClient: Connection Established");
+        PluginLog.Log($"APIClient(OnConnectionEstablished): Connection Established");
 
         // Set the state to connected and stop any reconnect timers.
         this.IsConnected = true;
@@ -79,7 +79,7 @@ public class APIClient : IDisposable
     /// </summary>
     private void OnConnectionClosed()
     {
-        PluginLog.Log($"APIClient: Connection to the API closed");
+        PluginLog.Log($"APIClient(OnConnectionClosed): Connection to the API closed");
 
         // Set the state to disconnected & stop any reconnect timers.
         this.IsConnected = false;
@@ -92,7 +92,7 @@ public class APIClient : IDisposable
     /// </summary>
     private void OnConnectionError(Exception error)
     {
-        PluginLog.Error($"APIClient: Connection error: {error.Message}");
+        PluginLog.Error($"APIClient(OnConnectionError): Connection error: {error.Message}");
 
         // Start attempting to reconnect to the API.
         this.IsConnected = false;
@@ -118,7 +118,12 @@ public class APIClient : IDisposable
     /// <summary>
     ///     The place to send login data to the API.
     /// </summary>
-    private const string _loginStateEndpoint = "loginstate";
+    private const string _loginEndpoint = "login";
+
+    /// <summary>
+    ///     The place to send logout data to the API.
+    /// </summary>
+    private const string _logoutEndpoint = "logout";
 
     /// <summary>
     ///     The place to send get user events data from the API.
@@ -150,7 +155,7 @@ public class APIClient : IDisposable
         if (this._configuration.APIBearerToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._configuration.APIBearerToken}");
         this._httpClient.Timeout = TimeSpan.FromSeconds(10);
         this._httpClient.BaseAddress = new Uri(this._configuration.APIUrl + _apiVersion);
-        PluginLog.Debug($"APIClient: HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
+        PluginLog.Debug($"APIClient(ConfigureHttpClient): HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
     }
 
 
@@ -225,7 +230,7 @@ public class APIClient : IDisposable
         this._httpClient.Dispose();
 
 
-        PluginLog.Debug("APIClient: Successfully disposed.");
+        PluginLog.Debug("APIClient(Dispose): Successfully disposed.");
     }
 
 
@@ -239,7 +244,7 @@ public class APIClient : IDisposable
     private void WarnOnDeprecated(HttpResponseMessage response)
     {
         if (response.Headers.Contains("Deprecated") && response.Headers.GetValues("Deprecated").First() == "true")
-            PluginLog.Warning("APIClient: API reports that this version of the API is deprecated and will be removed in the future, consider updating.");
+            PluginLog.Warning("APIClient(WarnOnDeprecated): API reports that this version of the API is deprecated and will be removed in the future, consider updating.");
     }
 
 
@@ -252,7 +257,7 @@ public class APIClient : IDisposable
     /// </summary>
     public void OpenStream()
     {
-        if (IsConnected) throw new InvalidOperationException("An active connection has already been established.");
+        if (IsConnected) throw new InvalidOperationException("APIClient(OpenStream): An active connection has already been established.");
         this.BeginStreamConnection();
     }
 
@@ -261,7 +266,7 @@ public class APIClient : IDisposable
     /// </summary>
     public void CloseStream()
     {
-        if (!IsConnected) throw new InvalidOperationException("There is no active connection to disconnect from.");
+        if (!IsConnected) throw new InvalidOperationException("APIClient(CloseStream): There is no active connection to disconnect from.");
         this.ConnectionClosed?.Invoke();
     }
 
@@ -273,7 +278,7 @@ public class APIClient : IDisposable
         try
         {
             // Try establishing a connection to the API.
-            PluginLog.Log($"APIClient: Connecting to {this._httpClient.BaseAddress}{_userEventEndpoint}");
+            PluginLog.Log($"APIClient(BeginStreamConnection): Connecting to {this._httpClient.BaseAddress}{_userEventEndpoint}");
 
             using var stream = await this._httpClient.GetStreamAsync(_userEventEndpoint);
             using var reader = new StreamReader(stream);
@@ -302,7 +307,7 @@ public class APIClient : IDisposable
 
             if (reader.EndOfStream && IsConnected)
             {
-                PluginLog.Log("APIClient: Connection closed by server.");
+                PluginLog.Log("APIClient(BeginStreamConnection): Connection closed by server.");
                 this.CloseStream();
             }
         }
@@ -331,13 +336,13 @@ public class APIClient : IDisposable
         {
             if (task.IsFaulted)
             {
-                PluginLog.Error($"APIClient: Failed to get connected clients from {request.RequestUri}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient(GetConnectedClients): Failed to get connected clients from {request.RequestUri}: {task.Exception?.Message}");
                 connected = this.ConnectedClients;
             }
 
             else if (!task.Result.IsSuccessStatusCode)
             {
-                PluginLog.Warning($"APIClient:  Failed to get connected clients from {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
+                PluginLog.Warning($"APIClient(GetConnectedClients): Failed to get connected clients from {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
                 connected = this.ConnectedClients;
             }
 
@@ -364,24 +369,51 @@ public class APIClient : IDisposable
     /// <summary>
     ///     Send a login event to the configured API/Login endpoint.
     /// </summary>
-    public void SendLoginStatechange(ulong contentID, LoginState loginState)
+    public void SendLogin(ulong contentID, uint homeworldID, uint territoryID)
     {
         var request = new HttpRequestMessage
         (
             HttpMethod.Put,
-            $"{_loginStateEndpoint}?state={Enum.GetName(loginState)}&contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}"
+            $"{_loginEndpoint}?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
         );
 
         this._httpClient.SendAsync(request).ContinueWith(task =>
         {
             if (task.IsFaulted)
-                PluginLog.Error($"APIClient: Failed to send status update to{request.RequestUri}: {task.Exception?.Message}");
+                PluginLog.Error($"APIClient(SendLogin): Failed to send status update to{request.RequestUri}: {task.Exception?.Message}");
 
             else if (!task.Result.IsSuccessStatusCode)
-                PluginLog.Warning($"APIClient: Failed to send status update to {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
+                PluginLog.Warning($"APIClient(SendLogin): Failed to send status update to {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
 
             else if (task.IsCompleted)
-                PluginLog.Log($"APIClient: Sent status update to {request.RequestUri}");
+                PluginLog.Log($"APIClient(SendLogin): Sent status update to {request.RequestUri}");
+
+            WarnOnDeprecated(task.Result);
+        });
+    }
+
+
+    /// <summary>
+    ///     Send a logout event to the configured API/logout endpoint.
+    /// </summary>
+    public void SendLogout(ulong contentID, uint homeworldID, uint territoryID)
+    {
+        var request = new HttpRequestMessage
+        (
+            HttpMethod.Put,
+            $"{_logoutEndpoint}?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryId={territoryID}"
+        );
+
+        this._httpClient.SendAsync(request).ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+                PluginLog.Error($"APIClient(SendLogout): Failed to send status update to{request.RequestUri}: {task.Exception?.Message}");
+
+            else if (!task.Result.IsSuccessStatusCode)
+                PluginLog.Warning($"APIClient(SendLogout): Failed to send status update to {request.RequestUri}: {task.Result.ReasonPhrase} ({task.Result.Content.ReadAsStringAsync().Result})");
+
+            else if (task.IsCompleted)
+                PluginLog.Log($"APIClient(SendLogout): Sent status update to {request.RequestUri}");
 
             WarnOnDeprecated(task.Result);
         });
@@ -394,7 +426,9 @@ public class APIClient : IDisposable
 sealed public class UpdatePayload
 {
     public string? ContentID { get; set; }
-    public LoginState LoginState { get; set; }
+    public bool LoggedIn { get; set; }
+    public uint HomeworldID { get; set; }
+    public uint TerritoryID { get; set; }
 }
 
 /// <summary>
@@ -403,10 +437,4 @@ sealed public class UpdatePayload
 sealed public class ClientAmountPayload
 {
     public int clients { get; set; }
-}
-
-public enum LoginState
-{
-    LoggedIn = 0,
-    LoggedOut = 1
 }
