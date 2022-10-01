@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Dalamud.Logging;
 using Dalamud.Interface.ImGuiFileDialog;
 using CheapLoc;
 using GoodFriend.Base;
@@ -67,6 +68,7 @@ sealed public class SettingsPresenter : IDisposable
     {
         if (this._lastClientsRequest < DateTimeOffset.Now.ToUnixTimeSeconds() - 60)
         {
+            PluginLog.Debug($"SettingsPresenter(APIClients): Cached value has expired, requesting new value from API. (Last Request: {this._lastClientsRequest})");
             this._lastClientsRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
             return PluginService.APIClientManager.APIClient.GetClientCount();
         }

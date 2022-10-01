@@ -357,7 +357,7 @@ public class APIClient : IDisposable
 
         task.Wait();
 
-        if (task.IsCompletedSuccessfully) { PluginLog.Debug($"APIClient: {request.RequestUri} reports {connected} clients connected."); return connected; }
+        if (task.IsCompletedSuccessfully) { PluginLog.Debug($"APIClient(GetConnectedClients): {request.RequestUri} reports {connected} clients connected."); return connected; }
         else { return this.ConnectedClients; }
     }
 
