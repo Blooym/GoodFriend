@@ -401,7 +401,7 @@ public class APIClient : IDisposable
         var request = new HttpRequestMessage
         (
             HttpMethod.Put,
-            $"{_logoutEndpoint}?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryId={territoryID}"
+            $"{_logoutEndpoint}?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
         );
 
         this._httpClient.SendAsync(request).ContinueWith(task =>
