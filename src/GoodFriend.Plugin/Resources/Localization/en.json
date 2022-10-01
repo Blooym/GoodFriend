@@ -32,7 +32,7 @@
     "description": "TStrings.get_SettingsAPIConnected"
   },
   "Settings.Connection.APIOnlineUsers": {
-    "message": "Online Users: {0}",
+    "message": "Connected Users: {0}",
     "description": "TStrings.SettingsAPIOnlineUsers"
   },
   "Settings.Connection.APIDisconnected": {

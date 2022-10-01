@@ -113,7 +113,7 @@ public class APIClient : IDisposable
     /// <summary>
     ///     The version of the API to use.
     /// </summary>
-    private const string _apiVersion = "v3/";
+    public readonly string apiVersion = "v3/";
 
     /// <summary>
     ///     The place to send login data to the API.
@@ -154,7 +154,7 @@ public class APIClient : IDisposable
         this._httpClient.DefaultRequestHeaders.Add("session-identifier", Guid.NewGuid().ToString());
         if (this._configuration.APIBearerToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._configuration.APIBearerToken}");
         this._httpClient.Timeout = TimeSpan.FromSeconds(10);
-        this._httpClient.BaseAddress = new Uri(this._configuration.APIUrl + _apiVersion);
+        this._httpClient.BaseAddress = new Uri(this._configuration.APIUrl + apiVersion);
         PluginLog.Debug($"APIClient(ConfigureHttpClient): HTTPClient configured - BaseAddr: {this._httpClient.BaseAddress} - Headers: {this._httpClient.DefaultRequestHeaders.ToString()}");
     }
 

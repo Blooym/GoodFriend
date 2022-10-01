@@ -70,7 +70,7 @@ public static class TStrings
     public static string SettingsSupportText => Loc.Localize("Settings.Support", "Donate / Support");
     public static string SettingsViewStatusText => Loc.Localize("Settings.ViewStatus", "View Status");
     public static string SettingsAPIConnected => Loc.Localize("Settings.Connection.APIConnected", "You are connected to the API and recieving events");
-    public static string SettingsAPIOnlineUsers(int i) => String.Format(Loc.Localize("Settings.Connection.APIOnlineUsers", "Online Users: {0}"), i);
+    public static string SettingsAPIOnlineUsers(int i) => String.Format(Loc.Localize("Settings.Connection.APIOnlineUsers", "Connected Users: {0}"), i);
     public static string SettingsAPIDisconnected => Loc.Localize("Settings.Connection.APIDisconnected", "You are not connected to the API are not recieving events.");
     public static string SettingsAPIDisconnectedDesc => Loc.Localize("Settings.Connection.APIDisconnectedDesc", "You should be automatically reconnected when the API becomes available, if you wish to reconnect manually you can try use the button below. For more information about why you're not connected, check /xllog");
     public static string SettingsAPITryReconnect => Loc.Localize("Settings.Connection.TryReconnect", "Attempt to reconnect");

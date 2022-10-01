@@ -80,7 +80,7 @@ sealed public class SettingsScreen : Window, IDisposable
             if (this.presenter.APIIsConnected)
             {
                 Colours.TextWrappedColoured(Colours.Success, TStrings.SettingsAPIConnected);
-                Colours.TextWrappedColoured(Colours.Grey, TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients()));
+                Colours.TextWrappedColoured(Colours.Grey, $"{TStrings.SettingsAPIOnlineUsers(this.presenter.APIClients())} / APIClient: {this.presenter.APIClientVersion}");
                 ImGui.Dummy(new Vector2(0, 5));
                 if (ImGui.Button(TStrings.SettingsSupportText)) Common.OpenLink(PStrings.supportButtonUrl);
                 ImGui.SameLine();

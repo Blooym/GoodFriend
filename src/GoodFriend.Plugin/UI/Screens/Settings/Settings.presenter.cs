@@ -82,6 +82,11 @@ sealed public class SettingsPresenter : IDisposable
     public bool APIIsConnected => PluginService.APIClientManager.APIClient.IsConnected;
 
     /// <summary>
+    ///     Get the APIClient version.
+    /// </summary>
+    public string APIClientVersion => PluginService.APIClientManager.APIClient.apiVersion.Replace("/", "");
+
+    /// <summary>
     ///     Should the reconnect button be disabled or not.
     /// </summary>
     public bool ReconnectButtonDisabled => this.reconnectCooldownActive || PluginService.ClientState.LocalPlayer == null || this.APIIsConnected;
