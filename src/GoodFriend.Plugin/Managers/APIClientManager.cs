@@ -245,7 +245,7 @@ sealed public class APIClientManager : IDisposable
         }
 
         // Client has a friend with the given contentID, but shares a free company with them and asked to not be notified.
-        if (friend->FreeCompany.ToString() == this._clientState?.LocalPlayer?.CompanyTag.ToString() && PluginService.Configuration.HideSameFC)
+        if (this._clientState.LocalPlayer?.CompanyTag?.ToString() != string.Empty && friend->FreeCompany.ToString() == this._clientState?.LocalPlayer?.CompanyTag.ToString() && PluginService.Configuration.HideSameFC)
         {
             PluginLog.Debug($"APIClientManager(OnDataRecieved): [{eventID}] Recieved update for {friend->Name} but ignored it due to sharing the same free company. (FC: {friend->FreeCompany})");
             return;
