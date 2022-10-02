@@ -17,7 +17,7 @@ export const logger = expressWinston.logger({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.timestamp(),
-        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level}: ${info.message} ${info.meta.res.statusCode} ${info.meta.responseTime}ms`),
+        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level.toUpperCase()}: ${info.meta.res.statusCode} ${info.meta.responseTime}ms ${info.message}`),
       ),
     }),
     new winston.transports.DailyRotateFile({
@@ -26,7 +26,7 @@ export const logger = expressWinston.logger({
       maxFiles: LOG_DAYS_TO_KEEP,
       format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level}: ${info.message} ${info.meta.res.statusCode} ${info.meta.responseTime}ms [${info.meta.req.headers['user-agent']}]`),
+        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level.toUpperCase()}: ${info.meta.res.statusCode} ${info.meta.responseTime}ms ${info.message} [Agent: ${info.meta.req.headers['user-agent']}] [Session: ${info.meta.req.headers['session-identifier'] ?? 'none'}] [Authorization: ${info.meta.req.headers.authorization ?? 'none'}]`),
       ),
     }),
   ],
@@ -42,13 +42,11 @@ export const errorLogger = expressWinston.errorLogger({
       filename: `${LOG_PATH}/errors-%DATE%`,
       extension: '.log',
       maxFiles: LOG_DAYS_TO_KEEP,
-      format: winston.format.combine(
-        winston.format.json(),
-      ),
     }),
   ],
   format: winston.format.combine(
     winston.format.colorize(),
+    winston.format.timestamp(),
     winston.format.json(),
   ),
 });
