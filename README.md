@@ -7,7 +7,6 @@
 A server/plugin tool for providing friend notifications to players in-game without in-game polling.
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
-[![Online Users](https://img.shields.io/badge/dynamic/json?url=https://aether.bitsofabyte.dev/v3/clients&label=API%20Online%20Users&query=clients&colour=green)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
 [![Latest Release](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Release)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
 [![Latest Preview](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=orange&include_prereleases&label=Testing)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
