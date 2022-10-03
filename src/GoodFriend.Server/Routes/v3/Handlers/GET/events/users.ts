@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 } from 'uuid';
 
-import { totalSSEClients, averageSSESessionLength, totalSSESessionTime } from '@metrics/prometheus';
+import { totalSSEClients, totalSSESessionTime } from '@metrics/prometheus';
 import Client from '@mtypes/Client';
 
 const HEARTBEAT_INTERVAL = 30000;
@@ -18,7 +18,7 @@ export default (req: Request, res: Response, clients: Client) => {
     res.write(':\n\n');
   }, HEARTBEAT_INTERVAL);
   const UUID = v4();
-  const stopPlaytimeTimer = averageSSESessionLength.startTimer();
+  const time = Date.now();
 
   // Send the client a response and add them to the list of clients.
   res.writeHead(200, HEADERS);
@@ -31,8 +31,7 @@ export default (req: Request, res: Response, clients: Client) => {
     res.end();
     clients.splice(clients.findIndex((client) => client.ID === UUID), 1);
     totalSSEClients.dec();
-    averageSSESessionLength.observe(stopPlaytimeTimer());
-    totalSSESessionTime.inc(stopPlaytimeTimer());
+    totalSSESessionTime.inc(Date.now() - time);
     clearInterval(interval);
   });
 };

@@ -9,16 +9,10 @@ export const totalSSEClients = new client.Gauge({
 });
 
 export const totalSSEStateEvents = new client.Counter({
-  name: 'total_loginstate_events_sent',
-  help: 'Total number of login/logout events sent to clients',
+  name: 'total_sse_state_events',
+  help: 'Total number of state events sent to clients',
   registers: [register],
   labelNames: ['event', 'homeworld', 'territory'],
-});
-
-export const averageSSESessionLength = new client.Histogram({
-  name: 'average_sse_session_length',
-  help: 'Average playtime of users',
-  registers: [register],
 });
 
 export const totalSSESessionTime = new client.Counter({
