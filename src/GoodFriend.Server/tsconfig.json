@@ -15,6 +15,7 @@
       "@routes/*": ["Routes/*"],
       "@mtypes/*": ["Types/*"],
       "@base/*": ["Base/*"],
+      "@metrics/*": ["Metrics/*"],
     }
   }
 }
