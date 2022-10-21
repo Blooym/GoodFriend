@@ -9,7 +9,7 @@ namespace GoodFriend.Base
     public static class PStrings
     {
         public static readonly string pluginName = "Good Friend";
-        public static readonly string repoUrl = "https://github.com/BitsOfAByte/GoodFriend/";
+        public static readonly Uri repoUrl = new("https://github.com/BitsOfAByte/GoodFriend/");
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace GoodFriend.Base
         /// <summary>
         ///     The support plugin developer button url.
         /// </summary>
-        public static readonly string supportButtonUrl = "https://github.com/sponsors/BitsOfAByte";
+        public static readonly Uri supportButtonUrl = new("https://github.com/sponsors/BitsOfAByte/");
 
         /// <summary>
         ///     The default API url to use.

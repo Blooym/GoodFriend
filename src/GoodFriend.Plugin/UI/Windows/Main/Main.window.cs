@@ -350,9 +350,9 @@ namespace GoodFriend.UI.Windows.Main
             // Support the developer button
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, PStrings.supportButtonUrl))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, PStrings.supportButtonUrl.ToString()))
             {
-                Util.OpenLink(PStrings.supportButtonUrl);
+                Util.OpenLink(PStrings.supportButtonUrl.ToString());
             }
             ImGui.Dummy(new Vector2(0, 5));
 
