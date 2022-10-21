@@ -52,7 +52,7 @@ namespace GoodFriend.Managers
             var repoName = PStrings.pluginName.Replace(" ", "");
             var zipFilePath = Path.Combine(Path.GetTempPath(), $"{repoName}.zip");
             var zipExtractPath = Path.Combine(Path.GetTempPath(), $"{repoName}-{PStrings.repoBranch}", $"{PStrings.repoResourcesDir}");
-            var pluginExtractPath = Path.Combine(PStrings.pluginResourcesDir);
+            var pluginExtractPath = Path.Combine(PStrings.assemblyResourcesDir);
 
             // NOTE: This is only GitHub compatible, changes will need to be made here for other providers as necessary.
             new Thread(() =>
@@ -113,7 +113,7 @@ namespace GoodFriend.Managers
         {
             PluginLog.Log($"ResourceManager(Setup): Setting up resources for language {language}...");
 
-            try { Loc.Setup(File.ReadAllText($"{PStrings.pluginlocalizationDir}{language}.json")); }
+            try { Loc.Setup(File.ReadAllText($"{PStrings.assemblyLocDir}{language}.json")); }
             catch { Loc.SetupWithFallbacks(); }
 
             PluginLog.Verbose("ResourceManager(Setup): Resources setup.");

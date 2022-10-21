@@ -8,21 +8,9 @@ namespace GoodFriend.Base
     /// </summary>
     public static class PStrings
     {
-        /// <summary> 
-        ///    This is the name that will be shown in all UI elements, does not change InternalName.
-        /// </summary>
         public static readonly string pluginName = "Good Friend";
-
-        /// <summary>
-        ///     The repository to linked to this plugin.
-        /// </summary>
         public static readonly string repoUrl = "https://github.com/BitsOfAByte/GoodFriend/";
 
-        /// <summary>
-        ///     The status page for the API, shown when API Url is the plugin default.
-        ///     Leave as an empty string to disable showing this in the UI.
-        /// </summary>
-        public static readonly string statusPageUrl = "https://status.bitsofabyte.dev/status/goodfriend";
 
         /// <summary>
         ///     The production branch of the repository.
@@ -35,17 +23,17 @@ namespace GoodFriend.Base
         internal static readonly string repoResourcesDir = "src/GoodFriend.Plugin/Resources/";
 
         /// <summary>
-        ///     The resources directory relative to the base of the repository.
+        ///     The resources directory relative to the base of the the assembly location.
         /// </summary>
-        public static readonly string pluginResourcesDir = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
+        public static readonly string assemblyResourcesDir = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
 
         /// <summary>
         ///     The path to the plugin's resources folder with trailing slashes, relative to the plugin assembly location with trailing slashes.
         /// </summary>
-        public static readonly string pluginlocalizationDir = pluginResourcesDir + "Localization\\";
+        public static readonly string assemblyLocDir = assemblyResourcesDir + "Localization\\";
 
         /// <summary>
-        ///     The support button URL.
+        ///     The support plugin developer button url.
         /// </summary>
         public static readonly string supportButtonUrl = "https://github.com/sponsors/BitsOfAByte";
 

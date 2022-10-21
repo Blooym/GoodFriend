@@ -21,7 +21,7 @@ namespace GoodFriend.UI.Components
                 ConnectionStatus.Connecting => State.Connecting,
                 ConnectionStatus.Ratelimited => State.Ratelimited,
                 ConnectionStatus.Disconnected => State.Disconnected,
-                ConnectionStatus.Error => State.Disconnected,
+                ConnectionStatus.Error => State.ConnectionError,
                 _ => State.Unknown,
             };
         }
