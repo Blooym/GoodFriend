@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import Client from '@mtypes/Client';
 import isValidID from '@utils/Validators';
-import { totalSSEStateEvents } from '@metrics/prometheus';
+import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
 
 export default (req: Request, res: Response, clients: Client) => {
   const { contentID, homeworldID, territoryID } = req.query;
@@ -26,6 +26,7 @@ export default (req: Request, res: Response, clients: Client) => {
 
     clients.forEach((client) => {
       client.res.write(`data: ${JSON.stringify(event)}\n\n`);
+      totalSSEEventsSent.inc();
     });
   }
 };

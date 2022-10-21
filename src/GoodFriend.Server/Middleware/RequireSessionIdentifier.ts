@@ -8,7 +8,7 @@ import { AUTH_TOKEN } from '@base/environment';
  * @param next The next middleware function to call.
  */
 export default (req: Request, res: Response, next: NextFunction) => {
-  const uuid = req.header('session-identifier');
+  const uuid = req.header('x-session-identifier');
   const authorization = req.header('authorization');
 
   if (authorization?.replace('Bearer ', '') === AUTH_TOKEN) { next(); return; }

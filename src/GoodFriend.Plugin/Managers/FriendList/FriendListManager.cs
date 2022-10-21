@@ -21,61 +21,61 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-namespace GoodFriend.Managers;
-
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using System;
-
-
-/// <summary>
-///     The class containing friend list functionality
-/// </summary>
-public static class FriendList
+namespace GoodFriend.Managers
 {
-    // Updated: 5.58-HF1
-    private const int InfoOffset = 0x28;
-    private const int LengthOffset = 0x10;
-    private const int ListOffset = 0x98;
+    using System;
+    using FFXIVClientStructs.FFXIV.Client.System.Framework;
+    using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+
     /// <summary>
-    /// <para>
-    ///     A live list of the currently-logged-in player's friends.
-    /// </para>
-    /// <para>
-    ///     The list is empty if not logged in.
-    /// </para>
+    ///     The class containing friend list functionality
     /// </summary>
-    public static unsafe FriendListEntry*[] Get()
+    public static class FriendList
     {
-        var friendListAgent = (IntPtr)Framework.Instance()
-            ->GetUiModule()
-            ->GetAgentModule()
-            ->GetAgentByInternalId(AgentId.SocialFriendList);
-        if (friendListAgent == IntPtr.Zero)
+        // Updated: 5.58-HF1
+        private const int InfoOffset = 0x28;
+        private const int LengthOffset = 0x10;
+        private const int ListOffset = 0x98;
+        /// <summary>
+        /// <para>
+        ///     A live list of the currently-logged-in player's friends.
+        /// </para>
+        /// <para>
+        ///     The list is empty if not logged in.
+        /// </para>
+        /// </summary>
+        public static unsafe FriendListEntry*[] Get()
         {
-            return new FriendListEntry*[] { };
+            var friendListAgent = (IntPtr)Framework.Instance()
+                ->GetUiModule()
+                ->GetAgentModule()
+                ->GetAgentByInternalId(AgentId.SocialFriendList);
+            if (friendListAgent == IntPtr.Zero)
+            {
+                return new FriendListEntry*[] { };
+            }
+            var info = *(IntPtr*)(friendListAgent + InfoOffset);
+            if (info == IntPtr.Zero)
+            {
+                return new FriendListEntry*[] { };
+            }
+            var length = *(ushort*)(info + LengthOffset);
+            if (length == 0)
+            {
+                return new FriendListEntry*[] { };
+            }
+            var list = *(IntPtr*)(info + ListOffset);
+            if (list == IntPtr.Zero)
+            {
+                return new FriendListEntry*[] { };
+            }
+            var entries = new FriendListEntry*[length];
+            for (var i = 0; i < length; i++)
+            {
+                var entry = (FriendListEntry*)(list + i * FriendListEntry.Size);
+                entries[i] = entry;
+            }
+            return entries;
         }
-        var info = *(IntPtr*)(friendListAgent + InfoOffset);
-        if (info == IntPtr.Zero)
-        {
-            return new FriendListEntry*[] { };
-        }
-        var length = *(ushort*)(info + LengthOffset);
-        if (length == 0)
-        {
-            return new FriendListEntry*[] { };
-        }
-        var list = *(IntPtr*)(info + ListOffset);
-        if (list == IntPtr.Zero)
-        {
-            return new FriendListEntry*[] { };
-        }
-        var entries = new FriendListEntry*[length];
-        for (var i = 0; i < length; i++)
-        {
-            var entry = (FriendListEntry*)(list + i * FriendListEntry.Size);
-            entries[i] = entry;
-        }
-        return entries;
     }
 }

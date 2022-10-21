@@ -132,11 +132,11 @@
     "description": "TStrings.get_SettingsFriendshipCode"
   },
   "Settings.FriendshipCode.Hint": {
-    "message": "Leave empty to send notifications to all friends",
+    "message": "Leave empty to send notifications to all friends without a friend code.",
     "description": "TStrings.get_SettingsFriendshipCodeHint"
   },
   "Settings.FriendshipCode.Tooltip": {
-    "message": "Your friend code determines which friends you send and recieve notifications with.",
+    "message": "Your friend code determines which friends you send and recieve notifications with, leaving it empty will make you recieve notifications from all friends without a friend code.",
     "description": "TStrings.get_SettingsFriendshipCodeTooltip"
   },
   "Settings.ShowAdvanced": {
@@ -148,7 +148,7 @@
     "description": "TStrings.get_SettingsSaltMode"
   },
   "Settings.SaltMode.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.",
+    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Users must be using the same plugin and version to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any plugin using the same API)\n\nKeep this on strict for the best privacy and security.",
     "description": "TStrings.get_SettingsSaltModeTooltip"
   },
   "Settings.APIURL": {

@@ -1,32 +1,32 @@
-namespace GoodFriend;
-
-using Dalamud.IoC;
-using Dalamud.Plugin;
-using GoodFriend.Base;
-
-public sealed unsafe class GoodFriendPlugin : IDalamudPlugin
+namespace GoodFriend
 {
-    /// <summary> 
-    ///     The plugin name, fetched from PStrings.
-    /// </summary>
-    public string Name => PStrings.pluginName;
+    using Dalamud.IoC;
+    using Dalamud.Plugin;
+    using GoodFriend.Base;
 
-    /// <summary>
-    ///     The plugin's main entry point.
-    /// </summary>
-    public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+    public sealed class GoodFriendPlugin : IDalamudPlugin
     {
-        pluginInterface.Create<PluginService>();
-        PluginService.Initialize();
+        /// <summary> 
+        ///     The plugin name, fetched from PStrings.
+        /// </summary>
+        public string Name => PStrings.pluginName;
+
+        /// <summary>
+        ///     The plugin's main entry point.
+        /// </summary>
+        public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+        {
+            pluginInterface.Create<PluginService>();
+            PluginService.Initialize();
 
 #if !DEBUG
         PluginService.ResourceManager.Update();
 #endif
+        }
+
+        /// <summary>
+        ///     Handles disposing of all resources used by the plugin.
+        /// </summary>
+        public void Dispose() => PluginService.Dispose();
     }
-
-
-    /// <summary>
-    ///     Handles disposing of all resources used by the plugin.
-    /// </summary>
-    public void Dispose() => PluginService.Dispose();
 }

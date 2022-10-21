@@ -1,60 +1,55 @@
-namespace GoodFriend.Base;
-
-using Dalamud.IoC;
-using Dalamud.Plugin;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Toast;
-using Dalamud.Game.ClientState;
-using GoodFriend.Managers;
-
-/// <summary> Provides access to necessary instances and services. </summary>
-#pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework here.
-sealed internal class PluginService
+namespace GoodFriend.Base
 {
-    ////////////////////////
-    /// Dalamud Services ///
-    ////////////////////////
+    using GoodFriend.Managers;
+    using Dalamud.IoC;
+    using Dalamud.Plugin;
+    using Dalamud.Logging;
+    using Dalamud.Game.Gui;
+    using Dalamud.Game.Gui.Toast;
+    using Dalamud.Game.ClientState;
+    using Dalamud.Game.ClientState.Conditions;
 
-    [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; }
-    [PluginService] internal static ClientState ClientState { get; private set; }
-    [PluginService] internal static ChatGui Chat { get; private set; }
-    [PluginService] internal static ToastGui Toast { get; private set; }
-
-
-    ////////////////////////
-    /// Plugin  Services ///
-    ////////////////////////
-
-    internal static WindowManager WindowManager { get; private set; }
-    internal static ResourceManager ResourceManager { get; private set; }
-    internal static APIClientManager APIClientManager { get; private set; }
-    internal static Configuration Configuration { get; private set; }
-
-
-    ////////////////////////
-    ///  Config  Methods ///
-    ////////////////////////
-
-    /// <summary>
-    ///     Initializes the service class.
+    /// <summary> 
+    ///     Provides access to necessary instances and services.
     /// </summary>
-    internal static void Initialize()
+#pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework here.
+    internal sealed class PluginService
     {
-        Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-        ResourceManager = new ResourceManager();
-        WindowManager = new WindowManager();
-        APIClientManager = new APIClientManager(ClientState);
+        [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; }
+        [PluginService] internal static ClientState ClientState { get; private set; }
+        [PluginService] internal static ChatGui Chat { get; private set; }
+        [PluginService] internal static ToastGui Toast { get; private set; }
+        [PluginService] internal static Condition Condition { get; private set; }
 
-        Configuration.Save();
-    }
+        internal static WindowManager WindowManager { get; private set; }
+        internal static ResourceManager ResourceManager { get; private set; }
+        internal static APIClientManager APIClientManager { get; private set; }
+        internal static Configuration Configuration { get; private set; }
+        internal static EventLogManager EventLogManager { get; private set; }
 
-    /// <summary>
-    ///     Disposes of the service class.
-    /// </summary>
-    internal static void Dispose()
-    {
-        WindowManager.Dispose();
-        ResourceManager.Dispose();
-        APIClientManager.Dispose();
+        /// <summary>
+        ///     Initializes the service class.
+        /// </summary>
+        internal static void Initialize()
+        {
+            Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            ResourceManager = new ResourceManager();
+            WindowManager = new WindowManager();
+            APIClientManager = new APIClientManager(ClientState);
+            EventLogManager = new EventLogManager();
+
+            EventLogManager.AddEntry("Services initialized successfully.", EventLogManager.EventLogType.Debug);
+            PluginLog.Verbose("PluginService(Initialize): Successfully initialized.");
+        }
+
+        /// <summary>
+        ///     Disposes of the service class.
+        /// </summary>
+        internal static void Dispose()
+        {
+            WindowManager.Dispose();
+            ResourceManager.Dispose();
+            APIClientManager.Dispose();
+        }
     }
 }
