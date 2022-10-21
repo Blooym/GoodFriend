@@ -57,7 +57,8 @@ Then you can run the container with the following command:
 docker run -d --name goodfriend-server --env-file .env goodfriend-server
 ```
 
-#### Uncontainerized
+
+## Setup on Host Machine (Unsupported)
 
 > **Warning**
 > This method is not recommended or supported.
@@ -69,7 +70,7 @@ If you do not want to use docker, you can run the server directly on your host m
 
 You will then need to install the dev-dependencies using `yarn install` and then build the project using `yarn build`. From here you can run the server using `yarn start`, or you can remove the `node_modules` folder and install the production dependencies using `yarn install --production` and then run the server using `node ./dist/index.js`.
 
-### Logs & Metrics
+## Logs & Metrics
 The server will automatically create a `logs` directory wherever the `process.cwd()` is when the server is started. This directory will contain all of the logs for errors and events, logs are also output *stdout* and *stderr*.
 
 You can view the logs for the server from anywhere by sending an authenticated request to the `/logs` endpoint, which will allow you to view or download any log files that are available.
