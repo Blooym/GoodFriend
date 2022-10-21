@@ -16,9 +16,9 @@ namespace GoodFriend.UI.Components
 
         /// <summary>
         ///     Draw the component.
+        /// </summary>
         /// <param name="str_id"> The string ID of the component child. </param>
         /// <param name="sizeOverride"> The size of the component. </param>
-        /// </summary>
         public static void Draw(string str_id, Vector2? sizeOverride = null)
         {
             var connectionStatusText = _presenter.GetConnectionStatusText();

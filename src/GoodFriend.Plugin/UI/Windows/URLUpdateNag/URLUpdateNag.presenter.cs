@@ -67,8 +67,12 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         }
 
         /// <summary>
-        ///     Checks to see if the player is in combat or inside of a duty.
+        ///     Checks to prevent showing the nag at inappropriate times.
         /// </summary>
-        public bool IsInCombatOrDuty => PluginService.Condition[ConditionFlag.InCombat] || PluginService.Condition[ConditionFlag.BoundByDuty];
+        public bool CannotShowNag =>
+            PluginService.Condition[ConditionFlag.InCombat]
+            || PluginService.Condition[ConditionFlag.BoundByDuty]
+            || PluginService.Condition[ConditionFlag.WatchingCutscene]
+            || PluginService.ClientState.IsLoggedIn == false;
     }
 }

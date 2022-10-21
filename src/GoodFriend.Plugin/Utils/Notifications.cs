@@ -18,7 +18,6 @@ namespace GoodFriend.Utils
             Show(message, notificationType, toastType);
         }
 
-
         /// <summary> Sends a notification using the given notification type. </summary>
         /// <param name="message"> The message to send. </param>
         /// <param name="notificationType"> The type of notification to send. </param>
@@ -34,18 +33,15 @@ namespace GoodFriend.Utils
             }
         }
 
-
         /// <summary> Sends a toast notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
         private static void ShowToast(string message, ToastType type) =>
             PluginService.PluginInterface.UiBuilder.AddNotification(message, PStrings.pluginName, type);
 
-
         /// <summary> Sends a popup notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
         private static void ShowPopup(string message) =>
             PluginService.Toast.ShowNormal(message);
-
 
         /// <summary> Sends a chat notification to the user. </summary>
         /// <param name="message"> The message to send. </param>

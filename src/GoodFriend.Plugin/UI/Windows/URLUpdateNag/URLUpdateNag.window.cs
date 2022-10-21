@@ -18,6 +18,11 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         public URLUpdateNagPresenter presenter;
 
         /// <summary>
+        ///     Disposes of the window and associated resources.
+        /// </summary>
+        public void Dispose() => this.presenter.Dispose();
+
+        /// <summary>
         ///     Instantiate a new settings window.
         /// </summary>
         public URLUpdateNagWindow() : base($"{PStrings.pluginName} - URL Update")
@@ -41,7 +46,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public override bool DrawConditions()
         {
-            return presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed && !presenter.IsInCombatOrDuty;
+            return presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed && !presenter.CannotShowNag;
         }
 
         /// <summary>
@@ -101,7 +106,5 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
             }
             ImGui.EndDisabled();
         }
-
-        public void Dispose() => this.presenter.Dispose();
     }
 }

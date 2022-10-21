@@ -34,6 +34,11 @@ namespace GoodFriend.UI.Windows.Main
         }
 
         /// <summary>
+        ///     Dispose of the window and all associated resources.
+        /// </summary>
+        public void Dispose() => this.presenter.Dispose();
+
+        /// <summary>
         ///     Draws all elements and components for the settings window, including sub-components.
         /// </summary>
 #pragma warning disable CS1717
@@ -89,11 +94,6 @@ namespace GoodFriend.UI.Windows.Main
                     break;
             }
         }
-
-        /// <summary>
-        ///     Dispose of the window and all associated resources.
-        /// </summary>
-        public void Dispose() => this.presenter.Dispose();
 
         /// <summary>
         ///     Draw the settings dropdown.
@@ -308,9 +308,7 @@ namespace GoodFriend.UI.Windows.Main
 
                         this.presenter.dialogManager.Draw();
                         if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
-                        {
-                            this.presenter.dialogManager.OpenFolderDialog("Export Localizable", this.presenter.OnDirectoryPicked);
-                        }
+                            this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
 
                         ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
                         ImGui.BeginChild("##Friends");

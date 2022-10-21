@@ -39,9 +39,10 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The callback for when the user selects an export directory. 
         /// </summary>
-        public void OnDirectoryPicked(bool success, string path)
+        public void OnDirectoryPicked(bool cancelled, string path)
         {
-            if (!success) return;
+            if (!cancelled) return;
+
             var directory = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(path);
             Loc.ExportLocalizable();

@@ -19,13 +19,13 @@ namespace GoodFriend.UI.Components
 
         /// <summary>
         ///    Creates a button with a tooltip on hover. 
+        /// </summary>
         /// <param name="text"> The text to display on the button. </param>
         /// <param name="tooltip"> The text to show on hover. </param>
         /// <param name="size"> The size of the button. </param>
-        /// </summary>
         public static bool TooltipButton(string text, string tooltip, Vector2 size = default)
         {
-            var result = ImGui.Button(text, size);
+            var result = ImGui.Button($"{text}##{tooltip}", size);
             AddTooltipHover(tooltip);
             return result;
         }

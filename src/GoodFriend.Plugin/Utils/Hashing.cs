@@ -16,8 +16,10 @@ namespace GoodFriend.Utils
     /// <summary> Hashing implementations and methods </summary>
     public static class Hashing
     {
-        /// <summary> Generates a salt using a given method and length. </summary>
-        /// <param name="method"> The method to use for generating the salt. </param>
+        /// <summary> 
+        ///     Generates a salt using a given method and length.
+        /// </summary>
+        /// <param name="method"> The <see cref="SaltMethods"/> to use. </param>
         /// <returns> The generated salt. </returns>
         private static string? CreateSalt(SaltMethods method)
         {
@@ -32,8 +34,9 @@ namespace GoodFriend.Utils
             }
         }
 
-
-        /// <summary> Generates a SHA512 hash from the given string. </summary>
+        /// <summary> 
+        ///     Generates a SHA512 hash from the given string.
+        /// </summary>
         /// <param name="input"> The string to hash. </param>
         /// <returns> The hashed string. </returns>
         public static string HashSHA512(string input)
