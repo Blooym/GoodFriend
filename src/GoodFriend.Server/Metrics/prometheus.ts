@@ -15,6 +15,13 @@ export const totalSSEStateEvents = new client.Counter({
   labelNames: ['event', 'homeworld', 'territory'],
 });
 
+export const totalSSEEventsSent = new client.Counter({
+  name: 'total_sse_events_sent',
+  help: 'Total number of events sent to clients',
+  registers: [register],
+  labelNames: ['event'],
+});
+
 export const totalSSESessionTime = new client.Counter({
   name: 'total_sse_session_time',
   help: 'Total time spent by users in the game',
@@ -24,13 +31,6 @@ export const totalSSESessionTime = new client.Counter({
 export const totalRequests = new client.Gauge({
   name: 'total_requests',
   help: 'Total number of requests received by the server',
-  registers: [register],
-  labelNames: ['method', 'route', 'status_code'],
-});
-
-export const averageResponseTime = new client.Histogram({
-  name: 'average_response_time',
-  help: 'Average response time of requests',
   registers: [register],
   labelNames: ['method', 'route', 'status_code'],
 });

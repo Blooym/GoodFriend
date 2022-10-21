@@ -1,174 +1,238 @@
 {
-  "Connection.Successful": {
-    "message": "Successfully connected to the API.",
-    "description": "TStrings.get_ConnectionSuccessful"
+  "Event.Connection.Status": {
+    "message": "Connection Status",
+    "description": "Events.get_APIConnectionStatus"
   },
-  "Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
-    "description": "TStrings.get_ConnectionError"
+  "Event.Connection.Successful": {
+    "message": "Successfully connected to the API",
+    "description": "Events.get_APIConnectionSuccess"
   },
-  "Settings.Tab.Settings": {
-    "message": "Settings",
-    "description": "TStrings.get_SettingsTabSettings"
+  "Event.Connection.Error": {
+    "message": "An error occurred while connecting to the API",
+    "description": "Events.get_APIConnectionError"
   },
-  "Settings.Tab.Connection": {
-    "message": "Connection",
-    "description": "TStrings.get_SettingsTabConnection"
+  "Event.Connection.Disconnected": {
+    "message": "Disconnected from the API",
+    "description": "Events.get_APIConnectionDisconnected"
   },
-  "Settings.Tab.Debug": {
-    "message": "Debug",
-    "description": "TStrings.get_SettingsTabDebug"
+  "Event.Connection.Ratelimited": {
+    "message": "Ratelimited by the API. Trying again at expiry time",
+    "description": "Events.get_APIConnectionRatelimited"
   },
-  "Settings.Support": {
-    "message": "Donate / Support",
-    "description": "TStrings.get_SettingsSupportText"
+  "Event.LoggedIn": {
+    "message": "logged in",
+    "description": "Events.get_LoggedIn"
   },
-  "Settings.ViewStatus": {
-    "message": "View Status",
-    "description": "TStrings.get_SettingsViewStatusText"
+  "Event.LoggedOut": {
+    "message": "logged out",
+    "description": "Events.get_LoggedOut"
   },
-  "Settings.Connection.APIConnected": {
-    "message": "You are connected to the API and recieving events",
-    "description": "TStrings.get_SettingsAPIConnected"
+  "State.Connected": {
+    "message": "Connected",
+    "description": "State.get_Connected"
   },
-  "Settings.Connection.APIOnlineUsers": {
-    "message": "Connected Users: {0}",
-    "description": "TStrings.SettingsAPIOnlineUsers"
+  "State.Connected.Description": {
+    "message": "There are currently {0} connected clients.",
+    "description": "State.ConnectedDescription"
   },
-  "Settings.Connection.APIDisconnected": {
-    "message": "You are not connected to the API are not recieving events.",
-    "description": "TStrings.get_SettingsAPIDisconnected"
+  "State.Connecting": {
+    "message": "Connecting",
+    "description": "State.get_Connecting"
   },
-  "Settings.Connection.APIDisconnectedDesc": {
-    "message": "You should be automatically reconnected when the API becomes available, if you wish to reconnect manually you can try use the button below. For more information about why you're not connected, check /xllog",
-    "description": "TStrings.get_SettingsAPIDisconnectedDesc"
+  "State.Connecting.Description": {
+    "message": "Attempting to connect to the API... Please wait.",
+    "description": "State.get_ConnectingDescription"
   },
-  "Settings.Connection.TryReconnect": {
-    "message": "Attempt to reconnect",
-    "description": "TStrings.get_SettingsAPITryReconnect"
+  "State.Ratelimited": {
+    "message": "Ratelimited",
+    "description": "State.get_Ratelimited"
   },
-  "Settings.Connection.NotLoggedIn": {
-    "message": "You must log in to a character to connect to the API",
-    "description": "TStrings.get_SettingsAPINotLoggedIn"
+  "State.Ratelimited.Description": {
+    "message": "The API has ratelimited this client temporarily.",
+    "description": "State.get_RatelimitedDescription"
   },
-  "Settings.Connection.Log": {
+  "State.Disconnected": {
+    "message": "Disconnected",
+    "description": "State.get_Disconnected"
+  },
+  "State.Disconnected.Description": {
+    "message": "Login to connect to the API.",
+    "description": "State.get_DisconnectedDescription"
+  },
+  "State.ConnectionError": {
+    "message": "Connection Error",
+    "description": "State.get_ConnectionError"
+  },
+  "State.ConnectionError.Description": {
+    "message": "Something went wrong with the API connection.",
+    "description": "State.get_ConnectionErrorDescription"
+  },
+  "State.Unknown": {
+    "message": "Unknown",
+    "description": "State.get_Unknown"
+  },
+  "State.Unknown.Description": {
+    "message": "We're not sure what's going on here.",
+    "description": "State.get_UnknownDescription"
+  },
+  "Window.Dropdown.Options.Status": {
+    "message": "Status",
+    "description": "PrimaryWindow.get_DropdownOptionsStatus"
+  },
+  "Window.Dropdown.Options.Status.Tooltip": {
+    "message": "View the status page of this API instance\n({0})",
+    "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
+  },
+  "Window.Dropdown.Options.Support": {
+    "message": "Donate",
+    "description": "PrimaryWindow.get_DropdownOptionsSupport"
+  },
+  "Window.Dropdown.Options.Support.Tooltip": {
+    "message": "Support the developer and API instance host",
+    "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
+  },
+  "Window.Dropdown.Options.EventLog": {
     "message": "Event Log",
-    "description": "TStrings.get_SettingsAPILogTitle"
+    "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
-  "Settings.Connections.Log.Desc": {
-    "message": "You will see friend events in the log below when you recieve them.",
-    "description": "TStrings.get_SettingsAPILogDesc"
+  "Window.Dropdown.Options.EventLog.Tooltip": {
+    "message": "View the event log",
+    "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
-  "Settings.Connection.Log.Time": {
-    "message": "Time",
-    "description": "TStrings.get_SettingsAPILogTime"
+  "Window.Dropdown.Options.Settings": {
+    "message": "Settings",
+    "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
-  "Settings.Connection.Log.Player": {
-    "message": "Player",
-    "description": "TStrings.get_SettingsAPILogPlayer"
+  "Window.Dropdown.Options.Settings.Tooltip": {
+    "message": "Change the settings for this plugin",
+    "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
-  "Settings.Connection.Log.Event": {
-    "message": "Event",
-    "description": "TStrings.get_SettingsAPILogEvent"
-  },
-  "Settings.Connection.Log.Login": {
-    "message": "Login",
-    "description": "TStrings.get_SettingsAPILoginEvent"
-  },
-  "Settings.Connection.Log.Logout": {
-    "message": "Logout",
-    "description": "TStrings.get_SettingsAPILogoutEvent"
-  },
-  "Settings.HideSameFC": {
-    "message": "Hide FC Members",
-    "description": "TStrings.get_SettingsHideSameFC"
-  },
-  "Settings.HideSameFC.Tooltip": {
-    "message": "When enabled, you will not be notified when a friend in your free company logs in or out.",
-    "description": "TStrings.get_SettingsHideSameTCTooltip"
-  },
-  "Settings.APIEventNotifications": {
-    "message": "API Event Notifications",
-    "description": "TStrings.get_SettingsAPIEventNotifications"
-  },
-  "Settings.APIEventNotifications.Tooltip": {
-    "message": "Show toast notifications for events from the API (eg. connection errors, etc)",
-    "description": "TStrings.get_SettingsAPIEventNotificationsTooltip"
-  },
-  "Settings.Enabled": {
+  "Window.Dropdown.Settings.Enabled": {
     "message": "Enabled",
-    "description": "TStrings.get_SettingsEnabled"
+    "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
-  "Settings.Disabled": {
+  "Window.Dropdown.Settings.Disabled": {
     "message": "Disabled",
-    "description": "TStrings.get_SettingsDisabled"
+    "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
-  "Settings.NotificationType": {
+  "Window.Dropdown.Settings.IgnoreFC": {
+    "message": "Ignore FC Members",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
+  },
+  "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
+    "message": "Whether or not to ignore free company friend notifications",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
+  },
+  "Window.Dropdown.Settings.NotificationType": {
     "message": "Notification Type",
-    "description": "TStrings.get_SettingsNotificationType"
+    "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
   },
-  "Settings.NotificationType.Tooltip": {
-    "message": "The place to display notifications when a friend logs in or logs out.",
-    "description": "TStrings.get_SettingsNotificationTypeTooltip"
+  "Window.Dropdown.Settings.NotificationType.Tooltip": {
+    "message": "The type of notification to show when a friend event occurs.",
+    "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
   },
-  "Settings.LoginMessage": {
+  "Window.Dropdown.Settings.LoginMessage": {
     "message": "Login Message",
-    "description": "TStrings.get_SettingsLoginMessage"
+    "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
-  "Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\n\n{0}: Name of the friend.",
-    "description": "TStrings.get_SettingsLoginMessageTooltip"
+  "Window.Dropdown.Settings.LoginMessage.Tooltip": {
+    "message": "The message to show when a friend logs in.\nUse {0} to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
-  "Settings.LogoutMessage": {
+  "Window.Dropdown.Settings.LogoutMessage": {
     "message": "Logout Message",
-    "description": "TStrings.get_SettingsLogoutMessage"
+    "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
-  "Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\n\n{0}: Name of the friend.",
-    "description": "TStrings.get_SettingsLogoutMessageTooltip"
+  "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
+    "message": "The message to show when a friend logs out.\nUse {0} to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
-  "Settings.FriendshipCode": {
+  "Window.Dropdown.Settings.APINotifications": {
+    "message": "API Notifications",
+    "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
+  },
+  "Window.Dropdown.Settings.APINotifications.Tooltip": {
+    "message": "Whether or not to notifications when the API connection status changes.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
+  },
+  "Window.Dropdown.Settings.FriendshipCode": {
     "message": "Friendship Code",
-    "description": "TStrings.get_SettingsFriendshipCode"
+    "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
-  "Settings.FriendshipCode.Hint": {
-    "message": "Leave empty to send notifications to all friends",
-    "description": "TStrings.get_SettingsFriendshipCodeHint"
+  "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
+    "message": "Your friendship code limits who you send notifications to.\nYou will only send and recieve notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
-  "Settings.FriendshipCode.Tooltip": {
-    "message": "Your friend code determines which friends you send and recieve notifications with.",
-    "description": "TStrings.get_SettingsFriendshipCodeTooltip"
-  },
-  "Settings.ShowAdvanced": {
-    "message": "Show Advanced Settings",
-    "description": "TStrings.get_SettingsShowAdvanced"
-  },
-  "Settings.SaltMode": {
-    "message": "Salt Mode",
-    "description": "TStrings.get_SettingsSaltMode"
-  },
-  "Settings.SaltMode.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Both users must be on the same version of the plugin)\nRelaxed: Validation is only done using Friend Code (Users can recieve events from any plugin using the API)\n\nKeep this on strict for the best security.",
-    "description": "TStrings.get_SettingsSaltModeTooltip"
-  },
-  "Settings.APIURL": {
+  "Window.Dropdown.Settings.APIUrl": {
     "message": "API URL",
-    "description": "TStrings.get_SettingsAPIURL"
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
-  "Settings.APIURL.Tooltip": {
-    "message": "The API that all events will be sent to and recieved from. Changes do not apply until the plugin has been reloaded.",
-    "description": "TStrings.get_SettingsAPIURLTooltip"
+  "Window.Dropdown.Settings.APIUrl.Tooltip": {
+    "message": "The URL of the API instance to connect to. Make sure you trust the host of this instance.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
-  "Settings.APIToken": {
-    "message": "API Key",
-    "description": "TStrings.get_SettingsAPIToken"
+  "Window.Dropdown.Settings.APIToken": {
+    "message": "API Token",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
-  "Settings.APIToken.Tooltip": {
-    "message": "The API bearer token to use when connecting to the API. Changes do not apply until the plugin has been reloaded.",
-    "description": "TStrings.get_SettingsAPITokenTooltip"
+  "Window.Dropdown.Settings.APIToken.Tooltip": {
+    "message": "The API bearer token to use when connecting to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nNEVER SET THIS TO YOUR PASSWORD.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
-  "Settings.APIToken.Hint": {
-    "message": "You can leave this empty unless you are facing authentication issues.",
-    "description": "TStrings.get_SettingsAPITokenHint"
+  "Window.Dropdown.Settings.SaltMethod": {
+    "message": "Salt Method",
+    "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
+  },
+  "Window.Dropdown.Settings.SaltMethod.Tooltip": {
+    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Users must be using the same plugin and version to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any plugin using the same API)\n\nKeep this on strict for the best privacy and security.",
+    "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
+  },
+  "Window.Dropdown.Support.Title": {
+    "message": "Support & Donations",
+    "description": "PrimaryWindow.get_DropdownSupportTitle"
+  },
+  "Window.Dropdown.Support.FlavourText": {
+    "message": "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!",
+    "description": "PrimaryWindow.get_DropdownSupportFlavourText"
+  },
+  "Window.Dropdown.Support.Button": {
+    "message": "Donate",
+    "description": "PrimaryWindow.get_DropdownSupportDonate"
+  },
+  "Window.Dropdown.Support.Developer": {
+    "message": "Plugin/Server Developer",
+    "description": "PrimaryWindow.get_DropdownSupportDeveloper"
+  },
+  "Window.Dropdown.Support.Developer.Description": {
+    "message": "The developer is responsible for the code that makes the Plugin and API work.",
+    "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
+  },
+  "Window.Dropdown.Support.APIHost": {
+    "message": "API Instance Host",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHost"
+  },
+  "Window.Dropdown.Support.APIHost.Description": {
+    "message": "The API instance host is responsible for running and maintaining the server that this plugin is connected to.",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHostDescription"
+  },
+  "Window.Dropdown.Support.APIHost.InvalidUri": {
+    "message": "The API instance host has provided an invalid support URL.",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
+  },
+  "Window.URLUpdateNag.Title": {
+    "message": "{0} - Update from {1}",
+    "description": "URLNagWindow.URLUpdateNagTitle"
+  },
+  "Window.URLUpdateNag.Text": {
+    "message": "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option.",
+    "description": "URLNagWindow.URLUpdateNagText"
+  },
+  "Window.URLUpdateNag.Button.Update": {
+    "message": "Update URL",
+    "description": "URLNagWindow.get_URLUpdateNagButtonUpdate"
+  },
+  "Window.URLUpdateNag.Button.Ignore": {
+    "message": "Ignore for this session",
+    "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
   }
 }

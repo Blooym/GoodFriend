@@ -1,17 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { averageResponseTime, totalRequests } from '@metrics/prometheus';
+import { totalRequests } from '@metrics/prometheus';
 
+/**
+ * Handles collecting metrics about requests.
+ * @param req The request object.
+ * @param res The response object.
+ * @param next The next middleware function to call.
+ */
 export default (req: Request, res: Response, next: NextFunction) => {
-  const stopTimer = averageResponseTime.startTimer({
-    method: req.method,
-    route: req.path,
-    status_code: res.statusCode,
-  });
-
-  res.on('finish', () => {
-    stopTimer();
-    totalRequests.inc({ method: req.method, route: req.path, status_code: res.statusCode }, 1);
-  });
+  totalRequests.inc({ method: req.method, route: req.path, status_code: res.statusCode }, 1);
   next();
 };

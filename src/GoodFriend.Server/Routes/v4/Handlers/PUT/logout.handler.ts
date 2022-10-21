@@ -2,8 +2,14 @@ import { Request, Response } from 'express';
 
 import Client from '@mtypes/Client';
 import isValidID from '@utils/Validators';
-import { totalSSEStateEvents } from '@metrics/prometheus';
+import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
 
+/**
+ * Handles the logout event endpoint.
+ * @param req The request object.
+ * @param res The response object.
+ * @param clients The list of clients.
+ */
 export default (req: Request, res: Response, clients: Client) => {
   const { contentID, homeworldID, territoryID } = req.query;
 
@@ -13,19 +19,20 @@ export default (req: Request, res: Response, clients: Client) => {
       ContentID: contentID,
       HomeworldID: homeworldID,
       TerritoryID: territoryID,
-      LoggedIn: true,
+      LoggedIn: false,
     };
 
     res.sendStatus(200);
 
     totalSSEStateEvents.inc({
-      event: 'login',
+      event: 'logout',
       homeworld: homeworldID as string,
       territory: territoryID as string,
     });
 
     clients.forEach((client) => {
       client.res.write(`data: ${JSON.stringify(event)}\n\n`);
+      totalSSEEventsSent.inc();
     });
   }
 };
