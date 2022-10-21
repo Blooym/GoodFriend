@@ -72,7 +72,7 @@ namespace GoodFriend.Base
 
         // State Strings
         public static string StateConnected => Loc.Localize("State.Connected", "Connected");
-        public static string StateConnectedDescription(int clients) => Loc.Localize("State.Connected.Description", $"There are currently {clients} connected clients.");
+        public static string StateConnectedDescription(int clients) => String.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
         public static string StateConnecting => Loc.Localize("State.Connecting", "Connecting");
         public static string StateConnectingDescription => Loc.Localize("State.Connecting.Description", "Attempting to connect to the API... Please wait.");
         public static string StateRatelimited => Loc.Localize("State.Ratelimited", "Ratelimited");
@@ -86,7 +86,7 @@ namespace GoodFriend.Base
 
         // Window Strings
         public static string WindowDropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
-        public static string WindowDropdownOptionsStatusTooltip(string? url) => Loc.Localize("Window.Dropdown.Options.Status.Tooltip", $"View the status page of this API instance\n({url ?? "No URL set"})");
+        public static string WindowDropdownOptionsStatusTooltip(string url) => String.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance\n({0})"), url);
         public static string WindowDropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
         public static string WindowDropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host");
         public static string WindowDropdownOptionsEventLog => Loc.Localize("Window.Dropdown.Options.EventLog", "Event Log");
@@ -121,8 +121,8 @@ namespace GoodFriend.Base
         public static string WindowDropdownSupportAPIHost => Loc.Localize("Window.Dropdown.Support.APIHost", "API Instance Host");
         public static string WindowDropdownSupportAPIHostDescription => Loc.Localize("Window.Dropdown.Support.APIHost.Description", "The API instance host is responsible for running and maintaining the server that this plugin is connected to.");
         public static string WindowDropdownSupportAPIHostInvalidUri => Loc.Localize("Window.Dropdown.Support.APIHost.InvalidUri", "The API instance host has provided an invalid support URL.");
-        public static string WindowURLUpdateNagTitle(Uri url) => Loc.Localize("Window.URLUpdateNag.Title", $"{PStrings.pluginName} - Update from {url}");
-        public static string WindowURLUpdateNagText(Uri? newUrl, int waitTime) => Loc.Localize("Window.URLUpdateNag.Text", $"Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({newUrl}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {waitTime} seconds to select an option.");
+        public static string WindowURLUpdateNagTitle(Uri url) => String.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PStrings.pluginName, url);
+        public static string WindowURLUpdateNagText(Uri newUrl, int waitTime) => String.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl.ToString(), waitTime);
         public static string WIndowURLUpdateNagButtonUpdate => Loc.Localize("Window.URLUpdateNag.Button.Update", "Update URL");
         public static string WindowURLUpdateNagButtonIgnore => Loc.Localize("Window.URLUpdateNag.Button.Ignore", "Ignore for this session");
     }
