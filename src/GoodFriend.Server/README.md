@@ -59,7 +59,8 @@ docker run -d --name goodfriend-server --env-file .env goodfriend-server
 
 #### Uncontainerized
 
-> **Warning:** This method is not recommended or supported.
+> **Warning**
+> This method is not recommended or supported.
 
 If you do not want to use docker, you can run the server directly on your host machine. You will need to make sure that you have the following dependencies installed:
 
