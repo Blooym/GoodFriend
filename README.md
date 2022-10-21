@@ -49,7 +49,7 @@ A general flow of how this plugin would provide a login notification is as follo
 
 Security and privacy was greatly considered during design and as such both the plugin and the server implement some methods to ensure the safety and privacy of all users, some examples are:
 
-- No identifying information about the client is stored on the server, and any data passed through the server is hashed before arrival.
+- No identifying information about the client is stored on the server, and any sensitive or identifying data passed through the server is hashed before arrival.
 - Additional salting is applied client-side wherever possible using things like the plugin assembly manifest and the user's friendship code to make sure the hash is harder to reverse.
 - The client will not accept any data from the server that does not match the expected format, and will do it's best to secure the enduser from any malicious attacks with warnings.
 - The official server instance enforces strict ratelimiting to prevent abusive requests.
