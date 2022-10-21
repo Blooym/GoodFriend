@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AUTH_TOKEN } from '@base/environment';
 
 /**
- * Requires a session identifier to be present in the request.
+ * Requires a X-Session0Identifier header to be present in the request.
  * @param req The request object.
  * @param res The response object.
  * @param next The next middleware function to call.

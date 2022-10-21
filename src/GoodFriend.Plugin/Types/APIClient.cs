@@ -164,7 +164,6 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The timer for handling SSE reconnection attempts.
         /// </summary>
-        // times by a float of 0.1 to 0.9 to avoid all clients reconnecting at the same time with a min of 60 seconds and a max of 3min
         private System.Timers.Timer _sseReconnectTimer = new System.Timers.Timer(60000);
 
         /// <summary>

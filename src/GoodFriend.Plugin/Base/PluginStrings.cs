@@ -125,7 +125,7 @@ namespace GoodFriend.Base
     public static class URLNagWindow
     {
         public static string URLUpdateNagTitle(Uri url) => String.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PStrings.pluginName, url);
-        public static string URLUpdateNagText(Uri newUrl, int waitTime) => String.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl.ToString(), waitTime);
+        public static string URLUpdateNagText(Uri? newUrl, int waitTime) => String.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
         public static string URLUpdateNagButtonUpdate => Loc.Localize("Window.URLUpdateNag.Button.Update", "Update URL");
         public static string URLUpdateNagButtonIgnore => Loc.Localize("Window.URLUpdateNag.Button.Ignore", "Ignore for this session");
     }

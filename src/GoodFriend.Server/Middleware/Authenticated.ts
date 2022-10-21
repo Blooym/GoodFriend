@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AUTH_TOKEN } from '@base/environment';
 
 const AUTHENTICATED_HEADERS = {
-  'Cache-Control': 'no-store, no-cache, must-revalidate',
+  'Cache-Control': 'no-cache, no-store, must-revalidate',
   Pragma: 'no-cache',
 };
 

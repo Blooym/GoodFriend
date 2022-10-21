@@ -4,6 +4,12 @@ import Client from '@mtypes/Client';
 import isValidID from '@utils/Validators';
 import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
 
+/**
+ * Handles the logout event endpoint.
+ * @param req The request object.
+ * @param res The response object.
+ * @param clients The list of clients.
+ */
 export default (req: Request, res: Response, clients: Client) => {
   const { contentID, homeworldID, territoryID } = req.query;
 

@@ -85,7 +85,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
 
             Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(PluginService.Configuration.APIUrl));
             ImGui.Separator();
-            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.presenter.NewAPIURL ?? new Uri(""), _dismissDelay));
+            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.presenter.NewAPIURL, _dismissDelay));
             ImGui.Dummy(new Vector2(0, 5));
 
             // Options to update or dismiss the nag.

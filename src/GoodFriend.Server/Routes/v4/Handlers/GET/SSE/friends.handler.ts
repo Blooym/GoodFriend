@@ -12,6 +12,12 @@ const HEADERS = {
   'X-Accel-Buffering': 'no',
 };
 
+/**
+ * Handles & Serves the SSE stream for friend events.
+ * @param req The request object.
+ * @param res The response object.
+ * @param clients The list of clients.
+ */
 export default (req: Request, res: Response, clients: Client) => {
   // Setup a heartbeat to keep the connection alive.
   const interval = setInterval(() => {
