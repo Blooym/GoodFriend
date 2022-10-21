@@ -4,7 +4,7 @@
 <img src="./.assets/icon.png" alt="Goodfriend Logo" width="15%">
   
 ### Good Friend
-A server/plugin tool for providing friend notifications to players in-game without in-game polling.
+A server/plugin tool for supercharging friend functionality to players in-game without in-game polling in a secure manner.
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
@@ -49,11 +49,13 @@ A general flow of how this plugin would provide a login notification is as follo
 
 Security and privacy was greatly considered during design and as such both the plugin and the server implement some methods to ensure the safety and privacy of all users, some examples are:
 
-- No majorly identifying information is stored or processed on the server side without being hashed beforehand.
-- Additional salting is applied wherever possible using things like the plugin assembly GUID and the users' friend code to make the hash more unpredicable.
-- The official server instance enforces strict ratelimiting.
-- The official server is secured behind HTTPs and a reverse proxy.
+- No identifying information about the client is stored on the server, and any data passed through the server is hashed before arrival.
+- Additional salting is applied client-side wherever possible using things like the plugin assembly manifest and the user's friendship code to make sure the hash is harder to reverse.
+- The client will not accept any data from the server that does not match the expected format, and will do it's best to secure the enduser from any malicious attacks with warnings.
+- The official server instance enforces strict ratelimiting to prevent abusive requests.
+- The official server is hosted inside of a containerised environment with strict security policies, and all communication is encrypted using TLS.
 - The plugin will automatically disconnect from any unnecessary API event streams as soon as possible.
+- All interactions with the server are stored in the event log for easy auditing.
 
 ## Contributions
 

@@ -6,7 +6,6 @@ namespace GoodFriend.UI.Windows.Main
     using GoodFriend.Base;
     using GoodFriend.Enums;
     using GoodFriend.Utils;
-    using GoodFriend.Managers;
     using GoodFriend.UI.Components;
     using Dalamud.Utility;
     using Dalamud.Interface.Windowing;
@@ -78,7 +77,7 @@ namespace GoodFriend.UI.Windows.Main
             switch (this.presenter.visibleDropdown)
             {
                 case MainPresenter.VisibleDropdown.Settings:
-                    ImGui.SetWindowSize(new Vector2(410 * ImGui.GetIO().FontGlobalScale, 320 * ImGui.GetIO().FontGlobalScale));
+                    ImGui.SetWindowSize(new Vector2(410 * ImGui.GetIO().FontGlobalScale, 350 * ImGui.GetIO().FontGlobalScale));
                     this._drawSettings();
                     break;
                 case MainPresenter.VisibleDropdown.Donate:
@@ -98,10 +97,14 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Draw the settings dropdown.
         /// </summary>
-        private unsafe void _drawSettings()
+        private void _drawSettings()
         {
             ImGui.TextDisabled("Settings");
             ImGui.BeginChild("SettingsDropdown");
+
+            if (this.presenter.restartToApply == true)
+                Colours.TextWrappedColoured(Colours.Warning, PrimaryWindow.DropdownSettingsRestartRequired);
+
 
             try
             {
@@ -257,7 +260,7 @@ namespace GoodFriend.UI.Windows.Main
                             try { new Uri(APIUrl); }
                             catch { error = true; }
 
-                            if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); }
+                            if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); this.presenter.restartToApply = true; }
                             else { PluginService.Configuration.APIUrl = PStrings.defaultAPIUrl; PluginService.Configuration.Save(); }
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
@@ -272,6 +275,7 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             PluginService.Configuration.APIBearerToken = apiToken;
                             PluginService.Configuration.Save();
+                            this.presenter.restartToApply = true;
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
                         ImGui.TableNextRow();
@@ -312,11 +316,11 @@ namespace GoodFriend.UI.Windows.Main
 
                         ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
                         ImGui.BeginChild("##Friends");
-                        foreach (var friend in FriendList.Get())
-                            if (ImGui.Selectable(friend->Name.ToString()))
+                        foreach (var friend in this.presenter.GetFriendList())
+                            if (ImGui.Selectable(friend.Name.ToString()))
                             {
-                                ImGui.SetClipboardText(Hashing.HashSHA512(friend->ContentId.ToString()));
-                                Notifications.Show($"Copied {friend->Name.ToString()}'s ContentID hash to clipboard", NotificationType.Toast);
+                                ImGui.SetClipboardText(Hashing.HashSHA512(friend.ContentId.ToString()));
+                                Notifications.Show($"Copied {friend.Name.ToString()}'s ContentID hash to clipboard", NotificationType.Toast);
                             }
                         ImGui.EndChild();
 

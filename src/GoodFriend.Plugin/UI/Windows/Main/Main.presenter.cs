@@ -2,9 +2,11 @@ namespace GoodFriend.UI.Windows.Main
 {
     using System;
     using System.IO;
+    using System.Collections.Generic;
     using GoodFriend.Base;
-    using CheapLoc;
+    using GoodFriend.Managers;
     using Dalamud.Interface.ImGuiFileDialog;
+    using CheapLoc;
 
     public sealed class MainPresenter : IDisposable
     {
@@ -14,6 +16,11 @@ namespace GoodFriend.UI.Windows.Main
         ///     Stores which dropdown menu is currently open.
         /// </summary>
         public VisibleDropdown visibleDropdown { get; set; } = VisibleDropdown.None;
+
+        /// <summary>
+        ///     Boolean value indicating if the user needs to restart to apply changes.
+        /// </summary>
+        public bool restartToApply { get; set; } = false;
 
         /// <summary> 
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
@@ -28,6 +35,19 @@ namespace GoodFriend.UI.Windows.Main
             {
                 visibleDropdown = dropdown;
             }
+        }
+
+        /// <summary>
+        ///     Fetches the users friendslist from the game.
+        /// </summary>
+        public unsafe List<FriendListEntry> GetFriendList()
+        {
+            var friends = new List<FriendListEntry>();
+            foreach (var friend in FriendList.Get())
+            {
+                friends.Add(*friend);
+            }
+            return friends;
         }
 
 #if DEBUG
