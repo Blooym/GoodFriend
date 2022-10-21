@@ -50,7 +50,7 @@ namespace GoodFriend.UI.Windows.Main
 
             // Status button
             ImGui.BeginDisabled(statusPageUrl == null);
-            if (Tooltips.TooltipButton(TStrings.WindowDropdownOptionsStatus, TStrings.WindowDropdownOptionsStatusTooltip(statusPageUrl), new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsStatus, PrimaryWindow.DropdownOptionsStatusTooltip(statusPageUrl ?? "NULL"), new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
             {
 #pragma warning disable CS8604
                 Util.OpenLink(statusPageUrl);
@@ -60,17 +60,17 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.SameLine();
 
             // Donate button
-            if (Tooltips.TooltipButton(TStrings.WindowDropdownOptionsSupport, TStrings.WindowDropdownOptionsSupportTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSupport, PrimaryWindow.DropdownOptionsSupportTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Donate);
             ImGui.SameLine();
 
             // Event log button
-            if (Tooltips.TooltipButton(TStrings.WindowDropdownOptionsEventLog, TStrings.WindowDropdownOptionsEventLogTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsEventLog, PrimaryWindow.DropdownOptionsEventLogTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Logs);
             ImGui.SameLine();
 
             // Settings button
-            if (Tooltips.TooltipButton(TStrings.WindowDropdownOptionsSettings, TStrings.WindowDropdownOptionsSettingsTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSettings, PrimaryWindow.DropdownOptionsSettingsTooltip, new Vector2(ImGui.GetWindowWidth() / 4 - 10, 0)))
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Settings);
             ImGui.Dummy(new Vector2(0, 10));
 
@@ -123,24 +123,24 @@ namespace GoodFriend.UI.Windows.Main
 
                         // Ignore FC Members
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsIgnoreFC);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreFC);
                         ImGui.TableSetColumnIndex(1);
-                        if (ImGui.BeginCombo("##IgnoreFCMembers", hideSameFC ? TStrings.WindowDropdownSettingsEnabled : TStrings.WindowDropdownSettingsDisabled))
+                        if (ImGui.BeginCombo("##IgnoreFCMembers", hideSameFC ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
                         {
-                            if (ImGui.Selectable(TStrings.WindowDropdownSettingsEnabled, hideSameFC))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideSameFC))
                                 PluginService.Configuration.HideSameFC = true;
-                            if (ImGui.Selectable(TStrings.WindowDropdownSettingsDisabled, !hideSameFC))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideSameFC))
                                 PluginService.Configuration.HideSameFC = false;
                             PluginService.Configuration.Save();
                             ImGui.EndCombo();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsIgnoreFCTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreFCTooltip);
                         ImGui.TableNextRow();
 
 
                         // Notification Type
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsNotificationType);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsNotificationType);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.BeginCombo("##NotificationType", notificationType))
                         {
@@ -154,13 +154,13 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             ImGui.EndCombo();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsNotificationTypeTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsNotificationTypeTooltip);
                         ImGui.TableNextRow();
 
 
                         // Login message
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsLoginMessage);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsLoginMessage);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##LoginMessage", ref loginMessage, 255))
                         {
@@ -174,12 +174,12 @@ namespace GoodFriend.UI.Windows.Main
                                 PluginService.Configuration.Save();
                             }
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsLoginMessageTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
                         ImGui.TableNextRow();
 
                         // Logout message
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsLogoutMessage);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsLogoutMessage);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##LogoutMessage", ref logoutMessage, 255))
                         {
@@ -193,7 +193,7 @@ namespace GoodFriend.UI.Windows.Main
                                 PluginService.Configuration.Save();
                             }
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsLogoutMessageTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLogoutMessageTooltip);
 
                         ImGui.TableNextRow();
                         ImGui.EndTable();
@@ -217,37 +217,37 @@ namespace GoodFriend.UI.Windows.Main
 
                         // API Connection Notifications
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsAPINotifications);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsAPINotifications);
                         ImGui.TableSetColumnIndex(1);
-                        if (ImGui.BeginCombo("##APIConnectionNotifications", showAPIEvents ? TStrings.WindowDropdownSettingsEnabled : TStrings.WindowDropdownSettingsDisabled))
+                        if (ImGui.BeginCombo("##APIConnectionNotifications", showAPIEvents ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
                         {
-                            if (ImGui.Selectable(TStrings.WindowDropdownSettingsEnabled, showAPIEvents))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, showAPIEvents))
                                 PluginService.Configuration.ShowAPIEvents = true;
-                            if (ImGui.Selectable(TStrings.WindowDropdownSettingsDisabled, !showAPIEvents))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !showAPIEvents))
                                 PluginService.Configuration.ShowAPIEvents = false;
                             PluginService.Configuration.Save();
                             ImGui.EndCombo();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsAPINotificationsTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsNotificationTypeTooltip);
                         ImGui.TableNextRow();
 
 
                         // Friendship code
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsFriendshipCode);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsFriendshipCode);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##FriendshipCode", ref friendshipCode, 255))
                         {
                             PluginService.Configuration.FriendshipCode = friendshipCode;
                             PluginService.Configuration.Save();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsFriendshipCodeTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendshipCodeTooltip);
                         ImGui.TableNextRow();
 
 
                         // API URL
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsAPIUrl);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsAPIUrl);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##APIUrl", ref APIUrl, 255))
                         {
@@ -260,26 +260,26 @@ namespace GoodFriend.UI.Windows.Main
                             if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); }
                             else { PluginService.Configuration.APIUrl = PStrings.defaultAPIUrl; PluginService.Configuration.Save(); }
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsAPIUrlTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
                         ImGui.TableNextRow();
 
 
                         // API Token
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsAPIToken);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsAPIToken);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##APIToken", ref apiToken, 255))
                         {
                             PluginService.Configuration.APIBearerToken = apiToken;
                             PluginService.Configuration.Save();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsAPITokenTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
                         ImGui.TableNextRow();
 
 
                         // Salt Method
                         ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(TStrings.WindowDropdownSettingsSaltMethod);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsSaltMethod);
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.BeginCombo("##SaltMethod", saltMethod.ToString()))
                         {
@@ -293,7 +293,7 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             ImGui.EndCombo();
                         }
-                        Tooltips.AddTooltipHover(TStrings.WindowDropdownSettingsSaltMethodTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsSaltMethodTooltip);
 
                         ImGui.EndTable();
                         ImGui.EndChild();
@@ -337,16 +337,16 @@ namespace GoodFriend.UI.Windows.Main
         {
             // Top caption and flavour text.
             ImGui.BeginChild("SupportDropdown");
-            ImGui.TextDisabled(TStrings.WindowDropdownSupportTitle);
+            ImGui.TextDisabled(PrimaryWindow.DropdownSupportTitle);
             ImGui.Separator();
-            ImGui.TextWrapped(TStrings.WindowDropdownSupportFlavourText);
+            ImGui.TextWrapped(PrimaryWindow.DropdownSupportFlavourText);
             ImGui.Dummy(new Vector2(0, 10));
 
 
             // Support the developer button
-            ImGui.TextDisabled(TStrings.WindowDropdownSupportDeveloper);
-            ImGui.TextWrapped(TStrings.WindowDropdownSupportDeveloperDescription);
-            if (Tooltips.TooltipButton(TStrings.WindowDropdownSupportDonate, PStrings.supportButtonUrl))
+            ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
+            ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, PStrings.supportButtonUrl))
             {
                 Util.OpenLink(PStrings.supportButtonUrl);
             }
@@ -354,27 +354,27 @@ namespace GoodFriend.UI.Windows.Main
 
 
             var donationPageUrl = PluginService.APIClientManager.GetMetadata()?.donationPageUrl;
-            ImGui.TextDisabled(TStrings.WindowDropdownSupportAPIHost);
-            ImGui.TextWrapped(TStrings.WindowDropdownSupportAPIHostDescription);
+            ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
+            ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
             if (donationPageUrl != null)
             {
                 try
                 {
                     var uri = new Uri(donationPageUrl);
-                    if (Tooltips.TooltipButton(TStrings.WindowDropdownSupportDonate, donationPageUrl))
+                    if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, donationPageUrl))
                     {
                         Util.OpenLink(donationPageUrl);
                     }
                 }
                 catch
                 {
-                    ImGui.TextWrapped(TStrings.WindowDropdownSupportAPIHostInvalidUri);
+                    ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostInvalidUri);
                 }
             }
             else
             {
                 ImGui.BeginDisabled();
-                ImGui.Button(TStrings.WindowDropdownSupportDonate);
+                ImGui.Button(PrimaryWindow.DropdownSupportDonate);
                 ImGui.EndDisabled();
             }
             ImGui.EndChild();

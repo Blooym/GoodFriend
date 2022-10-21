@@ -74,7 +74,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     How many seconds must pass before the nag can be dismissed.
         /// </summary>
-        private const int _dismissDelay = 15;
+        private const int _dismissDelay = 12;
 
         /// <summary>
         ///     Draw the nag window.
@@ -83,14 +83,14 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         {
             if (this._popupTime == null) this._popupTime = DateTime.Now;
 
-            Colours.TextWrappedColoured(Colours.Warning, TStrings.WindowURLUpdateNagTitle(PluginService.Configuration.APIUrl));
+            Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(PluginService.Configuration.APIUrl));
             ImGui.Separator();
-            ImGui.TextWrapped(TStrings.WindowURLUpdateNagText(this.presenter.NewAPIURL, _dismissDelay));
+            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.presenter.NewAPIURL ?? new Uri(""), _dismissDelay));
             ImGui.Dummy(new Vector2(0, 5));
 
             // Options to update or dismiss the nag.
             ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.ModShift) && (DateTime.Now - this._popupTime.Value).TotalSeconds < _dismissDelay);
-            if (ImGui.Button(TStrings.WIndowURLUpdateNagButtonUpdate))
+            if (ImGui.Button(URLNagWindow.URLUpdateNagButtonUpdate))
             {
 #pragma warning disable CS8601 // Checked for null in the presenter
                 PluginService.Configuration.APIUrl = this.presenter.NewAPIURL;
@@ -100,7 +100,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
             }
             ImGui.SameLine();
 
-            if (ImGui.Button(TStrings.WindowURLUpdateNagButtonIgnore))
+            if (ImGui.Button(URLNagWindow.URLUpdateNagButtonIgnore))
             {
                 this.presenter.URLUpdateNagDismissed = true;
             }

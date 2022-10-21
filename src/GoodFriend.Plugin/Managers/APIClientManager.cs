@@ -195,8 +195,8 @@ namespace GoodFriend.Managers
             }
 
             // Notify the client and add the event to the logs.
-            PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? TStrings.EventLoggedIn : TStrings.EventLoggedOut)}", EventLogManager.EventLogType.Info);
-            PluginLog.Log($"APIClientManager(OnSSEDataRecieved): {friend->Name} {(data.LoggedIn ? TStrings.EventLoggedIn : TStrings.EventLoggedOut)}");
+            PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
+            PluginLog.Log($"APIClientManager(OnSSEDataRecieved): {friend->Name} {(data.LoggedIn ? Events.LoggedOut : Events.LoggedOut)}");
             Notifications.ShowPreferred(data.LoggedIn ?
                 string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
                 : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
@@ -214,10 +214,10 @@ namespace GoodFriend.Managers
         {
             this._hasConnectedSinceError = false;
             PluginLog.Error($"APIClientManager(OnSSEAPIClientError): A connection error occured: {e.Message}");
-            PluginService.EventLogManager.AddEntry($"{TStrings.EventAPIConnectionError}: {e.Message}", EventLogManager.EventLogType.Error);
+            PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError}: {e.Message}", EventLogManager.EventLogType.Error);
             if (this._hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
             {
-                Notifications.Show(TStrings.EventAPIConnectionError, NotificationType.Toast, ToastType.Error);
+                Notifications.Show(Events.APIConnectionError, NotificationType.Toast, ToastType.Error);
             }
         }
 
@@ -228,11 +228,11 @@ namespace GoodFriend.Managers
         {
             this._hasConnectedSinceError = true;
             PluginLog.Log("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
-            PluginService.EventLogManager.AddEntry(TStrings.EventAPIConnectionSuccess, EventLogManager.EventLogType.Info);
+            PluginService.EventLogManager.AddEntry(Events.APIConnectionSuccess, EventLogManager.EventLogType.Info);
 
             if (PluginService.Configuration.ShowAPIEvents)
             {
-                Notifications.Show(TStrings.EventAPIConnectionSuccess, NotificationType.Toast, ToastType.Success);
+                Notifications.Show(Events.APIConnectionSuccess, NotificationType.Toast, ToastType.Success);
             }
         }
 
@@ -243,7 +243,7 @@ namespace GoodFriend.Managers
         {
             this._hasConnectedSinceError = false;
             PluginLog.Log($"APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
-            PluginService.EventLogManager.AddEntry(TStrings.EventAPIConnectionDisconnected, EventLogManager.EventLogType.Info);
+            PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace GoodFriend.Managers
 
             if (response?.StatusCode == HttpStatusCode.TooManyRequests)
             {
-                PluginService.EventLogManager.AddEntry($"{TStrings.EventAPIConnectionRatelimited}", EventLogManager.EventLogType.Warning);
+                PluginService.EventLogManager.AddEntry($"{Events.APIConnectionRatelimited}", EventLogManager.EventLogType.Warning);
             }
             else
             {

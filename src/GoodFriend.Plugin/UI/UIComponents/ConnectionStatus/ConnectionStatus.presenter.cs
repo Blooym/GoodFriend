@@ -17,12 +17,12 @@ namespace GoodFriend.UI.Components
         {
             return this.APIStatus switch
             {
-                ConnectionStatus.Connected => TStrings.StateConnected,
-                ConnectionStatus.Connecting => TStrings.StateConnecting,
-                ConnectionStatus.Ratelimited => TStrings.StateRatelimited,
-                ConnectionStatus.Disconnected => TStrings.StateDisconnected,
-                ConnectionStatus.Error => TStrings.StateConnectionError,
-                _ => TStrings.StateUnknown
+                ConnectionStatus.Connected => State.Connected,
+                ConnectionStatus.Connecting => State.Connecting,
+                ConnectionStatus.Ratelimited => State.Ratelimited,
+                ConnectionStatus.Disconnected => State.Disconnected,
+                ConnectionStatus.Error => State.Disconnected,
+                _ => State.Unknown,
             };
         }
 
@@ -43,12 +43,12 @@ namespace GoodFriend.UI.Components
         {
             return this.APIStatus switch
             {
-                ConnectionStatus.Connected => TStrings.StateConnectedDescription(PluginService.APIClientManager.GetMetadata()?.connectedClients ?? 0),
-                ConnectionStatus.Ratelimited => TStrings.StateRatelimitedDescription,
-                ConnectionStatus.Connecting => TStrings.StateConnectingDescription,
-                ConnectionStatus.Disconnected => TStrings.StateDisconnectedDescription,
-                ConnectionStatus.Error => TStrings.StateConnectionErrorDescription,
-                _ => TStrings.StateUnknownDescription,
+                ConnectionStatus.Connected => State.ConnectedDescription(PluginService.APIClientManager.GetMetadata()?.connectedClients ?? 0),
+                ConnectionStatus.Ratelimited => State.RatelimitedDescription,
+                ConnectionStatus.Connecting => State.ConnectingDescription,
+                ConnectionStatus.Disconnected => State.DisconnectedDescription,
+                ConnectionStatus.Error => State.ConnectionErrorDescription,
+                _ => State.UnknownDescription,
             };
         }
 

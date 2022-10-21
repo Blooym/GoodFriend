@@ -29,6 +29,7 @@ namespace GoodFriend.Managers
         {
             PluginLog.Verbose("WindowManager(WindowManager): Initializing...");
 
+
             foreach (var window in this._windows)
             {
                 PluginLog.Verbose($"WindowManager(WindowManager): Registering window: {window.WindowName}");

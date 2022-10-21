@@ -28,8 +28,8 @@ namespace GoodFriend.UI.Components
             if (ImGui.BeginChild(str_id, sizeOverride ?? new Vector2(0, 80), false, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
             {
                 // Connection status title
-                ImGui.SetCursorPosX(ImGui.GetWindowWidth() / 2 - (ImGui.CalcTextSize(TStrings.EventAPIConnectionStatus).X / 2));
-                ImGui.Text(TStrings.EventAPIConnectionStatus);
+                ImGui.SetCursorPosX(ImGui.GetWindowWidth() / 2 - (ImGui.CalcTextSize(Events.APIConnectionStatus).X / 2));
+                ImGui.Text(Events.APIConnectionStatus);
 
                 // Connection status value
                 ImGui.PushStyleColor(ImGuiCol.Button, connectionStatusColour);
