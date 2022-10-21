@@ -4,7 +4,7 @@
 <img src="./.assets/icon.png" alt="Goodfriend Logo" width="15%">
   
 ### Good Friend
-A server/plugin tool for supercharging friend functionality to players in-game without in-game polling in a secure manner.
+A server/plugin tool for supercharging friend functionality to players in-game without in-game polling.
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
