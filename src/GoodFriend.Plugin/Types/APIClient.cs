@@ -346,40 +346,27 @@ namespace GoodFriend.Types
                 "metadata"
             );
 
-            MetadataPayload? data = null;
-            var request = this._httpClient.SendAsync(requestData).ContinueWith(async (task) =>
-          {
-              try
-              {
-                  this.HandleRatelimitAndStatuscode(task.Result);
-                  if (task.IsFaulted)
-                  {
-                      this.RequestError?.Invoke(task.Exception ?? new Exception("Unknown error"), task.Result);
-                      data = null;
-                  }
-                  else if (!task.Result.IsSuccessStatusCode)
-                  {
-                      this.RequestError?.Invoke(new Exception(task.Result.ReasonPhrase), task.Result);
-                      data = null;
-                  }
-                  else if (task.IsCompleted)
-                  {
-                      var response = await task.Result.Content.ReadAsStringAsync();
-                      var json = JsonConvert.DeserializeObject<MetadataPayload>(response);
-                      this.RequestSuccess?.Invoke(task.Result);
-
-                      if (json == null) return;
-                      else data = json;
-                  }
-              }
-              catch (Exception e)
-              {
-                  this.RequestError?.Invoke(e, task.Result);
-              }
-          });
-
-            request.Wait();
-            return data;
+            try
+            {
+                var response = this._httpClient.SendAsync(requestData).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    this.RequestError?.Invoke(new Exception($"Request failed with status code {response.StatusCode}"), response);
+                    return null;
+                }
+                else
+                {
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<MetadataPayload>(responseContent);
+                    this.RequestSuccess?.Invoke(response);
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                this.RequestError?.Invoke(e, null);
+                return null;
+            }
         }
 
         /// <summary>
@@ -393,16 +380,18 @@ namespace GoodFriend.Types
                 $"login?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
             );
 
-            this._httpClient.SendAsync(request).ContinueWith(task =>
+            try
             {
-                this.HandleRatelimitAndStatuscode(task.Result);
-                if (task.IsFaulted)
-                    this.RequestError?.Invoke(task.Exception ?? new Exception("Unknown error"), task.Result);
-                else if (!task.Result.IsSuccessStatusCode)
-                    this.RequestError?.Invoke(new Exception(task.Result.ReasonPhrase), task.Result);
-                else if (task.IsCompleted)
-                    this.RequestSuccess?.Invoke(task.Result);
-            });
+                var result = this._httpClient.SendAsync(request).Result;
+                if (!result.IsSuccessStatusCode)
+                    this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
+                else
+                    this.RequestSuccess?.Invoke(result);
+            }
+            catch (Exception e)
+            {
+                this.RequestError?.Invoke(e, null);
+            }
         }
 
         /// <summary>
@@ -416,16 +405,18 @@ namespace GoodFriend.Types
                 $"logout?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
             );
 
-            this._httpClient.SendAsync(request).ContinueWith(task =>
+            try
             {
-                this.HandleRatelimitAndStatuscode(task.Result);
-                if (task.IsFaulted)
-                    this.RequestError?.Invoke(task.Exception ?? new Exception("Unknown error"), task.Result);
-                else if (!task.Result.IsSuccessStatusCode)
-                    this.RequestError?.Invoke(new Exception(task.Result.ReasonPhrase), task.Result);
-                else if (task.IsCompleted)
-                    this.RequestSuccess?.Invoke(task.Result);
-            });
+                var result = this._httpClient.SendAsync(request).Result;
+                if (!result.IsSuccessStatusCode)
+                    this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
+                else
+                    this.RequestSuccess?.Invoke(result);
+            }
+            catch (Exception e)
+            {
+                this.RequestError?.Invoke(e, null);
+            }
         }
 
         /// <summary>

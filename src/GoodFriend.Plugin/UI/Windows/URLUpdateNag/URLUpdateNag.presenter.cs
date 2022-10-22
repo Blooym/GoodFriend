@@ -40,7 +40,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public void HandleURLUpdateNag()
         {
-            var newApiUrl = PluginService.APIClientManager.GetMetadata()?.newApiUrl;
+            var newApiUrl = PluginService.APIClientManager.GetMetadata()?.newApiUrl ?? null;
             if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl))
             {
                 try

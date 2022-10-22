@@ -350,7 +350,7 @@ namespace GoodFriend.UI.Windows.Main
             // Support the developer button
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, PStrings.supportButtonUrl.ToString()))
+            if (Tooltips.TooltipButton($"{PrimaryWindow.DropdownSupportDonate}##devSupport", PStrings.supportButtonUrl.ToString()))
             {
                 Util.OpenLink(PStrings.supportButtonUrl.ToString());
             }
@@ -365,7 +365,7 @@ namespace GoodFriend.UI.Windows.Main
                 try
                 {
                     var uri = new Uri(donationPageUrl);
-                    if (Tooltips.TooltipButton(PrimaryWindow.DropdownSupportDonate, donationPageUrl))
+                    if (Tooltips.TooltipButton($"{PrimaryWindow.DropdownSupportDonate}##hostSupport", donationPageUrl))
                     {
                         Util.OpenLink(donationPageUrl);
                     }
