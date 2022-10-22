@@ -43,8 +43,8 @@ namespace GoodFriend.UI.Windows.Main
 #pragma warning disable CS1717
         public override void Draw()
         {
-            var statusPageUrl = PluginService.APIClientManager.GetMetadata()?.statusPageUrl;
-            var newApiUrl = PluginService.APIClientManager.GetMetadata()?.newApiUrl;
+            var statusPageUrl = this.presenter.Metadata?.statusPageUrl;
+            var newApiUrl = this.presenter.Metadata?.newApiUrl;
             Components.ConnectionStatusComponent.Draw("ConnectionPageStatusComponent", new Vector2(0, 70 * ImGui.GetIO().FontGlobalScale));
 
             // Status button
@@ -356,7 +356,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.Dummy(new Vector2(0, 5));
 
 
-            var donationPageUrl = PluginService.APIClientManager.GetMetadata()?.donationPageUrl;
+            var donationPageUrl = this.presenter.Metadata?.donationPageUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
             if (donationPageUrl != null)
@@ -392,7 +392,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextDisabled("Logs");
             ImGui.Separator();
 
-            if (PluginService.EventLogManager.EventLog.Count == 0)
+            if (this.presenter.EventLog.EventLog.Count == 0)
                 ImGui.TextWrapped("No logs to display, check back later.");
             else
             {
@@ -404,7 +404,7 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
                     ImGui.TableHeadersRow();
 
-                    foreach (var log in PluginService.EventLogManager.EventLog.OrderByDescending(x => x.timestamp))
+                    foreach (var log in this.presenter.EventLog.EventLog.OrderByDescending(x => x.timestamp))
                     {
                         if (log.type == Managers.EventLogManager.EventLogType.Warning)
                         {

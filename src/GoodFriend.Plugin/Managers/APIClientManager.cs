@@ -41,7 +41,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///    The cached metadata from the API.
         /// </summary>
-        private APIClient.MetadataPayload? _metadata;
+        private APIClient.MetadataPayload? _metadata = null;
 
         /// <summary> 
         ///     The API Client associated with the manager.

@@ -5,6 +5,7 @@ namespace GoodFriend.UI.Windows.Main
     using System.Collections.Generic;
     using GoodFriend.Base;
     using GoodFriend.Managers;
+    using GoodFriend.Types;
     using Dalamud.Interface.ImGuiFileDialog;
     using CheapLoc;
 
@@ -21,6 +22,16 @@ namespace GoodFriend.UI.Windows.Main
         ///     Boolean value indicating if the user needs to restart to apply changes.
         /// </summary>
         public bool restartToApply { get; set; } = false;
+
+        /// <summary>
+        ///     The event log instance to use in the UI.
+        /// </summary>
+        internal EventLogManager EventLog { get; } = PluginService.EventLogManager;
+
+        /// <summary>
+        ///     Where to get metadata from.
+        /// </summary>
+        public APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.GetMetadata();
 
         /// <summary> 
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
