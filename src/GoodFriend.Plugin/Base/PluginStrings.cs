@@ -109,6 +109,9 @@ namespace GoodFriend.Base
         public static string DropdownSupportAPIHost => Loc.Localize("Window.Dropdown.Support.APIHost", "API Instance Host");
         public static string DropdownSupportAPIHostDescription => Loc.Localize("Window.Dropdown.Support.APIHost.Description", "The API instance host is responsible for running and maintaining the server that this plugin is connected to.");
         public static string DropdownSupportAPIHostInvalidUri => Loc.Localize("Window.Dropdown.Support.APIHost.InvalidUri", "The API instance host has provided an invalid support URL.");
+        public static string DropdownLogsTableTime => Loc.Localize("Window.Dropdown.Logs.Table.Time", "Time");
+        public static string DropdownLogsTableType => Loc.Localize("Window.Dropdown.Logs.Table.Type", "Type");
+        public static string DropdownLogsTableMessage => Loc.Localize("Window.Dropdown.Logs.Table.Message", "Message");
 
     }
     public static class URLNagWindow

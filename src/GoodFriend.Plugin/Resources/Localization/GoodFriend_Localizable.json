@@ -115,6 +115,10 @@
     "message": "Disabled",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
+  "Window.Dropdown.Settings.RestartRequired": {
+    "message": "Plugin restart required to apply some configuration changes.",
+    "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
+  },
   "Window.Dropdown.Settings.IgnoreFC": {
     "message": "Ignore FC Members",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
@@ -218,6 +222,18 @@
   "Window.Dropdown.Support.APIHost.InvalidUri": {
     "message": "The API instance host has provided an invalid support URL.",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
+  },
+  "Window.Dropdown.Logs.Table.Time": {
+    "message": "Time",
+    "description": "PrimaryWindow.get_DropdownLogsTableTime"
+  },
+  "Window.Dropdown.Logs.Table.Type": {
+    "message": "Type",
+    "description": "PrimaryWindow.get_DropdownLogsTableType"
+  },
+  "Window.Dropdown.Logs.Table.Message": {
+    "message": "Message",
+    "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
   "Window.URLUpdateNag.Title": {
     "message": "{0} - Update from {1}",

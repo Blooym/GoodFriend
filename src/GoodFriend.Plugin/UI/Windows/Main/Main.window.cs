@@ -106,21 +106,20 @@ namespace GoodFriend.UI.Windows.Main
                 Colours.TextWrappedColoured(Colours.Warning, PrimaryWindow.DropdownSettingsRestartRequired);
 
 
-            try
+            if (ImGui.BeginTabBar("SettingsDropdownTabBar"))
             {
-                if (ImGui.BeginTabBar("SettingsDropdownTabBar"))
+                // "Basic" Settings
+                if (ImGui.BeginTabItem("General"))
                 {
-                    // "Basic" Settings
-                    if (ImGui.BeginTabItem("General"))
-                    {
-                        var notificationType = Enum.GetName(typeof(NotificationType), PluginService.Configuration.NotificationType);
-                        var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
-                        var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
-                        var hideSameFC = PluginService.Configuration.HideSameFC;
-                        var friendshipCode = PluginService.Configuration.FriendshipCode;
+                    var notificationType = Enum.GetName(typeof(NotificationType), PluginService.Configuration.NotificationType);
+                    var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
+                    var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
+                    var hideSameFC = PluginService.Configuration.HideSameFC;
+                    var friendshipCode = PluginService.Configuration.FriendshipCode;
 
-                        ImGui.BeginChild("GeneralSettings");
-                        ImGui.BeginTable("SettingsTable", 2);
+                    ImGui.BeginChild("GeneralSettings");
+                    if (ImGui.BeginTable("GeneralSettingsTable", 2))
+                    {
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
 
@@ -200,21 +199,23 @@ namespace GoodFriend.UI.Windows.Main
 
                         ImGui.TableNextRow();
                         ImGui.EndTable();
-                        ImGui.EndChild();
-                        ImGui.EndTabItem();
                     }
+                    ImGui.EndChild();
+                    ImGui.EndTabItem();
+                }
 
-                    // "Advanced" Settings
-                    if (ImGui.BeginTabItem("Advanced"))
+                // "Advanced" Settings
+                if (ImGui.BeginTabItem("Advanced"))
+                {
+                    var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
+                    var APIUrl = PluginService.Configuration.APIUrl.ToString();
+                    var friendshipCode = PluginService.Configuration.FriendshipCode;
+                    var apiToken = PluginService.Configuration.APIBearerToken;
+                    var saltMethod = PluginService.Configuration.SaltMethod;
+
+                    ImGui.BeginChild("AdvancedSettings");
+                    if (ImGui.BeginTable("SettingsTable", 2))
                     {
-                        var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
-                        var APIUrl = PluginService.Configuration.APIUrl.ToString();
-                        var friendshipCode = PluginService.Configuration.FriendshipCode;
-                        var apiToken = PluginService.Configuration.APIBearerToken;
-                        var saltMethod = PluginService.Configuration.SaltMethod;
-
-                        ImGui.BeginChild("AdvancedSettings");
-                        ImGui.BeginTable("SettingsTable", 2);
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
 
@@ -298,39 +299,37 @@ namespace GoodFriend.UI.Windows.Main
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsSaltMethodTooltip);
-
                         ImGui.EndTable();
-                        ImGui.EndChild();
-                        ImGui.EndTabItem();
                     }
+                    ImGui.EndChild();
+                    ImGui.EndTabItem();
+                }
 
 #if DEBUG
-                    // "Debug" Settings
-                    if (ImGui.BeginTabItem("Developer"))
-                    {
-                        ImGui.BeginChild("DeveloperSettings");
+                // "Debug" Settings
+                if (ImGui.BeginTabItem("Developer"))
+                {
+                    ImGui.BeginChild("DeveloperSettings");
 
-                        this.presenter.dialogManager.Draw();
-                        if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
-                            this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
+                    this.presenter.dialogManager.Draw();
+                    if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
+                        this.presenter.dialogManager.OpenFolderDialog("Export LOC", this.presenter.OnDirectoryPicked);
 
-                        ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
-                        ImGui.BeginChild("##Friends");
-                        foreach (var friend in this.presenter.GetFriendList())
-                            if (ImGui.Selectable(friend.Name.ToString()))
-                            {
-                                ImGui.SetClipboardText(Hashing.HashSHA512(friend.ContentId.ToString()));
-                                Notifications.Show($"Copied {friend.Name.ToString()}'s ContentID hash to clipboard", NotificationType.Toast);
-                            }
-                        ImGui.EndChild();
+                    ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
+                    ImGui.BeginChild("##Friends");
+                    foreach (var friend in this.presenter.GetFriendList())
+                        if (ImGui.Selectable(friend.Name.ToString()))
+                        {
+                            ImGui.SetClipboardText(Hashing.HashSHA512(friend.ContentId.ToString()));
+                            Notifications.Show($"Copied {friend.Name.ToString()}'s ContentID hash to clipboard", NotificationType.Toast);
+                        }
+                    ImGui.EndChild();
 
-                        ImGui.EndChild();
-                    }
-#endif
-                    ImGui.EndTabBar();
+                    ImGui.EndChild();
                 }
+#endif
+                ImGui.EndTabBar();
             }
-            catch { /* Prevent ImGui errors when the window is smaller than the table */ }
             ImGui.EndChild();
         }
 
@@ -393,18 +392,16 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextDisabled("Logs");
             ImGui.Separator();
 
-            // length
             if (PluginService.EventLogManager.EventLog.Count == 0)
                 ImGui.TextWrapped("No logs to display, check back later.");
             else
             {
-                try
+                if (ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable))
                 {
-                    ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable);
                     ImGui.TableSetupScrollFreeze(0, 1);
-                    ImGui.TableSetupColumn("Time");
-                    ImGui.TableSetupColumn("Type");
-                    ImGui.TableSetupColumn("Message");
+                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableTime);
+                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableType);
+                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
                     ImGui.TableHeadersRow();
 
                     foreach (var log in PluginService.EventLogManager.EventLog.OrderByDescending(x => x.timestamp))
@@ -431,12 +428,10 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(log.message);
                         ImGui.PopStyleColor();
                     }
-
                     ImGui.EndTable();
-                    ImGui.EndChild();
                 }
-                catch { /* Prevent ImGui errors when the window is smaller than the table */ }
             }
+            ImGui.EndChild();
         }
     }
 }
