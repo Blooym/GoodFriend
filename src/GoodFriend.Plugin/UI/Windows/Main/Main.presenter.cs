@@ -26,7 +26,7 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The event log instance to use in the UI.
         /// </summary>
-        internal EventLogManager EventLog { get; } = PluginService.EventLogManager;
+        internal EventLogManager EventLog => PluginService.EventLogManager;
 
         /// <summary>
         ///     Where to get metadata from.

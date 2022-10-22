@@ -392,7 +392,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextDisabled("Logs");
             ImGui.Separator();
 
-            if (this.presenter.EventLog.EventLog.Count == 0)
+            if (this.presenter.EventLog.EventLog.Count > 0)
                 ImGui.TextWrapped("No logs to display, check back later.");
             else
             {
