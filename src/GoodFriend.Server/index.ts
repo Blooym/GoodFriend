@@ -20,7 +20,7 @@ const app = express()
   .use(MetricsCollector)
   .use(logger)
   .use('/', globalRouter)
-  .use('/v3', RequireSessionIdentifier, v3Router)
+  .use('/v3', v3Router)
   .use('/v4', RequireSessionIdentifier, v4Router)
   .use(errorLogger);
 
