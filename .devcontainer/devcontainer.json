@@ -10,9 +10,7 @@
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"esbenp.prettier-vscode",
-				"wayou.vscode-todo-highlight",
 				"dbaeumer.vscode-eslint",
-				"vivaxy.vscode-conventional-commits",
 				"rangav.vscode-thunder-client"
 			],
 			"settings": {
