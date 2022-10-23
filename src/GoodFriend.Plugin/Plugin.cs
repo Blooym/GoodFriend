@@ -18,10 +18,6 @@ namespace GoodFriend
         {
             pluginInterface.Create<PluginService>();
             PluginService.Initialize();
-
-#if !DEBUG
-        PluginService.ResourceManager.Update();
-#endif
         }
 
         /// <summary>

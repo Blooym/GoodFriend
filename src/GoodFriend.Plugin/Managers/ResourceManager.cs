@@ -22,13 +22,13 @@ namespace GoodFriend.Managers
         /// </summary>
         internal ResourceManager()
         {
-            PluginLog.Verbose("ResourceManager(ResourceManager): Initializing...");
+            PluginLog.Debug("ResourceManager(ResourceManager): Initializing...");
 
             this.Setup(PluginService.PluginInterface.UiLanguage);
             PluginService.PluginInterface.LanguageChanged += this.Setup;
             ResourcesUpdated += this.OnResourceUpdate;
 
-            PluginLog.Verbose("ResourceManager(ResourceManager): Initialization complete.");
+            PluginLog.Debug("ResourceManager(ResourceManager): Initialization complete.");
         }
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginLog.Verbose("ResourceManager(Dispose): Disposing...");
+            PluginLog.Debug("ResourceManager(Dispose): Disposing...");
 
             PluginService.PluginInterface.LanguageChanged -= Setup;
             ResourcesUpdated -= OnResourceUpdate;
 
-            PluginLog.Verbose("ResourceManager(Dispose): Successfully disposed.");
+            PluginLog.Debug("ResourceManager(Dispose): Successfully disposed.");
         }
 
         /// <summary> 
@@ -59,7 +59,7 @@ namespace GoodFriend.Managers
             {
                 try
                 {
-                    PluginLog.Verbose($"ResourceManager(Update): Opening new thread to handle resource file download and extraction.");
+                    PluginLog.Information($"ResourceManager(Update): Opening new thread to handle resource file download and extraction.");
 
                     // Download the files from the repository and extract them into the temp directory.
                     using var client = new HttpClient();
@@ -69,26 +69,26 @@ namespace GoodFriend.Managers
                         using var fileStream = File.Create(zipFilePath);
                         stream.CopyTo(fileStream);
                     }).Wait();
-                    PluginLog.Verbose($"ResourceManager(Update): Downloaded resource files to: {zipFilePath}");
+                    PluginLog.Information($"ResourceManager(Update): Downloaded resource files to: {zipFilePath}");
 
                     // Extract the zip file and copy the resources.
                     ZipFile.ExtractToDirectory(zipFilePath, Path.GetTempPath(), true);
                     foreach (string dirPath in Directory.GetDirectories(zipExtractPath, "*", SearchOption.AllDirectories))
                     {
                         Directory.CreateDirectory(dirPath.Replace(zipExtractPath, pluginExtractPath));
-                        PluginLog.Verbose($"ResourceManager(Update): Created directory: {dirPath.Replace(zipExtractPath, pluginExtractPath)}");
+                        PluginLog.Debug($"ResourceManager(Update): Created directory: {dirPath.Replace(zipExtractPath, pluginExtractPath)}");
                     }
 
                     foreach (string newPath in Directory.GetFiles(zipExtractPath, "*.*", SearchOption.AllDirectories))
                     {
-                        PluginLog.Verbose($"ResourceManager(Update): Copying file from: {newPath} to: {newPath.Replace(zipExtractPath, pluginExtractPath)}");
+                        PluginLog.Debug($"ResourceManager(Update): Copying file from: {newPath} to: {newPath.Replace(zipExtractPath, pluginExtractPath)}");
                         File.Copy(newPath, newPath.Replace(zipExtractPath, pluginExtractPath), true);
                     }
 
                     // Cleanup temporary files.
                     File.Delete(zipFilePath);
                     Directory.Delete($"{Path.GetTempPath()}{repoName}-{PStrings.repoBranch}", true);
-                    PluginLog.Verbose($"ResourceManager(Update): Deleted temporary files.");
+                    PluginLog.Information($"ResourceManager(Update): Deleted temporary files.");
 
                     // Broadcast an event indicating that the resources have been updated.
                     ResourcesUpdated?.Invoke();
@@ -102,7 +102,7 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnResourceUpdate()
         {
-            PluginLog.Verbose($"ResourceManager(OnResourceUpdate): Resources updated.");
+            PluginLog.Debug($"ResourceManager(OnResourceUpdate): Resources updated.");
             this.Setup(PluginService.PluginInterface.UiLanguage);
         }
 
@@ -111,12 +111,12 @@ namespace GoodFriend.Managers
         /// </summary>
         private void Setup(string language)
         {
-            PluginLog.Log($"ResourceManager(Setup): Setting up resources for language {language}...");
+            PluginLog.Information($"ResourceManager(Setup): Setting up resources for language {language}...");
 
             try { Loc.Setup(File.ReadAllText($"{PStrings.assemblyLocDir}{language}.json")); }
             catch { Loc.SetupWithFallbacks(); }
 
-            PluginLog.Verbose("ResourceManager(Setup): Resources setup.");
+            PluginLog.Information("ResourceManager(Setup): Resources setup.");
         }
     }
 }

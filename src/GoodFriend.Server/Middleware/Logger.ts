@@ -24,7 +24,7 @@ export const logger = expressWinston.logger({
       maxFiles: 7,
       format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level.toUpperCase()}: ${info.meta.res.statusCode} ${info.meta.responseTime}ms ${info.message} [Agent: ${info.meta.req.headers['user-agent']}] [Session: ${info.meta.req.headers['session-identifier'] ?? 'none'}] [Authorization: ${info.meta.req.headers.authorization ?? 'none'}]`),
+        winston.format.printf((info) => `[${new Date(info.timestamp).toUTCString()}] ${info.level.toUpperCase()}: ${info.meta.res.statusCode} ${info.meta.responseTime}ms ${info.message} [Agent: ${info.meta.req.headers['user-agent']}] [Session: ${info.meta.req.headers['x-session-identifier'] ?? 'none'}] [Authorization: ${info.meta.req.headers.authorization ?? 'none'}]`),
       ),
     }),
   ],

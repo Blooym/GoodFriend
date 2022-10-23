@@ -58,12 +58,12 @@ namespace GoodFriend.Managers
         /// </summary>
         public APIClientManager(ClientState clientState)
         {
-            PluginLog.Verbose("APIClientManager(APIClientManager): Initializing...");
+            PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
 
             this._clientState = clientState;
 
             // Create event handlers
-            this.APIClient.SSEDataRecieved += this.OnSSEDataRecieved;
+            this.APIClient.SSEDataReceived += this.OnSSEDataReceived;
             this.APIClient.SSEConnectionError += this.OnSSEAPIClientError;
             this.APIClient.SSEConnectionEstablished += this.OnSSEAPIClientConnected;
             this.APIClient.SSEConnectionClosed += this.OnSSEAPIClientDisconnected;
@@ -79,11 +79,11 @@ namespace GoodFriend.Managers
                 this._currentContentId = this._clientState.LocalContentId;
                 this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
                 this._currentTerritoryId = this._clientState.TerritoryType;
-                PluginLog.Debug("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
+                PluginLog.Information("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
                 this.APIClient.OpenSSEStream();
             }
 
-            PluginLog.Verbose("APIClientManager(APIClientManager): Successfully initialized.");
+            PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
         }
 
         /// <summary>
@@ -95,14 +95,14 @@ namespace GoodFriend.Managers
             this._clientState.Login -= this.OnLogin;
             this._clientState.Logout -= this.OnLogout;
             this._clientState.TerritoryChanged -= this.OnTerritoryChange;
-            this.APIClient.SSEDataRecieved -= this.OnSSEDataRecieved;
+            this.APIClient.SSEDataReceived -= this.OnSSEDataReceived;
             this.APIClient.SSEConnectionError -= this.OnSSEAPIClientError;
             this.APIClient.SSEConnectionEstablished -= this.OnSSEAPIClientConnected;
             this.APIClient.SSEConnectionClosed -= this.OnSSEAPIClientDisconnected;
             this.APIClient.RequestError -= this.OnRequestError;
             this.APIClient.RequestSuccess -= this.OnRequestSuccess;
 
-            PluginLog.Verbose("APIClientManager(Dispose): Successfully disposed.");
+            PluginLog.Debug("APIClientManager(Dispose): Successfully disposed.");
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace GoodFriend.Managers
                 this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
                 this._currentTerritoryId = this._clientState.TerritoryType;
                 this.APIClient.SendLogin(this._currentContentId, this._currentHomeworldId, this._currentTerritoryId);
-                PluginLog.Debug($"APIClientManager(OnLogin): Stored IDs set to: HomeworlD: {this._currentHomeworldId}, ContentID: REDACTED, TerritoryID: {this._currentTerritoryId}");
+                PluginLog.Information($"APIClientManager(OnLogin): Stored IDs set to: Homeworld: {this._currentHomeworldId}, Content: [REDACTED], Territory: {this._currentTerritoryId}");
             });
         }
 
@@ -135,7 +135,7 @@ namespace GoodFriend.Managers
             this._currentHomeworldId = 0;
             this._currentTerritoryId = 0;
             this._hasConnectedSinceError = true;
-            PluginLog.Debug("APIClientManager(OnLogout): Stored IDs reset to 0.");
+            PluginLog.Information("APIClientManager(OnLogout): Player logged out, stored IDs reset to 0.");
 
         }
 
@@ -147,21 +147,21 @@ namespace GoodFriend.Managers
             if (this.APIClient.SSEIsConnected)
             {
                 this._currentTerritoryId = newId;
-                PluginLog.Debug($"APIClientManager(OnTerritoryChange): Stored territoryID changed from {this._currentTerritoryId} to {newId}.");
+                PluginLog.Debug($"APIClientManager(OnTerritoryChange): Stored TerritoryID changed from {this._currentTerritoryId} to {newId}.");
             }
         }
 
         /// <summary>
-        ///     Handles data recieved from the APIClient.
+        ///     Handles data received from the APIClient.
         /// </summary> 
-        private unsafe void OnSSEDataRecieved(APIClient.UpdatePayload data)
+        private unsafe void OnSSEDataReceived(APIClient.UpdatePayload data)
         {
-            PluginLog.Verbose($"APIClientManager(OnSSEDataRecieved): Data recieved from API, processing.");
+            PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing.");
 
             // Don't process the data if the ContentID is null.
             if (data.ContentID == null)
             {
-                PluginLog.Verbose($"APIClientManager(OnSSEDataRecieved): Event was malformed due to a null ContentID, ignoring.");
+                PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Event was malformed due to a null ContentID, ignoring.");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace GoodFriend.Managers
             // If friend is null, the user is not added by the client.
             if (friend == null || data == null)
             {
-                PluginLog.Verbose($"APIClientManager(OnSSEDataRecieved): No friend found from the event, cannot display to client.");
+                PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): No friend found from the event, cannot display to client.");
                 return;
             }
 
@@ -190,13 +190,26 @@ namespace GoodFriend.Managers
                 && friend->HomeWorld == this._clientState.LocalPlayer.HomeWorld.Id
                 && PluginService.Configuration.HideSameFC)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataRecieved): Event for {friend->Name} recieved ignored due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
+                PluginLog.Information($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received ignored due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
+                return;
+            }
+
+            if (this._currentHomeworldId != friend->HomeWorld && PluginService.Configuration.HideDifferentHomeworld)
+            {
+                PluginLog.Information($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received ignored due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this._currentHomeworldId})");
+                return;
+            }
+
+            // If the event is not for the current territory, ignore it.
+            if (data.TerritoryID != this._currentTerritoryId && PluginService.Configuration.HideDifferentTerritory)
+            {
+                PluginLog.Information($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received ignored due to being for a different territory. (Them: {data.TerritoryID}, You: {this._currentTerritoryId})");
                 return;
             }
 
             // Notify the client and add the event to the logs.
             PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
-            PluginLog.Log($"APIClientManager(OnSSEDataRecieved): {friend->Name} {(data.LoggedIn ? Events.LoggedOut : Events.LoggedOut)}");
+            PluginLog.Information($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
             Notifications.ShowPreferred(data.LoggedIn ?
                 string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
                 : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
@@ -227,7 +240,7 @@ namespace GoodFriend.Managers
         private void OnSSEAPIClientConnected()
         {
             this._hasConnectedSinceError = true;
-            PluginLog.Log("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
+            PluginLog.Information("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionSuccess, EventLogManager.EventLogType.Info);
 
             if (PluginService.Configuration.ShowAPIEvents)
@@ -242,7 +255,7 @@ namespace GoodFriend.Managers
         private void OnSSEAPIClientDisconnected()
         {
             this._hasConnectedSinceError = false;
-            PluginLog.Log($"APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
+            PluginLog.Information($"APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
         }
 

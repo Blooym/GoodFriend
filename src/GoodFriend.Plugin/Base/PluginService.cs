@@ -38,8 +38,12 @@ namespace GoodFriend.Base
             APIClientManager = new APIClientManager(ClientState);
             EventLogManager = new EventLogManager();
 
+#if DEBUG
+            ResourceManager.Update();
+#endif
+
             EventLogManager.AddEntry("Services initialized successfully.", EventLogManager.EventLogType.Debug);
-            PluginLog.Verbose("PluginService(Initialize): Successfully initialized.");
+            PluginLog.Debug("PluginService(Initialize): Successfully initialized.");
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace GoodFriend.Utils
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
         public static void Show(string message, NotificationType type, ToastType? toastType = null)
         {
-            PluginLog.Verbose($"Notifications(Show): Showing {type} notification with the message: {message}");
+            PluginLog.Debug($"Notifications(Show): Showing {type} notification with the message: {message}");
             switch (type)
             {
                 case NotificationType.Toast: ShowToast(message, toastType ?? ToastType.None); break;

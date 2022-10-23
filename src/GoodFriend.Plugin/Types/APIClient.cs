@@ -24,12 +24,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The Delegate that is used for <see cref="APIClient.SSEDataReceived"/>.
         /// </summary>
-        public delegate void SSEDataRecievedDelegate(UpdatePayload data);
+        public delegate void SSEDataReceivedDelegate(UpdatePayload data);
 
         /// <summary>
         ///     Fired when data is new SSE data is received.
         /// </summary>
-        public event SSEDataRecievedDelegate? SSEDataRecieved;
+        public event SSEDataReceivedDelegate? SSEDataReceived;
 
         /// <summary>
         ///     The Delegate that is used for <see cref="APIClient.SSEConnectionEstablished"/>.
@@ -141,14 +141,15 @@ namespace GoodFriend.Types
         private void ConfigureHttpClient()
         {
             this._httpClient.BaseAddress = this._apiBaseURL;
-
-            this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
-            this._httpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
-            if (this._configuration.APIBearerToken != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._configuration.APIBearerToken}");
-
             this._httpClient.Timeout = TimeSpan.FromSeconds(10);
 
-            PluginLog.Debug($"APIClient(ConfigureHttpClient): Successfully configured.\nBaseAddr: {this._httpClient.BaseAddress}\nHeaders: {this._httpClient.DefaultRequestHeaders.ToString()}");
+            // Headers
+            this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
+            this._httpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
+            if (this._configuration.APIAuthentication != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
+
+            var headers = this._httpClient.DefaultRequestHeaders.ToString().Replace($"Authorization: {this._configuration.APIAuthentication}", "Authorization: [REDACTED]");
+            PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured.\nBaseAddress: {this._httpClient.BaseAddress}\n{headers}\nTimeout: {this._httpClient.Timeout}");
         }
 
         /// <summary>
@@ -189,11 +190,11 @@ namespace GoodFriend.Types
                 if (response.Headers.TryGetValues("ratelimit-reset", out IEnumerable<string>? values))
                 {
                     this.RateLimitReset = DateTime.Now.AddSeconds(int.Parse(values.First()));
-                    PluginLog.Log($"APIClient(HandleRatelimitAndStatuscode): Recieved ratelimit-reset header of {values.First()} seconds, setting reset time to {this.RateLimitReset}");
+                    PluginLog.Information($"APIClient(HandleRatelimitAndStatuscode): received ratelimit-reset header of {values.First()} seconds, setting reset time to {this.RateLimitReset}");
                 }
                 else
                 {
-                    PluginLog.Log($"APIClient(HandleRatelimitAndStatuscode): No ratelimit-reset header recieved, setting reset time to a fallback value.");
+                    PluginLog.Information($"APIClient(HandleRatelimitAndStatuscode): No ratelimit-reset header received, setting reset time to a fallback value.");
                     this.RateLimitReset = response.Headers.TryGetValues("retry-after", out IEnumerable<string>? retryValues)
                         ? DateTime.Now.AddSeconds(int.Parse(retryValues.First()))
                         : DateTime.Now.AddSeconds(60);
@@ -228,7 +229,7 @@ namespace GoodFriend.Types
             this._sseReconnectTimer.Elapsed += OnTryReconnect;
             this.ConfigureHttpClient();
 
-            PluginLog.Verbose($"APIClient(APIClient): Instantiated.");
+            PluginLog.Debug($"APIClient(APIClient): Instantiated.");
         }
 
         /// <summary>
@@ -252,7 +253,7 @@ namespace GoodFriend.Types
             this._sseReconnectTimer.Dispose();
             this._httpClient.Dispose();
 
-            PluginLog.Verbose("APIClient(Dispose): Successfully disposed.");
+            PluginLog.Debug("APIClient(Dispose): Successfully disposed.");
         }
 
         /// <summary> 
@@ -291,12 +292,12 @@ namespace GoodFriend.Types
                 // If we are ratelimited, hold off until we're not.
                 if (this.RateLimitReset > DateTime.Now)
                 {
-                    PluginLog.Log($"APIClient(OpenSSEStreamConnection): Not connecting until rate limit is reset at {this.RateLimitReset}");
+                    PluginLog.Information($"APIClient(OpenSSEStreamConnection): Not connecting until rate limit is reset at {this.RateLimitReset}");
                     await Task.Run(() => { while (this.RateLimitReset > DateTime.Now) Thread.Sleep(1000); });
                 }
 
                 // Attempt to connect to the API.
-                PluginLog.Log($"APIClient(OpenSSEStreamConnection): Connecting to {this._httpClient.BaseAddress}sse/friends");
+                PluginLog.Information($"APIClient(OpenSSEStreamConnection): Connecting to {this._httpClient.BaseAddress}sse/friends");
                 using var stream = await this._httpClient.GetStreamAsync($"{this._httpClient.BaseAddress}sse/friends");
                 using var reader = new StreamReader(stream);
 
@@ -314,7 +315,7 @@ namespace GoodFriend.Types
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
-                    if (data != null && data.ContentID != null) SSEDataRecieved?.Invoke(data);
+                    if (data != null && data.ContentID != null) SSEDataReceived?.Invoke(data);
                 }
 
                 if (reader.EndOfStream && SSEIsConnected)

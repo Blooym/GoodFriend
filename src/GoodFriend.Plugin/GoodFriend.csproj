@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <AssemblyName>GoodFriend</AssemblyName>
     <Version>1.4.0.0</Version>
     <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
@@ -17,11 +18,19 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
+  <Target Name="GitCommitHash" BeforeTargets="GetAssemblyVersion" Returns="InformationalVersion">
+		<Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+		</Exec>
+    <PropertyGroup>
+        <InformationalVersion>$(Version) (Commit: #$(GitCommitHash))</InformationalVersion>
+		</PropertyGroup>
+	</Target>
+
   <ItemGroup>
     <None Update="GoodFriend.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-
     <None Update="Resources/**/*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

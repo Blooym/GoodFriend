@@ -80,7 +80,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
   },
   "Window.Dropdown.Options.Status.Tooltip": {
-    "message": "View the status page of this API instance\n({0})",
+    "message": "View the status page of this API instance.\n({0})",
     "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
   },
   "Window.Dropdown.Options.Support": {
@@ -88,7 +88,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Support the developer and API instance host",
+    "message": "Support the developer and API instance host.",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
@@ -96,7 +96,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
   "Window.Dropdown.Options.EventLog.Tooltip": {
-    "message": "View the event log",
+    "message": "View the event log.",
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
@@ -104,7 +104,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
-    "message": "Change the settings for this plugin",
+    "message": "Change the settings for this plugin.",
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
@@ -124,8 +124,24 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not to ignore free company friend notifications",
+    "message": "Whether or not ignore friend notifications from players in your Free Company.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
+    "message": "Ignore Other Homeworlds",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players on different homeworlds.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffTerritories": {
+    "message": "Ignore Other Zones",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players in different zones than you currently are.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
     "message": "Notification Type",
@@ -164,7 +180,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
   "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
-    "message": "Your friendship code limits who you send notifications to.\nYou will only send and recieve notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "message": "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
   "Window.Dropdown.Settings.APIUrl": {
@@ -180,7 +196,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
-    "message": "The API bearer token to use when connecting to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nNEVER SET THIS TO YOUR PASSWORD.",
+    "message": "The auth header value to send with all requests to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nThe API instance will be able to see this value, never set it to sensitive information like a password.",
     "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
   "Window.Dropdown.Settings.SaltMethod": {

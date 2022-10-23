@@ -34,6 +34,16 @@ namespace GoodFriend.Base
         public bool HideSameFC { get; set; } = true;
 
         /// <summary>
+        ///     Whether or not to hide notifications from users in different homeworlds.
+        /// </summary>
+        public bool HideDifferentHomeworld { get; set; } = false;
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different territories.
+        /// </summary>
+        public bool HideDifferentTerritory { get; set; } = false;
+
+        /// <summary>
         ///     Whether or not to show API events as notifications.
         /// </summary>
         public bool ShowAPIEvents { get; set; } = false;
@@ -56,9 +66,9 @@ namespace GoodFriend.Base
         public Uri APIUrl { get; set; } = PStrings.defaultAPIUrl;
 
         /// <summary>
-        ///     The bearer token attached to all requests to the API.
+        ///     The authentication attached to all requests to the API.
         /// </summary>
-        public string APIBearerToken { get; set; } = string.Empty;
+        public string APIAuthentication { get; set; } = string.Empty;
 
         /// <summary>
         ///     Saves the current configuration to disk.

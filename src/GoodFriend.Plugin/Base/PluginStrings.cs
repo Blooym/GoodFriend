@@ -1,6 +1,7 @@
 namespace GoodFriend.Base
 {
     using System;
+    using System.Reflection;
     using CheapLoc;
 
     /// <summary> 
@@ -8,9 +9,30 @@ namespace GoodFriend.Base
     /// </summary>
     public static class PStrings
     {
-        public static readonly string pluginName = "Good Friend";
-        public static readonly Uri repoUrl = new("https://github.com/BitsOfAByte/GoodFriend/");
+        /// <summary>
+        ///     The name of the plugin in the user interface.
+        /// </summary>
+        public static readonly string pluginName = Assembly.GetExecutingAssembly().GetName().Name ?? "Unknown";
 
+        /// <summary>
+        ///     The support plugin developer button url.
+        /// </summary>
+        public static readonly Uri pluginDevSupportUrl = new("https://github.com/sponsors/BitsOfAByte/");
+
+        /// <summary>
+        ///     The default API url to use.
+        /// </summary>
+        public static readonly Uri defaultAPIUrl = new Uri("https://aether.bitsofabyte.dev/");
+
+        /// <summary>
+        ///     The version of the plugin alongside the commit has if available.
+        /// </summary>
+        public static readonly string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "???";
+
+        /// <summary>
+        ///     The GitHub repository url.
+        /// </summary>
+        public static readonly Uri repoUrl = new("https://github.com/BitsOfAByte/GoodFriend/");
 
         /// <summary>
         ///     The production branch of the repository.
@@ -31,16 +53,6 @@ namespace GoodFriend.Base
         ///     The path to the plugin's resources folder with trailing slashes, relative to the plugin assembly location with trailing slashes.
         /// </summary>
         public static readonly string assemblyLocDir = assemblyResourcesDir + "Localization\\";
-
-        /// <summary>
-        ///     The support plugin developer button url.
-        /// </summary>
-        public static readonly Uri supportButtonUrl = new("https://github.com/sponsors/BitsOfAByte/");
-
-        /// <summary>
-        ///     The default API url to use.
-        /// </summary>
-        public static readonly Uri defaultAPIUrl = new Uri("https://aether.bitsofabyte.dev/");
     }
 
     public static class Events
@@ -73,18 +85,22 @@ namespace GoodFriend.Base
     public static class PrimaryWindow
     {
         public static string DropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
-        public static string DropdownOptionsStatusTooltip(string url) => String.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance\n({0})"), url);
+        public static string DropdownOptionsStatusTooltip(string url) => String.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
         public static string DropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
-        public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host");
+        public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host.");
         public static string DropdownOptionsEventLog => Loc.Localize("Window.Dropdown.Options.EventLog", "Event Log");
-        public static string DropdownOptionsEventLogTooltip => Loc.Localize("Window.Dropdown.Options.EventLog.Tooltip", "View the event log");
+        public static string DropdownOptionsEventLogTooltip => Loc.Localize("Window.Dropdown.Options.EventLog.Tooltip", "View the event log.");
         public static string DropdownOptionsSettings => Loc.Localize("Window.Dropdown.Options.Settings", "Settings");
-        public static string DropdownOptionsSettingsTooltip => Loc.Localize("Window.Dropdown.Options.Settings.Tooltip", "Change the settings for this plugin");
+        public static string DropdownOptionsSettingsTooltip => Loc.Localize("Window.Dropdown.Options.Settings.Tooltip", "Change the settings for this plugin.");
         public static string DropdownSettingsEnabled => Loc.Localize("Window.Dropdown.Settings.Enabled", "Enabled");
         public static string DropdownSettingsDisabled => Loc.Localize("Window.Dropdown.Settings.Disabled", "Disabled");
         public static string DropdownSettingsRestartRequired => Loc.Localize("Window.Dropdown.Settings.RestartRequired", "Plugin restart required to apply some configuration changes.");
         public static string DropdownSettingsIgnoreFC => Loc.Localize("Window.Dropdown.Settings.IgnoreFC", "Ignore FC Members");
-        public static string DropdownSettingsIgnoreFCTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreFC.Tooltip", "Whether or not to ignore free company friend notifications");
+        public static string DropdownSettingsIgnoreFCTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreFC.Tooltip", "Whether or not ignore friend notifications from players in your Free Company.");
+        public static string DropdownSettingsIgnoreDiffHomeworlds => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds", "Ignore Other Homeworlds");
+        public static string DropdownSettingsIgnoreDiffHomeworldsTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip", "Whether or not to ignore friend notifications from players on different homeworlds.");
+        public static string DropdownSettingsIgnoreDiffTerritories => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffTerritories", "Ignore Other Zones");
+        public static string DropdownSettingsIgnoreDiffTerritoriesTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip", "Whether or not to ignore friend notifications from players in different zones than you currently are.");
         public static string DropdownSettingsNotificationType => Loc.Localize("Window.Dropdown.Settings.NotificationType", "Notification Type");
         public static string DropdownSettingsNotificationTypeTooltip => Loc.Localize("Window.Dropdown.Settings.NotificationType.Tooltip", "The type of notification to show when a friend event occurs.");
         public static string DropdownSettingsLoginMessage => Loc.Localize("Window.Dropdown.Settings.LoginMessage", "Login Message");
@@ -94,11 +110,11 @@ namespace GoodFriend.Base
         public static string DropdownSettingsAPINotifications => Loc.Localize("Window.Dropdown.Settings.APINotifications", "API Notifications");
         public static string DropdownSettingsAPINotificationsTooltip => Loc.Localize("Window.Dropdown.Settings.APINotifications.Tooltip", "Whether or not to notifications when the API connection status changes.");
         public static string DropdownSettingsFriendshipCode => Loc.Localize("Window.Dropdown.Settings.FriendshipCode", "Friendship Code");
-        public static string DropdownSettingsFriendshipCodeTooltip => Loc.Localize("Window.Dropdown.Settings.FriendshipCode.Tooltip", "Your friendship code limits who you send notifications to.\nYou will only send and recieve notifications with people who have the same code.\n\nLeave empty for the best experience.");
+        public static string DropdownSettingsFriendshipCodeTooltip => Loc.Localize("Window.Dropdown.Settings.FriendshipCode.Tooltip", "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.");
         public static string DropdownSettingsAPIUrl => Loc.Localize("Window.Dropdown.Settings.APIUrl", "API URL");
         public static string DropdownSettingsAPIUrlTooltip => Loc.Localize("Window.Dropdown.Settings.APIUrl.Tooltip", "The URL of the API instance to connect to. Make sure you trust the host of this instance.");
         public static string DropdownSettingsAPIToken => Loc.Localize("Window.Dropdown.Settings.APIToken", "API Token");
-        public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "The API bearer token to use when connecting to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nNEVER SET THIS TO YOUR PASSWORD.");
+        public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "The auth header value to send with all requests to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nThe API instance will be able to see this value, never set it to sensitive information like a password.");
         public static string DropdownSettingsSaltMethod => Loc.Localize("Window.Dropdown.Settings.SaltMethod", "Salt Method");
         public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly (Users must be using the same plugin and version to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any plugin using the same API)\n\nKeep this on strict for the best privacy and security.");
         public static string DropdownSupportTitle => Loc.Localize("Window.Dropdown.Support.Title", "Support & Donations");
