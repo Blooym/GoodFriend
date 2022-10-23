@@ -32,7 +32,7 @@ namespace GoodFriend.Managers
 
             foreach (var window in this._windows)
             {
-                PluginLog.Debug($"WindowManager(WindowManager): Registering window: {window.WindowName}");
+                PluginLog.Debug($"WindowManager(WindowManager): Registering window: {window.GetType().Name}");
                 this._windowSystem.AddWindow(window);
             }
 
@@ -61,8 +61,6 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginLog.Debug("WindowManager(Dispose): Disposing...");
-
             PluginService.PluginInterface.UiBuilder.Draw -= OnDrawUI;
             PluginService.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUI;
 
@@ -74,7 +72,7 @@ namespace GoodFriend.Managers
 
             this._windowSystem.RemoveAllWindows();
 
-            PluginLog.Debug("WindowManager(Dispose): Successfully disposed all windows.");
+            PluginLog.Debug("WindowManager(Dispose): Successfully disposed.");
         }
     }
 }

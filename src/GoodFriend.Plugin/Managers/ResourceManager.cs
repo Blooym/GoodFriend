@@ -36,8 +36,6 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginLog.Debug("ResourceManager(Dispose): Disposing...");
-
             PluginService.PluginInterface.LanguageChanged -= Setup;
             ResourcesUpdated -= OnResourceUpdate;
 

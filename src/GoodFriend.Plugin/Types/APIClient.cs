@@ -149,7 +149,7 @@ namespace GoodFriend.Types
             if (this._configuration.APIAuthentication != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
 
             var headers = this._httpClient.DefaultRequestHeaders.ToString().Replace($"Authorization: {this._configuration.APIAuthentication}", "Authorization: [REDACTED]");
-            PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured.\nBaseAddress: {this._httpClient.BaseAddress}\n{headers}\nTimeout: {this._httpClient.Timeout}");
+            PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured HTTP client.\nBaseAddress: {this._httpClient.BaseAddress}\n{headers}\nTimeout: {this._httpClient.Timeout}");
         }
 
         /// <summary>
