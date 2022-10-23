@@ -25,13 +25,19 @@ GoodFriend is a plugin written for the [Dalamud](https://github.com/goatcorp/Dal
 
 This is achieved by utilising a custom-built API to work around some of the in-game limitations regarding friend data; essentially acting as a "relay" server between clients to protect individual privacy. Due to the nature of this design, most of the functionality provided by the plugin can only be utilised if both sides (e.g. another friend) is using the plugin.
 
+The API is easily self-hostable with little work needed to get it going, just in-case anything ever happens to the official instance. The API could also be entirely rewritten in another language and still work with the plugin, as long as it inputs/outputs everything correctly.
+
 ## Installing
 
-This plugin can be downloaded from the official Dalamud plugins repository in-game by navigating to the plugin installer and searching for "Good Friend". Once installed, you will be automatically connected to the official API instance and be ready to go without the need for any additional configuration.
+This plugin can be downloaded from the official Dalamud plugins repository in-game by navigating to the plugin installer and searching for "GoodFriend". Once installed, you will be automatically connected to the official API instance and be ready to go without the need for any additional configuration.
+
+If you would like to tweak any of the settings for the plugin you can do so by clicking the settings cog from the plugin list.
 
 ## 3rd-party API Instances
 
-This plugin allows for 3rd party API instances to be used instead of the official instance provided here. It is highly recommended you stick to the official instance, as any 3rd party instance could potentially be dangerous, either by being insecure or actively abusing security vulnerabilities. 
+This plugin allows for 3rd party API instances to be used instead of the official instance provided here. It is highly recommended you stick to the official instance, as any 3rd party instance could potentially be dangerous, either by being insecure or actively abusing security vulnerabilities.
+
+If you still wish to connect to a third party instance, simply put the URL to the API into the "API URL" option and restart the plugin; as long as the server and plugin match route versions and everything server-side is configured properly, you should be good to go.
 
 ## Technical Details
 **"Client"** refers to a user that is running the plugin.
