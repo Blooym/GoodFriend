@@ -48,12 +48,16 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
             try
             {
                 var newApiUrl = this.Metadata?.newApiUrl ?? null;
-                if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl))
+                if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
                 {
                     try
                     {
                         NewAPIURL = new Uri(newApiUrl);
-                        if (NewAPIURL.Scheme == "https") ShowURLUpdateNag = true;
+                        if (NewAPIURL.Scheme == "https")
+                        {
+                            ShowURLUpdateNag = true;
+                            PluginLog.Information($"URLUpdateNagPresenter(HandleURLUpdateNag): API recommended a new URL ({PluginService.Configuration.APIUrl} -> {NewAPIURL}) - showing user a nag if the haven't already dismissed it.");
+                        }
                         else
                         {
                             IgnoredNewURLs = IgnoredNewURLs.Append(newApiUrl).ToArray();

@@ -4,6 +4,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
     using System.Numerics;
     using GoodFriend.Base;
     using GoodFriend.UI.Components;
+    using Dalamud.Logging;
     using Dalamud.Interface.Windowing;
     using ImGuiNET;
 
@@ -55,7 +56,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         public override void PreOpenCheck()
         {
             this.IsOpen = presenter.ShowURLUpdateNag;
-            if (!this.presenter.ShowURLUpdateNag) { this.presenter.HandleURLUpdateNag(); }
+            if (!this.presenter.ShowURLUpdateNag && !this.presenter.URLUpdateNagDismissed) { this.presenter.HandleURLUpdateNag(); }
         }
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                 PluginService.Configuration.APIUrl = this.presenter.NewAPIURL;
 #pragma warning restore CS8601
                 PluginService.Configuration.Save();
+                PluginLog.Information($"URLUpdateNag(Draw): Accepted purposed URL update, changed API URL to {this.presenter.NewAPIURL}");
                 this.presenter.URLUpdateNagDismissed = true;
             }
             ImGui.SameLine();
