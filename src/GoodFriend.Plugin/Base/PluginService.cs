@@ -38,7 +38,7 @@ namespace GoodFriend.Base
             APIClientManager = new APIClientManager(ClientState);
             EventLogManager = new EventLogManager();
 
-#if DEBUG
+#if !DEBUG
             ResourceManager.Update();
 #endif
 
