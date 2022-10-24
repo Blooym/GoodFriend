@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && tsc-alias && node .",
     "build": "tsc && tsc-alias",
-    "watch": "tsc-watch --onSuccess && tsc-alias && node .",
+    "watch": "concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon .\"",
     "test": "lint-staged && tsc --noEmit",
     "prepare": "cd ../../ && husky install ./src/GoodFriend.Server/.husky"
   },
@@ -29,12 +29,13 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
+    "concurrently": "^7.5.0",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "tsc-alias": "^1.7.0",
-    "tsc-watch": "^5.0.3"
+    "nodemon": "^2.0.20",
+    "tsc-alias": "^1.7.0"
   }
 }
