@@ -6,15 +6,17 @@ namespace GoodFriend.Utils
     using System.Security.Cryptography;
     using GoodFriend.Base;
 
-    /// <summary> Salt methods that can be be applied </summary>
+    /// <summary> 
+    ///     Salt methods that can be be applied.
+    /// </summary>
     public enum SaltMethods : byte
     {
-        Strict = 0, // Use the players salt (friend code) and the assembly GUID.
+        Strict = 0, // Use the players salt (friend code) and the assembly manifest.
         Relaxed = 1, // Only use the players salt (friend code) if set.
     }
 
     /// <summary> Hashing implementations and methods </summary>
-    public static class Hashing
+    internal static class Hashing
     {
         /// <summary> 
         ///     Generates a salt using a given method and length.
@@ -39,7 +41,7 @@ namespace GoodFriend.Utils
         /// </summary>
         /// <param name="input"> The string to hash. </param>
         /// <returns> The hashed string. </returns>
-        public static string HashSHA512(string input)
+        internal static string HashSHA512(string input)
         {
             var salt = CreateSalt(PluginService.Configuration.SaltMethod);
             var bytes = Encoding.UTF8.GetBytes(input + salt);

@@ -7,12 +7,12 @@ namespace GoodFriend.Utils
     using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
     /// <summary> Handles the sending of notifications to the client. </summary>
-    public static class Notifications
+    internal static class Notifications
     {
         /// <summary> Sends a notification to the user using their preferred notification type. </summary>
         /// <param name="message"> The message to send. </param>
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
-        public static void ShowPreferred(string message, ToastType? toastType = null)
+        internal static void ShowPreferred(string message, ToastType? toastType = null)
         {
             var notificationType = PluginService.Configuration.NotificationType;
             Show(message, notificationType, toastType);
@@ -22,7 +22,7 @@ namespace GoodFriend.Utils
         /// <param name="message"> The message to send. </param>
         /// <param name="notificationType"> The type of notification to send. </param>
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
-        public static void Show(string message, NotificationType type, ToastType? toastType = null)
+        internal static void Show(string message, NotificationType type, ToastType? toastType = null)
         {
             PluginLog.Debug($"Notifications(Show): Showing {type} notification with the message: {message}");
             switch (type)
