@@ -267,7 +267,7 @@ namespace GoodFriend.UI.Windows.Main
                             PluginService.Configuration.Save();
                             ImGui.EndCombo();
                         }
-                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsNotificationTypeTooltip);
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPINotificationsTooltip);
                         ImGui.TableNextRow();
 
 
