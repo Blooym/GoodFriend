@@ -23,7 +23,7 @@
 			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
 		</Exec>
     <PropertyGroup>
-        <InformationalVersion>$(Version) (Commit: #$(GitCommitHash))</InformationalVersion>
+        <InformationalVersion>$(Version) (#$(GitCommitHash))</InformationalVersion>
 		</PropertyGroup>
 	</Target>
 

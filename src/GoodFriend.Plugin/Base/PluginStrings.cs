@@ -58,12 +58,12 @@ namespace GoodFriend.Base
     public static class Events
     {
         public static string APIConnectionStatus => Loc.Localize("Event.Connection.Status", "Connection Status");
-        public static string APIConnectionSuccess => Loc.Localize("Event.Connection.Successful", "Successfully connected to the API");
-        public static string APIConnectionError => Loc.Localize("Event.Connection.Error", "An error occurred while connecting to the API");
-        public static string APIConnectionDisconnected => Loc.Localize("Event.Connection.Disconnected", "Disconnected from the API");
-        public static string APIConnectionRatelimited => Loc.Localize("Event.Connection.Ratelimited", "Ratelimited by the API. Trying again at expiry time");
-        public static string LoggedIn => Loc.Localize("Event.LoggedIn", "logged in");
-        public static string LoggedOut => Loc.Localize("Event.LoggedOut", "logged out");
+        public static string APIConnectionSuccess => Loc.Localize("Event.Connection.Successful", "Successfully connected to the API.");
+        public static string APIConnectionError => Loc.Localize("Event.Connection.Error", "An error occurred while connecting to the API.");
+        public static string APIConnectionDisconnected => Loc.Localize("Event.Connection.Disconnected", "Disconnected from the API.");
+        public static string APIConnectionRatelimited => Loc.Localize("Event.Connection.Ratelimited", "Ratelimited by the API, will auto-retry later.");
+        public static string LoggedIn => Loc.Localize("Event.LoggedIn", "logged in.");
+        public static string LoggedOut => Loc.Localize("Event.LoggedOut", "logged out.");
     }
 
     public static class State
@@ -71,7 +71,7 @@ namespace GoodFriend.Base
         public static string Connected => Loc.Localize("State.Connected", "Connected");
         public static string ConnectedDescription(int clients) => String.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
         public static string Connecting => Loc.Localize("State.Connecting", "Connecting");
-        public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Attempting to connect to the API... Please wait.");
+        public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Connection in progress, please wait.");
         public static string Ratelimited => Loc.Localize("State.Ratelimited", "Ratelimited");
         public static string RatelimitedDescription => Loc.Localize("State.Ratelimited.Description", "The API has ratelimited this client temporarily.");
         public static string Disconnected => Loc.Localize("State.Disconnected", "Disconnected");
@@ -112,11 +112,11 @@ namespace GoodFriend.Base
         public static string DropdownSettingsFriendshipCode => Loc.Localize("Window.Dropdown.Settings.FriendshipCode", "Friendship Code");
         public static string DropdownSettingsFriendshipCodeTooltip => Loc.Localize("Window.Dropdown.Settings.FriendshipCode.Tooltip", "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.");
         public static string DropdownSettingsAPIUrl => Loc.Localize("Window.Dropdown.Settings.APIUrl", "API URL");
-        public static string DropdownSettingsAPIUrlTooltip => Loc.Localize("Window.Dropdown.Settings.APIUrl.Tooltip", "The URL of the API instance to connect to. Make sure you trust the host of this instance.");
+        public static string DropdownSettingsAPIUrlTooltip => Loc.Localize("Window.Dropdown.Settings.APIUrl.Tooltip", "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.");
         public static string DropdownSettingsAPIToken => Loc.Localize("Window.Dropdown.Settings.APIToken", "API Token");
-        public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "The auth header value to send with all requests to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nThe API instance will be able to see this value, never set it to sensitive information like a password.");
+        public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.");
         public static string DropdownSettingsSaltMethod => Loc.Localize("Window.Dropdown.Settings.SaltMethod", "Salt Method");
-        public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Assembly (Users must be using the same plugin and version to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any plugin using the same API)\n\nKeep this on strict for the best privacy and security.");
+        public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.");
         public static string DropdownSupportTitle => Loc.Localize("Window.Dropdown.Support.Title", "Support & Donations");
         public static string DropdownSupportFlavourText => Loc.Localize("Window.Dropdown.Support.FlavourText", "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!");
         public static string DropdownSupportDonate => Loc.Localize("Window.Dropdown.Support.Button", "Donate");

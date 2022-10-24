@@ -90,8 +90,8 @@ namespace GoodFriend.UI.Windows.Main
                     break;
                 case MainPresenter.VisibleDropdown.None:
                     ImGui.SetWindowSize(new Vector2(410 * ImGui.GetIO().FontGlobalScale, 160 * ImGui.GetIO().FontGlobalScale));
-                    ImGui.SetCursorPosX((ImGui.GetWindowWidth() - ImGui.CalcTextSize(PStrings.version).X) / 2 - ImGui.GetStyle().WindowPadding.X);
-                    ImGui.TextDisabled(PStrings.version);
+                    ImGui.SetCursorPosX((ImGui.GetWindowWidth() - ImGui.CalcTextSize($"Plugin: {PStrings.version} · APIClient {PluginService.APIClientManager.version}").X) / 2 - ImGui.GetStyle().WindowPadding.X);
+                    ImGui.TextDisabled($"Plugin: {PStrings.version} · APIClient: {PluginService.APIClientManager.version}");
                     break;
             }
         }

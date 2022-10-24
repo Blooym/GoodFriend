@@ -49,6 +49,11 @@ namespace GoodFriend.Managers
         private APIClient APIClient { get; set; } = new APIClient(PluginService.Configuration);
 
         /// <summary>
+        ///     The APIClient version string.
+        /// </summary>
+        public string version => APIClient.apiVersion;
+
+        /// <summary>
         ///     The ClientState associated with the manager
         /// </summary>
         private readonly ClientState _clientState;

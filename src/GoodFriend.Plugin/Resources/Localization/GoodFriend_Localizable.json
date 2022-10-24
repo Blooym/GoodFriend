@@ -4,27 +4,27 @@
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Successfully connected to the API",
+    "message": "Successfully connected to the API.",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "An error occurred while connecting to the API",
+    "message": "An error occurred while connecting to the API.",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
-    "message": "Disconnected from the API",
+    "message": "Disconnected from the API.",
     "description": "Events.get_APIConnectionDisconnected"
   },
   "Event.Connection.Ratelimited": {
-    "message": "Ratelimited by the API. Trying again at expiry time",
+    "message": "Ratelimited by the API, will auto-retry later.",
     "description": "Events.get_APIConnectionRatelimited"
   },
   "Event.LoggedIn": {
-    "message": "logged in",
+    "message": "logged in.",
     "description": "Events.get_LoggedIn"
   },
   "Event.LoggedOut": {
-    "message": "logged out",
+    "message": "logged out.",
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
@@ -40,7 +40,7 @@
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
-    "message": "Attempting to connect to the API... Please wait.",
+    "message": "Connection in progress, please wait.",
     "description": "State.get_ConnectingDescription"
   },
   "State.Ratelimited": {
@@ -188,7 +188,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
-    "message": "The URL of the API instance to connect to. Make sure you trust the host of this instance.",
+    "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
   "Window.Dropdown.Settings.APIToken": {
@@ -196,7 +196,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
-    "message": "The auth header value to send with all requests to the API.\nThis is used for private or protected instances and does not normally need to be set.\n\nThe API instance will be able to see this value, never set it to sensitive information like a password.",
+    "message": "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.",
     "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
   "Window.Dropdown.Settings.SaltMethod": {
@@ -204,7 +204,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Assembly (Users must be using the same plugin and version to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any plugin using the same API)\n\nKeep this on strict for the best privacy and security.",
+    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Support.Title": {

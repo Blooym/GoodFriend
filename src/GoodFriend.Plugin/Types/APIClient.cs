@@ -123,12 +123,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The API version this client is compatible with, ending with a slash.
         /// </summary>
-        private readonly string apiVersion = "v4/";
+        public readonly string apiVersion = "v4";
 
         /// <summary>
         ///     The base URL for the API with the appended API version.
         /// </summary>
-        private Uri _apiBaseURL => new(this._configuration.APIUrl + this.apiVersion);
+        private Uri _apiBaseURL => new($"{this._configuration.APIUrl}{this.apiVersion}/");
 
         /// <summary>
         ///     The HTTP client used to connect to the API.
