@@ -144,7 +144,8 @@ namespace GoodFriend.Types
             this._httpClient.Timeout = TimeSpan.FromSeconds(10);
 
             // Headers
-            this._httpClient.DefaultRequestHeaders.Add("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{Assembly.GetExecutingAssembly().GetName().Version}");
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            this._httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{version} [{Common.GetOperatingSystem()}]");
             this._httpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
             if (this._configuration.APIAuthentication != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
 
