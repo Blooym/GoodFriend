@@ -119,7 +119,6 @@ namespace GoodFriend.UI.Windows.Main
                     var hideSameFC = PluginService.Configuration.HideSameFC;
                     var hideDifferentHomeworld = PluginService.Configuration.HideDifferentHomeworld;
                     var hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
-                    var friendshipCode = PluginService.Configuration.FriendshipCode;
 
                     ImGui.BeginChild("GeneralSettings");
                     if (ImGui.BeginTable("GeneralSettingsTable", 2))
@@ -277,7 +276,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##FriendshipCode", ref friendshipCode, 255))
                         {
-                            PluginService.Configuration.FriendshipCode = friendshipCode;
+                            PluginService.Configuration.FriendshipCode = friendshipCode.Trim();
                             PluginService.Configuration.Save();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendshipCodeTooltip);
@@ -309,7 +308,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.TableSetColumnIndex(1);
                         if (ImGui.InputText("##APIAuth", ref apiAuth, 255))
                         {
-                            PluginService.Configuration.APIAuthentication = apiAuth;
+                            PluginService.Configuration.APIAuthentication = apiAuth.Trim();
                             PluginService.Configuration.Save();
                             this.presenter.restartToApply = true;
                         }
