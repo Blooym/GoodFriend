@@ -43,8 +43,8 @@ namespace GoodFriend.UI.Windows.Main
 #pragma warning disable CS1717
         public override void Draw()
         {
-            var statusPageUrl = this.presenter.Metadata?.statusPageUrl;
-            var newApiUrl = this.presenter.Metadata?.newApiUrl;
+            var statusPageUrl = this.presenter.metadata?.statusPageUrl;
+            var newApiUrl = this.presenter.metadata?.newApiUrl;
             Components.ConnectionStatusComponent.Draw("ConnectionPageStatusComponent", new Vector2(0, 70 * ImGui.GetIO().FontGlobalScale));
 
             // Status button
@@ -390,7 +390,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.Dummy(new Vector2(0, 5));
 
 
-            var donationPageUrl = this.presenter.Metadata?.donationPageUrl;
+            var donationPageUrl = this.presenter.metadata?.donationPageUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
             if (donationPageUrl != null)

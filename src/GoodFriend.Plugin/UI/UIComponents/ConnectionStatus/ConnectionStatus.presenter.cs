@@ -43,7 +43,7 @@ namespace GoodFriend.UI.Components
         {
             return this.APIStatus switch
             {
-                ConnectionStatus.Connected => State.ConnectedDescription(PluginService.APIClientManager.GetMetadata()?.connectedClients ?? 0),
+                ConnectionStatus.Connected => State.ConnectedDescription(this.metadata?.connectedClients ?? 0),
                 ConnectionStatus.Ratelimited => State.RatelimitedDescription,
                 ConnectionStatus.Connecting => State.ConnectingDescription,
                 ConnectionStatus.Disconnected => State.DisconnectedDescription,
@@ -52,6 +52,6 @@ namespace GoodFriend.UI.Components
             };
         }
 
-        public APIClient.MetadataPayload? GetMetadata => PluginService.APIClientManager.GetMetadata();
+        public APIClient.MetadataPayload? metadata => PluginService.APIClientManager.metadataCache;
     }
 }

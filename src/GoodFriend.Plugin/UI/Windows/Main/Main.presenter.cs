@@ -31,7 +31,7 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Where to get metadata from.
         /// </summary>
-        public APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.GetMetadata();
+        public APIClient.MetadataPayload? metadata => PluginService.APIClientManager.metadataCache;
 
         /// <summary> 
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.

@@ -38,7 +38,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Where to get metadata from.
         /// </summary>
-        public APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.GetMetadata();
+        public APIClient.MetadataPayload? metadata => PluginService.APIClientManager.metadataCache;
 
         /// <summary>
         ///    Sets URLUpdateNag to true if the metadata has a set newApiUrl.
@@ -47,7 +47,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         {
             try
             {
-                var newApiUrl = this.Metadata?.newApiUrl ?? null;
+                var newApiUrl = this.metadata?.newApiUrl ?? null;
                 if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
                 {
                     try

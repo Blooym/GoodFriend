@@ -3,6 +3,7 @@ namespace GoodFriend.Managers
     using System;
     using System.Threading.Tasks;
     using System.Net;
+    using System.Timers;
     using System.Net.Http;
     using GoodFriend.Base;
     using GoodFriend.Utils;
@@ -34,14 +35,23 @@ namespace GoodFriend.Managers
         private uint _currentTerritoryId = 0;
 
         /// <summary>
-        ///    The last request made for the client count.
-        /// </summary>
-        private long _lastMetadataRequest = 0;
-
-        /// <summary>
         ///    The cached metadata from the API.
         /// </summary>
-        private APIClient.MetadataPayload? _metadata = null;
+        public APIClient.MetadataPayload? metadataCache { get; private set; } = null;
+
+        /// <summary>
+        ///    The timer for updating the metadata cache.
+        /// </summary>
+        private Timer _metadataTimer = new Timer(240000);
+
+        /// <summary>
+        ///    The event that fires when the metadata timer elapses.
+        /// </summary>
+        private void OnMetadataTimerElapsed(object? source, ElapsedEventArgs e)
+        {
+            PluginLog.Verbose($"APIClientManager(OnMetadataRefresh): Metadata timer elapsed, updating metadata cache.");
+            this.UpdateMetadataCache();
+        }
 
         /// <summary> 
         ///     The API Client associated with the manager.
@@ -78,6 +88,11 @@ namespace GoodFriend.Managers
             this._clientState.Logout += this.OnLogout;
             this._clientState.TerritoryChanged += this.OnTerritoryChange;
 
+            // Metadata cache update timer
+            this._metadataTimer.Elapsed += this.OnMetadataTimerElapsed;
+            this._metadataTimer.AutoReset = true;
+            this._metadataTimer.Enabled = true;
+
             // If the player is logged in already, connect & set their ID.
             if (this._clientState.LocalPlayer != null)
             {
@@ -106,6 +121,9 @@ namespace GoodFriend.Managers
             this.APIClient.SSEConnectionClosed -= this.OnSSEAPIClientDisconnected;
             this.APIClient.RequestError -= this.OnRequestError;
             this.APIClient.RequestSuccess -= this.OnRequestSuccess;
+
+            this._metadataTimer.Elapsed -= this.OnMetadataTimerElapsed;
+            this._metadataTimer.Dispose();
 
             PluginLog.Debug("APIClientManager(Dispose): Successfully disposed.");
         }
@@ -304,21 +322,16 @@ namespace GoodFriend.Managers
             return ConnectionStatus.Disconnected;
         }
 
-        /// <summary>
-        ///     Get the client count from the API.
-        /// </summary>
-        public APIClient.MetadataPayload? GetMetadata()
+
+        private void UpdateMetadataCache()
         {
-            if (this._lastMetadataRequest < DateTimeOffset.Now.ToUnixTimeSeconds() - 120)
+            var metadata = this.APIClient.GetMetadata();
+            if (metadata != null)
             {
-                PluginLog.Verbose($"APIClientManager(GetMetadata): Requesting fresh metadata, last request was at {_lastMetadataRequest}");
-                this._lastMetadataRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
-                var metadata = this.APIClient.GetMetadata();
-                if (metadata != null) this._metadata = metadata;
-                PluginLog.Debug($"APIClientManager(GetMetadata): Metadata is now {JsonConvert.SerializeObject(this._metadata)}");
-                return metadata;
+                this.metadataCache = metadata;
+                PluginLog.Debug($"APIClientManager(GetMetadata): Metadata cache updated {JsonConvert.SerializeObject(this.metadataCache)}");
             }
-            return this._metadata;
+            else PluginLog.Debug($"APIClientManager(GetMetadata): Unable to update metadata cache.");
         }
     }
 }
