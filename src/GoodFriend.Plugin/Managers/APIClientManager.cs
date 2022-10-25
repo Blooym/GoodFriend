@@ -76,6 +76,7 @@ namespace GoodFriend.Managers
             PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
 
             this._clientState = clientState;
+            this.UpdateMetadataCache();
 
             // Create event handlers
             this.APIClient.SSEDataReceived += this.OnSSEDataReceived;
