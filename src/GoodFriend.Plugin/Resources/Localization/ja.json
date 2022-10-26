@@ -1,0 +1,270 @@
+{
+  "Event.Connection.Status": {
+    "message": "Connection Status",
+    "description": "Events.get_APIConnectionStatus"
+  },
+  "Event.Connection.Successful": {
+    "message": "Successfully connected to the API.",
+    "description": "Events.get_APIConnectionSuccess"
+  },
+  "Event.Connection.Error": {
+    "message": "An error occurred while connecting to the API.",
+    "description": "Events.get_APIConnectionError"
+  },
+  "Event.Connection.Disconnected": {
+    "message": "Disconnected from the API.",
+    "description": "Events.get_APIConnectionDisconnected"
+  },
+  "Event.Connection.Ratelimited": {
+    "message": "Ratelimited by the API, will auto-retry later.",
+    "description": "Events.get_APIConnectionRatelimited"
+  },
+  "Event.LoggedIn": {
+    "message": "logged in.",
+    "description": "Events.get_LoggedIn"
+  },
+  "Event.LoggedOut": {
+    "message": "logged out.",
+    "description": "Events.get_LoggedOut"
+  },
+  "State.Connected": {
+    "message": "Connected",
+    "description": "State.get_Connected"
+  },
+  "State.Connected.Description": {
+    "message": "There are currently {0} connected clients.",
+    "description": "State.ConnectedDescription"
+  },
+  "State.Connecting": {
+    "message": "Connecting",
+    "description": "State.get_Connecting"
+  },
+  "State.Connecting.Description": {
+    "message": "Connection in progress, please wait.",
+    "description": "State.get_ConnectingDescription"
+  },
+  "State.Ratelimited": {
+    "message": "Ratelimited",
+    "description": "State.get_Ratelimited"
+  },
+  "State.Ratelimited.Description": {
+    "message": "The API has ratelimited this client temporarily.",
+    "description": "State.get_RatelimitedDescription"
+  },
+  "State.Disconnected": {
+    "message": "Disconnected",
+    "description": "State.get_Disconnected"
+  },
+  "State.Disconnected.Description": {
+    "message": "Login to connect to the API.",
+    "description": "State.get_DisconnectedDescription"
+  },
+  "State.ConnectionError": {
+    "message": "Connection Error",
+    "description": "State.get_ConnectionError"
+  },
+  "State.ConnectionError.Description": {
+    "message": "Something went wrong with the API connection.",
+    "description": "State.get_ConnectionErrorDescription"
+  },
+  "State.Unknown": {
+    "message": "Unknown",
+    "description": "State.get_Unknown"
+  },
+  "State.Unknown.Description": {
+    "message": "We're not sure what's going on here.",
+    "description": "State.get_UnknownDescription"
+  },
+  "Window.Dropdown.Options.Status": {
+    "message": "Status",
+    "description": "PrimaryWindow.get_DropdownOptionsStatus"
+  },
+  "Window.Dropdown.Options.Status.Tooltip": {
+    "message": "View the status page of this API instance.\n({0})",
+    "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
+  },
+  "Window.Dropdown.Options.Support": {
+    "message": "Donate",
+    "description": "PrimaryWindow.get_DropdownOptionsSupport"
+  },
+  "Window.Dropdown.Options.Support.Tooltip": {
+    "message": "Support the developer and API instance host.",
+    "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
+  },
+  "Window.Dropdown.Options.EventLog": {
+    "message": "Event Log",
+    "description": "PrimaryWindow.get_DropdownOptionsEventLog"
+  },
+  "Window.Dropdown.Options.EventLog.Tooltip": {
+    "message": "View the event log.",
+    "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
+  },
+  "Window.Dropdown.Options.Settings": {
+    "message": "Settings",
+    "description": "PrimaryWindow.get_DropdownOptionsSettings"
+  },
+  "Window.Dropdown.Options.Settings.Tooltip": {
+    "message": "Change the settings for this plugin.",
+    "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
+  },
+  "Window.Dropdown.Settings.Enabled": {
+    "message": "Enabled",
+    "description": "PrimaryWindow.get_DropdownSettingsEnabled"
+  },
+  "Window.Dropdown.Settings.Disabled": {
+    "message": "Disabled",
+    "description": "PrimaryWindow.get_DropdownSettingsDisabled"
+  },
+  "Window.Dropdown.Settings.RestartRequired": {
+    "message": "Plugin restart required to apply some configuration changes.",
+    "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
+  },
+  "Window.Dropdown.Settings.IgnoreFC": {
+    "message": "Ignore FC Members",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
+  },
+  "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
+    "message": "Whether or not ignore friend notifications from players in your Free Company.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
+    "message": "Ignore Other Homeworlds",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players on different homeworlds.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffTerritories": {
+    "message": "Ignore Other Zones",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players in different zones than you currently are.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
+  },
+  "Window.Dropdown.Settings.NotificationType": {
+    "message": "Notification Type",
+    "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
+  },
+  "Window.Dropdown.Settings.NotificationType.Tooltip": {
+    "message": "The type of notification to show when a friend event occurs.",
+    "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
+  },
+  "Window.Dropdown.Settings.LoginMessage": {
+    "message": "Login Message",
+    "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
+  },
+  "Window.Dropdown.Settings.LoginMessage.Tooltip": {
+    "message": "The message to show when a friend logs in.\nUse {0} to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
+  },
+  "Window.Dropdown.Settings.LogoutMessage": {
+    "message": "Logout Message",
+    "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
+  },
+  "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
+    "message": "The message to show when a friend logs out.\nUse {0} to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
+  },
+  "Window.Dropdown.Settings.APINotifications": {
+    "message": "API Notifications",
+    "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
+  },
+  "Window.Dropdown.Settings.APINotifications.Tooltip": {
+    "message": "Whether or not to notifications when the API connection status changes.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
+  },
+  "Window.Dropdown.Settings.FriendshipCode": {
+    "message": "Friendship Code",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
+  },
+  "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
+    "message": "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
+  },
+  "Window.Dropdown.Settings.APIUrl": {
+    "message": "API URL",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
+  },
+  "Window.Dropdown.Settings.APIUrl.Tooltip": {
+    "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
+  },
+  "Window.Dropdown.Settings.APIToken": {
+    "message": "API Token",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
+  },
+  "Window.Dropdown.Settings.APIToken.Tooltip": {
+    "message": "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.",
+    "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
+  },
+  "Window.Dropdown.Settings.SaltMethod": {
+    "message": "Salt Method",
+    "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
+  },
+  "Window.Dropdown.Settings.SaltMethod.Tooltip": {
+    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.",
+    "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
+  },
+  "Window.Dropdown.Support.Title": {
+    "message": "Support & Donations",
+    "description": "PrimaryWindow.get_DropdownSupportTitle"
+  },
+  "Window.Dropdown.Support.FlavourText": {
+    "message": "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!",
+    "description": "PrimaryWindow.get_DropdownSupportFlavourText"
+  },
+  "Window.Dropdown.Support.Button": {
+    "message": "Donate",
+    "description": "PrimaryWindow.get_DropdownSupportDonate"
+  },
+  "Window.Dropdown.Support.Developer": {
+    "message": "Plugin/Server Developer",
+    "description": "PrimaryWindow.get_DropdownSupportDeveloper"
+  },
+  "Window.Dropdown.Support.Developer.Description": {
+    "message": "The developer is responsible for the code that makes the Plugin and API work.",
+    "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
+  },
+  "Window.Dropdown.Support.APIHost": {
+    "message": "API Instance Host",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHost"
+  },
+  "Window.Dropdown.Support.APIHost.Description": {
+    "message": "The API instance host is responsible for running and maintaining the server that this plugin is connected to.",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHostDescription"
+  },
+  "Window.Dropdown.Support.APIHost.InvalidUri": {
+    "message": "The API instance host has provided an invalid support URL.",
+    "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
+  },
+  "Window.Dropdown.Logs.Table.Time": {
+    "message": "Time",
+    "description": "PrimaryWindow.get_DropdownLogsTableTime"
+  },
+  "Window.Dropdown.Logs.Table.Type": {
+    "message": "Type",
+    "description": "PrimaryWindow.get_DropdownLogsTableType"
+  },
+  "Window.Dropdown.Logs.Table.Message": {
+    "message": "Message",
+    "description": "PrimaryWindow.get_DropdownLogsTableMessage"
+  },
+  "Window.URLUpdateNag.Title": {
+    "message": "{0} - Update from {1}",
+    "description": "URLNagWindow.URLUpdateNagTitle"
+  },
+  "Window.URLUpdateNag.Text": {
+    "message": "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option.",
+    "description": "URLNagWindow.URLUpdateNagText"
+  },
+  "Window.URLUpdateNag.Button.Update": {
+    "message": "Update URL",
+    "description": "URLNagWindow.get_URLUpdateNagButtonUpdate"
+  },
+  "Window.URLUpdateNag.Button.Ignore": {
+    "message": "Ignore for this session",
+    "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
+  }
+}
