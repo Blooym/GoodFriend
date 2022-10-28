@@ -156,7 +156,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
-    "message": "Le message à afficher lorsqu'un·e ami·e se connecte.\n\nUtilisez {0} pour placer le nom de l'ami·e.",
+    "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
@@ -164,7 +164,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
-    "message": "Le message à afficher lorsqu'un·e ami·e se déconnecte.\n\nUtilisez {0} pour placer le nom de l'ami·e.",
+    "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
   "Window.Dropdown.Settings.APINotifications": {
