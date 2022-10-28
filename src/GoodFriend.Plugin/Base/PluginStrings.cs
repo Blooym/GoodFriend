@@ -105,8 +105,10 @@ namespace GoodFriend.Base
         public static string DropdownSettingsNotificationTypeTooltip => Loc.Localize("Window.Dropdown.Settings.NotificationType.Tooltip", "The type of notification to show when a friend event occurs.");
         public static string DropdownSettingsLoginMessage => Loc.Localize("Window.Dropdown.Settings.LoginMessage", "Login Message");
         public static string DropdownSettingsLoginMessageTooltip => Loc.Localize("Window.Dropdown.Settings.LoginMessage.Tooltip", "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.");
+        public static string DropdownInvalidLoginMessage => Loc.Localize("Window.Dropdown.Settings.InvalidLoginMessage", "The login message must contain {0} at least once ot insert the friend's name.");
         public static string DropdownSettingsLogoutMessage => Loc.Localize("Window.Dropdown.Settings.LogoutMessage", "Logout Message");
         public static string DropdownSettingsLogoutMessageTooltip => Loc.Localize("Window.Dropdown.Settings.LogoutMessage.Tooltip", "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.");
+        public static string DropdownInvalidLogoutMessage => Loc.Localize("Window.Dropdown.Settings.InvalidLogoutMessage", "The logout message must contain {0} at least once to insert the friend's name.");
         public static string DropdownSettingsAPINotifications => Loc.Localize("Window.Dropdown.Settings.APINotifications", "API Notifications");
         public static string DropdownSettingsAPINotificationsTooltip => Loc.Localize("Window.Dropdown.Settings.APINotifications.Tooltip", "Whether or not to notifications when the API connection status changes.");
         public static string DropdownSettingsFriendshipCode => Loc.Localize("Window.Dropdown.Settings.FriendshipCode", "Friendship Code");

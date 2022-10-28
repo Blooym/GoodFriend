@@ -9,6 +9,7 @@ namespace GoodFriend.UI.Windows.Main
     using GoodFriend.UI.Components;
     using Dalamud.Utility;
     using Dalamud.Interface.Windowing;
+    using DalamudNotifications = Dalamud.Interface.Internal.Notifications;
     using ImGuiNET;
 
     /// <summary>
@@ -108,6 +109,7 @@ namespace GoodFriend.UI.Windows.Main
                 Colours.TextWrappedColoured(Colours.Warning, PrimaryWindow.DropdownSettingsRestartRequired);
 
 
+
             if (ImGui.BeginTabBar("SettingsDropdownTabBar"))
             {
                 // "Basic" Settings
@@ -204,7 +206,11 @@ namespace GoodFriend.UI.Windows.Main
                             try { string.Format(loginMessage, "test"); }
                             catch { error = true; }
 
-                            if (!error && loginMessage.Contains("{0}"))
+                            if (error || !loginMessage.Contains("{0}"))
+                            {
+                                if (ImGui.IsItemDeactivatedAfterEdit()) Notifications.Show(PrimaryWindow.DropdownInvalidLoginMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
+                            }
+                            else
                             {
                                 PluginService.Configuration.FriendLoggedInMessage = loginMessage.Trim();
                                 PluginService.Configuration.Save();
@@ -220,12 +226,16 @@ namespace GoodFriend.UI.Windows.Main
                         if (ImGui.InputText("##LogoutMessage", ref logoutMessage, 255))
                         {
                             bool error = false;
-                            try { string.Format(loginMessage, "test"); }
+                            try { string.Format(logoutMessage, "test"); }
                             catch { error = true; }
 
-                            if (!error && loginMessage.Contains("{0}"))
+                            if (error || !logoutMessage.Contains("{0}"))
                             {
-                                PluginService.Configuration.FriendLoggedOutMessage = loginMessage.Trim();
+                                if (ImGui.IsItemDeactivatedAfterEdit()) Notifications.Show(PrimaryWindow.DropdownInvalidLogoutMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
+                            }
+                            else
+                            {
+                                PluginService.Configuration.FriendLoggedInMessage = logoutMessage.Trim();
                                 PluginService.Configuration.Save();
                             }
                         }

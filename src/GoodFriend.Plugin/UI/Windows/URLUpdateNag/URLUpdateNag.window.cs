@@ -97,7 +97,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                 PluginService.Configuration.APIUrl = this.presenter.NewAPIURL;
 #pragma warning restore CS8601
                 PluginService.Configuration.Save();
-                PluginLog.Information($"URLUpdateNag(Draw): Accepted purposed URL update, changed API URL to {this.presenter.NewAPIURL}");
+                PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {this.presenter.NewAPIURL}");
                 this.presenter.URLUpdateNagDismissed = true;
             }
             ImGui.SameLine();
