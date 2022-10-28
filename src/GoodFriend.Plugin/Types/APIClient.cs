@@ -316,6 +316,7 @@ namespace GoodFriend.Types
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
+                    PluginLog.Debug($"APIClient(OpenSSEStreamConnection): Received update payload: {message}");
                     if (data != null && data.ContentID != null) SSEDataReceived?.Invoke(data);
                 }
 
@@ -374,12 +375,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Send a login event to the configured API/logout endpoint.
         /// </summary>
-        public void SendLogin(ulong contentID, uint homeworldID, uint territoryID)
+        public void SendLogin(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"login?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
+                $"login?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}"
             );
 
             try
@@ -399,12 +400,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Send a logout event to the configured API/logout endpoint.
         /// </summary>
-        public void SendLogout(ulong contentID, uint homeworldID, uint territoryID)
+        public void SendLogout(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"logout?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&territoryID={territoryID}"
+                $"logout?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}"
             );
 
             try
@@ -428,8 +429,10 @@ namespace GoodFriend.Types
         {
             public string? ContentID { get; set; }
             public bool LoggedIn { get; set; }
-            public uint HomeworldID { get; set; }
-            public uint TerritoryID { get; set; }
+            public uint? HomeworldID { get; set; }
+            public uint? WorldID { get; set; }
+            public uint? DatacenterID { get; set; }
+            public uint? TerritoryID { get; set; }
         }
 
         /// <summary>

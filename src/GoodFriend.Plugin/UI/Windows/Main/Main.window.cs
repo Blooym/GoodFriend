@@ -78,7 +78,7 @@ namespace GoodFriend.UI.Windows.Main
             switch (this.presenter.visibleDropdown)
             {
                 case MainPresenter.VisibleDropdown.Settings:
-                    ImGui.SetWindowSize(new Vector2(410 * ImGui.GetIO().FontGlobalScale, 380 * ImGui.GetIO().FontGlobalScale));
+                    ImGui.SetWindowSize(new Vector2(410 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
                     this._drawSettings();
                     break;
                 case MainPresenter.VisibleDropdown.Donate:
@@ -120,13 +120,17 @@ namespace GoodFriend.UI.Windows.Main
                     var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
                     var hideSameFC = PluginService.Configuration.HideSameFC;
                     var hideDifferentHomeworld = PluginService.Configuration.HideDifferentHomeworld;
+                    var hideDifferentWorld = PluginService.Configuration.HideDifferentWorld;
                     var hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
+                    var hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
+
 
                     ImGui.BeginChild("GeneralSettings");
                     if (ImGui.BeginTable("GeneralSettingsTable", 2))
                     {
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
+
 
                         // Ignore FC Members
                         ImGui.TableSetColumnIndex(0);
@@ -144,6 +148,24 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreFCTooltip);
                         ImGui.TableNextRow();
 
+
+                        // Ignore different worlds.
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffWorlds);
+                        ImGui.TableSetColumnIndex(1);
+                        if (ImGui.BeginCombo("##IgnoreDifferentWorlds", hideDifferentWorld ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
+                        {
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentWorld))
+                                PluginService.Configuration.HideDifferentWorld = true;
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentWorld))
+                                PluginService.Configuration.HideDifferentWorld = false;
+                            PluginService.Configuration.Save();
+                            ImGui.EndCombo();
+                        }
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffWorldsTooltip);
+                        ImGui.TableNextRow();
+
+
                         // Ignore different homeworlds.
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffHomeworlds);
@@ -160,6 +182,24 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffHomeworldsTooltip);
                         ImGui.TableNextRow();
 
+
+                        // Ignore different datacenters.
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffDatacenters);
+                        ImGui.TableSetColumnIndex(1);
+                        if (ImGui.BeginCombo("##IgnoreDifferentDatacenters", hideDifferentDatacenter ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
+                        {
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentDatacenter))
+                                PluginService.Configuration.HideDifferentDatacenter = true;
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentDatacenter))
+                                PluginService.Configuration.HideDifferentDatacenter = false;
+                            PluginService.Configuration.Save();
+                            ImGui.EndCombo();
+                        }
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffDatacentersTooltip);
+                        ImGui.TableNextRow();
+
+
                         // Ignore different territories.
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffTerritories);
@@ -175,6 +215,7 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffTerritoriesTooltip);
                         ImGui.TableNextRow();
+
 
                         // Notification Type
                         ImGui.TableSetColumnIndex(0);
@@ -219,6 +260,7 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
                         ImGui.TableNextRow();
 
+
                         // Logout message
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsLogoutMessage);
@@ -262,6 +304,7 @@ namespace GoodFriend.UI.Windows.Main
                     {
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
+
 
                         // API Connection Notifications
                         ImGui.TableSetColumnIndex(0);

@@ -34,7 +34,7 @@ namespace GoodFriend.Base
         public bool HideSameFC { get; set; } = true;
 
         /// <summary>
-        ///     Whether or not to hide notifications from users in different homeworlds.
+        ///     Whether or not to hide notifications from users from different homeworlds.
         /// </summary>
         public bool HideDifferentHomeworld { get; set; } = false;
 
@@ -42,6 +42,16 @@ namespace GoodFriend.Base
         ///     Whether or not to hide notifications from users in different territories.
         /// </summary>
         public bool HideDifferentTerritory { get; set; } = false;
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different worlds.
+        /// </summary>
+        public bool HideDifferentWorld { get; set; } = false;
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different data centers.
+        /// </summary>
+        public bool HideDifferentDatacenter { get; set; } = false;
 
         /// <summary>
         ///     Whether or not to show API events as notifications.

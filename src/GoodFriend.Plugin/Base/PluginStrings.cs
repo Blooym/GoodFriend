@@ -98,9 +98,13 @@ namespace GoodFriend.Base
         public static string DropdownSettingsIgnoreFC => Loc.Localize("Window.Dropdown.Settings.IgnoreFC", "Ignore FC Members");
         public static string DropdownSettingsIgnoreFCTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreFC.Tooltip", "Whether or not ignore friend notifications from players in your Free Company.");
         public static string DropdownSettingsIgnoreDiffHomeworlds => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds", "Ignore Other Homeworlds");
-        public static string DropdownSettingsIgnoreDiffHomeworldsTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip", "Whether or not to ignore friend notifications from players on different homeworlds.");
+        public static string DropdownSettingsIgnoreDiffHomeworldsTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip", "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.");
+        public static string DropdownSettingsIgnoreDiffWorlds => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffWorlds", "Ignore Other Worlds");
+        public static string DropdownSettingsIgnoreDiffWorldsTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip", "Whether or not to ignore friend notifications from players currently in different worlds than you.");
         public static string DropdownSettingsIgnoreDiffTerritories => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffTerritories", "Ignore Other Zones");
-        public static string DropdownSettingsIgnoreDiffTerritoriesTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip", "Whether or not to ignore friend notifications from players in different zones than you currently are.");
+        public static string DropdownSettingsIgnoreDiffTerritoriesTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip", "Whether or not to ignore friend notifications from players currently in different zones.");
+        public static string DropdownSettingsIgnoreDiffDatacenters => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffDatacenters", "Ignore Other Datacenters");
+        public static string DropdownSettingsIgnoreDiffDatacentersTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip", "Whether or not to ignore friend notifications from players currently on different datacenters.");
         public static string DropdownSettingsNotificationType => Loc.Localize("Window.Dropdown.Settings.NotificationType", "Notification Type");
         public static string DropdownSettingsNotificationTypeTooltip => Loc.Localize("Window.Dropdown.Settings.NotificationType.Tooltip", "The type of notification to show when a friend event occurs.");
         public static string DropdownSettingsLoginMessage => Loc.Localize("Window.Dropdown.Settings.LoginMessage", "Login Message");

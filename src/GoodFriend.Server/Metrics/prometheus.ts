@@ -12,7 +12,7 @@ export const totalSSEStateEvents = new client.Counter({
   name: 'total_sse_state_events',
   help: 'Total number of state events sent to clients',
   registers: [register],
-  labelNames: ['event', 'homeworld', 'territory'],
+  labelNames: ['event', 'homeworld', 'territory', 'world', 'datacenter'],
 });
 
 export const totalSSEEventsSent = new client.Counter({

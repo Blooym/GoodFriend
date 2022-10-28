@@ -10,6 +10,7 @@ namespace GoodFriend.Managers
     using GoodFriend.Types;
     using GoodFriend.Enums;
     using Dalamud.Logging;
+    using Dalamud.Game;
     using Dalamud.Game.ClientState;
     using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
     using Newtonsoft.Json;
@@ -28,6 +29,16 @@ namespace GoodFriend.Managers
         ///    The current player HomeworldID. Saved on login and cleared on logout.
         /// </summary>
         private uint _currentHomeworldId = 0;
+
+        /// <summary>
+        ///    The current player WorldID. Saved on login/world change and cleared on logout.
+        /// </summary>
+        private uint _currentWorldId = 0;
+
+        /// <summary>
+        ///    The current player DataCenterID. Saved on login/world change and cleared on logout.
+        /// </summary>
+        private uint _currentDatacenterId = 0;
 
         /// <summary>
         ///    The current player TerritoryID. Saved on login/zone change and cleared on logout.
@@ -69,13 +80,19 @@ namespace GoodFriend.Managers
         private readonly ClientState _clientState;
 
         /// <summary>
+        ///     The Framework associated with the manager
+        /// </summary>
+        private readonly Framework _framework;
+
+        /// <summary>
         ///     Instantiates a new APIClientManager. 
         /// </summary>
-        public APIClientManager(ClientState clientState)
+        public APIClientManager(ClientState clientState, Framework framework)
         {
             PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
 
             this._clientState = clientState;
+            this._framework = framework;
             this.UpdateMetadataCache();
 
             // Create event handlers
@@ -88,6 +105,7 @@ namespace GoodFriend.Managers
             this._clientState.Login += this.OnLogin;
             this._clientState.Logout += this.OnLogout;
             this._clientState.TerritoryChanged += this.OnTerritoryChange;
+            this._framework.Update += this.OnFrameworkUpdate;
 
             // Metadata cache update timer
             this._metadataTimer.Elapsed += this.OnMetadataTimerElapsed;
@@ -100,6 +118,8 @@ namespace GoodFriend.Managers
                 this._currentContentId = this._clientState.LocalContentId;
                 this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
                 this._currentTerritoryId = this._clientState.TerritoryType;
+                this._currentWorldId = this._clientState.LocalPlayer.CurrentWorld.Id;
+                this._currentDatacenterId = this._clientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
                 PluginLog.Information("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
                 this.APIClient.OpenSSEStream();
             }
@@ -116,6 +136,7 @@ namespace GoodFriend.Managers
             this._clientState.Login -= this.OnLogin;
             this._clientState.Logout -= this.OnLogout;
             this._clientState.TerritoryChanged -= this.OnTerritoryChange;
+            this._framework.Update -= this.OnFrameworkUpdate;
             this.APIClient.SSEDataReceived -= this.OnSSEDataReceived;
             this.APIClient.SSEConnectionError -= this.OnSSEAPIClientError;
             this.APIClient.SSEConnectionEstablished -= this.OnSSEAPIClientConnected;
@@ -142,8 +163,10 @@ namespace GoodFriend.Managers
                 this._currentContentId = this._clientState.LocalContentId;
                 this._currentHomeworldId = this._clientState.LocalPlayer.HomeWorld.Id;
                 this._currentTerritoryId = this._clientState.TerritoryType;
-                this.APIClient.SendLogin(this._currentContentId, this._currentHomeworldId, this._currentTerritoryId);
-                PluginLog.Information($"APIClientManager(OnLogin): Stored IDs set to: Homeworld: {this._currentHomeworldId}, Content: [REDACTED], Territory: {this._currentTerritoryId}");
+                this._currentWorldId = this._clientState.LocalPlayer.CurrentWorld.Id;
+                this._currentDatacenterId = this._clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
+                this.APIClient.SendLogin(this._currentContentId, this._currentHomeworldId, this._currentWorldId, this._currentTerritoryId, this._currentDatacenterId);
+                PluginLog.Information($"APIClientManager(OnLogin): Stored IDs set to: Homeworld: {this._currentHomeworldId}, World: {this._currentWorldId}, Datacenter: {this._currentDatacenterId}, Content: [REDACTED], Territory: {this._currentTerritoryId}");
             });
         }
 
@@ -154,10 +177,12 @@ namespace GoodFriend.Managers
         {
             if (this.APIClient.SSEIsConnected) this.APIClient.CloseSSEStream();
             this.APIClient.CancelPendingRequests();
-            this.APIClient.SendLogout(this._currentContentId, this._currentHomeworldId, this._currentTerritoryId);
-            this._currentContentId = 0;
-            this._currentHomeworldId = 0;
+            this.APIClient.SendLogout(this._currentContentId, this._currentHomeworldId, this._currentWorldId, this._currentTerritoryId, this._currentDatacenterId);
             this._currentTerritoryId = 0;
+            this._currentWorldId = 0;
+            this._currentHomeworldId = 0;
+            this._currentContentId = 0;
+            this._currentDatacenterId = 0;
             this._hasConnectedSinceError = true;
             PluginLog.Information("APIClientManager(OnLogout): Player logged out, stored IDs reset to 0.");
 
@@ -168,10 +193,21 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnTerritoryChange(object? sender, ushort newId)
         {
-            if (this.APIClient.SSEIsConnected)
+            PluginLog.Debug($"APIClientManager(OnTerritoryChange): Stored TerritoryID changed from {this._currentTerritoryId} to {newId}.");
+            this._currentTerritoryId = newId;
+        }
+
+        /// <summary>
+        ///     Handles the framework update event.
+        /// </summary>
+        private void OnFrameworkUpdate(Framework framework)
+        {
+            var currentWorld = this._clientState.LocalPlayer?.CurrentWorld;
+
+            if (currentWorld != null && currentWorld.Id != 0 && currentWorld.Id != this._currentWorldId)
             {
-                PluginLog.Debug($"APIClientManager(OnTerritoryChange): Stored TerritoryID changed from {this._currentTerritoryId} to {newId}.");
-                this._currentTerritoryId = newId;
+                PluginLog.Debug($"APIClientManager(OnFrameworkUpdate): Stored WorldID changed from {this._currentWorldId} to {currentWorld.Id}.");
+                this._currentWorldId = currentWorld.Id;
             }
         }
 
@@ -180,6 +216,8 @@ namespace GoodFriend.Managers
         /// </summary> 
         private unsafe void OnSSEDataReceived(APIClient.UpdatePayload data)
         {
+            if (data.ContentID == Hashing.HashSHA512(this._currentContentId.ToString())) return;
+
             PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing.");
 
             // Don't process the data if the ContentID is null.
@@ -224,6 +262,18 @@ namespace GoodFriend.Managers
                 return;
             }
 
+            if ((this._currentWorldId != data.WorldID && PluginService.Configuration.HideDifferentWorld) && data.WorldID != null && data.WorldID != 0)
+            {
+                PluginLog.Information($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received ignored due to being on a different world. (Them: {data.WorldID}, You: {this._currentWorldId})");
+                return;
+            }
+
+            if (this._currentDatacenterId != data.DatacenterID && PluginService.Configuration.HideDifferentDatacenter)
+            {
+                PluginLog.Information($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received ignored due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this._currentDatacenterId})");
+                return;
+            }
+
             // If the event is not for the current territory, ignore it.
             if (data.TerritoryID != this._currentTerritoryId && PluginService.Configuration.HideDifferentTerritory)
             {
@@ -235,8 +285,8 @@ namespace GoodFriend.Managers
             PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
             PluginLog.Information($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
             Notifications.ShowPreferred(data.LoggedIn ?
-                string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
-                : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
+            string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
+            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
         }
 
         /// <summary>

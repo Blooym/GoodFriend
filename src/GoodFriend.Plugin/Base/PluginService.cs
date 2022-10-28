@@ -4,6 +4,7 @@ namespace GoodFriend.Base
     using Dalamud.IoC;
     using Dalamud.Plugin;
     using Dalamud.Logging;
+    using Dalamud.Game;
     using Dalamud.Game.Gui;
     using Dalamud.Game.Gui.Toast;
     using Dalamud.Game.ClientState;
@@ -20,6 +21,7 @@ namespace GoodFriend.Base
         [PluginService] internal static ChatGui Chat { get; private set; }
         [PluginService] internal static ToastGui Toast { get; private set; }
         [PluginService] internal static Condition Condition { get; private set; }
+        [PluginService] internal static Framework Framework { get; private set; }
 
         internal static WindowManager WindowManager { get; private set; }
         internal static ResourceManager ResourceManager { get; private set; }
@@ -35,7 +37,7 @@ namespace GoodFriend.Base
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             ResourceManager = new ResourceManager();
             WindowManager = new WindowManager();
-            APIClientManager = new APIClientManager(ClientState);
+            APIClientManager = new APIClientManager(ClientState, Framework);
             EventLogManager = new EventLogManager();
 
 #if !DEBUG

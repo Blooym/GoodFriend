@@ -27,6 +27,21 @@ This is achieved by utilising a custom-built API to work around some of the in-g
 
 The API is easily self-hostable with little work needed to get it going, just in-case anything ever happens to the official instance. The API could also be entirely rewritten in another language and still work with the plugin, as long as it inputs/outputs everything correctly.
 
+
+### Features
+- Quick friend notifications between GoodFriend users
+- Powerful event filtering settings
+- Easy to selfhost API with Docker
+- Prometheus metrics built-in to API
+- Privacy-focused design with unidentifiable event relaying
+- Authentication support (bearer, basic) built into client
+- Client localization support
+
+### Screenshots
+<img src="./.assets/Screenshots/screenshot1.png" alt="Goodfriend Screenshot 1" width="33%">
+<img src="./.assets/Screenshots/screenshot2.png" alt="Goodfriend Screenshot 2" width="33%">
+<img src="./.assets/Screenshots/screenshot3.png" alt="Goodfriend Screenshot 3" width="33%">
+
 ## Installing
 
 This plugin can be downloaded from the official Dalamud plugins repository in-game by navigating to the plugin installer and searching for "GoodFriend". Once installed, you will be automatically connected to the official API instance and be ready to go without the need for any additional configuration.
