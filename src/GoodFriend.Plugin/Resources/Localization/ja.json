@@ -159,6 +159,10 @@
     "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
+  "Window.Dropdown.Settings.InvalidLoginMessage": {
+    "message": "The login message must contain {0} at least once ot insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
+  },
   "Window.Dropdown.Settings.LogoutMessage": {
     "message": "Logout Message",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
@@ -166,6 +170,10 @@
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
     "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
+  },
+  "Window.Dropdown.Settings.InvalidLogoutMessage": {
+    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
     "message": "API Notifications",
@@ -190,6 +198,10 @@
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
     "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
+  },
+  "Window.Dropdown.Settings.APIUrlInvalid": {
+    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
     "message": "API Token",
