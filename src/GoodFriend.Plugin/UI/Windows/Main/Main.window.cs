@@ -235,7 +235,7 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             else
                             {
-                                PluginService.Configuration.FriendLoggedInMessage = logoutMessage.Trim();
+                                PluginService.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
                                 PluginService.Configuration.Save();
                             }
                         }
