@@ -316,7 +316,6 @@ namespace GoodFriend.Types
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
-                    PluginLog.Debug($"APIClient(OpenSSEStreamConnection): Received update payload: {message}");
                     if (data != null && data.ContentID != null) SSEDataReceived?.Invoke(data);
                 }
 
