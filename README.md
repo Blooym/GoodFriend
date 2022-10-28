@@ -38,9 +38,7 @@ The API is easily self-hostable with little work needed to get it going, just in
 - Client localization support
 
 ### Screenshots
-<img src="./.assets/Screenshots/screenshot1.png" alt="Goodfriend Screenshot 1" width="33%">
-<img src="./.assets/Screenshots/screenshot2.png" alt="Goodfriend Screenshot 2" width="33%">
-<img src="./.assets/Screenshots/screenshot3.png" alt="Goodfriend Screenshot 3" width="33%">
+<img src="./.assets/Screenshots/screenshot1.png" alt="Goodfriend Screenshot 1" width="32%"> <img src="./.assets/Screenshots/screenshot2.png" alt="Goodfriend Screenshot 2" width="32%"> <img src="./.assets/Screenshots/screenshot3.png" alt="Goodfriend Screenshot 3" width="32%">
 
 ## Installing
 
