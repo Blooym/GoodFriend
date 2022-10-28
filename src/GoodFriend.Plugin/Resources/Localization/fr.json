@@ -156,16 +156,24 @@
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "Le message à afficher lorsqu'un·e ami·e se connecte.\n\nUtilisez {0} pour placer le nom de l'ami·e.",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
+  },
+  "Window.Dropdown.Settings.InvalidLoginMessage": {
+    "message": "The login message must contain {0} at least once ot insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
     "message": "Message de déconnexion",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "Le message à afficher lorsqu'un·e ami·e se déconnecte.\n\nUtilisez {0} pour placer le nom de l'ami·e.",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
+  },
+  "Window.Dropdown.Settings.InvalidLogoutMessage": {
+    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
     "message": "Notifications de l'API",
@@ -190,6 +198,10 @@
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
     "message": "L'URL de l'instance API à laquelle se connecter. Vous devriez être certain de pouvoir faire confiance à l'hôte de cette instance avant d'établir une connexion.",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
+  },
+  "Window.Dropdown.Settings.APIUrlInvalid": {
+    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
     "message": "Jeton de l'API",
