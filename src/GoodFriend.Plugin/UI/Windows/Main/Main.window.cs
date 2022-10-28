@@ -305,8 +305,18 @@ namespace GoodFriend.UI.Windows.Main
                             try { new Uri(APIUrl); }
                             catch { error = true; }
 
-                            if (!error) { PluginService.Configuration.APIUrl = new Uri(APIUrl); PluginService.Configuration.Save(); this.presenter.restartToApply = true; }
-                            else { PluginService.Configuration.APIUrl = PStrings.defaultAPIUrl; PluginService.Configuration.Save(); }
+                            if (!error)
+                            {
+                                PluginService.Configuration.APIUrl = new Uri(APIUrl);
+                                PluginService.Configuration.Save();
+                                this.presenter.restartToApply = true;
+                            }
+                            else
+                            {
+                                if (ImGui.IsItemDeactivatedAfterEdit()) Notifications.Show(PrimaryWindow.DropdownSettingsAPIUrlInvalid, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
+                                PluginService.Configuration.APIUrl = PStrings.defaultAPIUrl;
+                                PluginService.Configuration.Save();
+                            }
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
                         ImGui.TableNextRow();

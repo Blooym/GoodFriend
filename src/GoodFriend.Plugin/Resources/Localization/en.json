@@ -199,6 +199,10 @@
     "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
+  "Window.Dropdown.Settings.APIUrlInvalid": {
+    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
+  },
   "Window.Dropdown.Settings.APIToken": {
     "message": "API Token",
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
