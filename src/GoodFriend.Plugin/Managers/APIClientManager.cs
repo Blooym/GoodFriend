@@ -170,8 +170,8 @@ namespace GoodFriend.Managers
         {
             if (this.APIClient.SSEIsConnected)
             {
-                this._currentTerritoryId = newId;
                 PluginLog.Debug($"APIClientManager(OnTerritoryChange): Stored TerritoryID changed from {this._currentTerritoryId} to {newId}.");
+                this._currentTerritoryId = newId;
             }
         }
 
