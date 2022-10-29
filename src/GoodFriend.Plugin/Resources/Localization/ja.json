@@ -1,6 +1,6 @@
 {
   "Event.Connection.Status": {
-    "message": "Connection Status",
+    "message": "接続状態",
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
@@ -28,7 +28,7 @@
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
-    "message": "Connected",
+    "message": "接続済み",
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
@@ -36,7 +36,7 @@
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
-    "message": "Connecting",
+    "message": "接続中",
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
@@ -60,7 +60,7 @@
     "description": "State.get_DisconnectedDescription"
   },
   "State.ConnectionError": {
-    "message": "Connection Error",
+    "message": "接続エラー",
     "description": "State.get_ConnectionError"
   },
   "State.ConnectionError.Description": {
@@ -68,7 +68,7 @@
     "description": "State.get_ConnectionErrorDescription"
   },
   "State.Unknown": {
-    "message": "Unknown",
+    "message": "不明",
     "description": "State.get_Unknown"
   },
   "State.Unknown.Description": {
@@ -132,16 +132,32 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players on different homeworlds.",
+    "message": "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffWorlds": {
+    "message": "Ignore Other Worlds",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorlds"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players currently in different worlds than you.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories": {
     "message": "Ignore Other Zones",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players in different zones than you currently are.",
+    "message": "Whether or not to ignore friend notifications from players currently in different zones.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffDatacenters": {
+    "message": "Ignore Other Datacenters",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacenters"
+  },
+  "Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip": {
+    "message": "Whether or not to ignore friend notifications from players currently on different datacenters.",
+    "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
     "message": "Notification Type",
