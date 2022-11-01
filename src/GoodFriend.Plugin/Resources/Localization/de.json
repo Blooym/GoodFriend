@@ -176,7 +176,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLoginMessage": {
-    "message": "The login message must contain {0} at least once ot insert the friend's name.",
+    "message": "The login message must contain {0} at least once to insert the friend's name.",
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
