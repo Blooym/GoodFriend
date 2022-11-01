@@ -1,5 +1,3 @@
-# This workflow outlines tasks that are ran when a new tag is made, typically releasing a new plugin version.
-
 name: "Tag: Release"
 
 on:
@@ -10,8 +8,12 @@ on:
 permissions:
   contents: write
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  Release:
+  Release-Plugin:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -22,8 +24,7 @@ jobs:
       - name: Get Tag Name
         id: tag_name
         shell: bash
-        run: >-
-          echo "::set-output name=TAG::$(echo ${{ github.ref }} | sed 's/refs\/tags\///' | sed 's/v//')"
+        run: echo "TAG=$(echo ${{ github.ref }} | sed 's/refs\/tags\///' | sed 's/v//')" >> $GITHUB_ENV
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v1
@@ -45,7 +46,7 @@ jobs:
         shell: bash
         working-directory: src/GoodFriend.Plugin
         run: |
-          dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ steps.tag_name.outputs.TAG }} -p:AssemblyInformationalVersion=${{ steps.tag_name }}
+          dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ .env.TAG }}
           sha512sum bin/Release/GoodFriend/latest.zip  >> checksums.txt
           sha512sum bin/Release/GoodFriend/GoodFriend.json >> checksums.txt
           cat checksums.txt
@@ -59,3 +60,42 @@ jobs:
             src/GoodFriend.Plugin/bin/Release/GoodFriend/latest.zip
             src/GoodFriend.Plugin/bin/Release/GoodFriend/GoodFriend.json
             src/GoodFriend.Plugin/checksums.txt
+
+  Release-Server:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          logout: true
+
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Publish Image (Versioned)
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          file: ./src/GoodFriend.Server/Dockerfile
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
