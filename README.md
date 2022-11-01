@@ -4,7 +4,7 @@
 <img src="./.assets/icon.png" alt="Goodfriend Logo" width="15%">
   
 ### Good Friend
-A server/plugin tool for supercharging friend functionality to players in-game without in-game polling.
+A server/plugin tool for supercharging friend functionality to players without in-game polling.
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
@@ -46,11 +46,13 @@ This plugin can be downloaded from the official Dalamud plugins repository in-ga
 
 If you would like to tweak any of the settings for the plugin you can do so by clicking the settings cog from the plugin list.
 
-## 3rd-party API Instances
+## 3rd-party API Instances / Selfhosting
 
 This plugin allows for 3rd party API instances to be used instead of the official instance provided here. It is highly recommended you stick to the official instance, as any 3rd party instance could potentially be dangerous, either by being insecure or actively abusing security vulnerabilities.
 
 If you still wish to connect to a third party instance, simply put the URL to the API into the "API URL" option and restart the plugin; as long as the server and plugin match route versions and everything server-side is configured properly, you should be good to go.
+
+If you wish to host your own instance, please read the README in the [Server directory](./src/GoodFriend.Server/README.md).
 
 ## Technical Details
 **"Client"** refers to a user that is running the plugin.
