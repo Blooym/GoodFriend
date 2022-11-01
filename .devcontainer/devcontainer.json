@@ -4,7 +4,7 @@
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
-	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn && nohup sh -c 'yarn watch &' && cd ../../",
+	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -21,7 +21,7 @@
 	},
 	"portsAttributes": {
 		"8000": {
-			"label": "API Dev Server [Live Refresh]",
+			"label": "GoodFriend API",
 			"protocol": "http"
 		}
 	}

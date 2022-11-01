@@ -37,7 +37,6 @@ WORKDIR /app
 
 # Copy over the executable and import env variables.
 COPY --from=build /build/server .
-COPY .env* ./
 
 # Prepare a user to run the app as.
 ENV USER prod

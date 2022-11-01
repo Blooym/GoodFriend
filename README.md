@@ -81,7 +81,7 @@ Security and privacy was greatly considered during design and as such both the p
 ### Code Changes
 Contributions are welcome for the plugin as long as they remain in-scope and follow the Dalamud rules for submission. It is preferred you open an issue beforehand if you wish to work on something.
 
-If you would like to set up a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool which will automatically handle installing all the required dependencies for you and deploy a development API to use to test the plugin against.
+If you would like to set up a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool which will automatically handle installing all the required dependencies for you for both the plugin and the API.
 
 ### Translation & Localizations
 If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend).
