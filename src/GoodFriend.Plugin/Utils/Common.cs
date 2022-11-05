@@ -1,7 +1,8 @@
+using System;
+using System.Linq;
+
 namespace GoodFriend.Utils
 {
-    using System;
-    using System.Linq;
 
     /// <summary> A collection of common utilites </summary>
     public static class Common
@@ -10,7 +11,7 @@ namespace GoodFriend.Utils
         ///    Removes all whitespace from the given string
         /// </summary>
         /// <param name="text"> The string to remove whitespace from </param>
-        public static string RemoveWhitespace(string text) => new String(text.Where((c => !Char.IsWhiteSpace(c))).ToArray());
+        public static string RemoveWhitespace(string text) => new(text.Where((c => !Char.IsWhiteSpace(c))).ToArray());
 
         /// <summary>
         ///     Returns the operating system of the executing system.

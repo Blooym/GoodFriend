@@ -21,12 +21,12 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-namespace GoodFriend.Managers
-{
-    using System;
-    using FFXIVClientStructs.FFXIV.Client.System.Framework;
-    using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using System;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
+namespace GoodFriend.Managers.FriendList
+{
     /// <summary>
     ///     The class containing friend list functionality
     /// </summary>
@@ -46,7 +46,7 @@ namespace GoodFriend.Managers
         /// </summary>
         public static unsafe FriendListEntry*[] Get()
         {
-            var friendListAgent = (IntPtr)Framework.Instance()
+            IntPtr friendListAgent = (IntPtr)Framework.Instance()
                 ->GetUiModule()
                 ->GetAgentModule()
                 ->GetAgentByInternalId(AgentId.SocialFriendList);
@@ -54,25 +54,25 @@ namespace GoodFriend.Managers
             {
                 return new FriendListEntry*[] { };
             }
-            var info = *(IntPtr*)(friendListAgent + InfoOffset);
+            IntPtr info = *(IntPtr*)(friendListAgent + InfoOffset);
             if (info == IntPtr.Zero)
             {
                 return new FriendListEntry*[] { };
             }
-            var length = *(ushort*)(info + LengthOffset);
+            ushort length = *(ushort*)(info + LengthOffset);
             if (length == 0)
             {
                 return new FriendListEntry*[] { };
             }
-            var list = *(IntPtr*)(info + ListOffset);
+            IntPtr list = *(IntPtr*)(info + ListOffset);
             if (list == IntPtr.Zero)
             {
                 return new FriendListEntry*[] { };
             }
-            var entries = new FriendListEntry*[length];
-            for (var i = 0; i < length; i++)
+            FriendListEntry*[] entries = new FriendListEntry*[length];
+            for (int i = 0; i < length; i++)
             {
-                var entry = (FriendListEntry*)(list + i * FriendListEntry.Size);
+                FriendListEntry* entry = (FriendListEntry*)(list + (i * FriendListEntry.Size));
                 entries[i] = entry;
             }
             return entries;

@@ -1,13 +1,13 @@
+using System;
+using System.Linq;
+using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Logging;
+using GoodFriend.Base;
+using GoodFriend.Managers;
+using GoodFriend.Types;
+
 namespace GoodFriend.UI.Windows.URLUpdateNag
 {
-    using System;
-    using System.Linq;
-    using GoodFriend.Base;
-    using GoodFriend.Managers;
-    using GoodFriend.Types;
-    using Dalamud.Logging;
-    using Dalamud.Game.ClientState.Conditions;
-
     public sealed class URLUpdateNagPresenter : IDisposable
     {
         /// <summary>
@@ -18,27 +18,27 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Whether or not the nag has been dismissed this session.
         /// </summary>
-        public bool URLUpdateNagDismissed { get; set; } = false;
+        public bool URLUpdateNagDismissed { get; set; }
 
         /// <summary>
         ///     Whether or not the nag needs to be shown.
         /// </summary>
-        public bool ShowURLUpdateNag { get; set; } = false;
+        public bool ShowURLUpdateNag { get; set; }
 
         /// <summary>
         ///     The URL to the new API instance.
         /// </summary>
-        public Uri? NewAPIURL { get; private set; } = null;
+        public Uri? NewAPIURL { get; private set; }
 
         /// <summary>
         ///     Ignored new URLs that have been filtered for being invalid or insecure.
         /// </summary>
-        public string[] IgnoredNewURLs { get; private set; } = new string[0];
+        public string[] IgnoredNewURLs { get; private set; } = Array.Empty<string>();
 
         /// <summary>
         ///     Where to get metadata from.
         /// </summary>
-        public APIClient.MetadataPayload? metadata => PluginService.APIClientManager.metadataCache;
+        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
 
         /// <summary>
         ///    Sets URLUpdateNag to true if the metadata has a set newApiUrl.
@@ -47,7 +47,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         {
             try
             {
-                var newApiUrl = this.metadata?.newApiUrl ?? null;
+                string? newApiUrl = Metadata?.NewApiUrl ?? null;
                 if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
                 {
                     try
@@ -82,7 +82,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Checks to prevent showing the nag at inappropriate times.
         /// </summary>
-        public bool CannotShowNag =>
+        public static bool CannotShowNag =>
             PluginService.Condition[ConditionFlag.InCombat]
             || PluginService.Condition[ConditionFlag.BoundByDuty]
             || PluginService.Condition[ConditionFlag.WatchingCutscene]

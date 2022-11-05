@@ -1,8 +1,8 @@
-namespace GoodFriend.UI.Components
-{
-    using System.Numerics;
-    using ImGuiNET;
+using System.Numerics;
+using ImGuiNET;
 
+namespace GoodFriend.UI.ImGuiComponents
+{
     /// <summary>
     ///     Components for drawing tooltips.
     /// </summary>
@@ -14,7 +14,10 @@ namespace GoodFriend.UI.Components
         /// <param name="text"> The text to show on hover. </param>
         public static void AddTooltipHover(string text)
         {
-            if (ImGui.IsItemHovered()) ImGui.SetTooltip(text);
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(text);
+            }
         }
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace GoodFriend.UI.Components
         /// <param name="size"> The size of the button. </param>
         public static bool TooltipButton(string text, string tooltip, Vector2 size = default)
         {
-            var result = ImGui.Button($"{text}##{tooltip}", size);
+            bool result = ImGui.Button($"{text}##{tooltip}", size);
             AddTooltipHover(tooltip);
             return result;
         }

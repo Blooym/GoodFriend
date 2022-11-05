@@ -1,17 +1,21 @@
+using System;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using GoodFriend.Base;
+using GoodFriend.Localization;
+
 namespace GoodFriend.Utils
 {
-    using System;
-    using System.Reflection;
-    using System.Text;
-    using System.Security.Cryptography;
-    using GoodFriend.Base;
-
     /// <summary> 
     ///     Salt methods that can be be applied.
     /// </summary>
     public enum SaltMethods : byte
     {
+        [LocalizableName("SaltMethods.Strict", "Strict")]
         Strict = 0, // Use the players salt (friend code) and the assembly manifest.
+
+        [LocalizableName("SaltMethods.Relaxed", "Relaxed")]
         Relaxed = 1, // Only use the players salt (friend code) if set.
     }
 
@@ -25,15 +29,12 @@ namespace GoodFriend.Utils
         /// <returns> The generated salt. </returns>
         private static string? CreateSalt(SaltMethods method)
         {
-            switch (method)
+            return method switch
             {
-                case SaltMethods.Relaxed:
-                    return PluginService.Configuration.FriendshipCode ?? string.Empty;
-                case SaltMethods.Strict:
-                    return Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString() + PluginService.Configuration.FriendshipCode);
-                default:
-                    return PluginService.Configuration.FriendshipCode ?? string.Empty;
-            }
+                SaltMethods.Relaxed => PluginService.Configuration.FriendshipCode ?? string.Empty,
+                SaltMethods.Strict => Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString() + PluginService.Configuration.FriendshipCode),
+                _ => PluginService.Configuration.FriendshipCode ?? string.Empty,
+            };
         }
 
         /// <summary> 
@@ -43,8 +44,8 @@ namespace GoodFriend.Utils
         /// <returns> The hashed string. </returns>
         internal static string HashSHA512(string input)
         {
-            var salt = CreateSalt(PluginService.Configuration.SaltMethod);
-            var bytes = Encoding.UTF8.GetBytes(input + salt);
+            string? salt = CreateSalt(PluginService.Configuration.SaltMethod);
+            byte[] bytes = Encoding.UTF8.GetBytes(input + salt);
             return Convert.ToBase64String(SHA512.Create().ComputeHash(bytes)).Replace("_", "q").Replace("+", "v");
         }
     }

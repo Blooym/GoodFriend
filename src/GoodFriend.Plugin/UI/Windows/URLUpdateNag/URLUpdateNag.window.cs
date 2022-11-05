@@ -1,13 +1,14 @@
+using System;
+using System.Numerics;
+using Dalamud.Interface.Windowing;
+using Dalamud.Logging;
+using GoodFriend.Base;
+using GoodFriend.Localization;
+using GoodFriend.UI.ImGuiComponents;
+using ImGuiNET;
+
 namespace GoodFriend.UI.Windows.URLUpdateNag
 {
-    using System;
-    using System.Numerics;
-    using GoodFriend.Base;
-    using GoodFriend.UI.Components;
-    using Dalamud.Logging;
-    using Dalamud.Interface.Windowing;
-    using ImGuiNET;
-
     /// <summary>
     ///     The settings window for the plugin.
     /// </summary>
@@ -21,12 +22,15 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Disposes of the window and associated resources.
         /// </summary>
-        public void Dispose() => this.presenter.Dispose();
+        public void Dispose()
+        {
+            presenter.Dispose();
+        }
 
         /// <summary>
         ///     Instantiate a new settings window.
         /// </summary>
-        public URLUpdateNagWindow() : base($"{PStrings.pluginName} - URL Update")
+        public URLUpdateNagWindow() : base($"{PluginConstants.pluginName} - URL Update")
         {
             Size = new Vector2(550, 200);
             Flags |= ImGuiWindowFlags.NoDocking;
@@ -47,7 +51,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public override bool DrawConditions()
         {
-            return presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed && !presenter.CannotShowNag;
+            return presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed && !URLUpdateNagPresenter.CannotShowNag;
         }
 
         /// <summary>
@@ -55,8 +59,8 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public override void PreOpenCheck()
         {
-            this.IsOpen = presenter.ShowURLUpdateNag;
-            if (!this.presenter.ShowURLUpdateNag && !this.presenter.URLUpdateNagDismissed) { this.presenter.HandleURLUpdateNag(); }
+            IsOpen = presenter.ShowURLUpdateNag;
+            if (!presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed) { presenter.HandleURLUpdateNag(); }
         }
 
         /// <summary>
@@ -64,7 +68,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public override void OnClose()
         {
-            this.presenter.URLUpdateNagDismissed = true;
+            presenter.URLUpdateNagDismissed = true;
         }
 
         /// <summary>
@@ -82,29 +86,32 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// </summary>
         public override void Draw()
         {
-            if (this._popupTime == null) this._popupTime = DateTime.Now;
+            if (_popupTime == null)
+            {
+                _popupTime = DateTime.Now;
+            }
 
             Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(PluginService.Configuration.APIUrl));
             ImGui.Separator();
-            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.presenter.NewAPIURL, _dismissDelay));
+            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(presenter.NewAPIURL, _dismissDelay));
             ImGui.Dummy(new Vector2(0, 5));
 
             // Options to update or dismiss the nag.
-            ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.ModShift) && (DateTime.Now - this._popupTime.Value).TotalSeconds < _dismissDelay);
+            ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.ModShift) && (DateTime.Now - _popupTime.Value).TotalSeconds < _dismissDelay);
             if (ImGui.Button(URLNagWindow.URLUpdateNagButtonUpdate))
             {
 #pragma warning disable CS8601 // Checked for null in the presenter
-                PluginService.Configuration.APIUrl = this.presenter.NewAPIURL;
+                PluginService.Configuration.APIUrl = presenter.NewAPIURL;
 #pragma warning restore CS8601
                 PluginService.Configuration.Save();
-                PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {this.presenter.NewAPIURL}");
-                this.presenter.URLUpdateNagDismissed = true;
+                PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {presenter.NewAPIURL}");
+                presenter.URLUpdateNagDismissed = true;
             }
             ImGui.SameLine();
 
             if (ImGui.Button(URLNagWindow.URLUpdateNagButtonIgnore))
             {
-                this.presenter.URLUpdateNagDismissed = true;
+                presenter.URLUpdateNagDismissed = true;
             }
             ImGui.EndDisabled();
         }

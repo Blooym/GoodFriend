@@ -1,15 +1,15 @@
+using Dalamud.Game;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.Gui;
+using Dalamud.Game.Gui.Toast;
+using Dalamud.IoC;
+using Dalamud.Logging;
+using Dalamud.Plugin;
+using GoodFriend.Managers;
+
 namespace GoodFriend.Base
 {
-    using GoodFriend.Managers;
-    using Dalamud.IoC;
-    using Dalamud.Plugin;
-    using Dalamud.Logging;
-    using Dalamud.Game;
-    using Dalamud.Game.Gui;
-    using Dalamud.Game.Gui.Toast;
-    using Dalamud.Game.ClientState;
-    using Dalamud.Game.ClientState.Conditions;
-
     /// <summary> 
     ///     Provides access to necessary instances and services.
     /// </summary>

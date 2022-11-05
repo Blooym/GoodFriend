@@ -1,14 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using CheapLoc;
+using Dalamud.Interface.ImGuiFileDialog;
+using GoodFriend.Base;
+using GoodFriend.Managers;
+using GoodFriend.Managers.FriendList;
+using GoodFriend.Types;
+
 namespace GoodFriend.UI.Windows.Main
 {
-    using System;
-    using System.IO;
-    using System.Collections.Generic;
-    using GoodFriend.Base;
-    using GoodFriend.Managers;
-    using GoodFriend.Types;
-    using Dalamud.Interface.ImGuiFileDialog;
-    using CheapLoc;
-
     public sealed class MainPresenter : IDisposable
     {
         public void Dispose() { }
@@ -16,36 +17,29 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Stores which dropdown menu is currently open.
         /// </summary>
-        public VisibleDropdown visibleDropdown { get; set; } = VisibleDropdown.None;
+        public VisibleDropdown CurrentVisibleDropdown { get; set; } = VisibleDropdown.None;
 
         /// <summary>
         ///     Boolean value indicating if the user needs to restart to apply changes.
         /// </summary>
-        public bool restartToApply { get; set; } = false;
+        public bool RestartToApply { get; set; }
 
         /// <summary>
         ///     The event log instance to use in the UI.
         /// </summary>
-        internal EventLogManager EventLog => PluginService.EventLogManager;
+        internal static EventLogManager EventLog => PluginService.EventLogManager;
 
         /// <summary>
         ///     Where to get metadata from.
         /// </summary>
-        public APIClient.MetadataPayload? metadata => PluginService.APIClientManager.metadataCache;
+        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
 
         /// <summary> 
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
         /// </summary>
         public void ToggleVisibleDropdown(VisibleDropdown dropdown)
         {
-            if (dropdown == visibleDropdown)
-            {
-                visibleDropdown = VisibleDropdown.None;
-            }
-            else
-            {
-                visibleDropdown = dropdown;
-            }
+            CurrentVisibleDropdown = dropdown == CurrentVisibleDropdown ? VisibleDropdown.None : dropdown;
         }
 
         /// <summary>
@@ -53,8 +47,8 @@ namespace GoodFriend.UI.Windows.Main
         /// </summary>
         public unsafe List<FriendListEntry> GetFriendList()
         {
-            var friends = new List<FriendListEntry>();
-            foreach (var friend in FriendList.Get())
+            List<FriendListEntry> friends = new();
+            foreach (FriendListEntry* friend in FriendList.Get())
             {
                 friends.Add(*friend);
             }
@@ -65,21 +59,24 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The dialog manager for the settings window.
         /// </summary>
-        public FileDialogManager dialogManager = new FileDialogManager();
+        public FileDialogManager dialogManager = new();
 
         /// <summary>
         ///     The callback for when the user selects an export directory. 
         /// </summary>
-        public void OnDirectoryPicked(bool cancelled, string path)
+        public static void OnDirectoryPicked(bool cancelled, string path)
         {
-            if (!cancelled) return;
+            if (!cancelled)
+            {
+                return;
+            }
 
-            var directory = Directory.GetCurrentDirectory();
+            string directory = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(path);
             Loc.ExportLocalizable();
             File.Copy(Path.Combine(path, "GoodFriend_Localizable.json"), Path.Combine(path, "en.json"), true);
             Directory.SetCurrentDirectory(directory);
-            PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PStrings.pluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
+            PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.pluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
         }
 #endif
 

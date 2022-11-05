@@ -21,14 +21,14 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-namespace GoodFriend.Managers
+
+using System;
+using System.Runtime.InteropServices;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Memory;
+
+namespace GoodFriend.Managers.FriendList
 {
-
-    using System;
-    using System.Runtime.InteropServices;
-    using Dalamud.Game.Text.SeStringHandling;
-    using Dalamud.Memory;
-
     /// <summary>
     ///     An entry in a player's friend list.
     /// </summary>
@@ -83,7 +83,7 @@ namespace GoodFriend.Managers
         {
             get
             {
-                fixed (byte* ptr = this.RawName)
+                fixed (byte* ptr = RawName)
                 {
                     return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
                 }
@@ -97,19 +97,13 @@ namespace GoodFriend.Managers
         {
             get
             {
-                fixed (byte* ptr = this.RawFreeCompany)
+                fixed (byte* ptr = RawFreeCompany)
                 {
                     return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
                 }
             }
         }
 
-        public bool IsOnline
-        {
-            get
-            {
-                return OnlineStatus == 0x80;
-            }
-        }
+        public bool IsOnline => OnlineStatus == 0x80;
     }
 }

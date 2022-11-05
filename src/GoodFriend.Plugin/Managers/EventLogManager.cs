@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
+using Dalamud.Logging;
+
 namespace GoodFriend.Managers
 {
-    using System;
-    using System.Collections.Generic;
-    using Dalamud.Logging;
-
     /// <summary>
     ///     Initializes and manages a record of events.
     /// </summary>
@@ -26,18 +26,18 @@ namespace GoodFriend.Managers
         /// <param name="type">The type of the entry.</param>
         internal void AddEntry(string message, EventLogType type = EventLogType.Info)
         {
-            this.EventLog.Add(new EventLogEntry
+            EventLog.Add(new EventLogEntry
             {
-                id = Guid.NewGuid(),
-                type = type,
-                message = message,
-                timestamp = DateTime.Now,
+                ID = Guid.NewGuid(),
+                Type = type,
+                Message = message,
+                Timestamp = DateTime.Now,
             });
             PluginLog.Debug($"EventLogManager(AddEntry): Added entry to log: [{type}] \"{message}\"");
-            if (this.EventLog.Count > this.MaxEntries)
+            if (EventLog.Count > MaxEntries)
             {
-                this.EventLog.RemoveAt(0);
-                PluginLog.Debug($"EventLogManager(AddEntry): Log is at max size ({this.MaxEntries}), removing oldest entry (ID: {this.EventLog[0].id})");
+                EventLog.RemoveAt(0);
+                PluginLog.Debug($"EventLogManager(AddEntry): Log is at max size ({MaxEntries}), removing oldest entry (ID: {EventLog[0].ID})");
             }
         }
 
@@ -48,7 +48,7 @@ namespace GoodFriend.Managers
         internal void RemoveEntry(Guid id)
         {
             PluginLog.Debug($"EventLogManager(RemoveEntry): Removing entry: {id}");
-            this.EventLog.RemoveAll(x => x.id == id);
+            _ = EventLog.RemoveAll(x => x.ID == id);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace GoodFriend.Managers
         internal void ClearLog()
         {
             PluginLog.Debug("EventLogManager(ClearLog): Clearing log.");
-            this.EventLog.Clear();
+            EventLog.Clear();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace GoodFriend.Managers
         /// <param name="id">The id of the entry to get.</param>
         internal EventLogEntry? GetEntry(Guid id)
         {
-            return this.EventLog.Find(x => x.id == id);
+            return EventLog.Find(x => x.ID == id);
         }
 
         /// <summary>
@@ -75,10 +75,10 @@ namespace GoodFriend.Managers
         [Serializable]
         internal class EventLogEntry
         {
-            public Guid id { get; set; }
-            public EventLogType type { get; set; }
-            public string? message { get; set; }
-            public DateTime timestamp { get; set; }
+            public Guid ID { get; set; }
+            public EventLogType Type { get; set; }
+            public string? Message { get; set; }
+            public DateTime Timestamp { get; set; }
         }
 
         /// <summary>

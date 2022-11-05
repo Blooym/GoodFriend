@@ -1,60 +1,9 @@
-namespace GoodFriend.Base
+using System;
+using CheapLoc;
+using GoodFriend.Base;
+
+namespace GoodFriend.Localization
 {
-    using System;
-    using System.Reflection;
-    using CheapLoc;
-
-    /// <summary> 
-    ///     A collection of read-only strings used by the plugin.
-    /// </summary>
-    public static class PStrings
-    {
-        /// <summary>
-        ///     The name of the plugin in the user interface.
-        /// </summary>
-        public static readonly string pluginName = Assembly.GetExecutingAssembly().GetName().Name ?? "Unknown";
-
-        /// <summary>
-        ///     The support plugin developer button url.
-        /// </summary>
-        public static readonly Uri pluginDevSupportUrl = new("https://github.com/sponsors/BitsOfAByte/");
-
-        /// <summary>
-        ///     The default API url to use.
-        /// </summary>
-        public static readonly Uri defaultAPIUrl = new Uri("https://aether.bitsofabyte.dev/");
-
-        /// <summary>
-        ///     The version of the plugin alongside the commit has if available.
-        /// </summary>
-        public static readonly string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "???";
-
-        /// <summary>
-        ///     The GitHub repository url.
-        /// </summary>
-        public static readonly Uri repoUrl = new("https://github.com/BitsOfAByte/GoodFriend/");
-
-        /// <summary>
-        ///     The production branch of the repository.
-        /// </summary>
-        public static readonly string repoBranch = "main";
-
-        /// <summary>
-        ///     The resources directory relative to the base of the repository.
-        /// </summary>
-        internal static readonly string repoResourcesDir = "src/GoodFriend.Plugin/Resources/";
-
-        /// <summary>
-        ///     The resources directory relative to the base of the the assembly location.
-        /// </summary>
-        public static readonly string assemblyResourcesDir = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
-
-        /// <summary>
-        ///     The path to the plugin's resources folder with trailing slashes, relative to the plugin assembly location with trailing slashes.
-        /// </summary>
-        public static readonly string assemblyLocDir = assemblyResourcesDir + "Localization\\";
-    }
-
     public static class Events
     {
         public static string APIConnectionStatus => Loc.Localize("Event.Connection.Status", "Connection Status");
@@ -69,7 +18,10 @@ namespace GoodFriend.Base
     public static class State
     {
         public static string Connected => Loc.Localize("State.Connected", "Connected");
-        public static string ConnectedDescription(int clients) => String.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
+        public static string ConnectedDescription(int clients)
+        {
+            return string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
+        }
         public static string Connecting => Loc.Localize("State.Connecting", "Connecting");
         public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Connection in progress, please wait.");
         public static string Ratelimited => Loc.Localize("State.Ratelimited", "Ratelimited");
@@ -85,7 +37,11 @@ namespace GoodFriend.Base
     public static class PrimaryWindow
     {
         public static string DropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
-        public static string DropdownOptionsStatusTooltip(string url) => String.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
+        public static string DropdownOptionsStatusTooltip(string url)
+        {
+            return string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
+        }
+
         public static string DropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
         public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host.");
         public static string DropdownOptionsEventLog => Loc.Localize("Window.Dropdown.Options.EventLog", "Event Log");
@@ -139,8 +95,14 @@ namespace GoodFriend.Base
     }
     public static class URLNagWindow
     {
-        public static string URLUpdateNagTitle(Uri url) => String.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PStrings.pluginName, url);
-        public static string URLUpdateNagText(Uri? newUrl, int waitTime) => String.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
+        public static string URLUpdateNagTitle(Uri url)
+        {
+            return string.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PluginConstants.pluginName, url);
+        }
+        public static string URLUpdateNagText(Uri? newUrl, int waitTime)
+        {
+            return string.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
+        }
         public static string URLUpdateNagButtonUpdate => Loc.Localize("Window.URLUpdateNag.Button.Update", "Update URL");
         public static string URLUpdateNagButtonIgnore => Loc.Localize("Window.URLUpdateNag.Button.Ignore", "Ignore for this session");
     }

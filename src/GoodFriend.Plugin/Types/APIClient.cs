@@ -1,21 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Web;
+using Dalamud.Logging;
+using GoodFriend.Base;
+using GoodFriend.Utils;
+using Newtonsoft.Json;
+
 namespace GoodFriend.Types
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Timers;
-    using System.Collections.Generic;
-    using GoodFriend.Base;
-    using GoodFriend.Utils;
-    using Dalamud.Logging;
-    using Newtonsoft.Json;
-
     /// <summary>
     ///     An API client to built to communicate with the GoodFriend API.
     /// </summary>
@@ -89,8 +89,8 @@ namespace GoodFriend.Types
             this.SSEIsConnected = true;
             this.SSEIsConnecting = false;
             this.LastStatusCode = HttpStatusCode.OK;
-            this._httpClient?.CancelPendingRequests();
-            this._sseReconnectTimer.Stop();
+            this.HttpClient?.CancelPendingRequests();
+            this.SSEReconnectTimer.Stop();
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace GoodFriend.Types
         {
             this.SSEIsConnected = false;
             this.SSEIsConnecting = false;
-            this._httpClient.CancelPendingRequests();
-            this._sseReconnectTimer.Stop();
+            this.HttpClient.CancelPendingRequests();
+            this.SSEReconnectTimer.Stop();
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace GoodFriend.Types
         {
             this.SSEIsConnected = false;
             this.SSEIsConnecting = false;
-            this._httpClient.CancelPendingRequests();
-            this._sseReconnectTimer.Start();
+            this.HttpClient.CancelPendingRequests();
+            this.SSEReconnectTimer.Start();
         }
 
         /// <summary> 
@@ -128,29 +128,29 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The base URL for the API with the appended API version.
         /// </summary>
-        private Uri _apiBaseURL => new($"{this._configuration.APIUrl}{this.apiVersion}/");
+        private Uri ApiBaseURL => new($"{this._configuration.APIUrl}{this.apiVersion}/");
 
         /// <summary>
         ///     The HTTP client used to connect to the API.
         /// </summary>
-        private HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient HttpClient = new();
 
         /// <summary>
         ///     Configures the HTTP client.
         /// </summary>
         private void ConfigureHttpClient()
         {
-            this._httpClient.BaseAddress = this._apiBaseURL;
-            this._httpClient.Timeout = TimeSpan.FromSeconds(10);
+            this.HttpClient.BaseAddress = this.ApiBaseURL;
+            this.HttpClient.Timeout = TimeSpan.FromSeconds(10);
 
             // Headers
             var version = Assembly.GetExecutingAssembly().GetName().Version;
-            this._httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PStrings.pluginName)}/{version} [{Common.GetOperatingSystem()}]");
-            this._httpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
-            if (this._configuration.APIAuthentication != string.Empty) this._httpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
+            this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PluginConstants.pluginName)}/{version} [{Common.GetOperatingSystem()}]");
+            this.HttpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
+            if (this._configuration.APIAuthentication != string.Empty) this.HttpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
 
-            var headers = this._httpClient.DefaultRequestHeaders.ToString().Replace($"Authorization: {this._configuration.APIAuthentication}", "Authorization: [REDACTED]");
-            PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured HTTP client.\nBaseAddress: {this._httpClient.BaseAddress}\n{headers}\nTimeout: {this._httpClient.Timeout}");
+            var headers = this.HttpClient.DefaultRequestHeaders.ToString().Replace($"Authorization: {this._configuration.APIAuthentication}", "Authorization: [REDACTED]");
+            PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured HTTP client.\nBaseAddress: {this.HttpClient.BaseAddress}\n{headers}\nTimeout: {this.HttpClient.Timeout}");
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The timer for handling SSE reconnection attempts.
         /// </summary>
-        private System.Timers.Timer _sseReconnectTimer = new System.Timers.Timer(60000);
+        private readonly System.Timers.Timer SSEReconnectTimer = new(60000);
 
         /// <summary>
         ///     The event handler for handling SSE reconnection attempts.
@@ -210,7 +210,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Cancels all pending HTTP requests. This is used to cancel SSE connections.
         /// </summary>
-        public void CancelPendingRequests() { this._httpClient.CancelPendingRequests(); this._sseReconnectTimer.Stop(); this.SSEIsConnecting = false; }
+        public void CancelPendingRequests() { this.HttpClient.CancelPendingRequests(); this.SSEReconnectTimer.Stop(); this.SSEIsConnecting = false; }
 
         /// <summary>
         ///     The last status code received from the API.
@@ -227,7 +227,7 @@ namespace GoodFriend.Types
             this.SSEConnectionEstablished += OnSSEConnectionEstablished;
             this.SSEConnectionClosed += OnSSEConnectionClosed;
             this.SSEConnectionError += OnSSEConnectionError;
-            this._sseReconnectTimer.Elapsed += OnTryReconnect;
+            this.SSEReconnectTimer.Elapsed += OnTryReconnect;
             this.ConfigureHttpClient();
 
             PluginLog.Debug($"APIClient(APIClient): Instantiated.");
@@ -245,14 +245,14 @@ namespace GoodFriend.Types
             this.SSEConnectionEstablished -= OnSSEConnectionEstablished;
             this.SSEConnectionClosed -= OnSSEConnectionClosed;
             this.SSEConnectionError -= OnSSEConnectionError;
-            this._sseReconnectTimer.Elapsed -= OnTryReconnect;
+            this.SSEReconnectTimer.Elapsed -= OnTryReconnect;
 
             // Cancel pending requests.
-            this._httpClient.CancelPendingRequests();
+            this.HttpClient.CancelPendingRequests();
 
             // Dispose of all other resources.
-            this._sseReconnectTimer.Dispose();
-            this._httpClient.Dispose();
+            this.SSEReconnectTimer.Dispose();
+            this.HttpClient.Dispose();
 
             PluginLog.Debug("APIClient(Dispose): Successfully disposed.");
         }
@@ -287,7 +287,7 @@ namespace GoodFriend.Types
                 this.SSEIsConnecting = true;
 
                 // Check to see if we're ratelimited by sending a request to the root endpoint.
-                HttpResponseMessage response = await this._httpClient.GetAsync(this._httpClient.BaseAddress);
+                HttpResponseMessage response = await this.HttpClient.GetAsync(this.HttpClient.BaseAddress);
                 this.HandleRatelimitAndStatuscode(response);
 
                 // If we are ratelimited, hold off until we're not.
@@ -298,8 +298,8 @@ namespace GoodFriend.Types
                 }
 
                 // Attempt to connect to the API.
-                PluginLog.Information($"APIClient(OpenSSEStreamConnection): Connecting to {this._httpClient.BaseAddress}sse/friends");
-                using var stream = await this._httpClient.GetStreamAsync($"{this._httpClient.BaseAddress}sse/friends");
+                PluginLog.Information($"APIClient(OpenSSEStreamConnection): Connecting to {this.HttpClient.BaseAddress}sse/friends");
+                using var stream = await this.HttpClient.GetStreamAsync($"{this.HttpClient.BaseAddress}sse/friends");
                 using var reader = new StreamReader(stream);
 
                 // Connection established! Start listening for data.
@@ -350,7 +350,7 @@ namespace GoodFriend.Types
 
             try
             {
-                var response = this._httpClient.SendAsync(requestData).Result;
+                var response = this.HttpClient.SendAsync(requestData).Result;
                 if (!response.IsSuccessStatusCode)
                 {
                     this.RequestError?.Invoke(new Exception($"Request failed with status code {response.StatusCode}"), response);
@@ -384,7 +384,7 @@ namespace GoodFriend.Types
 
             try
             {
-                var result = this._httpClient.SendAsync(request).Result;
+                var result = this.HttpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
                     this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
                 else
@@ -409,7 +409,7 @@ namespace GoodFriend.Types
 
             try
             {
-                var result = this._httpClient.SendAsync(request).Result;
+                var result = this.HttpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
                     this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
                 else
@@ -439,10 +439,10 @@ namespace GoodFriend.Types
         /// </summary>
         public sealed class MetadataPayload
         {
-            public int connectedClients { get; set; } = 0;
-            public string? donationPageUrl { get; set; } = null;
-            public string? statusPageUrl { get; set; } = null;
-            public string? newApiUrl = null;
+            public int ConnectedClients { get; set; }
+            public string? DonationPageUrl { get; set; }
+            public string? StatusPageUrl { get; set; }
+            public string? NewApiUrl { get; set; }
         }
 
     }

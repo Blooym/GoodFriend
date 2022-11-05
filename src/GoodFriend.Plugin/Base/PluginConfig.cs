@@ -1,17 +1,20 @@
+using System;
+using Dalamud.Configuration;
+using GoodFriend.Enums;
+using GoodFriend.Utils;
+
 namespace GoodFriend.Base
 {
-    using System;
-    using GoodFriend.Utils;
-    using GoodFriend.Enums;
-    using Dalamud.Configuration;
-
+    /// <summary>
+    ///     Provides access to and determines the Plugin configuration.
+    /// </summary>
     [Serializable]
     public sealed class Configuration : IPluginConfiguration
     {
         /// <summary>
         ///     The current configuration version, incremented on breaking changes.
         /// </summary>
-        public int Version { get; set; } = 0;
+        public int Version { get; set; }
 
         /// <summary>
         ///     The notification type to use for friend notifications.
@@ -36,27 +39,27 @@ namespace GoodFriend.Base
         /// <summary>
         ///     Whether or not to hide notifications from users from different homeworlds.
         /// </summary>
-        public bool HideDifferentHomeworld { get; set; } = false;
+        public bool HideDifferentHomeworld { get; set; }
 
         /// <summary>
         ///     Whether or not to hide notifications from users in different territories.
         /// </summary>
-        public bool HideDifferentTerritory { get; set; } = false;
+        public bool HideDifferentTerritory { get; set; }
 
         /// <summary>
         ///     Whether or not to hide notifications from users in different worlds.
         /// </summary>
-        public bool HideDifferentWorld { get; set; } = false;
+        public bool HideDifferentWorld { get; set; }
 
         /// <summary>
         ///     Whether or not to hide notifications from users in different data centers.
         /// </summary>
-        public bool HideDifferentDatacenter { get; set; } = false;
+        public bool HideDifferentDatacenter { get; set; }
 
         /// <summary>
         ///     Whether or not to show API events as notifications.
         /// </summary>
-        public bool ShowAPIEvents { get; set; } = false;
+        public bool ShowAPIEvents { get; set; }
 
         /// <summary> 
         ///     The extra salt to apply when hashing the players ContentID, used to create "closed"  notification groups.
@@ -73,7 +76,7 @@ namespace GoodFriend.Base
         /// <summary>
         ///     The BaseURL to use when interacting with the API.
         /// </summary>
-        public Uri APIUrl { get; set; } = PStrings.defaultAPIUrl;
+        public Uri APIUrl { get; set; } = PluginConstants.defaultAPIUrl;
 
         /// <summary>
         ///     The authentication attached to all requests to the API.
@@ -83,11 +86,17 @@ namespace GoodFriend.Base
         /// <summary>
         ///     Saves the current configuration to disk.
         /// </summary>
-        internal void Save() => PluginService.PluginInterface.SavePluginConfig(this);
+        internal void Save()
+        {
+            PluginService.PluginInterface.SavePluginConfig(this);
+        }
 
         /// <summary>
         ///     Sets the configuration to the default values.
         /// </summary>
-        internal void SetDefault() => PluginService.PluginInterface.SavePluginConfig(new Configuration());
+        internal static void SetDefault()
+        {
+            PluginService.PluginInterface.SavePluginConfig(new Configuration());
+        }
     }
 }

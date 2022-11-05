@@ -1,8 +1,8 @@
-namespace GoodFriend.UI.Components
-{
-    using System.Numerics;
-    using ImGuiNET;
+using System.Numerics;
+using ImGuiNET;
 
+namespace GoodFriend.UI.ImGuiComponents
+{
     /// <summary>
     ///     Components for positioning elements.
     /// </summary>
@@ -15,10 +15,16 @@ namespace GoodFriend.UI.Components
         /// <param name="colour"> The colour to show the text in, blank for default. </param>
         public static void CenteredText(string text, Vector4? colour = null)
         {
-            var size = ImGui.CalcTextSize(text);
+            Vector2 size = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - size.X) / 2);
-            if (colour != null) ImGui.TextColored(colour.Value, text);
-            else ImGui.Text(text);
+            if (colour != null)
+            {
+                ImGui.TextColored(colour.Value, text);
+            }
+            else
+            {
+                ImGui.Text(text);
+            }
         }
     }
 }
