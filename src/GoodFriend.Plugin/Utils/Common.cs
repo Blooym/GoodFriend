@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using GoodFriend.Base;
 
 namespace GoodFriend.Utils
 {
@@ -11,7 +13,22 @@ namespace GoodFriend.Utils
         ///    Removes all whitespace from the given string
         /// </summary>
         /// <param name="text"> The string to remove whitespace from </param>
-        public static string RemoveWhitespace(string text) => new(text.Where((c => !Char.IsWhiteSpace(c))).ToArray());
+        public static string RemoveWhitespace(string text)
+        {
+            return new(text.Where((c => !Char.IsWhiteSpace(c))).ToArray());
+        }
+
+        /// <summary>
+        ///     Checks to see if the plugin came from an official source
+        /// </summary>
+        public static bool IsOfficialSource =>
+            PluginService.PluginInterface.SourceRepository.StartsWith("https://kamori.goats.dev/Plugin/PluginMaster", true, CultureInfo.InvariantCulture) ||
+            PluginService.PluginInterface.SourceRepository.StartsWith(PluginConstants.rawRepoUrl.ToString(), true, CultureInfo.InvariantCulture);
+
+        /// <summary>
+        ///     Checks to see if the plugin is a dev build
+        /// </summary>
+        public static bool IsDevBuild => PluginService.PluginInterface.IsDev;
 
         /// <summary>
         ///     Returns the operating system of the executing system.

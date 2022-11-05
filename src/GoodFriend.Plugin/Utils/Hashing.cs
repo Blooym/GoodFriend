@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using GoodFriend.Base;
-using GoodFriend.Localization;
 
 namespace GoodFriend.Utils
 {
@@ -12,10 +11,7 @@ namespace GoodFriend.Utils
     /// </summary>
     public enum SaltMethods : byte
     {
-        [LocalizableName("SaltMethods.Strict", "Strict")]
         Strict = 0, // Use the players salt (friend code) and the assembly manifest.
-
-        [LocalizableName("SaltMethods.Relaxed", "Relaxed")]
         Relaxed = 1, // Only use the players salt (friend code) if set.
     }
 

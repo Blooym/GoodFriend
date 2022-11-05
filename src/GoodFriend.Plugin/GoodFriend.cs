@@ -1,6 +1,8 @@
 using Dalamud.IoC;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using GoodFriend.Base;
+using GoodFriend.Utils;
 
 namespace GoodFriend
 {
@@ -18,6 +20,11 @@ namespace GoodFriend
         {
             _ = pluginInterface.Create<PluginService>();
             PluginService.Initialize();
+
+            if (!Common.IsOfficialSource && !Common.IsDevBuild)
+            {
+                PluginLog.Warning("This plugin has been downloaded from a 3rd-party source; Consider switching to the official version provided by the default repository in the Dalamud Plugin Installer. DO NOT REPORT BUGS using this version.");
+            }
         }
 
         /// <summary>

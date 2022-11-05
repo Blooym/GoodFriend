@@ -14,7 +14,7 @@
 				"rangav.vscode-thunder-client"
 			],
 			"settings": {
-				"thunder-client.requestTimeout": 10000,
+				"thunder-client.requestTimeout": 15000,
 				"editor.formatOnSave": true
 			}
 		}

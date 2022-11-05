@@ -141,7 +141,7 @@ namespace GoodFriend.Types
         private void ConfigureHttpClient()
         {
             this.HttpClient.BaseAddress = this.ApiBaseURL;
-            this.HttpClient.Timeout = TimeSpan.FromSeconds(10);
+            this.HttpClient.Timeout = TimeSpan.FromSeconds(15);
 
             // Headers
             var version = Assembly.GetExecutingAssembly().GetName().Version;

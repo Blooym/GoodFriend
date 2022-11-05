@@ -147,6 +147,7 @@ namespace GoodFriend.Managers
             APIClient.RequestSuccess -= OnRequestSuccess;
 
             _metadataTimer.Elapsed -= OnMetadataTimerElapsed;
+            _metadataTimer.Stop();
             _metadataTimer.Dispose();
 
             PluginLog.Debug("APIClientManager(Dispose): Successfully disposed.");

@@ -34,6 +34,11 @@ namespace GoodFriend.Base
         public static readonly Uri repoUrl = new("https://github.com/BitsOfAByte/GoodFriend/");
 
         /// <summary>
+        ///     The raw GitHub repository url.
+        /// </summary>
+        public static readonly Uri rawRepoUrl = new("https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/");
+
+        /// <summary>
         ///     The production branch of the repository.
         /// </summary>
         public static readonly string repoBranch = "main";

@@ -91,6 +91,8 @@ namespace GoodFriend.Localization
         public static string DropdownLogsTableTime => Loc.Localize("Window.Dropdown.Logs.Table.Time", "Time");
         public static string DropdownLogsTableType => Loc.Localize("Window.Dropdown.Logs.Table.Type", "Type");
         public static string DropdownLogsTableMessage => Loc.Localize("Window.Dropdown.Logs.Table.Message", "Message");
+        public static string SettingsOfficialBuild => Loc.Localize("Window.Settings.Build.Official", "Official Build");
+        public static string SettingsUnofficialBuild => Loc.Localize("Window.Settings.Build.Unofficial", "Unofficial Build");
 
     }
     public static class URLNagWindow
