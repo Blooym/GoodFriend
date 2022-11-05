@@ -89,7 +89,7 @@ namespace GoodFriend.Types
             this.SSEIsConnected = true;
             this.SSEIsConnecting = false;
             this.LastStatusCode = HttpStatusCode.OK;
-            this.HttpClient?.CancelPendingRequests();
+            this.HttpClient.CancelPendingRequests();
             this.SSEReconnectTimer.Stop();
         }
 
