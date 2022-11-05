@@ -27,6 +27,38 @@
     "message": "vient de se déconnecter.",
     "description": "Events.get_LoggedOut"
   },
+  "NotiicationType.Toast": {
+    "message": "Toast",
+    "description": "NotificationType"
+  },
+  "NotiicationType.Chat": {
+    "message": "Chat",
+    "description": "NotificationType"
+  },
+  "NotiicationType.Popup": {
+    "message": "Popup",
+    "description": "NotificationType"
+  },
+  "NotificationType.Toast.Description": {
+    "message": "A toast notification that appears in the corner of the screen.",
+    "description": "NotificationType"
+  },
+  "NotificationType.Chat.Description": {
+    "message": "A chat notification that appears in the chat window.",
+    "description": "NotificationType"
+  },
+  "NotificationType.Popup.Description": {
+    "message": "A popup notification that appears in the center of the screen.",
+    "description": "NotificationType"
+  },
+  "SaltMethods.Strict": {
+    "message": "Strict",
+    "description": "SaltMethods"
+  },
+  "SaltMethods.Relaxed": {
+    "message": "Relaxed",
+    "description": "SaltMethods"
+  },
   "State.Connected": {
     "message": "Connecté",
     "description": "State.get_Connected"
