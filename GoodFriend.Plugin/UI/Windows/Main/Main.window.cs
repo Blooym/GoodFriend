@@ -103,7 +103,8 @@ namespace GoodFriend.UI.Windows.Main
                     break;
                 case MainPresenter.VisibleDropdown.None:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 175 * ImGui.GetIO().FontGlobalScale));
-                    var message = $"Plugin: {PluginConstants.Version} · APIClient: {APIClientManager.Version} · {(Common.IsOfficialSource ? PrimaryWindow.SettingsOfficialBuild : PrimaryWindow.SettingsUnofficialBuild)}";
+                    // var message = $"Plugin: {PluginConstants.Version} · APIClient: {APIClientManager.Version} · {(Common.IsOfficialSource ? PrimaryWindow.SettingsOfficialBuild : PrimaryWindow.SettingsUnofficialBuild)}";
+                    var message = $"Plugin: {PluginConstants.Version} · APIClient: {APIClientManager.Version}";
                     ImGui.SetCursorPosX(((ImGui.GetWindowWidth() - ImGui.CalcTextSize(message).X) / 2) - ImGui.GetStyle().WindowPadding.X);
                     ImGui.TextDisabled(message);
                     break;
