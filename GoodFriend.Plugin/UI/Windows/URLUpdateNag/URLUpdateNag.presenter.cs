@@ -47,29 +47,29 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         {
             try
             {
-                string? newApiUrl = Metadata?.NewApiUrl ?? null;
-                if (newApiUrl != null && IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
+                var newApiUrl = Metadata?.NewApiUrl ?? null;
+                if (newApiUrl != null && this.IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
                 {
                     try
                     {
-                        NewAPIURL = new Uri(newApiUrl);
-                        if (NewAPIURL.Scheme == "https")
+                        this.NewAPIURL = new Uri(newApiUrl);
+                        if (this.NewAPIURL.Scheme == "https")
                         {
-                            ShowURLUpdateNag = true;
-                            PluginLog.Information($"URLUpdateNagPresenter(HandleURLUpdateNag): API recommended a new URL ({PluginService.Configuration.APIUrl} -> {NewAPIURL}) - showing user a nag if the haven't already dismissed it.");
+                            this.ShowURLUpdateNag = true;
+                            PluginLog.Information($"URLUpdateNagPresenter(HandleURLUpdateNag): API recommended a new URL ({PluginService.Configuration.APIUrl} -> {this.NewAPIURL}) - showing user a nag if the haven't already dismissed it.");
                         }
                         else
                         {
-                            IgnoredNewURLs = IgnoredNewURLs.Append(newApiUrl).ToArray();
+                            this.IgnoredNewURLs = this.IgnoredNewURLs.Append(newApiUrl).ToArray();
                             PluginLog.Warning($"URLUpdateNagPresenter(HandleURLUpdateNag): API instance recommended changing to {newApiUrl} but it was not secure, ignoring.");
                             PluginService.EventLogManager.AddEntry($"Ignored insecure URL for new API instance ({newApiUrl}).", EventLogManager.EventLogType.Warning);
                         }
                     }
                     catch (UriFormatException)
                     {
-                        if (NewAPIURL != null)
+                        if (this.NewAPIURL != null)
                         {
-                            IgnoredNewURLs = IgnoredNewURLs.Append(newApiUrl).ToArray();
+                            this.IgnoredNewURLs = this.IgnoredNewURLs.Append(newApiUrl).ToArray();
                             PluginLog.Warning($"URLUpdateNagPresenter(HandleURLUpdateNag): API instance recommended changing to {newApiUrl} but it was invalid, ignoring.");
                             PluginService.EventLogManager.AddEntry($"Ignored invalid URL for new API instance ({newApiUrl}).", EventLogManager.EventLogType.Warning);
                         }

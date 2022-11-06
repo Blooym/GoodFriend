@@ -7,6 +7,7 @@ namespace GoodFriend.Enums
     {
         Toast,
         Chat,
-        Popup
+        Popup,
+        QuestPopup,
     }
 }

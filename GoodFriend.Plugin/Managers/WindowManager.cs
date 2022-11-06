@@ -14,9 +14,9 @@ namespace GoodFriend.Managers
     /// </summary>
     internal sealed class WindowManager : IDisposable
     {
-        private readonly WindowSystem _windowSystem = new(PluginConstants.pluginName);
+        private readonly WindowSystem windowSystem = new(PluginConstants.PluginName);
 
-        private readonly List<Window> _windows = new()
+        private readonly List<Window> windows = new()
         {
             new MainWindow(),
             new URLUpdateNagWindow(),
@@ -30,14 +30,14 @@ namespace GoodFriend.Managers
             PluginLog.Debug("WindowManager(WindowManager): Initializing...");
 
 
-            foreach (Window window in _windows)
+            foreach (var window in this.windows)
             {
                 PluginLog.Debug($"WindowManager(WindowManager): Registering window: {window.GetType().Name}");
-                _windowSystem.AddWindow(window);
+                this.windowSystem.AddWindow(window);
             }
 
-            PluginService.PluginInterface.UiBuilder.Draw += OnDrawUI;
-            PluginService.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUI;
+            PluginService.PluginInterface.UiBuilder.Draw += this.OnDrawUI;
+            PluginService.PluginInterface.UiBuilder.OpenConfigUi += this.OnOpenConfigUI;
 
             PluginLog.Debug("WindowManager(WindowManager): Successfully initialized.");
         }
@@ -45,17 +45,14 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Draws all windows for the draw event.
         /// </summary>
-        private void OnDrawUI()
-        {
-            _windowSystem.Draw();
-        }
+        private void OnDrawUI() => this.windowSystem.Draw();
 
         /// <summary>
         ///     Opens/Closes the plugin configuration window.
         /// </summary>
         private void OnOpenConfigUI()
         {
-            if (_windowSystem.GetWindow(PluginConstants.pluginName) is MainWindow window)
+            if (this.windowSystem.GetWindow(PluginConstants.PluginName) is MainWindow window)
             {
                 window.IsOpen = !window.IsOpen;
             }
@@ -66,16 +63,16 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginService.PluginInterface.UiBuilder.Draw -= OnDrawUI;
-            PluginService.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUI;
+            PluginService.PluginInterface.UiBuilder.Draw -= this.OnDrawUI;
+            PluginService.PluginInterface.UiBuilder.OpenConfigUi -= this.OnOpenConfigUI;
 
-            foreach (IDisposable window in _windows.OfType<IDisposable>())
+            foreach (var window in this.windows.OfType<IDisposable>())
             {
                 PluginLog.Debug($"WindowManager(Dispose): Disposing of {window.GetType().Name}...");
                 window.Dispose();
             }
 
-            _windowSystem.RemoveAllWindows();
+            this.windowSystem.RemoveAllWindows();
 
             PluginLog.Debug("WindowManager(Dispose): Successfully disposed.");
         }

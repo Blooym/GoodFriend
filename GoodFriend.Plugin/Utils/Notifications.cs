@@ -1,3 +1,4 @@
+using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
 using GoodFriend.Base;
@@ -14,7 +15,7 @@ namespace GoodFriend.Utils
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
         internal static void ShowPreferred(string message, ToastType? toastType = null)
         {
-            NotificationType notificationType = PluginService.Configuration.NotificationType;
+            var notificationType = PluginService.Configuration.NotificationType;
             Show(message, notificationType, toastType);
         }
 
@@ -27,27 +28,31 @@ namespace GoodFriend.Utils
             PluginLog.Debug($"Notifications(Show): Showing {type} notification with the message: {message}");
             switch (type)
             {
-                case NotificationType.Toast: ShowToast(message, toastType ?? ToastType.None); break;
-                case NotificationType.Chat: ShowChat(message, 35); break;
-                case NotificationType.Popup: ShowPopup(message); break;
+                case NotificationType.Toast:
+                    ShowToast(message, toastType ?? ToastType.None);
+                    break;
+                case NotificationType.Chat:
+                    ShowChat(message, 35);
+                    break;
+                case NotificationType.Popup:
+                    ShowPopup(message);
+                    break;
+                case NotificationType.QuestPopup:
+                    ShowQuestPopup(message);
+                    break;
                 default:
+                    ShowChat(message, 35);
                     break;
             }
         }
 
         /// <summary> Sends a toast notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
-        private static void ShowToast(string message, ToastType type)
-        {
-            PluginService.PluginInterface.UiBuilder.AddNotification(message, PluginConstants.pluginName, type);
-        }
+        private static void ShowToast(string message, ToastType type) => PluginService.PluginInterface.UiBuilder.AddNotification(message, PluginConstants.PluginName, type);
 
         /// <summary> Sends a popup notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
-        private static void ShowPopup(string message)
-        {
-            PluginService.Toast.ShowNormal(message);
-        }
+        private static void ShowPopup(string message) => PluginService.Toast.ShowNormal(message);
 
         /// <summary> Sends a chat notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
@@ -61,5 +66,11 @@ namespace GoodFriend.Utils
             PluginService.Chat.Print(stringBuilder.BuiltString);
         }
 
+        /// <summary> Sends a quest complete popup notification to the user. </summary>
+        /// <param name="message"> The message to send. </param>
+        private static void ShowQuestPopup(string message) => PluginService.Toast.ShowQuest(message, new QuestToastOptions
+        {
+            Position = QuestToastPosition.Centre,
+        });
     }
 }

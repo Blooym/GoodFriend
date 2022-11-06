@@ -76,7 +76,7 @@ namespace GoodFriend.Base
         /// <summary>
         ///     The BaseURL to use when interacting with the API.
         /// </summary>
-        public Uri APIUrl { get; set; } = PluginConstants.defaultAPIUrl;
+        public Uri APIUrl { get; set; } = PluginConstants.DefaultAPIUrl;
 
         /// <summary>
         ///     The authentication attached to all requests to the API.
@@ -86,17 +86,11 @@ namespace GoodFriend.Base
         /// <summary>
         ///     Saves the current configuration to disk.
         /// </summary>
-        internal void Save()
-        {
-            PluginService.PluginInterface.SavePluginConfig(this);
-        }
+        internal void Save() => PluginService.PluginInterface.SavePluginConfig(this);
 
         /// <summary>
         ///     Sets the configuration to the default values.
         /// </summary>
-        internal static void SetDefault()
-        {
-            PluginService.PluginInterface.SavePluginConfig(new Configuration());
-        }
+        internal static void SetDefault() => PluginService.PluginInterface.SavePluginConfig(new Configuration());
     }
 }

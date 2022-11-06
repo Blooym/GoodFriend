@@ -28,7 +28,7 @@ namespace GoodFriend.UI.ImGuiComponents
         /// <param name="size"> The size of the button. </param>
         public static bool TooltipButton(string text, string tooltip, Vector2 size = default)
         {
-            bool result = ImGui.Button($"{text}##{tooltip}", size);
+            var result = ImGui.Button($"{text}##{tooltip}", size);
             AddTooltipHover(tooltip);
             return result;
         }

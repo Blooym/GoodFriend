@@ -18,10 +18,7 @@ namespace GoodFriend.Localization
     public static class State
     {
         public static string Connected => Loc.Localize("State.Connected", "Connected");
-        public static string ConnectedDescription(int clients)
-        {
-            return string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
-        }
+        public static string ConnectedDescription(int clients) => string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
         public static string Connecting => Loc.Localize("State.Connecting", "Connecting");
         public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Connection in progress, please wait.");
         public static string Ratelimited => Loc.Localize("State.Ratelimited", "Ratelimited");
@@ -37,10 +34,7 @@ namespace GoodFriend.Localization
     public static class PrimaryWindow
     {
         public static string DropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
-        public static string DropdownOptionsStatusTooltip(string url)
-        {
-            return string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
-        }
+        public static string DropdownOptionsStatusTooltip(string url) => string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
 
         public static string DropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
         public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host.");
@@ -97,14 +91,8 @@ namespace GoodFriend.Localization
     }
     public static class URLNagWindow
     {
-        public static string URLUpdateNagTitle(Uri url)
-        {
-            return string.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PluginConstants.pluginName, url);
-        }
-        public static string URLUpdateNagText(Uri? newUrl, int waitTime)
-        {
-            return string.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
-        }
+        public static string URLUpdateNagTitle(Uri url) => string.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PluginConstants.PluginName, url);
+        public static string URLUpdateNagText(Uri? newUrl, int waitTime) => string.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
         public static string URLUpdateNagButtonUpdate => Loc.Localize("Window.URLUpdateNag.Button.Update", "Update URL");
         public static string URLUpdateNagButtonIgnore => Loc.Localize("Window.URLUpdateNag.Button.Ignore", "Ignore for this session");
     }

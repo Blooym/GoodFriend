@@ -8,10 +8,10 @@ namespace GoodFriend
 {
     public sealed class GoodFriendPlugin : IDalamudPlugin
     {
-        /// <summary> 
+        /// <summary>
         ///     The plugin name, fetched from PStrings.
         /// </summary>
-        public string Name => PluginConstants.pluginName;
+        public string Name => PluginConstants.PluginName;
 
         /// <summary>
         ///     The plugin's main entry point.
@@ -30,9 +30,6 @@ namespace GoodFriend
         /// <summary>
         ///     Handles disposing of all resources used by the plugin.
         /// </summary>
-        public void Dispose()
-        {
-            PluginService.Dispose();
-        }
+        public void Dispose() => PluginService.Dispose();
     }
 }

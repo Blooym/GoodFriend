@@ -17,9 +17,9 @@ namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
         /// <param name="sizeOverride"> The size of the component. </param>
         public static void Draw(string strId, Vector2? sizeOverride = null)
         {
-            string connectionStatusText = ConnectionStatusPresenter.GetConnectionStatusText();
-            Vector4 connectionStatusColour = ConnectionStatusPresenter.GetConnectionStatusColour();
-            string connectionStatusDescription = ConnectionStatusPresenter.GetConnectionStatusDescription();
+            var connectionStatusText = ConnectionStatusPresenter.GetConnectionStatusText();
+            var connectionStatusColour = ConnectionStatusPresenter.GetConnectionStatusColour();
+            var connectionStatusDescription = ConnectionStatusPresenter.GetConnectionStatusDescription();
 
             if (ImGui.BeginChild(strId, sizeOverride ?? new Vector2(0, 80), false, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
             {

@@ -15,7 +15,7 @@ namespace GoodFriend.UI.ImGuiComponents
         /// <param name="colour"> The colour to show the text in, blank for default. </param>
         public static void CenteredText(string text, Vector4? colour = null)
         {
-            Vector2 size = ImGui.CalcTextSize(text);
+            var size = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - size.X) / 2);
             if (colour != null)
             {

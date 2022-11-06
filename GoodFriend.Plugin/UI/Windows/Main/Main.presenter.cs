@@ -37,10 +37,7 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
         /// </summary>
-        public void ToggleVisibleDropdown(VisibleDropdown dropdown)
-        {
-            CurrentVisibleDropdown = dropdown == CurrentVisibleDropdown ? VisibleDropdown.None : dropdown;
-        }
+        public void ToggleVisibleDropdown(VisibleDropdown dropdown) => this.CurrentVisibleDropdown = dropdown == this.CurrentVisibleDropdown ? VisibleDropdown.None : dropdown;
 
         /// <summary>
         ///     Fetches the users friendslist from the game.
@@ -59,7 +56,7 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The dialog manager for the settings window.
         /// </summary>
-        internal FileDialogManager dialogManager = new();
+        internal FileDialogManager DialogManager = new();
 
         /// <summary>
         ///     The callback for when the user selects an export directory.
@@ -71,12 +68,12 @@ namespace GoodFriend.UI.Windows.Main
                 return;
             }
 
-            string directory = Directory.GetCurrentDirectory();
+            var directory = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(path);
             Loc.ExportLocalizable();
             File.Copy(Path.Combine(path, "GoodFriend_Localizable.json"), Path.Combine(path, "en.json"), true);
             Directory.SetCurrentDirectory(directory);
-            PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.pluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
+            PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
         }
 #endif
 

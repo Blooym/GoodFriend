@@ -6,7 +6,7 @@ using GoodFriend.Base;
 
 namespace GoodFriend.Utils
 {
-    /// <summary> 
+    /// <summary>
     ///     Salt methods that can be be applied.
     /// </summary>
     public enum SaltMethods : byte
@@ -18,30 +18,27 @@ namespace GoodFriend.Utils
     /// <summary> Hashing implementations and methods </summary>
     internal static class Hashing
     {
-        /// <summary> 
+        /// <summary>
         ///     Generates a salt using a given method and length.
         /// </summary>
         /// <param name="method"> The <see cref="SaltMethods"/> to use. </param>
         /// <returns> The generated salt. </returns>
-        private static string? CreateSalt(SaltMethods method)
+        private static string? CreateSalt(SaltMethods method) => method switch
         {
-            return method switch
-            {
-                SaltMethods.Relaxed => PluginService.Configuration.FriendshipCode ?? string.Empty,
-                SaltMethods.Strict => Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString() + PluginService.Configuration.FriendshipCode),
-                _ => PluginService.Configuration.FriendshipCode ?? string.Empty,
-            };
-        }
+            SaltMethods.Relaxed => PluginService.Configuration.FriendshipCode ?? string.Empty,
+            SaltMethods.Strict => Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString() + PluginService.Configuration.FriendshipCode),
+            _ => PluginService.Configuration.FriendshipCode ?? string.Empty,
+        };
 
-        /// <summary> 
+        /// <summary>
         ///     Generates a SHA512 hash from the given string.
         /// </summary>
         /// <param name="input"> The string to hash. </param>
         /// <returns> The hashed string. </returns>
         internal static string HashSHA512(string input)
         {
-            string? salt = CreateSalt(PluginService.Configuration.SaltMethod);
-            byte[] bytes = Encoding.UTF8.GetBytes(input + salt);
+            var salt = CreateSalt(PluginService.Configuration.SaltMethod);
+            var bytes = Encoding.UTF8.GetBytes(input + salt);
             return Convert.ToBase64String(SHA512.Create().ComputeHash(bytes)).Replace("_", "q").Replace("+", "v");
         }
     }

@@ -6,6 +6,7 @@ using Dalamud.Utility;
 using GoodFriend.Base;
 using GoodFriend.Enums;
 using GoodFriend.Localization;
+using GoodFriend.Managers;
 using GoodFriend.UI.ImGuiComponents;
 using GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent;
 using GoodFriend.Utils;
@@ -27,22 +28,19 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Instantiate a new settings window.
         /// </summary>
-        public MainWindow() : base(PluginConstants.pluginName)
+        public MainWindow() : base(PluginConstants.PluginName)
         {
-            Flags |= ImGuiWindowFlags.NoScrollbar;
-            Flags |= ImGuiWindowFlags.NoResize;
-            Flags |= ImGuiWindowFlags.NoDocking;
-            Flags |= ImGuiWindowFlags.NoCollapse;
-            presenter = new MainPresenter();
+            this.Flags |= ImGuiWindowFlags.NoScrollbar;
+            this.Flags |= ImGuiWindowFlags.NoResize;
+            this.Flags |= ImGuiWindowFlags.NoDocking;
+            this.Flags |= ImGuiWindowFlags.NoCollapse;
+            this.presenter = new MainPresenter();
         }
 
         /// <summary>
         ///     Dispose of the window and all associated resources.
         /// </summary>
-        public void Dispose()
-        {
-            presenter.Dispose();
-        }
+        public void Dispose() => this.presenter.Dispose();
 
         /// <summary>
         ///     Draws all elements and components for the settings window, including sub-components.
@@ -50,7 +48,7 @@ namespace GoodFriend.UI.Windows.Main
 #pragma warning disable CS1717
         public override void Draw()
         {
-            string? statusPageUrl = MainPresenter.Metadata?.StatusPageUrl;
+            var statusPageUrl = MainPresenter.Metadata?.StatusPageUrl;
             ConnectionStatusComponent.Draw("ConnectionPageStatusComponent", new Vector2(0, 70 * ImGui.GetIO().FontGlobalScale));
 
             // Status button
@@ -67,7 +65,7 @@ namespace GoodFriend.UI.Windows.Main
             // Donate button
             if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSupport, PrimaryWindow.DropdownOptionsSupportTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
             {
-                presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Donate);
+                this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Donate);
             }
 
             ImGui.SameLine();
@@ -75,7 +73,7 @@ namespace GoodFriend.UI.Windows.Main
             // Event log button
             if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsEventLog, PrimaryWindow.DropdownOptionsEventLogTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
             {
-                presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Logs);
+                this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Logs);
             }
 
             ImGui.SameLine();
@@ -83,17 +81,17 @@ namespace GoodFriend.UI.Windows.Main
             // Settings button
             if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSettings, PrimaryWindow.DropdownOptionsSettingsTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
             {
-                presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Settings);
+                this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Settings);
             }
 
             ImGui.Dummy(new Vector2(0, 10));
 
             // Handle the option dropdowns - size is handled outside of the sub-components for clarity.
-            switch (presenter.CurrentVisibleDropdown)
+            switch (this.presenter.CurrentVisibleDropdown)
             {
                 case MainPresenter.VisibleDropdown.Settings:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
-                    DrawSettings();
+                    this.DrawSettings();
                     break;
                 case MainPresenter.VisibleDropdown.Donate:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
@@ -105,7 +103,7 @@ namespace GoodFriend.UI.Windows.Main
                     break;
                 case MainPresenter.VisibleDropdown.None:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 175 * ImGui.GetIO().FontGlobalScale));
-                    string message = $"Plugin: {PluginConstants.version} · APIClient: {PluginService.APIClientManager.Version} · {(Common.IsOfficialSource ? PrimaryWindow.SettingsOfficialBuild : PrimaryWindow.SettingsUnofficialBuild)}";
+                    var message = $"Plugin: {PluginConstants.Version} · APIClient: {APIClientManager.Version} · {(Common.IsOfficialSource ? PrimaryWindow.SettingsOfficialBuild : PrimaryWindow.SettingsUnofficialBuild)}";
                     ImGui.SetCursorPosX(((ImGui.GetWindowWidth() - ImGui.CalcTextSize(message).X) / 2) - ImGui.GetStyle().WindowPadding.X);
                     ImGui.TextDisabled(message);
                     break;
@@ -122,7 +120,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextDisabled("Settings");
             ImGui.BeginChild("SettingsDropdown");
 
-            if (presenter.RestartToApply)
+            if (this.presenter.RestartToApply)
             {
                 Colours.TextWrappedColoured(Colours.Warning, PrimaryWindow.DropdownSettingsRestartRequired);
             }
@@ -132,14 +130,14 @@ namespace GoodFriend.UI.Windows.Main
                 // "Basic" Settings
                 if (ImGui.BeginTabItem("General"))
                 {
-                    NotificationType notificationType = PluginService.Configuration.NotificationType;
-                    string loginMessage = PluginService.Configuration.FriendLoggedInMessage;
-                    string logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
-                    bool hideSameFC = PluginService.Configuration.HideSameFC;
-                    bool hideDifferentHomeworld = PluginService.Configuration.HideDifferentHomeworld;
-                    bool hideDifferentWorld = PluginService.Configuration.HideDifferentWorld;
-                    bool hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
-                    bool hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
+                    var notificationType = PluginService.Configuration.NotificationType;
+                    var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
+                    var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
+                    var hideSameFC = PluginService.Configuration.HideSameFC;
+                    var hideDifferentHomeworld = PluginService.Configuration.HideDifferentHomeworld;
+                    var hideDifferentWorld = PluginService.Configuration.HideDifferentWorld;
+                    var hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
+                    var hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
 
 
                     ImGui.BeginChild("GeneralSettings");
@@ -276,7 +274,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.SetNextItemWidth(-1);
                         if (ImGui.BeginCombo("##NotificationType", notificationType.ToString()))
                         {
-                            foreach (string type in Enum.GetNames(typeof(NotificationType)))
+                            foreach (var type in Enum.GetNames(typeof(NotificationType)))
                             {
                                 if (ImGui.Selectable(type, notificationType == Enum.Parse<NotificationType>(type)))
                                 {
@@ -297,7 +295,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.SetNextItemWidth(-1);
                         if (ImGui.InputText("##LoginMessage", ref loginMessage, 255))
                         {
-                            bool error = false;
+                            var error = false;
 #pragma warning disable CA1806 // Do not ignore method results
                             try
                             { string.Format(loginMessage, "test"); }
@@ -328,7 +326,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.SetNextItemWidth(-1);
                         if (ImGui.InputText("##LogoutMessage", ref logoutMessage, 255))
                         {
-                            bool error = false;
+                            var error = false;
 #pragma warning disable CA1806 // Do not ignore method results
                             try
                             { string.Format(logoutMessage, "test"); }
@@ -360,11 +358,11 @@ namespace GoodFriend.UI.Windows.Main
                 // "Advanced" Settings
                 if (ImGui.BeginTabItem("Advanced"))
                 {
-                    bool showAPIEvents = PluginService.Configuration.ShowAPIEvents;
-                    string APIUrl = PluginService.Configuration.APIUrl.ToString();
-                    string friendshipCode = PluginService.Configuration.FriendshipCode;
-                    string apiAuth = PluginService.Configuration.APIAuthentication;
-                    SaltMethods saltMethod = PluginService.Configuration.SaltMethod;
+                    var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
+                    var apiUrl = PluginService.Configuration.APIUrl.ToString();
+                    var friendshipCode = PluginService.Configuration.FriendshipCode;
+                    var apiAuth = PluginService.Configuration.APIAuthentication;
+                    var saltMethod = PluginService.Configuration.SaltMethod;
 
                     ImGui.BeginChild("AdvancedSettings");
                     if (ImGui.BeginTable("SettingsTable", 2))
@@ -416,25 +414,25 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsAPIUrl);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##APIUrl", ref APIUrl, 255))
+                        if (ImGui.InputText("##APIUrl", ref apiUrl, 255))
                         {
-                            if (APIUrl == PluginService.Configuration.APIUrl.ToString())
+                            if (apiUrl == PluginService.Configuration.APIUrl.ToString())
                             {
                                 return;
                             }
 
-                            bool error = false;
+                            var error = false;
 #pragma warning disable CA1806 // Do not ignore method results
                             try
-                            { new Uri(APIUrl); }
+                            { new Uri(apiUrl); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 
                             if (!error)
                             {
-                                PluginService.Configuration.APIUrl = new Uri(APIUrl);
+                                PluginService.Configuration.APIUrl = new Uri(apiUrl);
                                 PluginService.Configuration.Save();
-                                presenter.RestartToApply = true;
+                                this.presenter.RestartToApply = true;
                             }
                             else
                             {
@@ -443,7 +441,7 @@ namespace GoodFriend.UI.Windows.Main
                                     Notifications.Show(PrimaryWindow.DropdownSettingsAPIUrlInvalid, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
                                 }
 
-                                PluginService.Configuration.APIUrl = PluginConstants.defaultAPIUrl;
+                                PluginService.Configuration.APIUrl = PluginConstants.DefaultAPIUrl;
                                 PluginService.Configuration.Save();
                             }
                         }
@@ -460,7 +458,7 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             PluginService.Configuration.APIAuthentication = apiAuth.Trim();
                             PluginService.Configuration.Save();
-                            presenter.RestartToApply = true;
+                            this.presenter.RestartToApply = true;
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
                         ImGui.TableNextRow();
@@ -473,7 +471,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.SetNextItemWidth(-1);
                         if (ImGui.BeginCombo("##SaltMethod", saltMethod.ToString()))
                         {
-                            foreach (string type in Enum.GetNames(typeof(SaltMethods)))
+                            foreach (var type in Enum.GetNames(typeof(SaltMethods)))
                             {
                                 if (ImGui.Selectable(type, saltMethod == Enum.Parse<SaltMethods>(type)))
                                 {
@@ -496,15 +494,15 @@ namespace GoodFriend.UI.Windows.Main
                 {
                     ImGui.BeginChild("DeveloperSettings");
 
-                    presenter.dialogManager.Draw();
+                    this.presenter.DialogManager.Draw();
                     if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
                     {
-                        presenter.dialogManager.OpenFolderDialog("Export LOC", MainPresenter.OnDirectoryPicked);
+                        this.presenter.DialogManager.OpenFolderDialog("Export LOC", MainPresenter.OnDirectoryPicked);
                     }
 
                     ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
                     ImGui.BeginChild("##Friends");
-                    foreach (Managers.FriendList.FriendListEntry friend in presenter.GetFriendList())
+                    foreach (var friend in this.presenter.GetFriendList())
                     {
                         if (ImGui.Selectable(friend.Name.ToString()))
                         {
@@ -539,14 +537,14 @@ namespace GoodFriend.UI.Windows.Main
             // Support the developer button
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
-            if (Tooltips.TooltipButton($"{PrimaryWindow.DropdownSupportDonate}##devSupport", PluginConstants.pluginDevSupportUrl.ToString()))
+            if (Tooltips.TooltipButton($"{PrimaryWindow.DropdownSupportDonate}##devSupport", PluginConstants.PluginDevSupportUrl.ToString()))
             {
-                Util.OpenLink(PluginConstants.pluginDevSupportUrl.ToString());
+                Util.OpenLink(PluginConstants.PluginDevSupportUrl.ToString());
             }
             ImGui.Dummy(new Vector2(0, 5));
 
 
-            string? donationPageUrl = MainPresenter.Metadata?.DonationPageUrl;
+            var donationPageUrl = MainPresenter.Metadata?.DonationPageUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
             if (donationPageUrl != null)
@@ -596,13 +594,13 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
                     ImGui.TableHeadersRow();
 
-                    foreach (Managers.EventLogManager.EventLogEntry? log in MainPresenter.EventLog.EventLog.OrderByDescending(x => x.Timestamp))
+                    foreach (var log in MainPresenter.EventLog.EventLog.OrderByDescending(x => x.Timestamp))
                     {
-                        if (log.Type == Managers.EventLogManager.EventLogType.Warning)
+                        if (log.Type == EventLogManager.EventLogType.Warning)
                         {
                             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 0, 1));
                         }
-                        else if (log.Type == Managers.EventLogManager.EventLogType.Error)
+                        else if (log.Type == EventLogManager.EventLogType.Error)
                         {
                             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
                         }

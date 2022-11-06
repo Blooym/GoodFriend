@@ -83,7 +83,7 @@ namespace GoodFriend.Managers.FriendList
         {
             get
             {
-                fixed (byte* ptr = RawName)
+                fixed (byte* ptr = this.RawName)
                 {
                     return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
                 }
@@ -97,13 +97,13 @@ namespace GoodFriend.Managers.FriendList
         {
             get
             {
-                fixed (byte* ptr = RawFreeCompany)
+                fixed (byte* ptr = this.RawFreeCompany)
                 {
                     return MemoryHelper.ReadSeStringNullTerminated((IntPtr)ptr);
                 }
             }
         }
 
-        public bool IsOnline => OnlineStatus == 0x80;
+        public bool IsOnline => this.OnlineStatus == 0x80;
     }
 }

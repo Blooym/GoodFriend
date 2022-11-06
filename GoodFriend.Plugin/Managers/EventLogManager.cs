@@ -17,7 +17,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///    The maximum number of entries to keep in the log.
         /// </summary>
-        private readonly int MaxEntries = 100;
+        private const int MaxEntries = 100;
 
         /// <summary>
         ///     Adds a new entry to the <see cref="EventLog"/>.
@@ -26,7 +26,7 @@ namespace GoodFriend.Managers
         /// <param name="type">The type of the entry.</param>
         internal void AddEntry(string message, EventLogType type = EventLogType.Info)
         {
-            EventLog.Add(new EventLogEntry
+            this.EventLog.Add(new EventLogEntry
             {
                 ID = Guid.NewGuid(),
                 Type = type,
@@ -34,10 +34,10 @@ namespace GoodFriend.Managers
                 Timestamp = DateTime.Now,
             });
             PluginLog.Debug($"EventLogManager(AddEntry): Added entry to log: [{type}] \"{message}\"");
-            if (EventLog.Count > MaxEntries)
+            if (this.EventLog.Count > MaxEntries)
             {
-                EventLog.RemoveAt(0);
-                PluginLog.Debug($"EventLogManager(AddEntry): Log is at max size ({MaxEntries}), removing oldest entry (ID: {EventLog[0].ID})");
+                this.EventLog.RemoveAt(0);
+                PluginLog.Debug($"EventLogManager(AddEntry): Log is at max size ({MaxEntries}), removing oldest entry (ID: {this.EventLog[0].ID})");
             }
         }
 
@@ -48,7 +48,7 @@ namespace GoodFriend.Managers
         internal void RemoveEntry(Guid id)
         {
             PluginLog.Debug($"EventLogManager(RemoveEntry): Removing entry: {id}");
-            _ = EventLog.RemoveAll(x => x.ID == id);
+            _ = this.EventLog.RemoveAll(x => x.ID == id);
         }
 
         /// <summary>
@@ -57,17 +57,14 @@ namespace GoodFriend.Managers
         internal void ClearLog()
         {
             PluginLog.Debug("EventLogManager(ClearLog): Clearing log.");
-            EventLog.Clear();
+            this.EventLog.Clear();
         }
 
         /// <summary>
         ///    Gets a specific entry from the <see cref="EventLogManager"/>'s log.
         /// </summary>
         /// <param name="id">The id of the entry to get.</param>
-        internal EventLogEntry? GetEntry(Guid id)
-        {
-            return EventLog.Find(x => x.ID == id);
-        }
+        internal EventLogEntry? GetEntry(Guid id) => this.EventLog.Find(x => x.ID == id);
 
         /// <summary>
         ///     EventLogEntry is a single entry in the <see cref="EventLogManager"/> log.

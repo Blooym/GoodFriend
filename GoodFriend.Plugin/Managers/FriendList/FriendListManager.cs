@@ -46,7 +46,7 @@ namespace GoodFriend.Managers.FriendList
         /// </summary>
         public static unsafe FriendListEntry*[] Get()
         {
-            IntPtr friendListAgent = (IntPtr)Framework.Instance()
+            var friendListAgent = (IntPtr)Framework.Instance()
                 ->GetUiModule()
                 ->GetAgentModule()
                 ->GetAgentByInternalId(AgentId.SocialFriendList);
@@ -54,25 +54,25 @@ namespace GoodFriend.Managers.FriendList
             {
                 return new FriendListEntry*[] { };
             }
-            IntPtr info = *(IntPtr*)(friendListAgent + InfoOffset);
+            var info = *(IntPtr*)(friendListAgent + InfoOffset);
             if (info == IntPtr.Zero)
             {
                 return new FriendListEntry*[] { };
             }
-            ushort length = *(ushort*)(info + LengthOffset);
+            var length = *(ushort*)(info + LengthOffset);
             if (length == 0)
             {
                 return new FriendListEntry*[] { };
             }
-            IntPtr list = *(IntPtr*)(info + ListOffset);
+            var list = *(IntPtr*)(info + ListOffset);
             if (list == IntPtr.Zero)
             {
                 return new FriendListEntry*[] { };
             }
-            FriendListEntry*[] entries = new FriendListEntry*[length];
-            for (int i = 0; i < length; i++)
+            var entries = new FriendListEntry*[length];
+            for (var i = 0; i < length; i++)
             {
-                FriendListEntry* entry = (FriendListEntry*)(list + (i * FriendListEntry.Size));
+                var entry = (FriendListEntry*)(list + (i * FriendListEntry.Size));
                 entries[i] = entry;
             }
             return entries;

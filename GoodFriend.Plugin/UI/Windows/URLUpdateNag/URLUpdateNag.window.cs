@@ -17,102 +17,93 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     The presenter associated with the window, handles all logic and data.
         /// </summary>
-        internal URLUpdateNagPresenter presenter;
+        internal URLUpdateNagPresenter Presenter;
 
         /// <summary>
         ///     Disposes of the window and associated resources.
         /// </summary>
-        public void Dispose()
-        {
-            presenter.Dispose();
-        }
+        public void Dispose() => this.Presenter.Dispose();
 
         /// <summary>
         ///     Instantiate a new settings window.
         /// </summary>
-        public URLUpdateNagWindow() : base($"{PluginConstants.pluginName} - URL Update")
+        public URLUpdateNagWindow() : base($"{PluginConstants.PluginName} - URL Update")
         {
-            Size = new Vector2(550, 200);
-            Flags |= ImGuiWindowFlags.NoDocking;
-            Flags |= ImGuiWindowFlags.NoResize;
-            Flags |= ImGuiWindowFlags.NoCollapse;
-            Flags |= ImGuiWindowFlags.NoSavedSettings;
-            Flags |= ImGuiWindowFlags.NoNav;
-            Flags |= ImGuiWindowFlags.NoTitleBar;
-            Flags |= ImGuiWindowFlags.NoScrollbar;
-            Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
-            RespectCloseHotkey = false;
+            this.Size = new Vector2(550, 200);
+            this.Flags |= ImGuiWindowFlags.NoDocking;
+            this.Flags |= ImGuiWindowFlags.NoResize;
+            this.Flags |= ImGuiWindowFlags.NoCollapse;
+            this.Flags |= ImGuiWindowFlags.NoSavedSettings;
+            this.Flags |= ImGuiWindowFlags.NoNav;
+            this.Flags |= ImGuiWindowFlags.NoTitleBar;
+            this.Flags |= ImGuiWindowFlags.NoScrollbar;
+            this.Flags |= ImGuiWindowFlags.NoFocusOnAppearing;
+            this.RespectCloseHotkey = false;
 
-            presenter = new URLUpdateNagPresenter();
+            this.Presenter = new URLUpdateNagPresenter();
         }
 
         /// <summary>
         ///     Override the DrawConditions to only draw when the nag is needed.
         /// </summary>
-        public override bool DrawConditions()
-        {
-            return presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed && !URLUpdateNagPresenter.CannotShowNag;
-        }
+        public override bool DrawConditions() => this.Presenter.ShowURLUpdateNag && !this.Presenter.URLUpdateNagDismissed && !URLUpdateNagPresenter.CannotShowNag;
 
         /// <summary>
         ///     Check if the nag needs to be shown even when the DrawConditions aren't met.
         /// </summary>
         public override void PreOpenCheck()
         {
-            IsOpen = presenter.ShowURLUpdateNag;
-            if (!presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed)
-            { presenter.HandleURLUpdateNag(); }
+            this.IsOpen = this.Presenter.ShowURLUpdateNag;
+            if (!this.Presenter.ShowURLUpdateNag && !this.Presenter.URLUpdateNagDismissed)
+            { this.Presenter.HandleURLUpdateNag(); }
         }
 
         /// <summary>
         ///     Override the OnClose method to make sure the nag is dismissed when the window is closed.
         /// </summary>
-        public override void OnClose()
-        {
-            presenter.URLUpdateNagDismissed = true;
-        }
+        public override void OnClose() => this.Presenter.URLUpdateNagDismissed = true;
 
         /// <summary>
         ///     The popup datetime of the nag.
         /// </summary>
-        private DateTime? _popupTime;
+        private DateTime? popupTime;
 
         /// <summary>
         ///     How many seconds must pass before the nag can be dismissed.
         /// </summary>
-        private const int _dismissDelay = 12;
+        private const int DismissDelay = 12;
 
         /// <summary>
         ///     Draw the nag window.
         /// </summary>
         public override void Draw()
         {
-            if (_popupTime == null)
+            if (this.popupTime == null)
             {
-                _popupTime = DateTime.Now;
+                this.popupTime = DateTime.Now;
             }
 
             Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(PluginService.Configuration.APIUrl));
             ImGui.Separator();
-            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(presenter.NewAPIURL, _dismissDelay));
+            ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.Presenter.NewAPIURL, DismissDelay));
             ImGui.Dummy(new Vector2(0, 5));
 
             // Options to update or dismiss the nag.
-            ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.ModShift) && (DateTime.Now - _popupTime.Value).TotalSeconds < _dismissDelay);
+            ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.ModShift) && (DateTime.Now - this.popupTime.Value).TotalSeconds < DismissDelay);
             if (ImGui.Button(URLNagWindow.URLUpdateNagButtonUpdate))
             {
 #pragma warning disable CS8601 // Checked for null in the presenter
-                PluginService.Configuration.APIUrl = presenter.NewAPIURL;
+                PluginService.Configuration.APIUrl = this.Presenter.NewAPIURL;
 #pragma warning restore CS8601
                 PluginService.Configuration.Save();
-                PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {presenter.NewAPIURL}");
-                presenter.URLUpdateNagDismissed = true;
+                PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {this.Presenter.NewAPIURL}");
+                this.Presenter.URLUpdateNagDismissed = true;
             }
             ImGui.SameLine();
 
             if (ImGui.Button(URLNagWindow.URLUpdateNagButtonIgnore))
             {
-                presenter.URLUpdateNagDismissed = true;
+                this.Presenter.URLUpdateNagDismissed = true;
             }
             ImGui.EndDisabled();
         }
