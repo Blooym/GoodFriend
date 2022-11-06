@@ -10,7 +10,7 @@ using GoodFriend.Managers;
 
 namespace GoodFriend.Base
 {
-    /// <summary> 
+    /// <summary>
     ///     Provides access to necessary instances and services.
     /// </summary>
 #pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework here.

@@ -34,7 +34,7 @@ namespace GoodFriend.UI.Windows.Main
         /// </summary>
         public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
 
-        /// <summary> 
+        /// <summary>
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
         /// </summary>
         public void ToggleVisibleDropdown(VisibleDropdown dropdown)
@@ -59,10 +59,10 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The dialog manager for the settings window.
         /// </summary>
-        public FileDialogManager dialogManager = new();
+        internal FileDialogManager dialogManager = new();
 
         /// <summary>
-        ///     The callback for when the user selects an export directory. 
+        ///     The callback for when the user selects an export directory.
         /// </summary>
         public static void OnDirectoryPicked(bool cancelled, string path)
         {

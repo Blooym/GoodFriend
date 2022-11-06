@@ -17,7 +17,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     The presenter associated with the window, handles all logic and data.
         /// </summary>
-        public URLUpdateNagPresenter presenter;
+        internal URLUpdateNagPresenter presenter;
 
         /// <summary>
         ///     Disposes of the window and associated resources.
@@ -60,7 +60,8 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         public override void PreOpenCheck()
         {
             IsOpen = presenter.ShowURLUpdateNag;
-            if (!presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed) { presenter.HandleURLUpdateNag(); }
+            if (!presenter.ShowURLUpdateNag && !presenter.URLUpdateNagDismissed)
+            { presenter.HandleURLUpdateNag(); }
         }
 
         /// <summary>

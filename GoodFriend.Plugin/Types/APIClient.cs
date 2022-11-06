@@ -43,7 +43,7 @@ namespace GoodFriend.Types
 
         /// <summary>
         //      The Delegate that is used for <see cref="APIClient.SSEConnectionClosed"/>.
-        /// </summary> 
+        /// </summary>
         public delegate void SSEConnectionClosedDelegate();
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace GoodFriend.Types
         /// </summary>
         public event SSEConnectionClosedDelegate? SSEConnectionClosed;
 
-        /// <summary> 
+        /// <summary>
         ///     The Delegate that is used for <see cref="APIClient.SSEConnectionError"/>.
         /// </summary>
         public delegate void SSEConnectionErrorDelegate(Exception error);
@@ -115,7 +115,7 @@ namespace GoodFriend.Types
             this.SSEReconnectTimer.Start();
         }
 
-        /// <summary> 
+        /// <summary>
         ///     The configuration for the API client.
         /// </summary>
         private readonly Configuration _configuration;
@@ -123,7 +123,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The API version this client is compatible with, ending with a slash.
         /// </summary>
-        public readonly string apiVersion = "v4";
+        internal readonly string apiVersion = "v4";
 
         /// <summary>
         ///     The base URL for the API with the appended API version.
@@ -147,7 +147,8 @@ namespace GoodFriend.Types
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", $"Dalamud.{Common.RemoveWhitespace(PluginConstants.pluginName)}/{version} [{Common.GetOperatingSystem()}]");
             this.HttpClient.DefaultRequestHeaders.Add("X-Session-Identifier", Guid.NewGuid().ToString());
-            if (this._configuration.APIAuthentication != string.Empty) this.HttpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
+            if (this._configuration.APIAuthentication != string.Empty)
+                this.HttpClient.DefaultRequestHeaders.Add("Authorization", $"{this._configuration.APIAuthentication}");
 
             var headers = this.HttpClient.DefaultRequestHeaders.ToString().Replace($"Authorization: {this._configuration.APIAuthentication}", "Authorization: [REDACTED]");
             PluginLog.Information($"APIClient(ConfigureHttpClient): Successfully configured HTTP client.\nBaseAddress: {this.HttpClient.BaseAddress}\n{headers}\nTimeout: {this.HttpClient.Timeout}");
@@ -156,12 +157,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///    The current state of the SSE connection.
         /// </summary>
-        public bool SSEIsConnected { get; private set; } = false;
+        public bool SSEIsConnected { get; private set; }
 
         /// <summary>
         ///     If the APIClient is currently attempting an SSE connection.
         /// </summary>
-        public bool SSEIsConnecting { get; private set; } = false;
+        public bool SSEIsConnecting { get; private set; }
 
         /// <summary>
         ///     The timer for handling SSE reconnection attempts.
@@ -215,7 +216,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The last status code received from the API.
         /// </summary>
-        public HttpStatusCode LastStatusCode { get; private set; } = 0;
+        public HttpStatusCode LastStatusCode { get; private set; }
 
         /// <summary>
         ///     Instantiates a new APIClient
@@ -239,7 +240,8 @@ namespace GoodFriend.Types
         public void Dispose()
         {
             // If we're still connected, disconecct.
-            if (this.SSEIsConnected) this.CloseSSEStream();
+            if (this.SSEIsConnected)
+                this.CloseSSEStream();
 
             // Unregister any event handlers.
             this.SSEConnectionEstablished -= OnSSEConnectionEstablished;
@@ -257,12 +259,13 @@ namespace GoodFriend.Types
             PluginLog.Debug("APIClient(Dispose): Successfully disposed.");
         }
 
-        /// <summary> 
+        /// <summary>
         ///     Opens the connection stream to the API, throws error if already connected.
         /// </summary>
         public void OpenSSEStream()
         {
-            if (SSEIsConnected) throw new InvalidOperationException("An active connection has already been established.");
+            if (SSEIsConnected)
+                throw new InvalidOperationException("An active connection has already been established.");
             this.OpenSSEStreamConnection();
         }
 
@@ -271,7 +274,8 @@ namespace GoodFriend.Types
         /// </summary>
         public void CloseSSEStream()
         {
-            if (!SSEIsConnected) throw new InvalidOperationException("There is no active connection to disconnect from.");
+            if (!SSEIsConnected)
+                throw new InvalidOperationException("There is no active connection to disconnect from.");
             this.SSEConnectionClosed?.Invoke();
         }
 
@@ -283,7 +287,8 @@ namespace GoodFriend.Types
             try
             {
                 // If we're already connecting, don't try again.
-                if (this.SSEIsConnecting) return;
+                if (this.SSEIsConnecting)
+                    return;
                 this.SSEIsConnecting = true;
 
                 // Check to see if we're ratelimited by sending a request to the root endpoint.
@@ -310,13 +315,15 @@ namespace GoodFriend.Types
                     // Read the message, if its null or just a colon (:) then skip it. (Colon indicates a heartbeat message).
                     var message = reader.ReadLine();
                     message = HttpUtility.UrlDecode(message);
-                    if (message == null || message.Trim() == ":") continue;
+                    if (message == null || message.Trim() == ":")
+                        continue;
 
                     // Remove any SSE (Server-Sent Events) filler & parse the message.
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
-                    if (data != null && data.ContentID != null) SSEDataReceived?.Invoke(data);
+                    if (data != null && data.ContentID != null)
+                        SSEDataReceived?.Invoke(data);
                 }
 
                 if (reader.EndOfStream && SSEIsConnected)
@@ -326,7 +333,8 @@ namespace GoodFriend.Types
             }
             catch (Exception e)
             {
-                if (SSEIsConnected) this.CloseSSEStream();
+                if (SSEIsConnected)
+                    this.CloseSSEStream();
                 this.SSEConnectionError?.Invoke(e);
             }
         }
@@ -338,7 +346,7 @@ namespace GoodFriend.Types
         {
             if (this.RateLimitReset > DateTime.Now)
             {
-                this.RequestError?.Invoke(new Exception($"Ratelimited. Try again at {this.RateLimitReset}"), new HttpResponseMessage(HttpStatusCode.TooManyRequests));
+                this.RequestError?.Invoke(new AggregateException($"Ratelimited. Try again at {this.RateLimitReset}"), new HttpResponseMessage(HttpStatusCode.TooManyRequests));
                 return null;
             }
 
@@ -353,7 +361,7 @@ namespace GoodFriend.Types
                 var response = this.HttpClient.SendAsync(requestData).Result;
                 if (!response.IsSuccessStatusCode)
                 {
-                    this.RequestError?.Invoke(new Exception($"Request failed with status code {response.StatusCode}"), response);
+                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {response.StatusCode}"), response);
                     return null;
                 }
                 else
@@ -386,7 +394,7 @@ namespace GoodFriend.Types
             {
                 var result = this.HttpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
-                    this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
+                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {result.StatusCode}"), result);
                 else
                     this.RequestSuccess?.Invoke(result);
             }
@@ -411,7 +419,7 @@ namespace GoodFriend.Types
             {
                 var result = this.HttpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
-                    this.RequestError?.Invoke(new Exception($"Request failed with status code {result.StatusCode}"), result);
+                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {result.StatusCode}"), result);
                 else
                     this.RequestSuccess?.Invoke(result);
             }

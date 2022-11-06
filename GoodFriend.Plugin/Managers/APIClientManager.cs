@@ -66,7 +66,7 @@ namespace GoodFriend.Managers
             UpdateMetadataCache();
         }
 
-        /// <summary> 
+        /// <summary>
         ///     The API Client associated with the manager.
         /// </summary>
         private APIClient APIClient { get; set; } = new APIClient(PluginService.Configuration);
@@ -87,7 +87,7 @@ namespace GoodFriend.Managers
         private readonly Framework _framework;
 
         /// <summary>
-        ///     Instantiates a new APIClientManager. 
+        ///     Instantiates a new APIClientManager.
         /// </summary>
         public APIClientManager(ClientState clientState, Framework framework)
         {
@@ -227,7 +227,7 @@ namespace GoodFriend.Managers
 
         /// <summary>
         ///     Handles data received from the APIClient.
-        /// </summary> 
+        /// </summary>
         private unsafe void OnSSEDataReceived(APIClient.UpdatePayload data)
         {
             if (data.ContentID == Hashing.HashSHA512(_currentContentId.ToString()))
@@ -325,7 +325,7 @@ namespace GoodFriend.Managers
             }
         }
 
-        /// <summary> 
+        /// <summary>
         ///     Handles the APIClient connected event.
         /// </summary>
         private void OnSSEAPIClientConnected()

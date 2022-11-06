@@ -42,7 +42,7 @@ namespace GoodFriend.Managers
             PluginLog.Debug("ResourceManager(Dispose): Successfully disposed.");
         }
 
-        /// <summary> 
+        /// <summary>
         ///     Downloads the repository from GitHub and extracts the resource data.
         /// </summary>
         internal void Update()
@@ -111,7 +111,8 @@ namespace GoodFriend.Managers
         {
             PluginLog.Information($"ResourceManager(Setup): Setting up resources for language {language}...");
 
-            try { Loc.Setup(File.ReadAllText($"{PluginConstants.assemblyLocDir}{language}.json")); }
+            try
+            { Loc.Setup(File.ReadAllText($"{PluginConstants.assemblyLocDir}{language}.json")); }
             catch { Loc.SetupWithFallbacks(); }
 
             PluginLog.Information("ResourceManager(Setup): Resources setup.");

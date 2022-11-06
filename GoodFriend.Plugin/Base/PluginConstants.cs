@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace GoodFriend.Base
 {
-    /// <summary> 
+    /// <summary>
     ///     A collection of read-only strings used by the plugin.
     /// </summary>
     public static class PluginConstants

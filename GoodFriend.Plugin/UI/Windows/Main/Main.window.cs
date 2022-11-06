@@ -299,7 +299,8 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             bool error = false;
 #pragma warning disable CA1806 // Do not ignore method results
-                            try { string.Format(loginMessage, "test"); }
+                            try
+                            { string.Format(loginMessage, "test"); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 
@@ -329,7 +330,8 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             bool error = false;
 #pragma warning disable CA1806 // Do not ignore method results
-                            try { string.Format(logoutMessage, "test"); }
+                            try
+                            { string.Format(logoutMessage, "test"); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 
@@ -423,7 +425,8 @@ namespace GoodFriend.UI.Windows.Main
 
                             bool error = false;
 #pragma warning disable CA1806 // Do not ignore method results
-                            try { new Uri(APIUrl); }
+                            try
+                            { new Uri(APIUrl); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 

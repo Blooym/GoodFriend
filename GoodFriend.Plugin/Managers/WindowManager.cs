@@ -51,8 +51,8 @@ namespace GoodFriend.Managers
         }
 
         /// <summary>
-        ///     Opens/Closes the plugin configuration window. 
-        /// </summary> 
+        ///     Opens/Closes the plugin configuration window.
+        /// </summary>
         private void OnOpenConfigUI()
         {
             if (_windowSystem.GetWindow(PluginConstants.pluginName) is MainWindow window)

@@ -9,7 +9,7 @@ namespace GoodFriend.UI.ImGuiComponents
     public static class Positioning
     {
         /// <summary>
-        ///     Centers the given text on in the middle of the current window. 
+        ///     Centers the given text on in the middle of the current window.
         /// </summary>
         /// <param name="text"> The text to center. </param>
         /// <param name="colour"> The colour to show the text in, blank for default. </param>

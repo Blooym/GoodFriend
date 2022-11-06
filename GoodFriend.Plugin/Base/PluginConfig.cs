@@ -31,7 +31,7 @@ namespace GoodFriend.Base
         /// </summary>
         public string FriendLoggedOutMessage { get; set; } = "{0} has logged out.";
 
-        /// <summary> 
+        /// <summary>
         ///     Whether or not to hide notifications for the same free company.
         /// </summary>
         public bool HideSameFC { get; set; } = true;
@@ -61,7 +61,7 @@ namespace GoodFriend.Base
         /// </summary>
         public bool ShowAPIEvents { get; set; }
 
-        /// <summary> 
+        /// <summary>
         ///     The extra salt to apply when hashing the players ContentID, used to create "closed"  notification groups.
         /// </summary>
         public string FriendshipCode { get; set; } = "";

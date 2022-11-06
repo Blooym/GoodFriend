@@ -3,7 +3,7 @@ using ImGuiNET;
 
 namespace GoodFriend.UI.ImGuiComponents
 {
-    /// <summary> 
+    /// <summary>
     ///     Components and constants for colours.
     /// </summary>
     public static class Colours
@@ -23,7 +23,7 @@ namespace GoodFriend.UI.ImGuiComponents
         public static readonly Vector4 APIDisconnected = new(0.5f, 0.5f, 0.5f, 1.0f);
         public static readonly Vector4 APIRatelimited = new(1.0f, 0.5f, 0.0f, 1.0f);
 
-        /// <summary> 
+        /// <summary>
         ///     Creates a ImgGui.TextWrapped() with the given text and colour.
         /// </summary>
         /// <param name="colour"> The colour to show the text in. </param>

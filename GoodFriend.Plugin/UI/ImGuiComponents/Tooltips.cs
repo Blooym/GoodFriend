@@ -21,7 +21,7 @@ namespace GoodFriend.UI.ImGuiComponents
         }
 
         /// <summary>
-        ///    Creates a button with a tooltip on hover. 
+        ///    Creates a button with a tooltip on hover.
         /// </summary>
         /// <param name="text"> The text to display on the button. </param>
         /// <param name="tooltip"> The text to show on hover. </param>
