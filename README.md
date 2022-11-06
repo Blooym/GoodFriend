@@ -52,7 +52,7 @@ This plugin allows for 3rd party API instances to be used instead of the officia
 
 If you still wish to connect to a third party instance, simply put the URL to the API into the "API URL" option and restart the plugin; as long as the server and plugin match route versions and everything server-side is configured properly, you should be good to go.
 
-If you wish to host your own instance, please read the README in the [Server directory](./src/GoodFriend.Server/README.md).
+If you wish to host your own instance, please read the README in the [Server directory](./GoodFriend.Server/README.md).
 
 ## Technical Details
 **"Client"** refers to a user that is running the plugin.

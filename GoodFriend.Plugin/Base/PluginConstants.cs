@@ -46,7 +46,7 @@ namespace GoodFriend.Base
         /// <summary>
         ///     The resources directory relative to the base of the repository.
         /// </summary>
-        internal static readonly string repoResourcesDir = "src/GoodFriend.Plugin/Resources/";
+        internal static readonly string repoResourcesDir = "GoodFriend.Plugin/Resources/";
 
         /// <summary>
         ///     The resources directory relative to the base of the the assembly location.

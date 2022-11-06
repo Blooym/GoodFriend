@@ -4,7 +4,7 @@
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
-	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
+	"postAttachCommand": "cd GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
 	"customizations": {
 		"vscode": {
 			"extensions": [

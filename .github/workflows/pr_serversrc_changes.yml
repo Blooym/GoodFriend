@@ -2,29 +2,29 @@ name: "PR: Server Code Changes"
 
 on:
   pull_request:
-    branches: [ "main" ]
-    paths: 
-      - '**.ts'
-      - '**Dockerfile'
-      - '.github/workflows/pr_serversrc_changes.yml'    
+    branches: ["main"]
+    paths:
+      - "**.ts"
+      - "**Dockerfile"
+      - ".github/workflows/pr_serversrc_changes.yml"
     types: [ready_for_review, opened, synchronize, reopened]
 
 jobs:
   Docker-Image-Build:
     runs-on: ubuntu-latest
     steps:
-    - name: GitHub Checkout 
-      uses: actions/checkout@v3
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-      
-    - name: Build Docker Image
-      uses: docker/build-push-action@v3
-      with:
-        context: ./src/GoodFriend.Server/
-        file: ./src/GoodFriend.Server/Dockerfile
-        push: false
-        tags: testbuild/testbuild:latest
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      - name: GitHub Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./GoodFriend.Server/
+          file: ./GoodFriend.Server/Dockerfile
+          push: false
+          tags: testbuild/testbuild:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

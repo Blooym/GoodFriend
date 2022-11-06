@@ -30,11 +30,11 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore Dependencies
-        working-directory: src/GoodFriend.Plugin
+        working-directory: GoodFriend.Plugin
         run: dotnet restore
 
       - name: Download Dalamud Library
-        working-directory: src/GoodFriend.Plugin
+        working-directory: GoodFriend.Plugin
         run: |
           export IsCI=true
           wget -O Dalamud.zip https://goatcorp.github.io/dalamud-distrib/latest.zip
@@ -42,7 +42,7 @@ jobs:
 
       - name: Build Plugin
         shell: bash
-        working-directory: src/GoodFriend.Plugin
+        working-directory: GoodFriend.Plugin
         run: |
           dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ env.tag }}
           sha512sum bin/Release/GoodFriend/latest.zip  >> checksums.txt
@@ -55,9 +55,9 @@ jobs:
           generate_release_notes: true
           prerelease: false
           files: |
-            src/GoodFriend.Plugin/bin/Release/GoodFriend/latest.zip
-            src/GoodFriend.Plugin/bin/Release/GoodFriend/GoodFriend.json
-            src/GoodFriend.Plugin/checksums.txt
+            GoodFriend.Plugin/bin/Release/GoodFriend/latest.zip
+            GoodFriend.Plugin/bin/Release/GoodFriend/GoodFriend.json
+            GoodFriend.Plugin/checksums.txt
 
   Release-Server:
     runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -89,8 +89,8 @@ jobs:
       - name: Build & Publish Image (Versioned)
         uses: docker/build-push-action@v3
         with:
-          file: ./src/GoodFriend.Server/Dockerfile
-          context: ./src/GoodFriend.Server/
+          file: ./GoodFriend.Server/Dockerfile
+          context: ./GoodFriend.Server/
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

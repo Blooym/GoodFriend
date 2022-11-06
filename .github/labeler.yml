@@ -1,11 +1,11 @@
 changes | localization:
-  - "src/GoodFriend.Plugin/Resources/Localization/**/*"
+  - "GoodFriend.Plugin/Resources/Localization/**/*"
 
 changes | ci:
   - ".github/workflows/**/*"
 
 changes | plugin:
-  - "src/GoodFriend.Plugin/**/*"
+  - "GoodFriend.Plugin/**/*"
 
 changes | server:
-  - "src/GoodFriend.Server/**/*"
+  - "GoodFriend.Server/**/*"
