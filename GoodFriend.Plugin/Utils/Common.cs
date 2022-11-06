@@ -1,5 +1,5 @@
 using System;
-// using System.Globalization;
+using System.Globalization;
 using System.Linq;
 using GoodFriend.Base;
 
@@ -19,9 +19,9 @@ namespace GoodFriend.Utils
         /// <summary>
         ///     Checks to see if the plugin came from an official source
         /// </summary>
-        // public static bool IsOfficialSource =>
-        // PluginService.PluginInterface.SourceRepository.StartsWith("https://kamori.goats.dev/Plugin/PluginMaster", true, CultureInfo.InvariantCulture) ||
-        // PluginService.PluginInterface.SourceRepository.StartsWith(PluginConstants.RawRepoUrl.ToString(), true, CultureInfo.InvariantCulture);
+        public static bool IsOfficialSource =>
+        PluginService.PluginInterface.SourceRepository.StartsWith("https://kamori.goats.dev/Plugin/PluginMaster", true, CultureInfo.InvariantCulture) ||
+        PluginService.PluginInterface.SourceRepository.StartsWith(PluginConstants.RawRepoUrl.ToString(), true, CultureInfo.InvariantCulture);
 
         /// <summary>
         ///     Checks to see if the plugin is a dev build
