@@ -1,5 +1,3 @@
-# This workflow outlines tasks that are ran when a pull request that modifies source code is made, such as building a preview
-
 name: "PR: Plugin Code Changes"
 
 on:
@@ -13,6 +11,9 @@ jobs:
   Build:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
