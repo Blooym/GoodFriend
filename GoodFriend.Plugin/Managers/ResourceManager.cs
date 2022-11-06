@@ -73,7 +73,7 @@ namespace GoodFriend.Managers
                     ZipFile.ExtractToDirectory(zipFilePath, Path.GetTempPath(), true);
                     foreach (var dirPath in Directory.GetDirectories(zipExtractPath, "*", SearchOption.AllDirectories))
                     {
-                        _ = Directory.CreateDirectory(dirPath.Replace(zipExtractPath, pluginExtractPath));
+                        Directory.CreateDirectory(dirPath.Replace(zipExtractPath, pluginExtractPath));
                         PluginLog.Debug($"ResourceManager(Update): Created directory: {dirPath.Replace(zipExtractPath, pluginExtractPath)}");
                     }
 

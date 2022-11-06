@@ -32,7 +32,7 @@ namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, connectionStatusColour / 1.2f);
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, connectionStatusColour / 1.4f);
                 ImGui.SetCursorPosX((ImGui.GetWindowWidth() / 2) - (ImGui.CalcTextSize(connectionStatusText).X * 2.5f / 2));
-                _ = ImGui.Button(connectionStatusText, new Vector2(ImGui.CalcTextSize(connectionStatusText).X * 2.5f, ImGui.GetFontSize() * 1.3f));
+                ImGui.Button(connectionStatusText, new Vector2(ImGui.CalcTextSize(connectionStatusText).X * 2.5f, ImGui.GetFontSize() * 1.3f));
                 ImGui.PopStyleColor(3);
 
                 // Connection status description

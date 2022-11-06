@@ -18,7 +18,7 @@ namespace GoodFriend
         /// </summary>
         public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
         {
-            _ = pluginInterface.Create<PluginService>();
+            pluginInterface.Create<PluginService>();
             PluginService.Initialize();
 
             if (!Common.IsOfficialSource && !Common.IsDevBuild)

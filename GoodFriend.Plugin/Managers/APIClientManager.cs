@@ -163,21 +163,21 @@ namespace GoodFriend.Managers
                 this.APIClient.OpenSSEStream();
             }
 
-            _ = Task.Run(() =>
-            {
-                while (this.clientState.LocalContentId == 0 || this.clientState.LocalPlayer == null)
-                {
-                    Task.Delay(100).Wait();
-                }
+            Task.Run(() =>
+          {
+              while (this.clientState.LocalContentId == 0 || this.clientState.LocalPlayer == null)
+              {
+                  Task.Delay(100).Wait();
+              }
 
-                this.currentContentId = this.clientState.LocalContentId;
-                this.currentHomeworldId = this.clientState.LocalPlayer.HomeWorld.Id;
-                this.currentTerritoryId = this.clientState.TerritoryType;
-                this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
-                this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
-                this.APIClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
-                PluginLog.Information($"APIClientManager(OnLogin): Stored IDs set to: Homeworld: {this.currentHomeworldId}, World: {this.currentWorldId}, Datacenter: {this.currentDatacenterId}, Content: [REDACTED], Territory: {this.currentTerritoryId}");
-            });
+              this.currentContentId = this.clientState.LocalContentId;
+              this.currentHomeworldId = this.clientState.LocalPlayer.HomeWorld.Id;
+              this.currentTerritoryId = this.clientState.TerritoryType;
+              this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
+              this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
+              this.APIClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+              PluginLog.Information($"APIClientManager(OnLogin): Stored IDs set to: Homeworld: {this.currentHomeworldId}, World: {this.currentWorldId}, Datacenter: {this.currentDatacenterId}, Content: [REDACTED], Territory: {this.currentTerritoryId}");
+          });
         }
 
         /// <summary>

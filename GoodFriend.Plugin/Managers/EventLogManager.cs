@@ -48,7 +48,7 @@ namespace GoodFriend.Managers
         internal void RemoveEntry(Guid id)
         {
             PluginLog.Debug($"EventLogManager(RemoveEntry): Removing entry: {id}");
-            _ = this.EventLog.RemoveAll(x => x.ID == id);
+            this.EventLog.RemoveAll(x => x.ID == id);
         }
 
         /// <summary>

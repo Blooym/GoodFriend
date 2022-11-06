@@ -527,7 +527,7 @@ namespace GoodFriend.UI.Windows.Main
         private static void DrawSupport()
         {
             // Top caption and flavour text.
-            _ = ImGui.BeginChild("SupportDropdown");
+            ImGui.BeginChild("SupportDropdown");
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportTitle);
             ImGui.Separator();
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportFlavourText);
@@ -565,7 +565,7 @@ namespace GoodFriend.UI.Windows.Main
             else
             {
                 ImGui.BeginDisabled();
-                _ = ImGui.Button(PrimaryWindow.DropdownSupportDonate);
+                ImGui.Button(PrimaryWindow.DropdownSupportDonate);
                 ImGui.EndDisabled();
             }
             ImGui.EndChild();
@@ -576,7 +576,7 @@ namespace GoodFriend.UI.Windows.Main
         /// </summary>
         private static void DrawLogs()
         {
-            _ = ImGui.BeginChild("Logs");
+            ImGui.BeginChild("Logs");
             ImGui.TextDisabled("Logs");
             ImGui.Separator();
 
@@ -610,11 +610,11 @@ namespace GoodFriend.UI.Windows.Main
                         }
 
                         ImGui.TableNextRow();
-                        _ = ImGui.TableSetColumnIndex(0);
+                        ImGui.TableSetColumnIndex(0);
                         ImGui.Text(log.Timestamp.ToString("HH:mm:ss"));
-                        _ = ImGui.TableSetColumnIndex(1);
+                        ImGui.TableSetColumnIndex(1);
                         ImGui.Text(log.Type.ToString());
-                        _ = ImGui.TableSetColumnIndex(2);
+                        ImGui.TableSetColumnIndex(2);
                         ImGui.Text(log.Message);
                         ImGui.PopStyleColor();
                     }

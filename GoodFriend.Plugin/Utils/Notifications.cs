@@ -60,9 +60,9 @@ namespace GoodFriend.Utils
         private static void ShowChat(string message, ushort colour)
         {
             SeStringBuilder stringBuilder = new();
-            _ = stringBuilder.AddUiForeground(colour);
-            _ = stringBuilder.AddText(message);
-            _ = stringBuilder.AddUiForegroundOff();
+            stringBuilder.AddUiForeground(colour);
+            stringBuilder.AddText(message);
+            stringBuilder.AddUiForegroundOff();
             PluginService.Chat.Print(stringBuilder.BuiltString);
         }
 
