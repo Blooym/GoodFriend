@@ -463,10 +463,10 @@ namespace GoodFriend.Types
         {
             public string? ContentID { get; set; }
             public bool LoggedIn { get; set; }
-            public uint? HomeworldID { get; set; }
-            public uint? WorldID { get; set; }
-            public uint? DatacenterID { get; set; }
-            public uint? TerritoryID { get; set; }
+            public uint HomeworldID { get; set; }
+            public uint WorldID { get; set; }
+            public uint DatacenterID { get; set; }
+            public uint TerritoryID { get; set; }
         }
 
         /// <summary>
