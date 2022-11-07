@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import Client from '@mtypes/Client';
-import isValidID from '@utils/Validators';
+import { isValidContentIDHash, isValidIDUint } from '@utils/Validators';
 import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
 
 /**
@@ -15,7 +15,12 @@ export default (req: Request, res: Response, clients: Client) => {
     contentID, homeworldID, territoryID, worldID, datacenterID,
   } = req.query;
 
-  if (!isValidID(contentID as string) || !homeworldID || !territoryID) res.sendStatus(400);
+  if (!isValidContentIDHash(contentID as string)
+  || !isValidIDUint(homeworldID as string)
+  || !isValidIDUint(territoryID as string)
+  || !isValidIDUint(worldID as string)
+  || !isValidIDUint(datacenterID as string)) res.sendStatus(400);
+
   else {
     const event = {
       ContentID: contentID,

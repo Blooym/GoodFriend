@@ -11,6 +11,11 @@ const router = Router();
 
 const sseClients: Client = [];
 
+router.use((req, res, next) => {
+  res.set('Warning', '299 - "This endpoint is deprecated and will be removed in a future version."');
+  next();
+});
+
 router.put('/login', (req, res) => loginHandler(req, res, sseClients));
 router.put('/logout', (req, res) => logoutHandler(req, res, sseClients));
 
