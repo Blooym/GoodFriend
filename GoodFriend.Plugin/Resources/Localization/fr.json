@@ -27,38 +27,6 @@
     "message": "vient de se déconnecter.",
     "description": "Events.get_LoggedOut"
   },
-  "NotiicationType.Toast": {
-    "message": "Toast",
-    "description": "NotificationType"
-  },
-  "NotiicationType.Chat": {
-    "message": "Chat",
-    "description": "NotificationType"
-  },
-  "NotiicationType.Popup": {
-    "message": "Popup",
-    "description": "NotificationType"
-  },
-  "NotificationType.Toast.Description": {
-    "message": "A toast notification that appears in the corner of the screen.",
-    "description": "NotificationType"
-  },
-  "NotificationType.Chat.Description": {
-    "message": "A chat notification that appears in the chat window.",
-    "description": "NotificationType"
-  },
-  "NotificationType.Popup.Description": {
-    "message": "A popup notification that appears in the center of the screen.",
-    "description": "NotificationType"
-  },
-  "SaltMethods.Strict": {
-    "message": "Strict",
-    "description": "SaltMethods"
-  },
-  "SaltMethods.Relaxed": {
-    "message": "Relaxed",
-    "description": "SaltMethods"
-  },
   "State.Connected": {
     "message": "Connecté",
     "description": "State.get_Connected"
@@ -311,6 +279,14 @@
     "message": "Message",
     "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
+  "Window.Settings.Build.Official": {
+    "message": "Official Build",
+    "description": "PrimaryWindow.get_SettingsOfficialBuild"
+  },
+  "Window.Settings.Build.Unofficial": {
+    "message": "Unofficial Build",
+    "description": "PrimaryWindow.get_SettingsUnofficialBuild"
+  },
   "Window.URLUpdateNag.Title": {
     "message": "{0} - Mise à jour à partir de {1}",
     "description": "URLNagWindow.URLUpdateNagTitle"
@@ -326,5 +302,37 @@
   "Window.URLUpdateNag.Button.Ignore": {
     "message": "Ignorer pour cette session",
     "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
+  },
+  "Enum.SaltMethod.Strict": {
+    "message": "Strict",
+    "description": "EnumLocalizations.get_SaltMethodStrict"
+  },
+  "Enum.SaltMethod.Relaxed": {
+    "message": "Relaxed",
+    "description": "EnumLocalizations.get_SaltMethodRelaxed"
+  },
+  "Enum.NotificationType.Popup": {
+    "message": "Popup",
+    "description": "EnumLocalizations.get_NotificationTypePopup"
+  },
+  "Enum.NotificationType.Popup.Description": {
+    "message": "A popup notification that appears in the middle of the screen.",
+    "description": "EnumLocalizations.get_NotificationTypePopupDescription"
+  },
+  "Enum.NotificationType.Chat": {
+    "message": "Chat",
+    "description": "EnumLocalizations.get_NotificationTypeChat"
+  },
+  "Enum.NotificationType.Chat.Description": {
+    "message": "A chat message that appears in the chat log.",
+    "description": "EnumLocalizations.get_NotificationTypeChatDescription"
+  },
+  "Enum.NotificationType.Toast": {
+    "message": "Toast",
+    "description": "EnumLocalizations.get_NotificationTypeToast"
+  },
+  "Enum.NotificationType.Toast.Description": {
+    "message": "A notification that appears in the bottom corner of the screen.",
+    "description": "EnumLocalizations.get_NotificationTypeToastDescription"
   }
 }
