@@ -302,37 +302,5 @@
   "Window.URLUpdateNag.Button.Ignore": {
     "message": "Ignore for this session",
     "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
-  },
-  "Enum.SaltMethod.Strict": {
-    "message": "Strict",
-    "description": "EnumLocalizations.get_SaltMethodStrict"
-  },
-  "Enum.SaltMethod.Relaxed": {
-    "message": "Relaxed",
-    "description": "EnumLocalizations.get_SaltMethodRelaxed"
-  },
-  "Enum.NotificationType.Popup": {
-    "message": "Popup",
-    "description": "EnumLocalizations.get_NotificationTypePopup"
-  },
-  "Enum.NotificationType.Popup.Description": {
-    "message": "A popup notification that appears in the middle of the screen.",
-    "description": "EnumLocalizations.get_NotificationTypePopupDescription"
-  },
-  "Enum.NotificationType.Chat": {
-    "message": "Chat",
-    "description": "EnumLocalizations.get_NotificationTypeChat"
-  },
-  "Enum.NotificationType.Chat.Description": {
-    "message": "A chat message that appears in the chat log.",
-    "description": "EnumLocalizations.get_NotificationTypeChatDescription"
-  },
-  "Enum.NotificationType.Toast": {
-    "message": "Toast",
-    "description": "EnumLocalizations.get_NotificationTypeToast"
-  },
-  "Enum.NotificationType.Toast.Description": {
-    "message": "A notification that appears in the bottom corner of the screen.",
-    "description": "EnumLocalizations.get_NotificationTypeToastDescription"
   }
 }
