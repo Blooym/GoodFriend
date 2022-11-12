@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="../../.assets/icon.png" alt="Goodfriend Logo" width="15%">
+<img src="../.assets/icon.png" alt="Goodfriend Logo" width="15%">
   
 # Good Friend API Component
 
