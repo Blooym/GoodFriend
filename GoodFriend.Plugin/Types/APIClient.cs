@@ -23,62 +23,67 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The Delegate that is used for <see cref="SSEDataReceived"/>.
         /// </summary>
-        public delegate void SSEDataReceivedDelegate(UpdatePayload data);
+        /// <param name="data">The data received from the SSE stream.</param>
+        public delegate void DelegateSSEDataReceived(UpdatePayload data);
 
         /// <summary>
         ///     Fired when data is new SSE data is received.
         /// </summary>
-        public event SSEDataReceivedDelegate? SSEDataReceived;
+        public event DelegateSSEDataReceived? SSEDataReceived;
 
         /// <summary>
         ///     The Delegate that is used for <see cref="SSEConnectionEstablished"/>.
         /// </summary>
-        public delegate void SSEConnectionEstablishedDelegate();
+        public delegate void DelegateSSEConnectionEstablished();
 
         /// <summary>
         ///     Fired when a successful SSE connection is established.
         /// </summary>
-        public event SSEConnectionEstablishedDelegate? SSEConnectionEstablished;
+        public event DelegateSSEConnectionEstablished? SSEConnectionEstablished;
 
         /// <summary>
         ///      The Delegate that is used for <see cref="SSEConnectionClosed"/>.
         /// </summary>
-        public delegate void SSEConnectionClosedDelegate();
+        public delegate void DelegateSSEConnectionClosed();
 
         /// <summary>
         ///     Fired when the SSE connection is closed.
         /// </summary>
-        public event SSEConnectionClosedDelegate? SSEConnectionClosed;
+        public event DelegateSSEConnectionClosed? SSEConnectionClosed;
 
         /// <summary>
         ///     The Delegate that is used for <see cref="SSEConnectionError"/>.
         /// </summary>
-        public delegate void SSEConnectionErrorDelegate(Exception error);
+        /// <param name="error">The exception that was thrown.</param>
+        public delegate void DelegateSSEConnectionError(Exception error);
 
         /// <summary>
         ///     Fired when an error occurs with the SSE connection.
         /// </summary>
-        public event SSEConnectionErrorDelegate? SSEConnectionError;
+        public event DelegateSSEConnectionError? SSEConnectionError;
 
         /// <summary>
         ///     The Delegate that is used for <see cref="RequestError"/>.
         /// </summary>
-        public delegate void RequestErrorDelegate(Exception error, HttpResponseMessage? response);
+        /// <param name="error">The exception that was thrown.</param>
+        /// <param name="response">The response that was received.</param>
+        public delegate void DelegateRequestError(Exception error, HttpResponseMessage? response);
 
         /// <summary>
         ///     Fired when an error occurs with a request, use <see cref="SSEConnectionError"/> for SSE errors.
         /// </summary>
-        public event RequestErrorDelegate? RequestError;
+        public event DelegateRequestError? RequestError;
 
         /// <summary>
         ///     The Delegate that is used for <see cref="RequestSuccess"/>.
         /// </summary>
-        public delegate void RequestSuccessDelegate(HttpResponseMessage response);
+        /// <param name="response">The response that was received.</param>
+        public delegate void DelegateRequestSuccess(HttpResponseMessage response);
 
         /// <summary>
         ///     Fired when a request is successful.
         /// </summary>
-        public event RequestSuccessDelegate? RequestSuccess;
+        public event DelegateRequestSuccess? RequestSuccess;
 
         /// <summary>
         ///     Handles a successful connection to the API.
@@ -106,6 +111,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Handles errors with the SSE connection.
         /// </summary>
+        /// <param name="error">The exception that was thrown.</param>
         private void OnSSEConnectionError(Exception error)
         {
             this.SSEIsConnected = false;
@@ -173,6 +179,8 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The event handler for handling SSE reconnection attempts.
         /// </summary>
+        /// <param name="sender">The object that fired the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnTryReconnect(object? sender, ElapsedEventArgs e) => this.OpenSSEStream();
 
         /// <summary>
@@ -183,11 +191,12 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Handles ratelimits from the API and sets the LastRequestRateLimited and RateLimitReset properties.
         /// </summary>
+        /// <param name="response">The response that was received.</param>
         private void HandleRatelimitAndStatuscode(HttpResponseMessage response)
         {
             if (response.StatusCode == (HttpStatusCode)429)
             {
-                PluginLog.Warning($"APIClient(HandleRatelimitAndStatuscode): Ratelimited by the API, adjusting requests accordingly.");
+                PluginLog.Warning("APIClient(HandleRatelimitAndStatuscode): Ratelimited by the API, adjusting requests accordingly.");
                 this.LastStatusCode = response.StatusCode;
 
                 if (response.Headers.TryGetValues("ratelimit-reset", out var values))
@@ -197,7 +206,7 @@ namespace GoodFriend.Types
                 }
                 else
                 {
-                    PluginLog.Information($"APIClient(HandleRatelimitAndStatuscode): No ratelimit-reset header received, setting reset time to a fallback value.");
+                    PluginLog.Information("APIClient(HandleRatelimitAndStatuscode): No ratelimit-reset header received, setting reset time to a fallback value.");
                     this.RateLimitReset = response.Headers.TryGetValues("retry-after", out var retryValues)
                         ? DateTime.Now.AddSeconds(int.Parse(retryValues.First()))
                         : DateTime.Now.AddSeconds(60);
@@ -222,6 +231,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Instantiates a new APIClient
         /// </summary>
+        /// <param name="config">The configuration for the API client.</param>
         public APIClient(Configuration config)
         {
             this.configuration = config;
@@ -232,7 +242,7 @@ namespace GoodFriend.Types
             this.sseReconnectTimer.Elapsed += this.OnTryReconnect;
             this.ConfigureHttpClient();
 
-            PluginLog.Debug($"APIClient(APIClient): Instantiated.");
+            PluginLog.Debug("APIClient(APIClient): Instantiated.");
         }
 
         /// <summary>
@@ -265,6 +275,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Opens the connection stream to the API, throws error if already connected.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown if the client is already connected.</exception>
         public void OpenSSEStream()
         {
             if (this.SSEIsConnected)
@@ -276,8 +287,9 @@ namespace GoodFriend.Types
         }
 
         /// <summary>
-        //      Closes the connection stream to the API, throws error if not connected.
+        ///      Closes the connection stream to the API, throws error if not connected.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown if the client is not connected.</exception>
         public void CloseSSEStream()
         {
             if (!this.SSEIsConnected)
@@ -336,7 +348,7 @@ namespace GoodFriend.Types
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
-                    if (data != null && data.ContentID != null)
+                    if (data?.ContentID != null)
                     {
                         SSEDataReceived?.Invoke(data);
                     }
@@ -383,13 +395,11 @@ namespace GoodFriend.Types
                     this.RequestError?.Invoke(new AggregateException($"Request failed with status code {response.StatusCode}"), response);
                     return null;
                 }
-                else
-                {
-                    var responseContent = response.Content.ReadAsStringAsync().Result;
-                    var data = JsonConvert.DeserializeObject<MetadataPayload>(responseContent);
-                    this.RequestSuccess?.Invoke(response);
-                    return data;
-                }
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<MetadataPayload>(responseContent);
+                this.RequestSuccess?.Invoke(response);
+
+                return data;
             }
             catch (Exception e)
             {
@@ -401,6 +411,11 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Send a login event to the configured API/logout endpoint.
         /// </summary>
+        /// <param name="contentID">The content ID of the user logging in.</param>
+        /// <param name="homeworldID">The homeworld of the user logging in.</param>
+        /// <param name="worldID">The world ID of the user logging in.</param>
+        /// <param name="territoryID">The territory ID of the user logging in.</param>
+        /// <param name="datacenterID">The datacenter ID of the user logging in.</param>
         public void SendLogin(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
             using var request = new HttpRequestMessage
@@ -430,6 +445,11 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Send a logout event to the configured API/logout endpoint.
         /// </summary>
+        /// <param name="contentID">The content ID of the user logging out.</param>
+        /// <param name="homeworldID">The homeworld of the user logging out.</param>
+        /// <param name="worldID">The world ID of the user logging out.</param>
+        /// <param name="territoryID">The territory ID of the user logging out.</param>
+        /// <param name="datacenterID">The datacenter ID of the user logging out.</param>
         public void SendLogout(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
             using var request = new HttpRequestMessage
@@ -479,6 +499,5 @@ namespace GoodFriend.Types
             public string? StatusPageUrl { get; set; }
             public string? NewApiUrl { get; set; }
         }
-
     }
 }

@@ -16,6 +16,7 @@ namespace GoodFriend
         /// <summary>
         ///     The plugin's main entry point.
         /// </summary>
+        /// <param name="pluginInterface"></param>
         public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
         {
             pluginInterface.Create<PluginService>();

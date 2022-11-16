@@ -41,15 +41,15 @@ namespace GoodFriend.Base
         /// <summary>
         ///     The production branch of the repository.
         /// </summary>
-        public static readonly string RepoBranch = "main";
+        public const string RepoBranch = "main";
 
         /// <summary>
         ///     The resources directory relative to the base of the repository.
         /// </summary>
-        internal static readonly string RepoResourcesDir = "GoodFriend.Plugin/Resources/";
+        internal const string RepoResourcesDir = "GoodFriend.Plugin/Resources/";
 
         /// <summary>
-        ///     The resources directory relative to the base of the the assembly location.
+        ///     The resources directory relative to the base of the assembly location.
         /// </summary>
         public static readonly string AssemblyResourcesDir = $"{PluginService.PluginInterface.AssemblyLocation.DirectoryName}\\Resources\\";
 

@@ -8,15 +8,12 @@ namespace GoodFriend.UI.ImGuiComponents
     /// </summary>
     public static class Colours
     {
-        // Generic colours
         public static readonly Vector4 Grey = new(0.5f, 0.5f, 0.5f, 1.0f);
 
-        // Generic "state" colours
         public static readonly Vector4 Success = new(0.2f, 0.8f, 0.2f, 1.0f);
         public static readonly Vector4 Warning = new(1.0f, 0.5f, 0.0f, 1.0f);
         public static readonly Vector4 Error = new(1.0f, 0.0f, 0.0f, 1.0f);
 
-        // API Status Colours
         public static readonly Vector4 APIConnected = new(0.2f, 0.8f, 0.2f, 1.0f);
         public static readonly Vector4 APIConnecting = new(1.0f, 0.5f, 0.0f, 1.0f);
         public static readonly Vector4 APIError = new(1.0f, 0.0f, 0.0f, 1.0f);

@@ -13,9 +13,9 @@ namespace GoodFriend.Base
     /// <summary>
     ///     Provides access to necessary instances and services.
     /// </summary>
-#pragma warning disable CS8618 // Injection is handled by the Dalamud Plugin Framework here.
     internal sealed class PluginService
     {
+#pragma warning disable CS8618, RCS1170 // Injection is handled by the Dalamud Plugin Framework here.
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; }
         [PluginService] internal static ClientState ClientState { get; private set; }
         [PluginService] internal static ChatGui Chat { get; private set; }
@@ -28,6 +28,7 @@ namespace GoodFriend.Base
         internal static APIClientManager APIClientManager { get; private set; }
         internal static Configuration Configuration { get; private set; }
         internal static EventLogManager EventLogManager { get; private set; }
+#pragma warning restore CS8618, RCS1170
 
         /// <summary>
         ///     Initializes the service class.

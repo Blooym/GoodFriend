@@ -12,7 +12,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     The <see cref="EventLogEntry"/>s that have been logged.
         /// </summary>
-        internal List<EventLogEntry> EventLog { get; private set; } = new();
+        internal readonly List<EventLogEntry> EventLog = new();
 
         /// <summary>
         ///    The maximum number of entries to keep in the log.
@@ -83,10 +83,10 @@ namespace GoodFriend.Managers
         /// </summary>
         internal enum EventLogType
         {
-            Debug,
-            Info,
-            Warning,
-            Error,
+            Debug = 0,
+            Info = 1,
+            Warning = 2,
+            Error = 3,
         }
     }
 }

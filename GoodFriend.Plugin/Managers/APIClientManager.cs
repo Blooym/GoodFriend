@@ -60,16 +60,18 @@ namespace GoodFriend.Managers
         /// <summary>
         ///    The event that fires when the metadata timer elapses.
         /// </summary>
+        /// <param name="source">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnMetadataTimerElapsed(object? source, ElapsedEventArgs e)
         {
-            PluginLog.Verbose($"APIClientManager(OnMetadataRefresh): Metadata timer elapsed, updating metadata cache.");
+            PluginLog.Verbose("APIClientManager(OnMetadataRefresh): Metadata timer elapsed, updating metadata cache.");
             this.UpdateMetadataCache();
         }
 
         /// <summary>
         ///     The API Client associated with the manager.
         /// </summary>
-        private APIClient APIClient { get; set; } = new APIClient(PluginService.Configuration);
+        private readonly APIClient apiClient = new(PluginService.Configuration);
 
         /// <summary>
         ///     The APIClient version string.
@@ -89,6 +91,8 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Instantiates a new APIClientManager.
         /// </summary>
+        /// <param name="clientState">The ClientState to use.</param>
+        /// <param name="framework">The Framework to use.</param>
         public APIClientManager(ClientState clientState, Framework framework)
         {
             PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
@@ -98,12 +102,12 @@ namespace GoodFriend.Managers
             this.UpdateMetadataCache();
 
             // Create event handlers
-            this.APIClient.SSEDataReceived += this.OnSSEDataReceived;
-            this.APIClient.SSEConnectionError += this.OnSSEAPIClientError;
-            this.APIClient.SSEConnectionEstablished += this.OnSSEAPIClientConnected;
-            this.APIClient.SSEConnectionClosed += this.OnSSEAPIClientDisconnected;
-            this.APIClient.RequestError += this.OnRequestError;
-            this.APIClient.RequestSuccess += this.OnRequestSuccess;
+            this.apiClient.SSEDataReceived += this.OnSSEDataReceived;
+            this.apiClient.SSEConnectionError += this.OnSSEAPIClientError;
+            this.apiClient.SSEConnectionEstablished += this.OnSSEAPIClientConnected;
+            this.apiClient.SSEConnectionClosed += this.OnSSEAPIClientDisconnected;
+            this.apiClient.RequestError += this.OnRequestError;
+            this.apiClient.RequestSuccess += this.OnRequestSuccess;
             this.clientState.Login += this.OnLogin;
             this.clientState.Logout += this.OnLogout;
             this.framework.Update += this.OnFrameworkUpdate;
@@ -122,7 +126,7 @@ namespace GoodFriend.Managers
                 this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
                 this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
                 PluginLog.Information("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
-                this.APIClient.OpenSSEStream();
+                this.apiClient.OpenSSEStream();
             }
 
             PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
@@ -133,16 +137,16 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            this.APIClient.Dispose();
+            this.apiClient.Dispose();
             this.clientState.Login -= this.OnLogin;
             this.clientState.Logout -= this.OnLogout;
             this.framework.Update -= this.OnFrameworkUpdate;
-            this.APIClient.SSEDataReceived -= this.OnSSEDataReceived;
-            this.APIClient.SSEConnectionError -= this.OnSSEAPIClientError;
-            this.APIClient.SSEConnectionEstablished -= this.OnSSEAPIClientConnected;
-            this.APIClient.SSEConnectionClosed -= this.OnSSEAPIClientDisconnected;
-            this.APIClient.RequestError -= this.OnRequestError;
-            this.APIClient.RequestSuccess -= this.OnRequestSuccess;
+            this.apiClient.SSEDataReceived -= this.OnSSEDataReceived;
+            this.apiClient.SSEConnectionError -= this.OnSSEAPIClientError;
+            this.apiClient.SSEConnectionEstablished -= this.OnSSEAPIClientConnected;
+            this.apiClient.SSEConnectionClosed -= this.OnSSEAPIClientDisconnected;
+            this.apiClient.RequestError -= this.OnRequestError;
+            this.apiClient.RequestSuccess -= this.OnRequestSuccess;
 
             this.metadataTimer.Elapsed -= this.OnMetadataTimerElapsed;
             this.metadataTimer.Stop();
@@ -154,11 +158,13 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the login event by opening the APIClient stream and sending a login.
         /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private unsafe void OnLogin(object? sender, EventArgs e)
         {
-            if (!this.APIClient.SSEIsConnected)
+            if (!this.apiClient.SSEIsConnected)
             {
-                this.APIClient.OpenSSEStream();
+                this.apiClient.OpenSSEStream();
             }
 
             Task.Run(() =>
@@ -176,24 +182,26 @@ namespace GoodFriend.Managers
               this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
 
               // Send a login
-              this.APIClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
-              PluginLog.Information($"APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
+              this.apiClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+              PluginLog.Information("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
           });
         }
 
         /// <summary>
         ///     Handles the logout event by closing the APIClient stream and sending a logout.
         /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnLogout(object? sender, EventArgs e)
         {
-            if (this.APIClient.SSEIsConnected)
+            if (this.apiClient.SSEIsConnected)
             {
-                this.APIClient.CloseSSEStream();
+                this.apiClient.CloseSSEStream();
             }
 
             // Cancel any pending requests and send a logout.
-            this.APIClient.CancelPendingRequests();
-            this.APIClient.SendLogout(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+            this.apiClient.CancelPendingRequests();
+            this.apiClient.SendLogout(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
 
             // Clear the current IDs
             this.currentTerritoryId = 0;
@@ -209,6 +217,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the framework update event.
         /// </summary>
+        /// <param name="framework"></param>
         private void OnFrameworkUpdate(Framework framework)
         {
             var currentWorld = this.clientState.LocalPlayer?.CurrentWorld;
@@ -230,6 +239,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles data received from the APIClient.
         /// </summary>
+        /// <param name="data">The data received.</param>
         private unsafe void OnSSEDataReceived(APIClient.UpdatePayload data)
         {
             if (data.ContentID == Hashing.HashSHA512(this.currentContentId.ToString()))
@@ -237,12 +247,12 @@ namespace GoodFriend.Managers
                 return;
             }
 
-            PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing.");
+            PluginLog.Verbose("APIClientManager(OnSSEDataReceived): Data received from API, processing.");
 
             // Don't process the data if the ContentID is null.
             if (data.ContentID == null)
             {
-                PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Event was malformed due to a null ContentID, ignoring.");
+                PluginLog.Verbose("APIClientManager(OnSSEDataReceived): Event was malformed due to a null ContentID, ignoring.");
                 return;
             }
 
@@ -261,7 +271,7 @@ namespace GoodFriend.Managers
             // If friend is null, the user is not added by the client.
             if (friend == null || data == null)
             {
-                PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): No friend found from the event, cannot display to client.");
+                PluginLog.Verbose("APIClientManager(OnSSEDataReceived): No friend found from the event, cannot display to client.");
                 return;
             }
 
@@ -316,6 +326,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the APIClient error event.
         /// </summary>
+        /// <param name="e">The error.</param>
         private void OnSSEAPIClientError(Exception e)
         {
             this.hasConnectedSinceError = false;
@@ -348,13 +359,15 @@ namespace GoodFriend.Managers
         private void OnSSEAPIClientDisconnected()
         {
             this.hasConnectedSinceError = false;
-            PluginLog.Information($"APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
+            PluginLog.Information("APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
         }
 
         /// <summary>
         ///     Handles the APIClient RequestError event.
         /// </summary>
+        /// <param name="e">The error.</param>
+        /// <param name="response">The request.</param>
         private void OnRequestError(Exception e, HttpResponseMessage? response)
         {
             var uri = response?.RequestMessage?.RequestUri?.ToString().Split('?')[0];
@@ -373,6 +386,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the APIClient RequestSuccess event.
         /// </summary>
+        /// <param name="response">The request.</param>
         private void OnRequestSuccess(HttpResponseMessage response)
         {
             var uri = response.RequestMessage?.RequestUri?.ToString().Split('?')[0];
@@ -383,17 +397,33 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Get the connection status of the API.
         /// </summary>
-        public ConnectionStatus GetConnectionStatus() => this.APIClient.LastStatusCode == HttpStatusCode.TooManyRequests
-                ? ConnectionStatus.Ratelimited
-                : !this.hasConnectedSinceError
-                ? ConnectionStatus.Error
-                : this.APIClient.SSEIsConnected
-                ? ConnectionStatus.Connected
-                : this.APIClient.SSEIsConnecting ? ConnectionStatus.Connecting : ConnectionStatus.Disconnected;
+        public ConnectionStatus GetConnectionStatus()
+        {
+            if (this.apiClient.LastStatusCode == HttpStatusCode.TooManyRequests)
+            {
+                return ConnectionStatus.Ratelimited;
+            }
+            else if (!this.hasConnectedSinceError)
+            {
+                return ConnectionStatus.Error;
+            }
+            else if (this.apiClient.SSEIsConnected)
+            {
+                return ConnectionStatus.Connected;
+            }
+            else if (this.apiClient.SSEIsConnecting)
+            {
+                return ConnectionStatus.Connecting;
+            }
+            else
+            {
+                return ConnectionStatus.Disconnected;
+            }
+        }
 
         private void UpdateMetadataCache()
         {
-            var metadata = this.APIClient.GetMetadata();
+            var metadata = this.apiClient.GetMetadata();
             if (metadata != null)
             {
                 this.MetadataCache = metadata;
@@ -401,7 +431,7 @@ namespace GoodFriend.Managers
             }
             else
             {
-                PluginLog.Debug($"APIClientManager(GetMetadata): Unable to update metadata cache.");
+                PluginLog.Debug("APIClientManager(GetMetadata): Unable to update metadata cache.");
             }
         }
     }

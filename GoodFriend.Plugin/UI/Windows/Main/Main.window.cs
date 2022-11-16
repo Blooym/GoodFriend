@@ -107,8 +107,6 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.SetCursorPosX(((ImGui.GetWindowWidth() - ImGui.CalcTextSize(message).X) / 2) - ImGui.GetStyle().WindowPadding.X);
                     ImGui.TextDisabled(message);
                     break;
-                default:
-                    break;
             }
         }
 
@@ -139,13 +137,11 @@ namespace GoodFriend.UI.Windows.Main
                     var hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
                     var hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
 
-
                     ImGui.BeginChild("GeneralSettings");
                     if (ImGui.BeginTable("GeneralSettingsTable", 2))
                     {
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
-
 
                         // Ignore FC Members
                         ImGui.TableSetColumnIndex(0);
@@ -170,7 +166,6 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreFCTooltip);
                         ImGui.TableNextRow();
 
-
                         // Ignore different worlds.
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffWorlds);
@@ -193,7 +188,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffWorldsTooltip);
                         ImGui.TableNextRow();
-
 
                         // Ignore different homeworlds.
                         ImGui.TableSetColumnIndex(0);
@@ -218,7 +212,6 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffHomeworldsTooltip);
                         ImGui.TableNextRow();
 
-
                         // Ignore different datacenters.
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsIgnoreDiffDatacenters);
@@ -241,7 +234,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffDatacentersTooltip);
                         ImGui.TableNextRow();
-
 
                         // Ignore different territories.
                         ImGui.TableSetColumnIndex(0);
@@ -266,7 +258,6 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffTerritoriesTooltip);
                         ImGui.TableNextRow();
 
-
                         // Notification Type
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsNotificationType);
@@ -286,7 +277,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsNotificationTypeTooltip);
                         ImGui.TableNextRow();
-
 
                         // Login message
                         ImGui.TableSetColumnIndex(0);
@@ -317,7 +307,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
                         ImGui.TableNextRow();
-
 
                         // Logout message
                         ImGui.TableSetColumnIndex(0);
@@ -370,7 +359,6 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
 
-
                         // API Connection Notifications
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsAPINotifications);
@@ -394,7 +382,6 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPINotificationsTooltip);
                         ImGui.TableNextRow();
 
-
                         // Friendship code
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsFriendshipCode);
@@ -407,7 +394,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendshipCodeTooltip);
                         ImGui.TableNextRow();
-
 
                         // API URL
                         ImGui.TableSetColumnIndex(0);
@@ -448,7 +434,6 @@ namespace GoodFriend.UI.Windows.Main
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
                         ImGui.TableNextRow();
 
-
                         // API Token
                         ImGui.TableSetColumnIndex(0);
                         ImGui.Text(PrimaryWindow.DropdownSettingsAPIToken);
@@ -462,7 +447,6 @@ namespace GoodFriend.UI.Windows.Main
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
                         ImGui.TableNextRow();
-
 
                         // Salt Method
                         ImGui.TableSetColumnIndex(0);
@@ -533,7 +517,6 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportFlavourText);
             ImGui.Dummy(new Vector2(0, 10));
 
-
             // Support the developer button
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
@@ -542,7 +525,6 @@ namespace GoodFriend.UI.Windows.Main
                 Util.OpenLink(PluginConstants.PluginDevSupportUrl.ToString());
             }
             ImGui.Dummy(new Vector2(0, 5));
-
 
             var donationPageUrl = MainPresenter.Metadata?.DonationPageUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
@@ -580,46 +562,43 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.TextDisabled("Logs");
             ImGui.Separator();
 
-            if (MainPresenter.EventLog.EventLog.Count <= 0)
+            if (MainPresenter.EventLog.EventLog.Count == 0)
             {
                 ImGui.TextWrapped("No logs to display, check back later.");
             }
-            else
+            else if (ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable))
             {
-                if (ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable))
+                ImGui.TableSetupScrollFreeze(0, 1);
+                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableTime);
+                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableType);
+                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
+                ImGui.TableHeadersRow();
+
+                foreach (var log in MainPresenter.EventLog.EventLog.OrderByDescending(x => x.Timestamp))
                 {
-                    ImGui.TableSetupScrollFreeze(0, 1);
-                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableTime);
-                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableType);
-                    ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
-                    ImGui.TableHeadersRow();
-
-                    foreach (var log in MainPresenter.EventLog.EventLog.OrderByDescending(x => x.Timestamp))
+                    if (log.Type == EventLogManager.EventLogType.Warning)
                     {
-                        if (log.Type == EventLogManager.EventLogType.Warning)
-                        {
-                            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 0, 1));
-                        }
-                        else if (log.Type == EventLogManager.EventLogType.Error)
-                        {
-                            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
-                        }
-                        else
-                        {
-                            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 1, 1));
-                        }
-
-                        ImGui.TableNextRow();
-                        ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(log.Timestamp.ToString("HH:mm:ss"));
-                        ImGui.TableSetColumnIndex(1);
-                        ImGui.Text(log.Type.ToString());
-                        ImGui.TableSetColumnIndex(2);
-                        ImGui.Text(log.Message);
-                        ImGui.PopStyleColor();
+                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 0, 1));
                     }
-                    ImGui.EndTable();
+                    else if (log.Type == EventLogManager.EventLogType.Error)
+                    {
+                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+                    }
+                    else
+                    {
+                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 1, 1));
+                    }
+
+                    ImGui.TableNextRow();
+                    ImGui.TableSetColumnIndex(0);
+                    ImGui.Text(log.Timestamp.ToString("HH:mm:ss"));
+                    ImGui.TableSetColumnIndex(1);
+                    ImGui.Text(log.Type.ToString());
+                    ImGui.TableSetColumnIndex(2);
+                    ImGui.Text(log.Message);
+                    ImGui.PopStyleColor();
                 }
+                ImGui.EndTable();
             }
             ImGui.EndChild();
         }

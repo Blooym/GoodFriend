@@ -5,7 +5,6 @@ using GoodFriend.Base;
 
 namespace GoodFriend.Utils
 {
-
     /// <summary> A collection of common utilites </summary>
     public static class Common
     {
@@ -14,7 +13,6 @@ namespace GoodFriend.Utils
         /// </summary>
         /// <param name="text"> The string to remove whitespace from </param>
         public static string RemoveWhitespace(string text) => new(text.Where(c => !char.IsWhiteSpace(c)).ToArray());
-
 
         /// <summary>
         ///     Checks to see if the plugin came from an official source

@@ -5,10 +5,10 @@ namespace GoodFriend.Enums
     /// </summary>
     public enum ConnectionStatus
     {
-        Connected,
-        Connecting,
-        Disconnected,
-        Ratelimited,
-        Error,
+        Connected = 0,
+        Connecting = 1,
+        Disconnected = 2,
+        Ratelimited = 3,
+        Error = 4,
     }
 }

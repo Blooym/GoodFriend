@@ -5,9 +5,9 @@ namespace GoodFriend.Enums
     /// </summary>
     public enum NotificationType
     {
-        Toast,
-        Chat,
-        Popup,
-        QuestPopup,
+        Toast = 0,
+        Chat = 1,
+        Popup = 2,
+        QuestPopup = 3,
     }
 }

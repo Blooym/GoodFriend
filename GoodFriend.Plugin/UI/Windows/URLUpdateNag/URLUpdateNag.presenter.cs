@@ -47,7 +47,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         {
             try
             {
-                var newApiUrl = Metadata?.NewApiUrl ?? null;
+                var newApiUrl = Metadata?.NewApiUrl;
                 if (newApiUrl != null && this.IgnoredNewURLs.All(u => u != newApiUrl) && newApiUrl != PluginService.Configuration.APIUrl.ToString())
                 {
                     try
@@ -86,6 +86,6 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
             PluginService.Condition[ConditionFlag.InCombat]
             || PluginService.Condition[ConditionFlag.BoundByDuty]
             || PluginService.Condition[ConditionFlag.WatchingCutscene]
-            || PluginService.ClientState.IsLoggedIn == false;
+            || !PluginService.ClientState.IsLoggedIn;
     }
 }

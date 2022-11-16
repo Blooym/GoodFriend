@@ -37,6 +37,7 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
         /// </summary>
+        /// <param name="dropdown"></param>
         public void ToggleVisibleDropdown(VisibleDropdown dropdown) => this.CurrentVisibleDropdown = dropdown == this.CurrentVisibleDropdown ? VisibleDropdown.None : dropdown;
 
         /// <summary>
@@ -61,6 +62,8 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     The callback for when the user selects an export directory.
         /// </summary>
+        /// <param name="cancelled">Whether the user cancelled the dialog.</param>
+        /// <param name="path">The path the user selected.</param>
         public static void OnDirectoryPicked(bool cancelled, string path)
         {
             if (!cancelled)
@@ -79,10 +82,10 @@ namespace GoodFriend.UI.Windows.Main
 
         public enum VisibleDropdown
         {
-            None,
-            Donate,
-            Logs,
-            Settings,
+            None = 0,
+            Donate = 1,
+            Logs = 2,
+            Settings = 3,
         }
     }
 }

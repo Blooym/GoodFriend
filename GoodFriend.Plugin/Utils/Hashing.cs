@@ -7,12 +7,19 @@ using GoodFriend.Base;
 namespace GoodFriend.Utils
 {
     /// <summary>
-    ///     Salt methods that can be be applied.
+    ///     Salt methods that can be applied.
     /// </summary>
     public enum SaltMethods : byte
     {
-        Strict = 0, // Use the players salt (friend code) and the assembly manifest.
-        Relaxed = 1, // Only use the players salt (friend code) if set.
+        /// <summary>
+        /// Use the players salt (friend code) and the assembly manifest.
+        /// </summary>
+        Strict = 0,
+
+        /// <summary>
+        /// Only use the players salt (friend code) if set.
+        /// </summary>
+        Relaxed = 1,
     }
 
     /// <summary> Hashing implementations and methods </summary>

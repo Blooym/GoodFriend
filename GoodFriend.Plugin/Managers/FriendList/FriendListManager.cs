@@ -21,6 +21,8 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
+// Updated: 5.58-HF1
+
 using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -32,7 +34,6 @@ namespace GoodFriend.Managers.FriendList
     /// </summary>
     public static class FriendList
     {
-        // Updated: 5.58-HF1
         private const int InfoOffset = 0x28;
         private const int LengthOffset = 0x10;
         private const int ListOffset = 0x98;
@@ -72,8 +73,7 @@ namespace GoodFriend.Managers.FriendList
             var entries = new FriendListEntry*[length];
             for (var i = 0; i < length; i++)
             {
-                var entry = (FriendListEntry*)(list + (i * FriendListEntry.Size));
-                entries[i] = entry;
+                entries[i] = (FriendListEntry*)(list + (i * FriendListEntry.Size));
             }
             return entries;
         }

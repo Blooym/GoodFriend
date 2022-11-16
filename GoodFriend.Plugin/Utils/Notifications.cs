@@ -21,7 +21,7 @@ namespace GoodFriend.Utils
 
         /// <summary> Sends a notification using the given notification type. </summary>
         /// <param name="message"> The message to send. </param>
-        /// <param name="notificationType"> The type of notification to send. </param>
+        /// <param name="type"> The type of notification to send. </param>
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
         internal static void Show(string message, NotificationType type, ToastType? toastType = null)
         {
@@ -48,6 +48,7 @@ namespace GoodFriend.Utils
 
         /// <summary> Sends a toast notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
+        /// <param name="type"> The type of toast to send. </param>
         private static void ShowToast(string message, ToastType type) => PluginService.PluginInterface.UiBuilder.AddNotification(message, PluginConstants.PluginName, type);
 
         /// <summary> Sends a popup notification to the user. </summary>
@@ -59,10 +60,10 @@ namespace GoodFriend.Utils
         /// <param name="colour"> The colour to use for the message. </param>
         private static void ShowChat(string message, ushort colour)
         {
-            SeStringBuilder stringBuilder = new();
-            stringBuilder.AddUiForeground(colour);
-            stringBuilder.AddText(message);
-            stringBuilder.AddUiForegroundOff();
+            var stringBuilder = new SeStringBuilder()
+                .AddUiForeground(colour)
+                .AddText(message)
+                .AddUiForegroundOff();
             PluginService.Chat.Print(stringBuilder.BuiltString);
         }
 
