@@ -1,9 +1,15 @@
 {
 	"dockerFile": "Dockerfile",
-	"forwardPorts": [8000],
+	"forwardPorts": [
+		8000
+	],
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
+	"workspaceMount": "",
+	"runArgs": [
+		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
+	],
 	"postAttachCommand": "cd GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
 	"customizations": {
 		"vscode": {

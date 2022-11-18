@@ -8,7 +8,7 @@
     "build": "tsc && tsc-alias",
     "watch": "concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon .\"",
     "test": "lint-staged && tsc --noEmit",
-    "prepare": "cd ../../ && husky install ./GoodFriend.Server/.husky"
+    "prepare": "cd ../ && husky install ./GoodFriend.Server/.husky"
   },
   "dependencies": {
     "compression": "^1.7.4",
