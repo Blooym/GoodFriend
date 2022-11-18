@@ -1,0 +1,154 @@
+[
+  {
+    "_id": "8d113d11-35d7-4be9-bd84-ba95c592b6e0",
+    "colId": "fb54f013-e25b-4443-acbc-f225fcc61e98",
+    "containerId": "",
+    "name": "Send Login",
+    "url": "login?contentID=d3f59c54a2e2f47d6a951e2a4393d33dff211892e5bdc9da1d4a6ee2e329ffb4fea86c30017e9c23f19c879add52636b945a276cf4bb771e6b110179991792d3&homeworldID=1&datacenterID=1&worldID=1&territoryID=1",
+    "method": "PUT",
+    "sortNum": 10000,
+    "created": "2022-11-18T01:09:11.542Z",
+    "modified": "2022-11-18T01:15:00.103Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "*/*",
+        "isDisabled": true
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [
+      {
+        "name": "contentID",
+        "value": "d3f59c54a2e2f47d6a951e2a4393d33dff211892e5bdc9da1d4a6ee2e329ffb4fea86c30017e9c23f19c879add52636b945a276cf4bb771e6b110179991792d3",
+        "isPath": false
+      },
+      {
+        "name": "homeworldID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "datacenterID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "worldID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "territoryID",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "20321563-e2d8-44ee-958a-98904e7393b2",
+    "colId": "fb54f013-e25b-4443-acbc-f225fcc61e98",
+    "containerId": "",
+    "name": "Send Logout",
+    "url": "logout?contentID=d3f59c54a2e2f47d6a951e2a4393d33dff211892e5bdc9da1d4a6ee2e329ffb4fea86c30017e9c23f19c879add52636b945a276cf4bb771e6b110179991792d3&homeworldID=1&datacenterID=1&worldID=1&territoryID=1",
+    "method": "PUT",
+    "sortNum": 20000,
+    "created": "2022-11-18T01:13:53.581Z",
+    "modified": "2022-11-18T01:15:05.714Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "*/*",
+        "isDisabled": true
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [
+      {
+        "name": "contentID",
+        "value": "d3f59c54a2e2f47d6a951e2a4393d33dff211892e5bdc9da1d4a6ee2e329ffb4fea86c30017e9c23f19c879add52636b945a276cf4bb771e6b110179991792d3",
+        "isPath": false
+      },
+      {
+        "name": "homeworldID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "datacenterID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "worldID",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "territoryID",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "1d47d55b-aded-4382-b742-4659fe4bca72",
+    "colId": "fb54f013-e25b-4443-acbc-f225fcc61e98",
+    "containerId": "",
+    "name": "Get Metadata",
+    "url": "metadata",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-11-18T01:14:27.822Z",
+    "modified": "2022-11-18T01:20:18.530Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "*/*",
+        "isDisabled": true
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "ec00c288-07bc-4390-a807-ce833f740ad6",
+    "colId": "fb54f013-e25b-4443-acbc-f225fcc61e98",
+    "containerId": "",
+    "name": "Get SSE Events",
+    "url": "sse/friends",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-11-18T01:15:38.520Z",
+    "modified": "2022-11-18T01:17:27.162Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "*/*",
+        "isDisabled": true
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "tests": []
+  }
+]
