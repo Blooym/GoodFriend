@@ -8,7 +8,7 @@
     "method": "PUT",
     "sortNum": 10000,
     "created": "2022-11-18T01:09:11.542Z",
-    "modified": "2022-11-18T01:15:00.103Z",
+    "modified": "2022-11-18T01:24:19.418Z",
     "headers": [
       {
         "name": "Accept",
@@ -48,7 +48,14 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "20321563-e2d8-44ee-958a-98904e7393b2",
@@ -59,7 +66,7 @@
     "method": "PUT",
     "sortNum": 20000,
     "created": "2022-11-18T01:13:53.581Z",
-    "modified": "2022-11-18T01:15:05.714Z",
+    "modified": "2022-11-18T01:24:17.502Z",
     "headers": [
       {
         "name": "Accept",
@@ -99,7 +106,14 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "1d47d55b-aded-4382-b742-4659fe4bca72",
@@ -110,7 +124,7 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-11-18T01:14:27.822Z",
-    "modified": "2022-11-18T01:20:18.530Z",
+    "modified": "2022-11-18T01:24:15.429Z",
     "headers": [
       {
         "name": "Accept",
@@ -124,7 +138,14 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "ec00c288-07bc-4390-a807-ce833f740ad6",
