@@ -18,8 +18,8 @@ namespace GoodFriend.Utils
         ///     Checks to see if the plugin came from an official source
         /// </summary>
         public static bool IsOfficialSource =>
-        PluginService.PluginInterface.SourceRepository.StartsWith("https://kamori.goats.dev/Plugin/PluginMaster", true, CultureInfo.InvariantCulture) ||
-        PluginService.PluginInterface.SourceRepository.StartsWith(PluginConstants.RawRepoUrl.ToString(), true, CultureInfo.InvariantCulture);
+        PluginService.PluginInterface.SourceRepository.Equals("OFFICIAL", StringComparison.Ordinal) ||
+        PluginService.PluginInterface.SourceRepository.StartsWith(PluginConstants.RawRepoUrl.ToString(), false, CultureInfo.InvariantCulture);
 
         /// <summary>
         ///     Checks to see if the plugin is a dev build
