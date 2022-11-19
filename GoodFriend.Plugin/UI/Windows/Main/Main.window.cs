@@ -4,7 +4,6 @@ using System.Numerics;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using GoodFriend.Base;
-using GoodFriend.Enums;
 using GoodFriend.Localization;
 using GoodFriend.Managers;
 using GoodFriend.UI.ImGuiComponents;
@@ -484,14 +483,15 @@ namespace GoodFriend.UI.Windows.Main
                         this.presenter.DialogManager.OpenFolderDialog("Export LOC", MainPresenter.OnDirectoryPicked);
                     }
 
-                    ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash");
+                    ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash & salt");
                     ImGui.BeginChild("##Friends");
                     foreach (var friend in this.presenter.GetFriendList())
                     {
                         if (ImGui.Selectable(friend.Name.ToString()))
                         {
-                            ImGui.SetClipboardText(Hashing.HashSHA512(friend.ContentId.ToString()));
-                            Notifications.Show($"Copied {friend.Name}'s ContentID hash to clipboard", NotificationType.Toast);
+                            var rand = CryptoUtil.GenerateRandom(32);
+                            ImGui.SetClipboardText($"ContentID: {CryptoUtil.HashSHA512(friend.ContentId.ToString(), rand)} Salt: {rand}");
+                            Notifications.Show($"Copied {friend.Name}'s ContentID hash & salt to clipboard", NotificationType.Toast);
                         }
                     }
 

@@ -1,6 +1,5 @@
 using System;
 using Dalamud.Configuration;
-using GoodFriend.Enums;
 using GoodFriend.Utils;
 
 namespace GoodFriend.Base
@@ -87,10 +86,5 @@ namespace GoodFriend.Base
         ///     Saves the current configuration to disk.
         /// </summary>
         internal void Save() => PluginService.PluginInterface.SavePluginConfig(this);
-
-        /// <summary>
-        ///     Sets the configuration to the default values.
-        /// </summary>
-        internal static void SetDefault() => PluginService.PluginInterface.SavePluginConfig(new Configuration());
     }
 }

@@ -12,7 +12,7 @@ import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
  */
 export default (req: Request, res: Response, clients: Client) => {
   const {
-    contentID, homeworldID, territoryID, worldID, datacenterID,
+    contentID, homeworldID, territoryID, worldID, datacenterID, salt,
   } = req.query;
 
   if (!isValidContentIDHash(contentID as string)
@@ -28,6 +28,7 @@ export default (req: Request, res: Response, clients: Client) => {
       WorldID: worldID,
       DatacenterID: datacenterID,
       TerritoryID: territoryID,
+      Salt: salt,
       LoggedIn: true,
     };
 

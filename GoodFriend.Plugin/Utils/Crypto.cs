@@ -22,8 +22,8 @@ namespace GoodFriend.Utils
         Relaxed = 1,
     }
 
-    /// <summary> Hashing implementations and methods </summary>
-    internal static class Hashing
+    /// <summary> Crypto implementations and methods </summary>
+    internal static class CryptoUtil
     {
         /// <summary>
         ///     Generates a salt using a given method and length.
@@ -38,15 +38,29 @@ namespace GoodFriend.Utils
         };
 
         /// <summary>
+        ///     Creates a random string of a given length.
+        /// </summary>
+        /// <param name="length"> The length of the string to generate. </param>
+        /// <returns> The generated string. </returns>
+        public static string GenerateRandom(int length)
+        {
+            var random = RandomNumberGenerator.Create();
+            var bytes = new byte[length];
+            random.GetBytes(bytes);
+            return Convert.ToHexString(bytes);
+        }
+
+        /// <summary>
         ///     Generates a SHA512 hash from the given string.
         /// </summary>
         /// <param name="input"> The string to hash. </param>
+        /// <param name="addedSalt"> The extra salt to add to the hash. </param>
         /// <returns> The hashed string. </returns>
-        internal static string HashSHA512(string input)
+        internal static string HashSHA512(string input, string addedSalt)
         {
             var salt = CreateSalt(PluginService.Configuration.SaltMethod);
-            var bytes = Encoding.UTF8.GetBytes(input + salt);
-            return Convert.ToBase64String(SHA512.Create().ComputeHash(bytes)).Replace("_", "q").Replace("+", "v");
+            var bytes = Encoding.UTF8.GetBytes(input + salt + addedSalt);
+            return Convert.ToHexString(SHA512.Create().ComputeHash(bytes));
         }
     }
 }

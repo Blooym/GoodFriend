@@ -418,10 +418,11 @@ namespace GoodFriend.Types
         /// <param name="datacenterID">The datacenter ID of the user logging in.</param>
         public void SendLogin(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
+            var salt = CryptoUtil.GenerateRandom(32);
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"login?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}"
+                $"login?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
             );
 
             try
@@ -452,10 +453,11 @@ namespace GoodFriend.Types
         /// <param name="datacenterID">The datacenter ID of the user logging out.</param>
         public void SendLogout(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
         {
+            var salt = CryptoUtil.GenerateRandom(32);
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"logout?contentID={HttpUtility.UrlEncode(Hashing.HashSHA512(contentID.ToString()))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}"
+                $"logout?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
             );
 
             try
@@ -487,6 +489,7 @@ namespace GoodFriend.Types
             public uint WorldID { get; set; }
             public uint DatacenterID { get; set; }
             public uint TerritoryID { get; set; }
+            public string? Salt { get; set; }
         }
 
         /// <summary>

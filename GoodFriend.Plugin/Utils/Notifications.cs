@@ -2,11 +2,21 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
 using GoodFriend.Base;
-using GoodFriend.Enums;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
 namespace GoodFriend.Utils
 {
+    /// <summary>
+    ///     All of the notification types.
+    /// </summary>
+    public enum NotificationType
+    {
+        Toast = 0,
+        Chat = 1,
+        Popup = 2,
+        QuestPopup = 3,
+    }
+
     /// <summary> Handles the sending of notifications to the client. </summary>
     internal static class Notifications
     {
