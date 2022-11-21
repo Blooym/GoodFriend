@@ -1,29 +1,33 @@
 {
 	"dockerFile": "Dockerfile",
-	"forwardPorts": [8000],
+	"forwardPorts": [
+		8000
+	],
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
-	"postAttachCommand": "cd src/GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn && nohup sh -c 'yarn watch &' && cd ../../",
+	"workspaceMount": "",
+	"runArgs": [
+		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
+	],
+	"postAttachCommand": "cd GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"esbenp.prettier-vscode",
-				"wayou.vscode-todo-highlight",
 				"dbaeumer.vscode-eslint",
-				"vivaxy.vscode-conventional-commits",
 				"rangav.vscode-thunder-client"
 			],
 			"settings": {
-				"thunder-client.requestTimeout": 10000,
+				"thunder-client.requestTimeout": 15000,
 				"editor.formatOnSave": true
 			}
 		}
 	},
 	"portsAttributes": {
 		"8000": {
-			"label": "API Dev Server [Live Refresh]",
+			"label": "GoodFriend API",
 			"protocol": "http"
 		}
 	}

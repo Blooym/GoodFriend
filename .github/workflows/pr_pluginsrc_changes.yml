@@ -1,27 +1,28 @@
-# This workflow outlines tasks that are ran when a pull request that modifies source code is made, such as building a preview
-
 name: "PR: Plugin Code Changes"
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - "src/GoodFriend.Plugin/**.cs"
+      - "GoodFriend.Plugin/**/*"
     types: [ready_for_review, opened, synchronize, reopened]
 
 jobs:
   Build:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Post/Edit Initial Comment
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ### Building ${{ github.repository}} <span aria-hidden="true">🚧</span>
+            ### Building ${{ github.repository}} (GoodFriend.Plugin) <span aria-hidden="true">🚧</span>
             Please wait, this could take several minutes to complete. This comment will be edited when finished.
 
             |  Name | Detail |
@@ -41,35 +42,36 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore Dependencies
-        working-directory: src/GoodFriend.Plugin
+        working-directory: GoodFriend.Plugin
         run: dotnet restore
 
       - name: Download Dalamud Library
-        working-directory: src/GoodFriend.Plugin
+        if: steps.restore-dalamud-dependencies.outputs.cache-hit != 'true'
         run: |
           export IsCI=true
-          wget -O Dalamud.zip https://goatcorp.github.io/dalamud-distrib/latest.zip
-          unzip -o -d Dalamud Dalamud.zip
+          export DALAMUD_HOME=/lib/dalamud
+          wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O /tmp/dalamud.zip
+          unzip /tmp/dalamud.zip -d /lib/dalamud
 
       - name: Build Plugin (Dev)
-        working-directory: src/GoodFriend.Plugin
-        run: dotnet build
+        working-directory: GoodFriend.Plugin
+        run: dotnet build -c Debug -p:Version='${{ github.sha }} from ${{ github.ref }}'
 
       - name: Build Plugin (Release)
-        working-directory: src/GoodFriend.Plugin
-        run: dotnet build --configuration Release
+        working-directory: GoodFriend.Plugin
+        run: dotnet build -c Release -p:Version='${{ github.sha }} from ${{ github.ref }}'
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: ./src/GoodFriend.Plugin/bin/
+          path: GoodFriend.Plugin/bin/
 
       - name: Edit Comment (Success)
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ### Build Complete for ${{ github.repository }} <span aria-hidden="true">✅</span>
+            ### Build Complete for ${{ github.repository }} (GoodFriend.Plugin) <span aria-hidden="true">⚡</span>
             All builds finished without issues and any artifact(s) have been uploaded.
 
             |  Name | Detail |
@@ -79,7 +81,7 @@ jobs:
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                      |
 
-            *Please review the code before downloading any artifacts for security reasons.* 
+            *Please review the code before downloading any artifacts for security reasons.*
 
             identifier: preview-build
           comment_includes: "preview-build"
@@ -90,9 +92,8 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ### Build Failed for ${{ github.repository }} <span aria-hidden="true">❌</span>
+            ### Build Failed for ${{ github.repository }} (GoodFriend.Plugin) <span aria-hidden="true">⚠️</span>
             Something went wrong when running a build, please view the logs for more information about this.
-
 
             |  Name | Detail |
             |---------------------------------|-------------------------------------------------------------------------------------|

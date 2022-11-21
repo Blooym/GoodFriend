@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strict": true, 
+    
+    "baseUrl": "./",
+    "paths": {
+      "@middleware/*": ["Middleware/*"],
+      "@utils/*": ["Utils/*"],
+      "@routes/*": ["Routes/*"],
+      "@mtypes/*": ["Types/*"],
+      "@base/*": ["Base/*"],
+      "@metrics/*": ["Metrics/*"],
+    }
+  }
+}

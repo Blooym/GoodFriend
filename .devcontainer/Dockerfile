@@ -10,7 +10,3 @@ RUN adduser --disabled-password --gecos "" dev
 # Install required dependencies.
 RUN apk add --update npm openssh
 RUN npm i -g yarn
-
-# Download the repository into /workspaces (overwrote if using a compliant tool).
-WORKDIR /workspaces 
-RUN git clone https://github.com/BitsOfAByte/GoodFriend.git
