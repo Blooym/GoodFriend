@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - "GoodFriend.Plugin/**"
-    types: [ready_for_review, opened, synchronize, reopened]
+    types: [ready_for_review, opened, synchronize]
 
 jobs:
   Build:
@@ -55,11 +55,11 @@ jobs:
 
       - name: Build Plugin (Dev)
         working-directory: GoodFriend.Plugin
-        run: dotnet build -c Debug -p:Version='${{ github.sha }} from ${{ github.ref }}'
+        run: dotnet build -c Debug
 
       - name: Build Plugin (Release)
         working-directory: GoodFriend.Plugin
-        run: dotnet build -c Release -p:Version='${{ github.sha }} from ${{ github.ref }}'
+        run: dotnet build -c Release
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
