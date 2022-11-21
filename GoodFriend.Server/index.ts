@@ -24,6 +24,8 @@ const app = express()
   .use('/v4', RequireSessionIdentifier, v4Router)
   .use(errorLogger);
 
+console.log("test");
+
 if (TRUST_PROXY) app.set('trust proxy', true);
 
 app.listen(PORT, () => { console.log(`[HTTP] Listening on port ${PORT}`); });
