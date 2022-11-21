@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "src/GoodFriend.Plugin/**"
+      - "GoodFriend.Plugin/**"
     types: [ready_for_review, opened, synchronize, reopened]
 
 jobs:
