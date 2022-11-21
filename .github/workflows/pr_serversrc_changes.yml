@@ -5,7 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "GoodFriend.Server/**"
-    types: [ready_for_review, opened, synchronize, reopened]
+    types: [ready_for_review, opened, synchronize]
 
 jobs:
   Build:
