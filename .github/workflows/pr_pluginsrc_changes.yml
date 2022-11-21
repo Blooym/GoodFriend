@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "GoodFriend.Plugin/**"
+      - "src/GoodFriend.Plugin/**"
     types: [ready_for_review, opened, synchronize, reopened]
 
 jobs:
@@ -48,10 +48,10 @@ jobs:
       - name: Download Dalamud Library
         if: steps.restore-dalamud-dependencies.outputs.cache-hit != 'true'
         run: |
-          export IsCI=true
-          export DALAMUD_HOME=./lib/dalamud
           wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O /tmp/dalamud.zip
-          unzip /tmp/dalamud.zip -d $DALAMUD_HOME
+          unzip /tmp/dalamud.zip -d /tmp/dalamud
+          export DALAMUD_HOME=/tmp/dalamud
+          export IsCI=true
 
       - name: Build Plugin (Dev)
         working-directory: GoodFriend.Plugin
