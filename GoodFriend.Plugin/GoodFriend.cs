@@ -11,7 +11,7 @@ namespace GoodFriend
         /// <summary>
         ///     The plugin name, fetched from PStrings.
         /// </summary>
-        public string Name => PluginConstants.PluginName;
+        public string Name => "test";
 
         /// <summary>
         ///     The plugin's main entry point.
