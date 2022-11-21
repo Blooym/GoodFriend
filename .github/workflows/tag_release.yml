@@ -36,9 +36,8 @@ jobs:
       - name: Download Dalamud Library
         working-directory: GoodFriend.Plugin
         run: |
-          export IsCI=true
-          wget -O Dalamud.zip https://goatcorp.github.io/dalamud-distrib/latest.zip
-          unzip -o -d Dalamud Dalamud.zip
+          wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O /tmp/dalamud.zip
+          unzip /tmp/dalamud.zip -d /tmp/dalamud
 
       - name: Build Plugin
         shell: bash
@@ -48,6 +47,10 @@ jobs:
           sha512sum bin/Release/GoodFriend/latest.zip  >> checksums.txt
           sha512sum bin/Release/GoodFriend/GoodFriend.json >> checksums.txt
           cat checksums.txt
+        with:
+          env:
+            DALAMUD_HOME: /tmp/dalamud
+            IsCI: true
 
       - name: Release
         uses: softprops/action-gh-release@v1

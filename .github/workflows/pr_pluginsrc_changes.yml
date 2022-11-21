@@ -50,16 +50,22 @@ jobs:
         run: |
           wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O /tmp/dalamud.zip
           unzip /tmp/dalamud.zip -d /tmp/dalamud
-          export DALAMUD_HOME=/tmp/dalamud
-          export IsCI=true
 
       - name: Build Plugin (Dev)
         working-directory: GoodFriend.Plugin
         run: dotnet build -c Debug
+        with:
+          env:
+            DALAMUD_HOME: /tmp/dalamud
+            IsCI: true
 
       - name: Build Plugin (Release)
         working-directory: GoodFriend.Plugin
         run: dotnet build -c Release
+        with:
+          env:
+            DALAMUD_HOME: /tmp/dalamud
+            IsCI: true
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
