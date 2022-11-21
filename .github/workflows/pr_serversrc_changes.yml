@@ -32,8 +32,8 @@ jobs:
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
 
-            identifier: preview-build
-          comment_includes: "preview-build"
+            identifier: preview-build-server
+          comment_includes: "preview-build-server"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
@@ -63,8 +63,8 @@ jobs:
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                      |
 
-            identifier: preview-build
-          comment_includes: "preview-build"
+            identifier: preview-build-server
+          comment_includes: "preview-build-server"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Edit Comment (Failure)
@@ -82,6 +82,6 @@ jobs:
             | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
             | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
 
-            identifier: preview-build
-          comment_includes: "preview-build"
+            identifier: preview-build-server
+          comment_includes: "preview-build-server"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
