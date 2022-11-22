@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
 
-import Client from '@mtypes/Client';
+import SSEClient from '@mtypes/SSEClient';
 import { isValidContentIDHash, isValidIDUint } from '@utils/Validators';
-import { totalSSEEventsSent, totalSSEStateEvents } from '@metrics/prometheus';
+import { totalSSEMesssagesSent, totalLoginstateUpdatesReceived } from '@services/Prometheus';
 
 /**
- * Handles the logout event endpoint.
+ * Handles the login event endpoint.
  * @param req The request object.
  * @param res The response object.
- * @param clients The list of clients.
+ * @param sseClients The list of clients.
  */
-export default (req: Request, res: Response, clients: Client) => {
+export default (req: Request, res: Response, sseClients: SSEClient) => {
   const {
     contentID, homeworldID, territoryID, worldID, datacenterID, salt,
   } = req.query;
 
+  // If the response is not valid, return a 400 Bad Request.
   if (!isValidContentIDHash(contentID as string)
   || !isValidIDUint(homeworldID as string)
   || !isValidIDUint(territoryID as string)
@@ -22,6 +23,10 @@ export default (req: Request, res: Response, clients: Client) => {
   || !isValidIDUint(datacenterID as string)) res.sendStatus(400);
 
   else {
+    // Send a 200 OK response.
+    res.sendStatus(200);
+
+    // Prepare the response.
     const event = {
       ContentID: contentID,
       HomeworldID: homeworldID,
@@ -32,19 +37,19 @@ export default (req: Request, res: Response, clients: Client) => {
       LoggedIn: false,
     };
 
-    res.sendStatus(200);
-
-    totalSSEStateEvents.inc({
-      event: 'logout',
+    // Increment some metrics.
+    totalLoginstateUpdatesReceived.inc({
+      type: 'logout',
       homeworld: homeworldID as string,
       world: worldID as string,
       datacenter: datacenterID as string,
       territory: territoryID as string,
     });
 
-    clients.forEach((client) => {
+    // Send the event to all clients.
+    sseClients.forEach((client) => {
       client.res.write(`data: ${JSON.stringify(event)}\n\n`);
-      totalSSEEventsSent.inc();
+      totalSSEMesssagesSent.inc();
     });
   }
 };

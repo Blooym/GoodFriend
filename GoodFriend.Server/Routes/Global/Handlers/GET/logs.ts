@@ -1,9 +1,8 @@
+import { LOG_PATH } from '@common/environment';
 import { Request, Response } from 'express';
 
 import fs from 'fs';
 import path from 'path';
-
-const LOG_PATH = 'logs';
 
 /**
  * Returns all log files inside of the log directory.

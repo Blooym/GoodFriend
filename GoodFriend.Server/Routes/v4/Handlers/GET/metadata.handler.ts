@@ -1,20 +1,23 @@
 import { Request, Response } from 'express';
 
-import Client from '@mtypes/Client';
-import { DONATION_PAGE_URL, NEW_API_URL, STATUS_PAGE_URL } from '@base/environment';
+import SSEClient from '@mtypes/SSEClient';
+import {
+  MAX_SSE_CONNECTIONS, METADATA_DONATION_PAGE_URL, METADATA_NEW_API_URL, METADATA_STATUS_PAGE_URL,
+} from '@common/environment';
 
 /**
  * Handles the v4/metadata endpoint.
  * @param req The request object.
  * @param res The response object.
- * @param clients The list of clients.
+ * @param sseClients The list of clients.
  */
-export default async (req: Request, res: Response, clients: Client) => {
+export default async (req: Request, res: Response, sseClients: SSEClient) => {
   const response = {
-    connectedClients: clients.length,
-    donationPageUrl: DONATION_PAGE_URL || null,
-    statusPageUrl: STATUS_PAGE_URL || null,
-    newApiUrl: NEW_API_URL || null,
+    connectedClients: sseClients.length,
+    maxCapacity: MAX_SSE_CONNECTIONS,
+    donationPageUrl: METADATA_DONATION_PAGE_URL,
+    statusPageUrl: METADATA_STATUS_PAGE_URL,
+    newApiUrl: METADATA_NEW_API_URL,
   };
 
   res.status(200).json(response);

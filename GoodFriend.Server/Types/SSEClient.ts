@@ -1,8 +1,8 @@
 import { Response } from 'express';
 
-type Client = {
+type SSEClient = {
     ID: string;
     res: Response
 }[];
 
-export default Client;
+export default SSEClient;

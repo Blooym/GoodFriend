@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { totalRequests } from '@metrics/prometheus';
+import { totalRequests } from '@services/Prometheus';
 
 /**
  * Handles collecting metrics about requests.

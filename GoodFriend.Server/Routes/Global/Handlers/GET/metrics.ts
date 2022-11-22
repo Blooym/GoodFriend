@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import register from 'Metrics/prometheus';
+import register from '@services/Prometheus';
 
 /**
  * Serves the metrics for Prometheus.

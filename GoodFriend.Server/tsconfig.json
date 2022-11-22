@@ -15,8 +15,8 @@
       "@utils/*": ["Utils/*"],
       "@routes/*": ["Routes/*"],
       "@mtypes/*": ["Types/*"],
-      "@base/*": ["Base/*"],
-      "@metrics/*": ["Metrics/*"],
+      "@common/*": ["Common/*"],
+      "@services/*": ["Services/*"],
     }
   }
 }
