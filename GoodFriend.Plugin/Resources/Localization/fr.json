@@ -267,6 +267,34 @@
     "message": "L'hôte de cette instance de l'API a fourni une URL de soutien invalide.",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
   },
+  "Window.Dropdown.Logs.Title": {
+    "message": "Logs",
+    "description": "PrimaryWindow.get_DropdownLogsTitle"
+  },
+  "Window.Dropdown.Logs.NoLogs": {
+    "message": "No logs to display.",
+    "description": "PrimaryWindow.get_DropdownLogsNoLogs"
+  },
+  "Window.Dropdown.Logs.ClearAll": {
+    "message": "Clear All",
+    "description": "PrimaryWindow.get_DropdownLogsClearAll"
+  },
+  "Window.Dropdown.Logs.Copy": {
+    "message": "Copy",
+    "description": "PrimaryWindow.get_DropdownLogsCopy"
+  },
+  "Window.Dropdown.Logs.FilterTooltip": {
+    "message": "Set the selected log level, any logs below this level will be hidden.",
+    "description": "PrimaryWindow.get_DropdownLogsFilterTooltip"
+  },
+  "Window.Dropdown.Logs.CopySuccess": {
+    "message": "Successfully copied log to clipboard.",
+    "description": "PrimaryWindow.get_DropdownLogsCopySuccess"
+  },
+  "Window.Dropdown.Logs.Delete": {
+    "message": "Delete",
+    "description": "PrimaryWindow.get_DropdownLogsDelete"
+  },
   "Window.Dropdown.Logs.Table.Time": {
     "message": "Heure",
     "description": "PrimaryWindow.get_DropdownLogsTableTime"
