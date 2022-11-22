@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "GoodFriend.Plugin/**"
+      - "GoodFriend.Plugin/**.cs"
+      - "GoodFriend.Plugin/**.csproj"
     types: [ready_for_review, opened, synchronize]
 
 jobs:
@@ -17,24 +18,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Post/Edit Initial Comment
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            ### Building ${{ github.repository}} (GoodFriend.Plugin) <span aria-hidden="true">🚧</span>
-            Please wait, this could take several minutes to complete. This comment will be edited when finished.
-
-            |  Name | Detail |
-            |---------------------------------|-------------------------------------------------------------------------------------|
-            | **Commit** 						          | ${{ github.sha }}                                                                   |
-            | **Logs** 							          | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} |
-            | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
-            | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
-
-            identifier: preview-build-plugin
-          comment_includes: "preview-build-plugin"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -69,42 +52,3 @@ jobs:
         with:
           name: build
           path: GoodFriend.Plugin/bin/
-
-      - name: Edit Comment (Success)
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            ### Build Complete for ${{ github.repository }} (GoodFriend.Plugin) <span aria-hidden="true">⚡</span>
-            All builds finished without issues and any artifact(s) have been uploaded.
-
-            |  Name | Detail |
-            |---------------------------------|------------------------------------------------------------------------------------|
-            | **Commit** 						          | ${{ github.sha }}                                                                  |
-            | **Logs** 							  | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}        |
-            | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                |
-            | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                      |
-
-            *Please review the code before downloading any artifacts for security reasons.*
-
-            identifier: preview-build-plugin
-          comment_includes: "preview-build-plugin"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Edit Comment (Failure)
-        if: ${{ failure() }}
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            ### Build Failed for ${{ github.repository }} (GoodFriend.Plugin) <span aria-hidden="true">⚠️</span>
-            Something went wrong when running a build, please view the logs for more information about this.
-
-            |  Name | Detail |
-            |---------------------------------|-------------------------------------------------------------------------------------|
-            | **Commit** 						          | ${{ github.sha }}                                                                   |
-            | **Logs** 							          | ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} |
-            | **Build Environment** 			    | ${{ runner.os }}/${{ runner.arch }}                                                 |
-            | **Triggered By**							  | [${{ github.actor }}](https://github.com/${{ github.actor }})                       |
-
-            identifier: preview-build-plugin
-          comment_includes: "preview-build-plugin"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
