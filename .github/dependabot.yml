@@ -4,17 +4,13 @@ updates:
     directory: "/GoodFriend.Plugin"
     schedule:
       interval: "weekly"
-   labels:
-      - "dependencies"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-   labels:
-      - "dependencies"
+
   - package-ecosystem: "yarn"
     directory: "/GoodFriend.Server"
     schedule:
       interval: "weekly"
-   labels:
-      - "dependencies"
