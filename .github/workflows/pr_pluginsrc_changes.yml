@@ -46,7 +46,6 @@ jobs:
         run: dotnet restore
 
       - name: Download Dalamud Library
-        if: steps.restore-dalamud-dependencies.outputs.cache-hit != 'true'
         run: |
           wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O /tmp/dalamud.zip
           unzip /tmp/dalamud.zip -d /tmp/dalamud

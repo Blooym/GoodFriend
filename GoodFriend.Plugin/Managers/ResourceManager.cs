@@ -57,7 +57,7 @@ namespace GoodFriend.Managers
             {
                 try
                 {
-                    PluginLog.Information("ResourceManager(Update): Opening new thread to handle resource file download and extraction.");
+                    PluginLog.Debug("ResourceManager(Update): Opening new thread to handle resource file download and extraction.");
 
                     // Download the files from the repository and extract them into the temp directory.
                     using HttpClient client = new();
@@ -67,7 +67,7 @@ namespace GoodFriend.Managers
                         using var fileStream = File.Create(zipFilePath);
                         stream.CopyTo(fileStream);
                     }).Wait();
-                    PluginLog.Information($"ResourceManager(Update): Downloaded resource files to: {zipFilePath}");
+                    PluginLog.Debug($"ResourceManager(Update): Downloaded resource files to: {zipFilePath}");
 
                     // Extract the zip file and copy the resources.
                     ZipFile.ExtractToDirectory(zipFilePath, Path.GetTempPath(), true);
@@ -86,7 +86,7 @@ namespace GoodFriend.Managers
                     // Cleanup temporary files.
                     File.Delete(zipFilePath);
                     Directory.Delete($"{Path.GetTempPath()}{repoName}-{PluginConstants.RepoBranch}", true);
-                    PluginLog.Information("ResourceManager(Update): Deleted temporary files.");
+                    PluginLog.Debug("ResourceManager(Update): Deleted temporary files.");
 
                     // Broadcast an event indicating that the resources have been updated.
                     ResourcesUpdated?.Invoke();
@@ -116,7 +116,7 @@ namespace GoodFriend.Managers
             { Loc.Setup(File.ReadAllText($"{PluginConstants.AssemblyLocDir}{language}.json")); }
             catch { Loc.SetupWithFallbacks(); }
 
-            PluginLog.Information("ResourceManager(Setup): Resources setup.");
+            PluginLog.Debug("ResourceManager(Setup): Resources setup.");
         }
     }
 }

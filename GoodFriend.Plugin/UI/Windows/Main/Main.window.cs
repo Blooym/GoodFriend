@@ -6,7 +6,7 @@ using Dalamud.Utility;
 using GoodFriend.Base;
 using GoodFriend.Localization;
 using GoodFriend.Managers;
-using GoodFriend.UI.ImGuiComponents;
+using GoodFriend.UI.ImGuiBasicComponents;
 using GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent;
 using GoodFriend.Utils;
 using ImGuiNET;
@@ -32,7 +32,6 @@ namespace GoodFriend.UI.Windows.Main
             this.Flags |= ImGuiWindowFlags.NoScrollbar;
             this.Flags |= ImGuiWindowFlags.NoResize;
             this.Flags |= ImGuiWindowFlags.NoDocking;
-            this.Flags |= ImGuiWindowFlags.NoCollapse;
             this.presenter = new MainPresenter();
         }
 
@@ -44,7 +43,6 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Draws all elements and components for the settings window, including sub-components.
         /// </summary>
-#pragma warning disable CS1717
         public override void Draw()
         {
             var statusPageUrl = MainPresenter.Metadata?.StatusPageUrl;
@@ -54,9 +52,10 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.BeginDisabled(statusPageUrl == null);
             if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsStatus, PrimaryWindow.DropdownOptionsStatusTooltip(statusPageUrl ?? "NULL"), new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
             {
-#pragma warning disable CS8604
-                Util.OpenLink(statusPageUrl);
-#pragma warning restore CS8604
+                if (statusPageUrl != null)
+                {
+                    Util.OpenLink(statusPageUrl);
+                }
             }
             ImGui.EndDisabled();
             ImGui.SameLine();
@@ -66,7 +65,6 @@ namespace GoodFriend.UI.Windows.Main
             {
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Donate);
             }
-
             ImGui.SameLine();
 
             // Event log button
@@ -98,7 +96,7 @@ namespace GoodFriend.UI.Windows.Main
                     break;
                 case MainPresenter.VisibleDropdown.Logs:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
-                    DrawLogs();
+                    this.DrawEventLog();
                     break;
                 case MainPresenter.VisibleDropdown.None:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 175 * ImGui.GetIO().FontGlobalScale));
@@ -137,7 +135,7 @@ namespace GoodFriend.UI.Windows.Main
                     var hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
 
                     ImGui.BeginChild("GeneralSettings");
-                    if (ImGui.BeginTable("GeneralSettingsTable", 2))
+                    if (ImGui.BeginTable("###GeneralSettingsTable", 2))
                     {
                         ImGui.TableSetupScrollFreeze(0, 1);
                         ImGui.TableNextRow();
@@ -352,7 +350,7 @@ namespace GoodFriend.UI.Windows.Main
                     var apiAuth = PluginService.Configuration.APIAuthentication;
                     var saltMethod = PluginService.Configuration.SaltMethod;
 
-                    ImGui.BeginChild("AdvancedSettings");
+                    ImGui.BeginChild("##AdvancedSettings");
                     if (ImGui.BeginTable("SettingsTable", 2))
                     {
                         ImGui.TableSetupScrollFreeze(0, 1);
@@ -475,7 +473,7 @@ namespace GoodFriend.UI.Windows.Main
                 // "Debug" Settings
                 if (ImGui.BeginTabItem("Developer"))
                 {
-                    ImGui.BeginChild("DeveloperSettings");
+                    ImGui.BeginChild("##DeveloperSettings");
 
                     this.presenter.DialogManager.Draw();
                     if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
@@ -511,13 +509,13 @@ namespace GoodFriend.UI.Windows.Main
         private static void DrawSupport()
         {
             // Top caption and flavour text.
-            ImGui.BeginChild("SupportDropdown");
+            ImGui.BeginChild("##SupportDropdown");
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportTitle);
             ImGui.Separator();
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportFlavourText);
             ImGui.Dummy(new Vector2(0, 10));
 
-            // Support the developer button
+            // Support the plugin developer button.
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportDeveloper);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportDeveloperDescription);
             if (Tooltips.TooltipButton($"{PrimaryWindow.DropdownSupportDonate}##devSupport", PluginConstants.PluginDevSupportUrl.ToString()))
@@ -526,6 +524,7 @@ namespace GoodFriend.UI.Windows.Main
             }
             ImGui.Dummy(new Vector2(0, 5));
 
+            // Get the donation page from the API, if it doesnt exist then just disable the button.
             var donationPageUrl = MainPresenter.Metadata?.DonationPageUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
@@ -554,35 +553,63 @@ namespace GoodFriend.UI.Windows.Main
         }
 
         /// <summary>
-        ///     Draw the logs dropdown.
+        ///     Draw the event log dropdown.
         /// </summary>
-        private static void DrawLogs()
+        private void DrawEventLog()
         {
-            ImGui.BeginChild("Logs");
-            ImGui.TextDisabled("Logs");
+            ImGui.BeginChild("##EventlogDropdown");
+            ImGui.TextDisabled(PrimaryWindow.DropdownLogsTitle);
             ImGui.Separator();
 
-            if (MainPresenter.EventLog.EventLog.Count == 0)
+            // Clear logs button.
+            if (ImGui.Button(PrimaryWindow.DropdownLogsClearAll))
             {
-                ImGui.TextWrapped("No logs to display, check back later.");
+                MainPresenter.EventLog.ClearAll();
             }
+            ImGui.SameLine();
+
+            // Dropdown to change the log level to display.
+            if (ImGui.BeginCombo("##LogFilter", this.presenter.EventLogFilter.ToString()))
+            {
+                foreach (var type in Enum.GetNames(typeof(EventLogManager.EventLogType)))
+                {
+                    if (ImGui.Selectable(type, this.presenter.EventLogFilter == Enum.Parse<EventLogManager.EventLogType>(type)))
+                    {
+                        this.presenter.EventLogFilter = (EventLogManager.EventLogType)Enum.Parse(typeof(EventLogManager.EventLogType), type);
+                    }
+                }
+                ImGui.EndCombo();
+            }
+            Tooltips.AddTooltipHover(PrimaryWindow.DropdownLogsFilterTooltip);
+            ImGui.Dummy(new Vector2(0, 5));
+
+            // Filter by the log level, if none exist at the level or higher then display a message.
+            var eventsAtLevel = MainPresenter.EventLog.GetEntries(this.presenter.EventLogFilter, true);
+            if (!eventsAtLevel.Any())
+            {
+                ImGui.TextWrapped(PrimaryWindow.DropdownLogsNoLogs);
+            }
+
+            // Otherwise, display a table of the logs at that level or higher.
             else if (ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable))
             {
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableTime);
                 ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableType);
-                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage);
+                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage, ImGuiTableColumnFlags.NoHide);
                 ImGui.TableHeadersRow();
 
-                foreach (var log in MainPresenter.EventLog.EventLog.OrderByDescending(x => x.Timestamp))
+                // only show the filtered log or anything above it (by enum value)
+                foreach (var log in eventsAtLevel.OrderByDescending(x => x.Timestamp))
                 {
+                    // Push a colour depending on the type of log it is.
                     if (log.Type == EventLogManager.EventLogType.Warning)
                     {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 0, 1));
+                        ImGui.PushStyleColor(ImGuiCol.Text, Colours.Warning);
                     }
                     else if (log.Type == EventLogManager.EventLogType.Error)
                     {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0, 0, 1));
+                        ImGui.PushStyleColor(ImGuiCol.Text, Colours.Error);
                     }
                     else
                     {
@@ -597,6 +624,22 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.TableSetColumnIndex(2);
                     ImGui.Text(log.Message);
                     ImGui.PopStyleColor();
+
+                    // Context menu to copy or delete the log.
+                    if (ImGui.BeginPopupContextItem())
+                    {
+                        if (ImGui.Selectable(PrimaryWindow.DropdownLogsCopy))
+                        {
+                            ImGui.SetClipboardText(log.Message);
+                            Notifications.Show(PrimaryWindow.DropdownLogsCopySuccess, NotificationType.Toast, toastType: DalamudNotifications.NotificationType.Success);
+                        }
+                        ImGui.Separator();
+                        if (ImGui.Selectable(PrimaryWindow.DropdownLogsDelete))
+                        {
+                            MainPresenter.EventLog.RemoveEntry(log.ID);
+                        }
+                        ImGui.EndPopup();
+                    }
                 }
                 ImGui.EndTable();
             }

@@ -57,6 +57,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                         {
                             this.ShowURLUpdateNag = true;
                             PluginLog.Information($"URLUpdateNagPresenter(HandleURLUpdateNag): API recommended a new URL ({PluginService.Configuration.APIUrl} -> {this.NewAPIURL}) - showing user a nag if the haven't already dismissed it.");
+                            PluginService.EventLogManager.AddEntry($"API recommended moving to a new URL ({PluginService.Configuration.APIUrl} -> {this.NewAPIURL}).", EventLogManager.EventLogType.Info);
                         }
                         else
                         {

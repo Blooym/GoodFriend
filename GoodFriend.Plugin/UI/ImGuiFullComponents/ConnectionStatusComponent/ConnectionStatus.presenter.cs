@@ -3,7 +3,7 @@ using GoodFriend.Base;
 using GoodFriend.Enums;
 using GoodFriend.Localization;
 using GoodFriend.Types;
-using GoodFriend.UI.ImGuiComponents;
+using GoodFriend.UI.ImGuiBasicComponents;
 
 namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
 {

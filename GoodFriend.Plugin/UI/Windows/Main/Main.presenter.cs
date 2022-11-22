@@ -18,6 +18,10 @@ namespace GoodFriend.UI.Windows.Main
         ///     Stores which dropdown menu is currently open.
         /// </summary>
         public VisibleDropdown CurrentVisibleDropdown { get; set; } = VisibleDropdown.None;
+        /// <summary>
+        ///     The filter to apply to the event log.
+        /// </summary>
+        internal EventLogManager.EventLogType EventLogFilter { get; set; } = EventLogManager.EventLogType.Info;
 
         /// <summary>
         ///     Boolean value indicating if the user needs to restart to apply changes.
@@ -30,7 +34,7 @@ namespace GoodFriend.UI.Windows.Main
         internal static EventLogManager EventLog => PluginService.EventLogManager;
 
         /// <summary>
-        ///     Where to get metadata from.
+        ///     The metadata cache instance to use in the UI.
         /// </summary>
         public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
 
@@ -40,6 +44,18 @@ namespace GoodFriend.UI.Windows.Main
         /// <param name="dropdown"></param>
         public void ToggleVisibleDropdown(VisibleDropdown dropdown) => this.CurrentVisibleDropdown = dropdown == this.CurrentVisibleDropdown ? VisibleDropdown.None : dropdown;
 
+        /// <summary>
+        ///     The currently visible dropdown.
+        /// </summary>
+        public enum VisibleDropdown
+        {
+            None = 0,
+            Donate = 1,
+            Logs = 2,
+            Settings = 3,
+        }
+
+#if DEBUG
         /// <summary>
         ///     Fetches the users friendslist from the game.
         /// </summary>
@@ -53,7 +69,6 @@ namespace GoodFriend.UI.Windows.Main
             return friends;
         }
 
-#if DEBUG
         /// <summary>
         ///     The dialog manager for the settings window.
         /// </summary>
@@ -79,13 +94,5 @@ namespace GoodFriend.UI.Windows.Main
             PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
         }
 #endif
-
-        public enum VisibleDropdown
-        {
-            None = 0,
-            Donate = 1,
-            Logs = 2,
-            Settings = 3,
-        }
     }
 }

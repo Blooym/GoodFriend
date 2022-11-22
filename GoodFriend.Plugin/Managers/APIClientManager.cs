@@ -125,7 +125,7 @@ namespace GoodFriend.Managers
                 this.currentTerritoryId = this.clientState.TerritoryType;
                 this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
                 this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
-                PluginLog.Information("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
+                PluginLog.Debug("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
                 this.apiClient.OpenSSEStream();
             }
 
@@ -183,7 +183,7 @@ namespace GoodFriend.Managers
 
               // Send a login
               this.apiClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
-              PluginLog.Information("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
+              PluginLog.Debug("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
           });
         }
 
@@ -211,7 +211,7 @@ namespace GoodFriend.Managers
             this.currentDatacenterId = 0;
             this.hasConnectedSinceError = true;
 
-            PluginLog.Information("APIClientManager(OnLogout): successfully cleared stored IDs for the APIClientManager.");
+            PluginLog.Debug("APIClientManager(OnLogout): successfully cleared stored IDs for the APIClientManager.");
         }
 
         /// <summary>
@@ -287,6 +287,7 @@ namespace GoodFriend.Managers
                 && PluginService.Configuration.HideSameFC)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})", EventLogManager.EventLogType.Info);
                 return;
             }
 
@@ -294,6 +295,7 @@ namespace GoodFriend.Managers
             if (this.currentHomeworldId != friend->HomeWorld && PluginService.Configuration.HideDifferentHomeworld)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
@@ -301,6 +303,7 @@ namespace GoodFriend.Managers
             if (this.currentWorldId != data.WorldID && PluginService.Configuration.HideDifferentWorld && data.WorldID != 0)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
@@ -308,6 +311,7 @@ namespace GoodFriend.Managers
             if (this.currentDatacenterId != data.DatacenterID && PluginService.Configuration.HideDifferentDatacenter)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
@@ -315,6 +319,7 @@ namespace GoodFriend.Managers
             if (data.TerritoryID != this.currentTerritoryId && PluginService.Configuration.HideDifferentTerritory)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
@@ -339,7 +344,7 @@ namespace GoodFriend.Managers
         {
             this.hasConnectedSinceError = false;
             PluginLog.Error($"APIClientManager(OnSSEAPIClientError): A connection error occured: {e.Message}");
-            PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError}: {e.Message}", EventLogManager.EventLogType.Error);
+            PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError} ({e.Message})", EventLogManager.EventLogType.Error);
             if (this.hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionError, NotificationType.Toast, ToastType.Error);
@@ -398,7 +403,7 @@ namespace GoodFriend.Managers
         private void OnRequestSuccess(HttpResponseMessage response)
         {
             var uri = response.RequestMessage?.RequestUri?.ToString().Split('?')[0];
-            PluginLog.Information($"APIClientManager(OnRequestSuccess): Request to {uri} was successful with status code {response.StatusCode}.");
+            PluginLog.Debug($"APIClientManager(OnRequestSuccess): Request to {uri} was successful with status code {response.StatusCode}.");
             PluginService.EventLogManager.AddEntry($"{response.StatusCode} ({uri})", EventLogManager.EventLogType.Debug);
         }
 
@@ -435,11 +440,12 @@ namespace GoodFriend.Managers
             if (metadata != null)
             {
                 this.MetadataCache = metadata;
-                PluginLog.Debug($"APIClientManager(GetMetadata): Metadata cache updated {JsonConvert.SerializeObject(this.MetadataCache)}");
+                PluginLog.Verbose($"APIClientManager(GetMetadata): Metadata cache updated {JsonConvert.SerializeObject(this.MetadataCache)}");
             }
             else
             {
-                PluginLog.Debug("APIClientManager(GetMetadata): Unable to update metadata cache.");
+                PluginLog.Warning("APIClientManager(GetMetadata): Failed to update metadata cache, response was null.");
+                PluginService.EventLogManager.AddEntry("Failed to update metadata cache, response was null.", EventLogManager.EventLogType.Warning);
             }
         }
     }

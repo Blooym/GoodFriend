@@ -1,3 +1,4 @@
+using CheapLoc;
 using Dalamud.IoC;
 using Dalamud.Logging;
 using Dalamud.Plugin;
@@ -24,8 +25,10 @@ namespace GoodFriend
 
             if (!Common.IsOfficialSource && !Common.IsDevBuild)
             {
-                PluginLog.Warning("This plugin has been downloaded from a 3rd-party source; Consider switching to the official version provided by the default repository in the Dalamud Plugin Installer. DO NOT REPORT BUGS using this version.");
+                PluginLog.Warning("This plugin has been downloaded from a 3rd-party source and may be unsafe. Consider using the official source instead. NO SUPPORT WILL BE PROVIDED FOR 3RD-PARTY SOURCES OR MODIFIED BUILDS.");
             }
+
+            Loc.ExportLocalizable();
         }
 
         /// <summary>

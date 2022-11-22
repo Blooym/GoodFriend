@@ -1,6 +1,6 @@
 using System.Numerics;
 using GoodFriend.Localization;
-using GoodFriend.UI.ImGuiComponents;
+using GoodFriend.UI.ImGuiBasicComponents;
 using ImGuiNET;
 
 namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent

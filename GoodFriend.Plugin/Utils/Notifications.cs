@@ -2,6 +2,7 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
 using GoodFriend.Base;
+using GoodFriend.Managers;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
 namespace GoodFriend.Utils
@@ -36,6 +37,7 @@ namespace GoodFriend.Utils
         internal static void Show(string message, NotificationType type, ToastType? toastType = null)
         {
             PluginLog.Debug($"Notifications(Show): Showing {type} notification with the message: {message}");
+            PluginService.EventLogManager.AddEntry($"Showing {type} notification with the message: {message}", EventLogManager.EventLogType.Debug);
             switch (type)
             {
                 case NotificationType.Toast:

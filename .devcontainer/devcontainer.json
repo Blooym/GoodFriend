@@ -17,7 +17,8 @@
 				"ms-dotnettools.csharp",
 				"esbenp.prettier-vscode",
 				"dbaeumer.vscode-eslint",
-				"rangav.vscode-thunder-client"
+				"rangav.vscode-thunder-client",
+				"EditorConfig.EditorConfig"
 			],
 			"settings": {
 				"thunder-client.requestTimeout": 15000,

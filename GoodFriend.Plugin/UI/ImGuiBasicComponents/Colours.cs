@@ -1,7 +1,7 @@
 using System.Numerics;
 using ImGuiNET;
 
-namespace GoodFriend.UI.ImGuiComponents
+namespace GoodFriend.UI.ImGuiBasicComponents
 {
     /// <summary>
     ///     Components and constants for colours.

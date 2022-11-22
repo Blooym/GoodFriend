@@ -194,10 +194,10 @@ namespace GoodFriend.Types
         /// <param name="response">The response that was received.</param>
         private void HandleRatelimitAndStatuscode(HttpResponseMessage response)
         {
-            if (response.StatusCode == (HttpStatusCode)429)
+            this.LastStatusCode = response.StatusCode;
+            if (response.StatusCode == HttpStatusCode.TooManyRequests)
             {
                 PluginLog.Warning("APIClient(HandleRatelimitAndStatuscode): Ratelimited by the API, adjusting requests accordingly.");
-                this.LastStatusCode = response.StatusCode;
 
                 if (response.Headers.TryGetValues("ratelimit-reset", out var values))
                 {
@@ -211,10 +211,6 @@ namespace GoodFriend.Types
                         ? DateTime.Now.AddSeconds(int.Parse(retryValues.First()))
                         : DateTime.Now.AddSeconds(60);
                 }
-            }
-            else
-            {
-                this.LastStatusCode = response.StatusCode;
             }
         }
 
@@ -242,7 +238,7 @@ namespace GoodFriend.Types
             this.sseReconnectTimer.Elapsed += this.OnTryReconnect;
             this.ConfigureHttpClient();
 
-            PluginLog.Debug("APIClient(APIClient): Instantiated.");
+            PluginLog.Debug("APIClient(APIClient): Initialized.");
         }
 
         /// <summary>
@@ -498,6 +494,7 @@ namespace GoodFriend.Types
         public sealed class MetadataPayload
         {
             public int ConnectedClients { get; set; }
+            public int MaxCapacity { get; set; }
             public string? DonationPageUrl { get; set; }
             public string? StatusPageUrl { get; set; }
             public string? NewApiUrl { get; set; }

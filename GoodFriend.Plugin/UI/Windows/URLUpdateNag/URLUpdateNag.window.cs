@@ -4,7 +4,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
 using GoodFriend.Base;
 using GoodFriend.Localization;
-using GoodFriend.UI.ImGuiComponents;
+using GoodFriend.UI.ImGuiBasicComponents;
 using ImGuiNET;
 
 namespace GoodFriend.UI.Windows.URLUpdateNag

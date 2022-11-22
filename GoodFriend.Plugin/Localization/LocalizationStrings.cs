@@ -35,7 +35,6 @@ namespace GoodFriend.Localization
     {
         public static string DropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
         public static string DropdownOptionsStatusTooltip(string url) => string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
-
         public static string DropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
         public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host.");
         public static string DropdownOptionsEventLog => Loc.Localize("Window.Dropdown.Options.EventLog", "Event Log");
@@ -82,6 +81,13 @@ namespace GoodFriend.Localization
         public static string DropdownSupportAPIHost => Loc.Localize("Window.Dropdown.Support.APIHost", "API Instance Host");
         public static string DropdownSupportAPIHostDescription => Loc.Localize("Window.Dropdown.Support.APIHost.Description", "The API instance host is responsible for running and maintaining the server that this plugin is connected to.");
         public static string DropdownSupportAPIHostInvalidUri => Loc.Localize("Window.Dropdown.Support.APIHost.InvalidUri", "The API instance host has provided an invalid support URL.");
+        public static string DropdownLogsTitle => Loc.Localize("Window.Dropdown.Logs.Title", "Logs");
+        public static string DropdownLogsNoLogs => Loc.Localize("Window.Dropdown.Logs.NoLogs", "No logs to display.");
+        public static string DropdownLogsClearAll => Loc.Localize("Window.Dropdown.Logs.ClearAll", "Clear All");
+        public static string DropdownLogsCopy => Loc.Localize("Window.Dropdown.Logs.Copy", "Copy");
+        public static string DropdownLogsFilterTooltip => Loc.Localize("Window.Dropdown.Logs.FilterTooltip", "Set the selected log level, any logs below this level will be hidden.");
+        public static string DropdownLogsCopySuccess => Loc.Localize("Window.Dropdown.Logs.CopySuccess", "Successfully copied log to clipboard.");
+        public static string DropdownLogsDelete => Loc.Localize("Window.Dropdown.Logs.Delete", "Delete");
         public static string DropdownLogsTableTime => Loc.Localize("Window.Dropdown.Logs.Table.Time", "Time");
         public static string DropdownLogsTableType => Loc.Localize("Window.Dropdown.Logs.Table.Type", "Type");
         public static string DropdownLogsTableMessage => Loc.Localize("Window.Dropdown.Logs.Table.Message", "Message");
