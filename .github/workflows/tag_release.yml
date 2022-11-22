@@ -47,10 +47,9 @@ jobs:
           sha512sum bin/Release/GoodFriend/latest.zip  >> checksums.txt
           sha512sum bin/Release/GoodFriend/GoodFriend.json >> checksums.txt
           cat checksums.txt
-        with:
-          env:
-            DALAMUD_HOME: /tmp/dalamud
-            IsCI: true
+        env:
+          DALAMUD_HOME: /tmp/dalamud
+          IsCI: true
 
       - name: Release
         uses: softprops/action-gh-release@v1
