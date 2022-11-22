@@ -1,4 +1,3 @@
-using CheapLoc;
 using Dalamud.IoC;
 using Dalamud.Logging;
 using Dalamud.Plugin;
@@ -27,8 +26,6 @@ namespace GoodFriend
             {
                 PluginLog.Warning("This plugin has been downloaded from a 3rd-party source and may be unsafe. Consider using the official source instead. NO SUPPORT WILL BE PROVIDED FOR 3RD-PARTY SOURCES OR MODIFIED BUILDS.");
             }
-
-            Loc.ExportLocalizable();
         }
 
         /// <summary>
