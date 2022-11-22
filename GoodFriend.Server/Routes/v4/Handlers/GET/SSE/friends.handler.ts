@@ -16,7 +16,7 @@ const HEARTBEAT_INTERVAL = 30000;
  */
 export default (req: Request, res: Response, sseClients: SSEClient) => {
   // If the server is at max capacity, return a 503 Service Unavailable.
-  if (sseClients.length >= MAX_SSE_CONNECTIONS) {
+  if (sseClients.length >= MAX_SSE_CONNECTIONS && MAX_SSE_CONNECTIONS !== 0) {
     res.status(503).send('The server is currently at maximum capacity for connections. Please try again later.');
     return;
   }
