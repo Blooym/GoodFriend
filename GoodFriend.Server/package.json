@@ -33,7 +33,7 @@
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
-    "husky": "^8.0.1",
+    "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
     "nodemon": "^2.0.20",
     "tsc-alias": "^1.7.1"
