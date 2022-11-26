@@ -1,250 +1,250 @@
 {
   "Event.Connection.Status": {
-    "message": "Connection Status",
+    "message": "Estado de Conexión",
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Successfully connected to the API.",
+    "message": "Conectado a la API con éxito.",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
+    "message": "Ha ocurrido un error al conectar a la API.",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
-    "message": "Disconnected from the API.",
+    "message": "Desconectado de la API.",
     "description": "Events.get_APIConnectionDisconnected"
   },
   "Event.Connection.Ratelimited": {
-    "message": "Ratelimited by the API, will auto-retry later.",
+    "message": "La API te ha limitado la tasa, se intentará de nuevo más tarde.",
     "description": "Events.get_APIConnectionRatelimited"
   },
   "Event.LoggedIn": {
-    "message": "logged in.",
+    "message": "se ha conectado.",
     "description": "Events.get_LoggedIn"
   },
   "Event.LoggedOut": {
-    "message": "logged out.",
+    "message": "se ha desconectado.",
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
-    "message": "Connected",
+    "message": "Conectado.",
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
-    "message": "There are currently {0} connected clients.",
+    "message": "Actualmente hay {0} clientes conectados.",
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
-    "message": "Connecting",
+    "message": "Conectando",
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
-    "message": "Connection in progress, please wait.",
+    "message": "Conexión en progreso. Por favor, espera.",
     "description": "State.get_ConnectingDescription"
   },
   "State.Ratelimited": {
-    "message": "Ratelimited",
+    "message": "Tasa limitada.",
     "description": "State.get_Ratelimited"
   },
   "State.Ratelimited.Description": {
-    "message": "The API has ratelimited this client temporarily.",
+    "message": "La API ha limitado la tasa del cliente de manera temporal.",
     "description": "State.get_RatelimitedDescription"
   },
   "State.Disconnected": {
-    "message": "Disconnected",
+    "message": "Desconectado",
     "description": "State.get_Disconnected"
   },
   "State.Disconnected.Description": {
-    "message": "Login to connect to the API.",
+    "message": "Inicia sesión para conectarte a la API.",
     "description": "State.get_DisconnectedDescription"
   },
   "State.ConnectionError": {
-    "message": "Connection Error",
+    "message": "Error de conexión",
     "description": "State.get_ConnectionError"
   },
   "State.ConnectionError.Description": {
-    "message": "Something went wrong with the API connection.",
+    "message": "Algo ha salido mal con la conexión a la API.",
     "description": "State.get_ConnectionErrorDescription"
   },
   "State.Unknown": {
-    "message": "Unknown",
+    "message": "Desconocido",
     "description": "State.get_Unknown"
   },
   "State.Unknown.Description": {
-    "message": "We're not sure what's going on here.",
+    "message": "No estamos seguros de lo que está pasando aquí.",
     "description": "State.get_UnknownDescription"
   },
   "Window.Dropdown.Options.Status": {
-    "message": "Status",
+    "message": "Estado",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
   },
   "Window.Dropdown.Options.Status.Tooltip": {
-    "message": "View the status page of this API instance.\n({0})",
+    "message": "Ver la página de estado de esta instancia de la API.\n({0})",
     "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
   },
   "Window.Dropdown.Options.Support": {
-    "message": "Donate",
+    "message": "Donar",
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Support the developer and API instance host.",
+    "message": "Apoya al desarrollador y el host de instancia de API.",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
-    "message": "Event Log",
+    "message": "Registro de eventos",
     "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
   "Window.Dropdown.Options.EventLog.Tooltip": {
-    "message": "View the event log.",
+    "message": "Ver el registro de eventos.",
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
-    "message": "Settings",
+    "message": "Ajustes",
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
-    "message": "Change the settings for this plugin.",
+    "message": "Cambia la configuración de este plugin.",
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
-    "message": "Enabled",
+    "message": "Habilitado",
     "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
   "Window.Dropdown.Settings.Disabled": {
-    "message": "Disabled",
+    "message": "Deshabilitado",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
   "Window.Dropdown.Settings.RestartRequired": {
-    "message": "Plugin restart required to apply some configuration changes.",
+    "message": "Es necesario reiniciar el plugin para aplicar algunos cambios de configuración.",
     "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
   },
   "Window.Dropdown.Settings.IgnoreFC": {
-    "message": "Ignore FC Members",
+    "message": "Ignorar miembros de FC",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not ignore friend notifications from players in your Free Company.",
+    "message": "Ignorar o no las notificaciones de amigos de jugadores en tu Free Company.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
-    "message": "Ignore Other Homeworlds",
+    "message": "Ignorar Otros Mundos de Origen",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.",
+    "message": "Ignorar o no notificaciones de amigos que tengan un mundo de origen diferente al tuyo.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds": {
-    "message": "Ignore Other Worlds",
+    "message": "Ignorar Otros Mundos",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different worlds than you.",
+    "message": "Ignorar o no notificaciones de amigos que estén actualmente en un mundo diferente al tuyo.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories": {
-    "message": "Ignore Other Zones",
+    "message": "Ignorar Otras Zonas",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different zones.",
+    "message": "Ignorar o no notificaciones de amigos que estén actualmente en una zona diferente a la tuya.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters": {
-    "message": "Ignore Other Datacenters",
+    "message": "Ignorar otros Datacenters",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacenters"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently on different datacenters.",
+    "message": "Ignorar o no notificaciones de amigos que estén actualmente en un Datacenter diferente al tuyo.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
-    "message": "Notification Type",
+    "message": "Tipo de Notificación",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
   },
   "Window.Dropdown.Settings.NotificationType.Tooltip": {
-    "message": "The type of notification to show when a friend event occurs.",
+    "message": "El tipo de notificación a mostrar cuando ocurre un evento de amigo.",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
   },
   "Window.Dropdown.Settings.LoginMessage": {
-    "message": "Login Message",
+    "message": "Mensaje de inicio de sesión",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "El mensaje a mostrar cuando un amigo inicia sesión.\nEl mensaje debe contener {0} al menos una vez para insertar el nombre del amigo.",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLoginMessage": {
-    "message": "The login message must contain {0} at least once to insert the friend's name.",
+    "message": "El mensaje de inicio de sesión debe contener {0} al menos una vez para insertar el nombre del amigo.",
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
-    "message": "Logout Message",
+    "message": "Mensaje de cierre de sesión",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "El mensaje a mostrar cuando un amigo cierra la sesión.\nEl mensaje debe contener {0} al menos una vez para insertar el nombre del amigo.",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLogoutMessage": {
-    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "message": "El mensaje de cierre de sesión debe contener {0} al menos una vez para insertar el nombre del amigo.",
     "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
-    "message": "API Notifications",
+    "message": "Notificaciones de API",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
   },
   "Window.Dropdown.Settings.APINotifications.Tooltip": {
-    "message": "Whether or not to notifications when the API connection status changes.",
+    "message": "Mostrar o no notificaciones cuando el estado de conexión a la API cambie.",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
-    "message": "Friendship Code",
+    "message": "Código de Amistad",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
   "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
-    "message": "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "message": "Tu código de amistad limita a quién envias notificaciones.\nSolo enviarás y recibirás notificaciones de personas que tengan el mismo código.\n\nDeja en blanco para la mejor experiencia.",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
   "Window.Dropdown.Settings.APIUrl": {
-    "message": "API URL",
+    "message": "URL de la API",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
-    "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
+    "message": "La URL de la instancia de la API a la que conectarse. Deberías confiar en el host de esta instancia antes de conectarte a ella.",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
   "Window.Dropdown.Settings.APIUrlInvalid": {
-    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "message": "La URL de la API no es válida, por favor comprueba que contiene el protocolo (http:// o https://) y el puerto (si es aplicable).",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
-    "message": "API Token",
+    "message": "Token de la API",
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
-    "message": "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.",
+    "message": "Establece el valor de cabecera 'Autorización' para enviar con todas las solicitudes a la API.\nNecesitarás incluir el esquema de autorización (por ejemplo: portador, básico) antes del valor.\nLa instancia de la API podrá ver este valor, nunca incluyas información sensible como tu contraseña personal.",
     "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
   "Window.Dropdown.Settings.SaltMethod": {
-    "message": "Salt Method",
+    "message": "Método de Salt",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.",
+    "message": "Estricto: La validación se realiza utilizando tanto el Código de Amigo y el Manifiesto del Plugin (los usuarios deben estar usando el mismo plugin, versión y build para el intercambio de eventos)\nRelajado: La validación solo se realiza usando el Código de Amigo (los usuarios pueden intercambiar eventos de cualquier fuente usando la misma API)\n\nDéjalo en estricto para tener la mejor privacidad y seguridad.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Support.Title": {
-    "message": "Support & Donations",
+    "message": "Apoyo y Donaciones",
     "description": "PrimaryWindow.get_DropdownSupportTitle"
   },
   "Window.Dropdown.Support.FlavourText": {
-    "message": "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!",
+    "message": "Puedes encontrar formas de apoyar al desarrollador del plugin o el host de la API aquí. ¡Se agradece cualquier ayuda!",
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
-    "message": "Donate",
+    "message": "Donar",
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
