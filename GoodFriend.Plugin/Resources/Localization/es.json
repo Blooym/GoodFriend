@@ -248,87 +248,87 @@
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
-    "message": "Plugin/Server Developer",
+    "message": "Desarollador del Plugin/Servidor",
     "description": "PrimaryWindow.get_DropdownSupportDeveloper"
   },
   "Window.Dropdown.Support.Developer.Description": {
-    "message": "The developer is responsible for the code that makes the Plugin and API work.",
+    "message": "El desarrollador es responsable del código que hace que el Plugin y la API funcionen.",
     "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
   },
   "Window.Dropdown.Support.APIHost": {
-    "message": "API Instance Host",
+    "message": "Servidor de Instancia API",
     "description": "PrimaryWindow.get_DropdownSupportAPIHost"
   },
   "Window.Dropdown.Support.APIHost.Description": {
-    "message": "The API instance host is responsible for running and maintaining the server that this plugin is connected to.",
+    "message": "El host de instancia de API es responsable de ejecutar y mantener el servidor al que este plugin está conectado.",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostDescription"
   },
   "Window.Dropdown.Support.APIHost.InvalidUri": {
-    "message": "The API instance host has provided an invalid support URL.",
+    "message": "El host de instancia API ha proporcionado una URL de soporte no válida.",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
   },
   "Window.Dropdown.Logs.Title": {
-    "message": "Logs",
+    "message": "Registros",
     "description": "PrimaryWindow.get_DropdownLogsTitle"
   },
   "Window.Dropdown.Logs.NoLogs": {
-    "message": "No logs to display.",
+    "message": "No hay registros a mostrar.",
     "description": "PrimaryWindow.get_DropdownLogsNoLogs"
   },
   "Window.Dropdown.Logs.ClearAll": {
-    "message": "Clear All",
+    "message": "Borrar todo",
     "description": "PrimaryWindow.get_DropdownLogsClearAll"
   },
   "Window.Dropdown.Logs.Copy": {
-    "message": "Copy",
+    "message": "Copiar",
     "description": "PrimaryWindow.get_DropdownLogsCopy"
   },
   "Window.Dropdown.Logs.FilterTooltip": {
-    "message": "Set the selected log level, any logs below this level will be hidden.",
+    "message": "Establecer el nivel de registro seleccionado, cualquier registro por debajo de este nivel se ocultará.",
     "description": "PrimaryWindow.get_DropdownLogsFilterTooltip"
   },
   "Window.Dropdown.Logs.CopySuccess": {
-    "message": "Successfully copied log to clipboard.",
+    "message": "Registro copiado correctamente al portapapeles.",
     "description": "PrimaryWindow.get_DropdownLogsCopySuccess"
   },
   "Window.Dropdown.Logs.Delete": {
-    "message": "Delete",
+    "message": "Eliminar",
     "description": "PrimaryWindow.get_DropdownLogsDelete"
   },
   "Window.Dropdown.Logs.Table.Time": {
-    "message": "Time",
+    "message": "Hora",
     "description": "PrimaryWindow.get_DropdownLogsTableTime"
   },
   "Window.Dropdown.Logs.Table.Type": {
-    "message": "Type",
+    "message": "Tipo",
     "description": "PrimaryWindow.get_DropdownLogsTableType"
   },
   "Window.Dropdown.Logs.Table.Message": {
-    "message": "Message",
+    "message": "Mensaje",
     "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
   "Window.Settings.Build.Official": {
-    "message": "Official Build",
+    "message": "Build Oficial",
     "description": "PrimaryWindow.get_SettingsOfficialBuild"
   },
   "Window.Settings.Build.Unofficial": {
-    "message": "Unofficial Build",
+    "message": "Build no oficial",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
   },
   "Window.URLUpdateNag.Title": {
-    "message": "{0} - Update from {1}",
+    "message": "{0} - Actualizar desde {1}",
     "description": "URLNagWindow.URLUpdateNagTitle"
   },
   "Window.URLUpdateNag.Text": {
-    "message": "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option.",
+    "message": "Tu instancia configurada recomienda que actualices a una nueva URL de API; esto se debe probablemente a un cambio en el nombre de dominio de la instancia o proveedor de alojamiento.\n\nSi confías en la nueva URL({0}), pulsa el botón de abajo para actualizar la URL de la API para la próxima carga del plugin. De lo contrario, quizá quieras encontrar otro proveedor de instancias.\n\nMantén pulsado Mayús o espera {1} segundos para seleccionar una opción.",
     "description": "URLNagWindow.URLUpdateNagText"
   },
   "Window.URLUpdateNag.Button.Update": {
-    "message": "Update URL",
+    "message": "Actualizar URL",
     "description": "URLNagWindow.get_URLUpdateNagButtonUpdate"
   },
   "Window.URLUpdateNag.Button.Ignore": {
-    "message": "Ignore for this session",
+    "message": "Ignorar durante esta sesión",
     "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
   }
 }
