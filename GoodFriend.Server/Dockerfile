@@ -9,7 +9,7 @@ ARG PKG_TARGET=node16-alpine
 ARG PKG_COMPRESSION=Brotli
 
 # Install global build dependencies.
-RUN npm i -g pkg npm@latest
+RUN npm i -g pkg npm@latest yarn
 
 # Cache PKG Nodejs Binaries
 RUN mkdir -p /opt/pkg-cache && touch /opt/pkg-cache/index.js 
