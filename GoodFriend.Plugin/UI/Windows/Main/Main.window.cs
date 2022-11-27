@@ -626,7 +626,7 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.PopStyleColor();
 
                     // Context menu to copy or delete the log.
-                    if (ImGui.BeginPopupContextItem())
+                    if (ImGui.BeginPopupContextItem($"##LogContextMenu{log.ID}"))
                     {
                         if (ImGui.Selectable(PrimaryWindow.DropdownLogsCopy))
                         {
