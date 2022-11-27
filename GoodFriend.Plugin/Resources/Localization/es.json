@@ -88,7 +88,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Apoya al desarrollador y el host de instancia de API.",
+    "message": "Apoya a la desarrolladora y al host de instancia de la API.",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
@@ -240,7 +240,7 @@
     "description": "PrimaryWindow.get_DropdownSupportTitle"
   },
   "Window.Dropdown.Support.FlavourText": {
-    "message": "Puedes encontrar formas de apoyar al desarrollador del plugin o el host de la API aquí. ¡Se agradece cualquier ayuda!",
+    "message": "Puedes encontrar formas de apoyar a la desarrolladora del plugin o al host de la API aquí. ¡Se agradece cualquier ayuda!",
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
@@ -248,11 +248,11 @@
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
-    "message": "Desarollador del Plugin/Servidor",
+    "message": "Desarolladora del Plugin/Servidor",
     "description": "PrimaryWindow.get_DropdownSupportDeveloper"
   },
   "Window.Dropdown.Support.Developer.Description": {
-    "message": "El desarrollador es responsable del código que hace que el Plugin y la API funcionen.",
+    "message": "La desarrolladora es la responsable del código que hace que el Plugin y la API funcionen.",
     "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
   },
   "Window.Dropdown.Support.APIHost": {
