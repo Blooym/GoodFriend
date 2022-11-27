@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import express from 'express';
 import compression from 'compression';
-import helmet from 'helmet';
 import { PORT, TRUST_PROXY } from '@common/environment';
 
 import Ratelimitter from '@middleware/Ratelimiter';
@@ -11,9 +10,10 @@ import MetricsCollector from '@services/Prometheus/Middleware';
 
 import globalRouter from '@routes/Global';
 import v4Router from '@routes/v4';
+import Helmet from '@middleware/Helmet';
 
 const app = express()
-  .use(helmet())
+  .use(Helmet)
   .use(compression())
   .use(Ratelimitter)
   .use(MetricsCollector)
