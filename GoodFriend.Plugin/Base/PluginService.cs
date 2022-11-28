@@ -38,8 +38,8 @@ namespace GoodFriend.Base
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             ResourceManager = new ResourceManager();
             WindowManager = new WindowManager();
-            APIClientManager = new APIClientManager(ClientState, Framework);
             EventLogManager = new EventLogManager();
+            APIClientManager = new APIClientManager(ClientState, Framework);
 
 #if !DEBUG
             ResourceManager.Update();
