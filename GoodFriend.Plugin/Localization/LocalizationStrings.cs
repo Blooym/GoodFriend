@@ -63,7 +63,7 @@ namespace GoodFriend.Localization
         public static string DropdownSettingsLogoutMessageTooltip => Loc.Localize("Window.Dropdown.Settings.LogoutMessage.Tooltip", "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.");
         public static string DropdownInvalidLogoutMessage => Loc.Localize("Window.Dropdown.Settings.InvalidLogoutMessage", "The logout message must contain {0} at least once to insert the friend's name.");
         public static string DropdownSettingsAPINotifications => Loc.Localize("Window.Dropdown.Settings.APINotifications", "API Notifications");
-        public static string DropdownSettingsAPINotificationsTooltip => Loc.Localize("Window.Dropdown.Settings.APINotifications.Tooltip", "Whether or not to notifications when the API connection status changes.");
+        public static string DropdownSettingsAPINotificationsTooltip => Loc.Localize("Window.Dropdown.Settings.APINotifications.Tooltip", "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.");
         public static string DropdownSettingsFriendshipCode => Loc.Localize("Window.Dropdown.Settings.FriendshipCode", "Friendship Code");
         public static string DropdownSettingsFriendshipCodeTooltip => Loc.Localize("Window.Dropdown.Settings.FriendshipCode.Tooltip", "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.");
         public static string DropdownSettingsAPIUrl => Loc.Localize("Window.Dropdown.Settings.APIUrl", "API URL");
