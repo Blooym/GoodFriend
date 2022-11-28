@@ -342,13 +342,13 @@ namespace GoodFriend.Managers
         /// <param name="e">The error.</param>
         private void OnSSEAPIClientError(Exception e)
         {
-            this.hasConnectedSinceError = false;
             PluginLog.Error($"APIClientManager(OnSSEAPIClientError): A connection error occured: {e.Message}");
             PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError} ({e.Message})", EventLogManager.EventLogType.Error);
             if (this.hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionError, NotificationType.Toast, ToastType.Error);
             }
+            this.hasConnectedSinceError = false;
         }
 
         /// <summary>
@@ -356,7 +356,6 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnSSEAPIClientConnected()
         {
-            this.hasConnectedSinceError = true;
             PluginLog.Information("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionSuccess, EventLogManager.EventLogType.Info);
 
@@ -364,6 +363,7 @@ namespace GoodFriend.Managers
             {
                 Notifications.Show(Events.APIConnectionSuccess, NotificationType.Toast, ToastType.Success);
             }
+            this.hasConnectedSinceError = true;
         }
 
         /// <summary>
@@ -371,9 +371,13 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnSSEAPIClientDisconnected()
         {
-            this.hasConnectedSinceError = false;
             PluginLog.Information("APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
+
+            if (PluginService.Configuration.ShowAPIEvents)
+            {
+                Notifications.Show(Events.APIConnectionDisconnected, NotificationType.Toast, ToastType.Info);
+            }
         }
 
         /// <summary>
