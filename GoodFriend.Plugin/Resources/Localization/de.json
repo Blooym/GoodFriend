@@ -232,8 +232,16 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.",
+    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
+  },
+  "Window.Dropdown.Settings.FriendslistCaching": {
+    "message": "Friendslist Caching",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendslistCaching"
+  },
+  "Window.Dropdown.Settings.FriendslistCaching.Tooltip": {
+    "message": "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendslistCachingTooltip"
   },
   "Window.Dropdown.Support.Title": {
     "message": "Support & Donations",
@@ -314,6 +322,14 @@
   "Window.Settings.Build.Unofficial": {
     "message": "Unofficial Build",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
+  },
+  "Window.Settings.Tab.General": {
+    "message": "General",
+    "description": "PrimaryWindow.get_SettingsTabGeneral"
+  },
+  "Window.Settings.Tab.Advanced": {
+    "message": "Advanced",
+    "description": "PrimaryWindow.get_SettingsTabAdvanced"
   },
   "Window.URLUpdateNag.Title": {
     "message": "{0} - Update from {1}",
