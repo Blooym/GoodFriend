@@ -196,7 +196,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
   },
   "Window.Dropdown.Settings.APINotifications.Tooltip": {
-    "message": "Mostrar o no notificaciones cuando el estado de conexión a la API cambie.",
+    "message": "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
@@ -232,8 +232,16 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Estricto: La validación se realiza utilizando tanto el Código de Amigo y el Manifiesto del Plugin (los usuarios deben estar usando el mismo plugin, versión y build para el intercambio de eventos)\nRelajado: La validación solo se realiza usando el Código de Amigo (los usuarios pueden intercambiar eventos de cualquier fuente usando la misma API)\n\nDéjalo en estricto para tener la mejor privacidad y seguridad.",
+    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
+  },
+  "Window.Dropdown.Settings.FriendslistCaching": {
+    "message": "Friendslist Caching",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendslistCaching"
+  },
+  "Window.Dropdown.Settings.FriendslistCaching.Tooltip": {
+    "message": "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.",
+    "description": "PrimaryWindow.get_DropdownSettingsFriendslistCachingTooltip"
   },
   "Window.Dropdown.Support.Title": {
     "message": "Apoyo y Donaciones",
@@ -314,6 +322,14 @@
   "Window.Settings.Build.Unofficial": {
     "message": "Build no oficial",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
+  },
+  "Window.Settings.Tab.General": {
+    "message": "General",
+    "description": "PrimaryWindow.get_SettingsTabGeneral"
+  },
+  "Window.Settings.Tab.Advanced": {
+    "message": "Advanced",
+    "description": "PrimaryWindow.get_SettingsTabAdvanced"
   },
   "Window.URLUpdateNag.Title": {
     "message": "{0} - Actualizar desde {1}",
