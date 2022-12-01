@@ -72,7 +72,9 @@ namespace GoodFriend.Localization
         public static string DropdownSettingsAPIToken => Loc.Localize("Window.Dropdown.Settings.APIToken", "API Token");
         public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.");
         public static string DropdownSettingsSaltMethod => Loc.Localize("Window.Dropdown.Settings.SaltMethod", "Salt Method");
-        public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict for the best privacy and security.");
+        public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.");
+        public static string DropdownSettingsFriendslistCaching => Loc.Localize("Window.Dropdown.Settings.FriendslistCaching", "Friendslist Caching");
+        public static string DropdownSettingsFriendslistCachingTooltip => Loc.Localize("Window.Dropdown.Settings.FriendslistCaching.Tooltip", "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.");
         public static string DropdownSupportTitle => Loc.Localize("Window.Dropdown.Support.Title", "Support & Donations");
         public static string DropdownSupportFlavourText => Loc.Localize("Window.Dropdown.Support.FlavourText", "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!");
         public static string DropdownSupportDonate => Loc.Localize("Window.Dropdown.Support.Button", "Donate");
@@ -93,6 +95,8 @@ namespace GoodFriend.Localization
         public static string DropdownLogsTableMessage => Loc.Localize("Window.Dropdown.Logs.Table.Message", "Message");
         public static string SettingsOfficialBuild => Loc.Localize("Window.Settings.Build.Official", "Official Build");
         public static string SettingsUnofficialBuild => Loc.Localize("Window.Settings.Build.Unofficial", "Unofficial Build");
+        public static string SettingsTabGeneral => Loc.Localize("Window.Settings.Tab.General", "General");
+        public static string SettingsTabAdvanced => Loc.Localize("Window.Settings.Tab.Advanced", "Advanced");
     }
     public static class URLNagWindow
     {

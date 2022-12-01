@@ -56,6 +56,11 @@ namespace GoodFriend.Base
         public bool HideDifferentDatacenter { get; set; }
 
         /// <summary>
+        ///    Whether or not to cache the friendslist for when it is unavailable (eg. instanced content).
+        /// </summary>
+        public bool FriendslistCaching { get; set; } = true;
+
+        /// <summary>
         ///     Whether or not to show API events as notifications.
         /// </summary>
         public bool ShowAPIEvents { get; set; }

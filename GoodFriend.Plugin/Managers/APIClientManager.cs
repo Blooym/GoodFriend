@@ -260,7 +260,7 @@ namespace GoodFriend.Managers
 
             // Find if the friend is on the users friend list.
             FriendListEntry* friend = default;
-            foreach (FriendListEntry* x in FriendList.FriendList.Get())
+            foreach (FriendListEntry* x in FriendListCache.Get())
             {
 #if DEBUG
                 PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Checking {x->Name} for match.");

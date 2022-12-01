@@ -62,7 +62,7 @@ namespace GoodFriend.UI.Windows.Main
         public unsafe List<FriendListEntry> GetFriendList()
         {
             List<FriendListEntry> friends = new();
-            foreach (FriendListEntry* friend in FriendList.Get())
+            foreach (FriendListEntry* friend in FriendListCache.Get())
             {
                 friends.Add(*friend);
             }

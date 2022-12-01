@@ -123,7 +123,7 @@ namespace GoodFriend.UI.Windows.Main
             if (ImGui.BeginTabBar("SettingsDropdownTabBar"))
             {
                 // "Basic" Settings
-                if (ImGui.BeginTabItem("General"))
+                if (ImGui.BeginTabItem(PrimaryWindow.SettingsTabGeneral))
                 {
                     var notificationType = PluginService.Configuration.NotificationType;
                     var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
@@ -342,7 +342,7 @@ namespace GoodFriend.UI.Windows.Main
                 }
 
                 // "Advanced" Settings
-                if (ImGui.BeginTabItem("Advanced"))
+                if (ImGui.BeginTabItem(PrimaryWindow.SettingsTabAdvanced))
                 {
                     var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
                     var apiUrl = PluginService.Configuration.APIUrl.ToString();
@@ -463,8 +463,34 @@ namespace GoodFriend.UI.Windows.Main
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsSaltMethodTooltip);
+                        ImGui.TableNextRow();
+
+                        // Don't cache friends list (dropdown "on" or "off")
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsFriendslistCaching);
+                        ImGui.TableSetColumnIndex(1);
+                        ImGui.SetNextItemWidth(-1);
+                        if (ImGui.BeginCombo("##DontCacheFriends", PluginService.Configuration.FriendslistCaching ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
+                        {
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, PluginService.Configuration.FriendslistCaching))
+                            {
+                                PluginService.Configuration.FriendslistCaching = true;
+                            }
+
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !PluginService.Configuration.FriendslistCaching))
+                            {
+                                PluginService.Configuration.FriendslistCaching = false;
+                            }
+
+                            PluginService.Configuration.Save();
+                            ImGui.EndCombo();
+                        }
+                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendslistCachingTooltip);
+
+
                         ImGui.EndTable();
                     }
+
                     ImGui.EndChild();
                     ImGui.EndTabItem();
                 }
@@ -476,20 +502,29 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.BeginChild("##DeveloperSettings");
 
                     this.presenter.DialogManager.Draw();
-                    if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth() - 20, 0)))
+                    if (ImGui.Button("Export Localizable", new Vector2(ImGui.GetWindowWidth(), 0)))
                     {
                         this.presenter.DialogManager.OpenFolderDialog("Export LOC", MainPresenter.OnDirectoryPicked);
                     }
 
                     ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash & salt");
                     ImGui.BeginChild("##Friends");
-                    foreach (var friend in this.presenter.GetFriendList())
+
+                    var friendList = this.presenter.GetFriendList();
+                    if (friendList.Count == 0)
                     {
-                        if (ImGui.Selectable(friend.Name.ToString()))
+                        ImGui.TextWrapped("Unable to pull friends list data, the cache might be unavailable or disabled.");
+                    }
+                    else
+                    {
+                        foreach (var friend in friendList)
                         {
-                            var rand = CryptoUtil.GenerateRandom(32);
-                            ImGui.SetClipboardText($"ContentID: {CryptoUtil.HashSHA512(friend.ContentId.ToString(), rand)} Salt: {rand}");
-                            Notifications.Show($"Copied {friend.Name}'s ContentID hash & salt to clipboard", NotificationType.Toast);
+                            if (ImGui.Selectable(friend.Name.ToString()))
+                            {
+                                var rand = CryptoUtil.GenerateRandom(32);
+                                ImGui.SetClipboardText($"ContentID: {CryptoUtil.HashSHA512(friend.ContentId.ToString(), rand)} Salt: {rand}");
+                                Notifications.Show($"Copied {friend.Name}'s ContentID hash & salt to clipboard", NotificationType.Toast, DalamudNotifications.NotificationType.Success);
+                            }
                         }
                     }
 
