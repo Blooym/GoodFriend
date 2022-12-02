@@ -232,7 +232,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
+    "message": "Strict : la validation est faite à la fois en utilisant le Code Ami et le Manifeste de Plugin (les deux utilisateur·rice·s doivent avoir la même version & build du plugin)\nRelaxé : la validation est faite uniquement en utilisant le Code Ami (les utilisateur·rice·s peuvent échanger des événements de n'importe quelle source utilisant cette API)\n\nGardez l'option Stricte pour une meilleure sécurité et protection de votre vie privée.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Settings.FriendslistCaching": {
@@ -288,7 +288,7 @@
     "description": "PrimaryWindow.get_DropdownLogsClearAll"
   },
   "Window.Dropdown.Logs.Copy": {
-    "message": "Copy",
+    "message": "Copier",
     "description": "PrimaryWindow.get_DropdownLogsCopy"
   },
   "Window.Dropdown.Logs.FilterTooltip": {
@@ -316,19 +316,19 @@
     "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
   "Window.Settings.Build.Official": {
-    "message": "Official Build",
+    "message": "Version officielle",
     "description": "PrimaryWindow.get_SettingsOfficialBuild"
   },
   "Window.Settings.Build.Unofficial": {
-    "message": "Unofficial Build",
+    "message": "Version non officielle",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
   },
   "Window.Settings.Tab.General": {
-    "message": "General",
+    "message": "Général",
     "description": "PrimaryWindow.get_SettingsTabGeneral"
   },
   "Window.Settings.Tab.Advanced": {
-    "message": "Advanced",
+    "message": "Avancé",
     "description": "PrimaryWindow.get_SettingsTabAdvanced"
   },
   "Window.URLUpdateNag.Title": {
