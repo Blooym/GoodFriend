@@ -232,7 +232,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
+    "message": "Estricto: La validación se realiza utilizando tanto el Código de Amigo y el Manifiesto del Plugin (los usuarios deben estar usando el mismo plugin, versión y build para el intercambio de eventos)\nRelajado: La validación solo se realiza usando el Código de Amigo (los usuarios pueden intercambiar eventos de cualquier fuente usando la misma API)\n\nDéjalo en estricto para tener la mejor privacidad y seguridad.",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Settings.FriendslistCaching": {
