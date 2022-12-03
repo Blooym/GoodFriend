@@ -54,6 +54,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         public override void PreOpenCheck()
         {
             this.IsOpen = this.Presenter.ShowURLUpdateNag;
+
             if (!this.Presenter.ShowURLUpdateNag && !this.Presenter.URLUpdateNagDismissed)
             { this.Presenter.HandleURLUpdateNag(); }
         }
@@ -83,7 +84,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                 this.popupTime = DateTime.Now;
             }
 
-            Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(PluginService.Configuration.APIUrl));
+            Colours.TextWrappedColoured(Colours.Warning, URLNagWindow.URLUpdateNagTitle(URLUpdateNagPresenter.Configuration.APIUrl));
             ImGui.Separator();
             ImGui.TextWrapped(URLNagWindow.URLUpdateNagText(this.Presenter.NewAPIURL, DismissDelay));
             ImGui.Dummy(new Vector2(0, 5));
@@ -93,9 +94,9 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
             if (ImGui.Button(URLNagWindow.URLUpdateNagButtonUpdate))
             {
 #pragma warning disable CS8601 // Checked for null in the presenter
-                PluginService.Configuration.APIUrl = this.Presenter.NewAPIURL;
+                URLUpdateNagPresenter.Configuration.APIUrl = this.Presenter.NewAPIURL;
 #pragma warning restore CS8601
-                PluginService.Configuration.Save();
+                URLUpdateNagPresenter.Configuration.Save();
                 PluginLog.Information($"URLUpdateNag(Draw): Accepted suggested URL update, changed API URL to {this.Presenter.NewAPIURL}");
                 this.Presenter.URLUpdateNagDismissed = true;
             }
