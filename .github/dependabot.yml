@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/GoodFriend.Plugin"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -13,4 +13,4 @@ updates:
   - package-ecosystem: "npm"
     directory: "/GoodFriend.Server"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
