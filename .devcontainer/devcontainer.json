@@ -15,7 +15,6 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
-				"esbenp.prettier-vscode",
 				"dbaeumer.vscode-eslint",
 				"rangav.vscode-thunder-client",
 				"EditorConfig.EditorConfig"
