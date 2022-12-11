@@ -82,7 +82,7 @@ namespace GoodFriend.Managers
         ///     EventLogEntry is a single entry in the <see cref="EventLogManager"/> log.
         /// </summary>
         [Serializable]
-        internal class EventLogEntry
+        internal sealed class EventLogEntry
         {
             public Guid ID { get; set; }
             public EventLogType Type { get; set; }

@@ -32,13 +32,13 @@ namespace GoodFriend.Utils
         public static string GetOperatingSystem()
         {
             var wineOnLinux = Environment.GetEnvironmentVariable("XL_WINEONLINUX");
-            if (wineOnLinux == "1" || wineOnLinux?.ToLower() == "true")
+            if (bool.TryParse(wineOnLinux, out var isWineOnLinux) && isWineOnLinux)
             {
                 return "Linux (Wine)";
             }
 
             var wineOnMac = Environment.GetEnvironmentVariable("XL_WINEONMAC");
-            if (wineOnMac == "1" || wineOnMac?.ToLower() == "true")
+            if (bool.TryParse(wineOnMac, out var isWineOnMac) && isWineOnMac)
             {
                 return "OSX (Wine)";
             }
