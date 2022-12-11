@@ -448,8 +448,8 @@ namespace GoodFriend.Managers
             }
             else
             {
-                PluginLog.Warning("APIClientManager(GetMetadata): Failed to update metadata cache, response was null.");
-                PluginService.EventLogManager.AddEntry("Failed to update metadata cache, response was null.", EventLogManager.EventLogType.Warning);
+                PluginLog.Warning("APIClientManager(GetMetadata): Failed to update metadata cache, bad response.");
+                PluginService.EventLogManager.AddEntry("Failed to update metadata cache, bad response.", EventLogManager.EventLogType.Warning);
             }
         }
     }
