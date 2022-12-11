@@ -43,7 +43,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Where to get metadata from.
         /// </summary>
-        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
+        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager?.MetadataCache;
 
         /// <summary>
         ///    Sets URLUpdateNag to true if the metadata has a set newApiUrl.
