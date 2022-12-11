@@ -37,6 +37,7 @@ namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
 
                 // Connection status description
                 Positioning.CenteredText(connectionStatusDescription, Colours.Grey);
+                Tooltips.AddTooltipHover(State.MaxClients(ConnectionStatusPresenter.Metadata?.MaxCapacity.ToString() ?? "[???]"));
 
                 ImGui.EndChild();
             }

@@ -29,6 +29,7 @@ namespace GoodFriend.Localization
         public static string ConnectionErrorDescription => Loc.Localize("State.ConnectionError.Description", "Something went wrong with the API connection.");
         public static string Unknown => Loc.Localize("State.Unknown", "Unknown");
         public static string UnknownDescription => Loc.Localize("State.Unknown.Description", "We're not sure what's going on here.");
+        public static string MaxClients(string maxClients) => string.Format(Loc.Localize("State.MaxClients", "The server supports {0} clients connected at once."), maxClients == "0" ? "unlimited" : maxClients);
     }
 
     public static class PrimaryWindow
