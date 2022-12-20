@@ -1,8 +1,6 @@
 using System;
 using System.IO;
-using System.IO.Compression;
-using System.Net.Http;
-using System.Threading;
+using System.Reflection;
 using CheapLoc;
 using Dalamud.Logging;
 using GoodFriend.Base;
@@ -14,9 +12,6 @@ namespace GoodFriend.Managers
     /// </summary>
     internal sealed class ResourceManager : IDisposable
     {
-        internal event ResourceUpdateDelegate? ResourcesUpdated;
-        internal delegate void ResourceUpdateDelegate();
-
         /// <summary>
         ///     Initializes the ResourceManager and associated resources.
         /// </summary>
@@ -26,7 +21,6 @@ namespace GoodFriend.Managers
 
             this.Setup(PluginService.PluginInterface.UiLanguage);
             PluginService.PluginInterface.LanguageChanged += this.Setup;
-            ResourcesUpdated += this.OnResourceUpdate;
 
             PluginLog.Debug("ResourceManager(ResourceManager): Initialization complete.");
         }
@@ -37,86 +31,34 @@ namespace GoodFriend.Managers
         public void Dispose()
         {
             PluginService.PluginInterface.LanguageChanged -= this.Setup;
-            ResourcesUpdated -= this.OnResourceUpdate;
 
             PluginLog.Debug("ResourceManager(Dispose): Successfully disposed.");
         }
 
         /// <summary>
-        ///     Downloads the repository from GitHub and extracts the resource data.
-        /// </summary>
-        internal void Update()
-        {
-            var repoName = PluginConstants.PluginName.Replace(" ", "");
-            var zipFilePath = Path.Combine(Path.GetTempPath(), $"{repoName}.zip");
-            var zipExtractPath = Path.Combine(Path.GetTempPath(), $"{repoName}-{PluginConstants.RepoBranch}", PluginConstants.RepoResourcesDir);
-            var pluginExtractPath = Path.Combine(PluginConstants.AssemblyResourcesDir);
-
-            // NOTE: This is only GitHub compatible, changes will need to be made here for other providers as necessary.
-            new Thread(() =>
-            {
-                try
-                {
-                    PluginLog.Debug("ResourceManager(Update): Opening new thread to handle resource file download and extraction.");
-
-                    // Download the files from the repository and extract them into the temp directory.
-                    using HttpClient client = new();
-                    client.GetAsync($"{PluginConstants.RepoUrl}archive/refs/heads/{PluginConstants.RepoBranch}.zip").ContinueWith((task) =>
-                    {
-                        using var stream = task.Result.Content.ReadAsStreamAsync().Result;
-                        using var fileStream = File.Create(zipFilePath);
-                        stream.CopyTo(fileStream);
-                    }).Wait();
-                    PluginLog.Debug($"ResourceManager(Update): Downloaded resource files to: {zipFilePath}");
-
-                    // Extract the zip file and copy the resources.
-                    ZipFile.ExtractToDirectory(zipFilePath, Path.GetTempPath(), true);
-                    foreach (var dirPath in Directory.GetDirectories(zipExtractPath, "*", SearchOption.AllDirectories))
-                    {
-                        Directory.CreateDirectory(dirPath.Replace(zipExtractPath, pluginExtractPath));
-                        PluginLog.Debug($"ResourceManager(Update): Created directory: {dirPath.Replace(zipExtractPath, pluginExtractPath)}");
-                    }
-
-                    foreach (var newPath in Directory.GetFiles(zipExtractPath, "*.*", SearchOption.AllDirectories))
-                    {
-                        PluginLog.Debug($"ResourceManager(Update): Copying file from: {newPath} to: {newPath.Replace(zipExtractPath, pluginExtractPath)}");
-                        File.Copy(newPath, newPath.Replace(zipExtractPath, pluginExtractPath), true);
-                    }
-
-                    // Cleanup temporary files.
-                    File.Delete(zipFilePath);
-                    Directory.Delete($"{Path.GetTempPath()}{repoName}-{PluginConstants.RepoBranch}", true);
-                    PluginLog.Debug("ResourceManager(Update): Deleted temporary files.");
-
-                    // Broadcast an event indicating that the resources have been updated.
-                    ResourcesUpdated?.Invoke();
-                }
-                catch (Exception e) { PluginLog.Error($"ResourceManager(Update): Error updating resource files: {e.Message}"); }
-            }).Start();
-        }
-
-        /// <summary>
-        ///     Handles the OnResourceUpdate event.
-        /// </summary>
-        private void OnResourceUpdate()
-        {
-            PluginLog.Debug("ResourceManager(OnResourceUpdate): Resources updated.");
-            this.Setup(PluginService.PluginInterface.UiLanguage);
-        }
-
-        /// <summary>
         ///     Sets up the plugin's resources.
         /// </summary>
-        /// <param name="language">The language to use.</param>
+        /// <param name="language">The new language 2-letter code.</param>
         private void Setup(string language)
         {
-            PluginLog.Information($"ResourceManager(Setup): Setting up resources for language {language}...");
-
             try
-            { Loc.Setup(File.ReadAllText($"{PluginConstants.AssemblyLocDir}{language}.json")); }
-            catch { Loc.SetupWithFallbacks(); }
+            {
+                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream($"GoodFriend.Resources.Localization.{language}.json");
 
-            PluginLog.Debug("ResourceManager(Setup): Resources setup.");
+                if (resource == null)
+                {
+                    throw new FileNotFoundException($"Could not find resource file for language {language}.");
+                }
+
+                using var reader = new StreamReader(resource);
+                Loc.Setup(reader.ReadToEnd());
+                PluginLog.Information($"ResourceManager(Setup): Resource file for language {language} loaded successfully.");
+            }
+            catch (Exception e)
+            {
+                PluginLog.Information($"ResourceManager(Setup): Falling back to English resource file. ({e.Message})");
+                Loc.SetupWithFallbacks();
+            }
         }
     }
 }
