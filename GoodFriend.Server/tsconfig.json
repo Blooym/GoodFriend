@@ -7,16 +7,35 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
-    "strict": true,     
+    "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@middleware/*": ["Middleware/*"],
-      "@utils/*": ["Utils/*"],
-      "@routes/*": ["Routes/*"],
-      "@mtypes/*": ["Types/*"],
-      "@common/*": ["Common/*"],
-      "@services/*": ["Services/*"],
+      "@middleware/*": [
+        "Middleware/*"
+      ],
+      "@utils/*": [
+        "Utils/*"
+      ],
+      "@routes/*": [
+        "Routes/*"
+      ],
+      "@mtypes/*": [
+        "Types/*"
+      ],
+      "@common/*": [
+        "Common/*"
+      ],
+      "@services/*": [
+        "Services/*"
+      ],
     },
   },
-  "include": ["./**/*"],
+  "include": [
+    "./**/*"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }

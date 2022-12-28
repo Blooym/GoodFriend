@@ -2,11 +2,21 @@
   "name": "goodfriend.server",
   "private": true,
   "main": "dist/index.js",
+  "maintainers": [
+    "BitsOfAByte"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BitsOfAByte/GoodFriend.git"
+  },
+  "engines": {
+    "node": ">=16.13.0"
+  },
   "license": "AGPL-3.0",
   "scripts": {
     "start": "tsc && tsc-alias && node .",
     "build": "tsc && tsc-alias",
-    "watch": "concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon .\"",
+    "watch": "nodemon index.ts",
     "test": "lint-staged && tsc --noEmit",
     "prepare": "cd ../ && husky install ./GoodFriend.Server/.husky"
   },
@@ -25,15 +35,15 @@
     "@types/compression": "^1.7.2",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.11",
-    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.46.0",
-    "concurrently": "^7.6.0",
     "eslint": "^8.29.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.2",
     "typescript": "^4.9.4"
   }
