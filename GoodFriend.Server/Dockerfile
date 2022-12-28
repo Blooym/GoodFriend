@@ -5,7 +5,7 @@ FROM node:lts-alpine as build
 WORKDIR /build
 
 # Package build arguments.
-ARG PKG_TARGET=node16-alpine
+ARG PKG_TARGET=node18-alpine
 ARG PKG_COMPRESSION=Brotli
 
 # Install global build dependencies.
