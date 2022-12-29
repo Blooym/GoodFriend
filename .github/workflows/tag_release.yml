@@ -45,7 +45,6 @@ jobs:
         run: |
           dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ env.tag }}
           sha512sum bin/Release/GoodFriend/latest.zip  >> checksums.txt
-          sha512sum bin/Release/GoodFriend/GoodFriend.json >> checksums.txt
           cat checksums.txt
         env:
           DALAMUD_HOME: /tmp/dalamud
@@ -58,7 +57,6 @@ jobs:
           prerelease: false
           files: |
             GoodFriend.Plugin/bin/Release/GoodFriend/latest.zip
-            GoodFriend.Plugin/bin/Release/GoodFriend/GoodFriend.json
             GoodFriend.Plugin/checksums.txt
 
   Release-Server:

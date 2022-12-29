@@ -37,13 +37,9 @@ namespace GoodFriend.Base
         {
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             ResourceManager = new ResourceManager();
-            WindowManager = new WindowManager();
             EventLogManager = new EventLogManager();
             APIClientManager = new APIClientManager(ClientState, Framework);
-
-#if !DEBUG
-            ResourceManager.Update();
-#endif
+            WindowManager = new WindowManager();
 
             EventLogManager.AddEntry("Services initialized successfully.", EventLogManager.EventLogType.Debug);
             PluginLog.Debug("PluginService(Initialize): Successfully initialized.");
@@ -54,9 +50,9 @@ namespace GoodFriend.Base
         /// </summary>
         internal static void Dispose()
         {
+            APIClientManager.Dispose();
             WindowManager.Dispose();
             ResourceManager.Dispose();
-            APIClientManager.Dispose();
         }
     }
 }

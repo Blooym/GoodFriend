@@ -51,13 +51,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Check if the nag needs to be shown even when the DrawConditions aren't met.
         /// </summary>
-        public override void PreOpenCheck()
-        {
-            this.IsOpen = this.Presenter.ShowURLUpdateNag;
-
-            if (!this.Presenter.ShowURLUpdateNag && !this.Presenter.URLUpdateNagDismissed)
-            { this.Presenter.HandleURLUpdateNag(); }
-        }
+        public override void PreOpenCheck() => this.IsOpen = this.Presenter.ShowURLUpdateNag;
 
         /// <summary>
         ///     Override the OnClose method to make sure the nag is dismissed when the window is closed.

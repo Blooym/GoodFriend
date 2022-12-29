@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { v4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 import SSEClient from '@mtypes/SSEClient';
 import { SSE_HEADERS } from '@common/headers';
@@ -22,7 +22,7 @@ export default (req: Request, res: Response, sseClients: SSEClient) => {
   }
 
   // Generate a UUID for this client, send a 200 OK response, and set the headers.
-  const UUID = v4();
+  const UUID = randomUUID();
   const time = Date.now();
   res.writeHead(200, SSE_HEADERS);
 

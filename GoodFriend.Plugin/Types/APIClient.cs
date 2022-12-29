@@ -24,7 +24,7 @@ namespace GoodFriend.Types
         ///     The Delegate that is used for <see cref="SSEDataReceived"/>.
         /// </summary>
         /// <param name="data">The data received from the SSE stream.</param>
-        public delegate void DelegateSSEDataReceived(UpdatePayload data);
+        public delegate void DelegateSSEDataReceived(object? sender, UpdatePayload data);
 
         /// <summary>
         ///     Fired when data is new SSE data is received.
@@ -34,7 +34,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     The Delegate that is used for <see cref="SSEConnectionEstablished"/>.
         /// </summary>
-        public delegate void DelegateSSEConnectionEstablished();
+        public delegate void DelegateSSEConnectionEstablished(object? sender);
 
         /// <summary>
         ///     Fired when a successful SSE connection is established.
@@ -44,7 +44,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///      The Delegate that is used for <see cref="SSEConnectionClosed"/>.
         /// </summary>
-        public delegate void DelegateSSEConnectionClosed();
+        public delegate void DelegateSSEConnectionClosed(object? sender);
 
         /// <summary>
         ///     Fired when the SSE connection is closed.
@@ -55,7 +55,7 @@ namespace GoodFriend.Types
         ///     The Delegate that is used for <see cref="SSEConnectionError"/>.
         /// </summary>
         /// <param name="error">The exception that was thrown.</param>
-        public delegate void DelegateSSEConnectionError(Exception error);
+        public delegate void DelegateSSEConnectionError(object? sender, Exception error);
 
         /// <summary>
         ///     Fired when an error occurs with the SSE connection.
@@ -67,7 +67,7 @@ namespace GoodFriend.Types
         /// </summary>
         /// <param name="error">The exception that was thrown.</param>
         /// <param name="response">The response that was received.</param>
-        public delegate void DelegateRequestError(Exception error, HttpResponseMessage? response);
+        public delegate void DelegateRequestError(object? sender, Exception error, HttpResponseMessage? response);
 
         /// <summary>
         ///     Fired when an error occurs with a request, use <see cref="SSEConnectionError"/> for SSE errors.
@@ -78,7 +78,7 @@ namespace GoodFriend.Types
         ///     The Delegate that is used for <see cref="RequestSuccess"/>.
         /// </summary>
         /// <param name="response">The response that was received.</param>
-        public delegate void DelegateRequestSuccess(HttpResponseMessage response);
+        public delegate void DelegateRequestSuccess(object? sender, HttpResponseMessage response);
 
         /// <summary>
         ///     Fired when a request is successful.
@@ -88,7 +88,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Handles a successful connection to the API.
         /// </summary>
-        private void OnSSEConnectionEstablished()
+        private void OnSSEConnectionEstablished(object? sender)
         {
             this.SSEIsConnected = true;
             this.SSEIsConnecting = false;
@@ -100,7 +100,7 @@ namespace GoodFriend.Types
         /// <summary>
         ///     Handles a connection closure (non-error).
         /// </summary>
-        private void OnSSEConnectionClosed()
+        private void OnSSEConnectionClosed(object? sender)
         {
             this.SSEIsConnected = false;
             this.SSEIsConnecting = false;
@@ -112,7 +112,7 @@ namespace GoodFriend.Types
         ///     Handles errors with the SSE connection.
         /// </summary>
         /// <param name="error">The exception that was thrown.</param>
-        private void OnSSEConnectionError(Exception error)
+        private void OnSSEConnectionError(object? sender, Exception error)
         {
             this.SSEIsConnected = false;
             this.SSEIsConnecting = false;
@@ -293,7 +293,7 @@ namespace GoodFriend.Types
                 throw new InvalidOperationException("There is no active connection to disconnect from.");
             }
 
-            this.SSEConnectionClosed?.Invoke();
+            this.SSEConnectionClosed?.Invoke(this);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace GoodFriend.Types
                 using var reader = new StreamReader(stream);
 
                 // Connection established! Start listening for data.
-                this.SSEConnectionEstablished?.Invoke();
+                this.SSEConnectionEstablished?.Invoke(this);
 
                 while (!reader.EndOfStream && this.SSEIsConnected)
                 {
@@ -346,7 +346,7 @@ namespace GoodFriend.Types
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
                     if (data?.ContentID != null)
                     {
-                        SSEDataReceived?.Invoke(data);
+                        SSEDataReceived?.Invoke(this, data);
                     }
                 }
 
@@ -362,7 +362,7 @@ namespace GoodFriend.Types
                     this.CloseSSEStream();
                 }
 
-                this.SSEConnectionError?.Invoke(e);
+                this.SSEConnectionError?.Invoke(this, e);
             }
         }
 
@@ -373,7 +373,7 @@ namespace GoodFriend.Types
         {
             if (this.RateLimitReset > DateTime.Now)
             {
-                this.RequestError?.Invoke(new AggregateException($"Ratelimited. Try again at {this.RateLimitReset}"), new HttpResponseMessage(HttpStatusCode.TooManyRequests));
+                this.RequestError?.Invoke(this, new AggregateException($"Ratelimited. Try again at {this.RateLimitReset}"), new HttpResponseMessage(HttpStatusCode.TooManyRequests));
                 return null;
             }
 
@@ -388,18 +388,18 @@ namespace GoodFriend.Types
                 var response = this.httpClient.SendAsync(requestData).Result;
                 if (!response.IsSuccessStatusCode)
                 {
-                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {response.StatusCode}"), response);
+                    this.RequestError?.Invoke(this, new AggregateException($"Request failed with status code {response.StatusCode}"), response);
                     return null;
                 }
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<MetadataPayload>(responseContent);
-                this.RequestSuccess?.Invoke(response);
+                this.RequestSuccess?.Invoke(this, response);
 
                 return data;
             }
             catch (Exception e)
             {
-                this.RequestError?.Invoke(e, null);
+                this.RequestError?.Invoke(this, e, null);
                 return null;
             }
         }
@@ -426,16 +426,16 @@ namespace GoodFriend.Types
                 var result = this.httpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
                 {
-                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {result.StatusCode}"), result);
+                    this.RequestError?.Invoke(this, new AggregateException($"Request failed with status code {result.StatusCode}"), result);
                 }
                 else
                 {
-                    this.RequestSuccess?.Invoke(result);
+                    this.RequestSuccess?.Invoke(this, result);
                 }
             }
             catch (Exception e)
             {
-                this.RequestError?.Invoke(e, null);
+                this.RequestError?.Invoke(this, e, null);
             }
         }
 
@@ -461,16 +461,16 @@ namespace GoodFriend.Types
                 var result = this.httpClient.SendAsync(request).Result;
                 if (!result.IsSuccessStatusCode)
                 {
-                    this.RequestError?.Invoke(new AggregateException($"Request failed with status code {result.StatusCode}"), result);
+                    this.RequestError?.Invoke(this, new AggregateException($"Request failed with status code {result.StatusCode}"), result);
                 }
                 else
                 {
-                    this.RequestSuccess?.Invoke(result);
+                    this.RequestSuccess?.Invoke(this, result);
                 }
             }
             catch (Exception e)
             {
-                this.RequestError?.Invoke(e, null);
+                this.RequestError?.Invoke(this, e, null);
             }
         }
 

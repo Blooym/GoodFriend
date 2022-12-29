@@ -28,12 +28,7 @@
 	</Target>
 
   <ItemGroup>
-    <None Update="GoodFriend.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources/**/*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Resources\**\*.*" Exclude="Resources\**\*Localizable.*" />
   </ItemGroup>
 
   <PropertyGroup>
