@@ -43,22 +43,32 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
         /// <summary>
         ///     Ignored new URLs that have been filtered for being invalid or insecure.
         /// </summary>
-        private string[] IgnoredNewURLs { get; set; } = Array.Empty<string>();
+        private string[] InvalidNewURLs { get; set; } = Array.Empty<string>();
 
         /// <summary>
         ///    Sets URLUpdateNag to true if the metadata has a set newApiUrl.
         /// </summary>
         private void HandleURLUpdateNag(object? sender, APIClient.MetadataPayload metadata)
         {
+
+            if (this.URLUpdateNagDismissed)
+            {
+                return;
+            }
+
             var newApiUrl = metadata.NewApiUrl;
 
             // Check if the string is null or empty or equal to the current API URL.
             if (string.IsNullOrEmpty(newApiUrl) || newApiUrl == Configuration.APIUrl.ToString())
-            { return; }
+            {
+                return;
+            }
 
-            // If the URL has been ignored this session, don't show the nag.
-            if (this.IgnoredNewURLs.Contains(newApiUrl))
-            { return; }
+            // If the URL has been filtered, ignore it.
+            if (this.InvalidNewURLs.Contains(newApiUrl))
+            {
+                return;
+            }
 
             try
             {
@@ -76,7 +86,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                 // Otherwise, ignore the URL and move on.
                 else
                 {
-                    this.IgnoredNewURLs = this.IgnoredNewURLs.Append(newApiUrl).ToArray();
+                    this.InvalidNewURLs = this.InvalidNewURLs.Append(newApiUrl).ToArray();
                     PluginLog.Warning($"URLUpdateNagPresenter(HandleURLUpdateNag): API instance recommended changing to {newApiUrl} but it was not secure, ignoring.");
                     PluginService.EventLogManager.AddEntry($"Ignored insecure URL for new API instance ({newApiUrl}).", EventLogManager.EventLogType.Warning);
                 }
@@ -86,7 +96,7 @@ namespace GoodFriend.UI.Windows.URLUpdateNag
                 // If the URL is invalid, ignore it and move on.
                 if (this.NewAPIURL != null)
                 {
-                    this.IgnoredNewURLs = this.IgnoredNewURLs.Append(newApiUrl).ToArray();
+                    this.InvalidNewURLs = this.InvalidNewURLs.Append(newApiUrl).ToArray();
                     PluginLog.Warning($"URLUpdateNagPresenter(HandleURLUpdateNag): API instance recommended changing to {newApiUrl} but it was invalid, ignoring.");
                     PluginService.EventLogManager.AddEntry($"Ignored invalid URL for new API instance ({newApiUrl}).", EventLogManager.EventLogType.Warning);
                 }
