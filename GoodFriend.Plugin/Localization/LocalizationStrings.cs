@@ -46,7 +46,7 @@ namespace GoodFriend.Localization
         public static string DropdownSettingsDisabled => Loc.Localize("Window.Dropdown.Settings.Disabled", "Disabled");
         public static string DropdownSettingsRestartRequired => Loc.Localize("Window.Dropdown.Settings.RestartRequired", "Plugin restart required to apply some configuration changes.");
         public static string DropdownSettingsIgnoreFC => Loc.Localize("Window.Dropdown.Settings.IgnoreFC", "Ignore FC Members");
-        public static string DropdownSettingsIgnoreFCTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreFC.Tooltip", "Whether or not ignore friend notifications from players in your Free Company.");
+        public static string DropdownSettingsIgnoreFCTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreFC.Tooltip", "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.");
         public static string DropdownSettingsIgnoreDiffHomeworlds => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds", "Ignore Other Homeworlds");
         public static string DropdownSettingsIgnoreDiffHomeworldsTooltip => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip", "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.");
         public static string DropdownSettingsIgnoreDiffWorlds => Loc.Localize("Window.Dropdown.Settings.IgnoreDiffWorlds", "Ignore Other Worlds");

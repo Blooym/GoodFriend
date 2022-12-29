@@ -28,7 +28,7 @@
 	</Target>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.*" />
+    <EmbeddedResource Include="Resources\**\*.*" Exclude="Resources\**\*Localizable.*" />
   </ItemGroup>
 
   <PropertyGroup>

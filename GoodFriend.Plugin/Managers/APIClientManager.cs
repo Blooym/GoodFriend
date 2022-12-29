@@ -48,6 +48,17 @@ namespace GoodFriend.Managers
         private uint currentTerritoryId;
 
         /// <summary>
+        ///    Delegate for the OnMetadataRefresh event.
+        /// </summary>
+        /// <param name="metadata">The new metadata.</param>
+        public delegate void DelegateOnMetadataRefresh(object? sender, APIClient.MetadataPayload metadata);
+
+        /// <summary>
+        ///    Event that fires when the metadata cache is refreshed successfully.
+        /// </summary>
+        public event DelegateOnMetadataRefresh? OnMetadataRefresh;
+
+        /// <summary>
         ///    The cached metadata from the API.
         /// </summary>
         public APIClient.MetadataPayload? MetadataCache { get; private set; }
@@ -240,7 +251,7 @@ namespace GoodFriend.Managers
         ///     Handles data received from the APIClient.
         /// </summary>
         /// <param name="data">The data received.</param>
-        private unsafe void OnSSEDataReceived(APIClient.UpdatePayload data)
+        private unsafe void OnSSEDataReceived(object? sender, APIClient.UpdatePayload data)
         {
             // Don't process the data if the ContentID is null.
             if (data.ContentID == null)
@@ -340,7 +351,7 @@ namespace GoodFriend.Managers
         ///     Handles the APIClient error event.
         /// </summary>
         /// <param name="e">The error.</param>
-        private void OnSSEAPIClientError(Exception e)
+        private void OnSSEAPIClientError(object? sender, Exception e)
         {
             PluginLog.Error($"APIClientManager(OnSSEAPIClientError): A connection error occured: {e.Message}");
             PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError} ({e.Message})", EventLogManager.EventLogType.Error);
@@ -354,7 +365,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the APIClient connected event.
         /// </summary>
-        private void OnSSEAPIClientConnected()
+        private void OnSSEAPIClientConnected(object? sender)
         {
             PluginLog.Information("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionSuccess, EventLogManager.EventLogType.Info);
@@ -369,7 +380,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Handles the APIClient disconnected event.
         /// </summary>
-        private void OnSSEAPIClientDisconnected()
+        private void OnSSEAPIClientDisconnected(object? sender)
         {
             PluginLog.Information("APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
             PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
@@ -385,7 +396,7 @@ namespace GoodFriend.Managers
         /// </summary>
         /// <param name="e">The error.</param>
         /// <param name="response">The request.</param>
-        private void OnRequestError(Exception e, HttpResponseMessage? response)
+        private void OnRequestError(object? sender, Exception e, HttpResponseMessage? response)
         {
             var uri = response?.RequestMessage?.RequestUri?.ToString().Split('?')[0];
 
@@ -404,7 +415,7 @@ namespace GoodFriend.Managers
         ///     Handles the APIClient RequestSuccess event.
         /// </summary>
         /// <param name="response">The request.</param>
-        private void OnRequestSuccess(HttpResponseMessage response)
+        private void OnRequestSuccess(object? _, HttpResponseMessage response)
         {
             var uri = response.RequestMessage?.RequestUri?.ToString().Split('?')[0];
             PluginLog.Debug($"APIClientManager(OnRequestSuccess): Request to {uri} was successful with status code {response.StatusCode}.");
@@ -444,6 +455,7 @@ namespace GoodFriend.Managers
             if (metadata != null)
             {
                 this.MetadataCache = metadata;
+                this.OnMetadataRefresh?.Invoke(this, metadata);
                 PluginLog.Verbose($"APIClientManager(GetMetadata): Metadata cache updated {JsonConvert.SerializeObject(this.MetadataCache)}");
             }
             else
