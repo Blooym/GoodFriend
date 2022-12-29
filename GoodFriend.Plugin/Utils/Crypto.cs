@@ -60,7 +60,7 @@ namespace GoodFriend.Utils
         {
             var salt = CreateSalt(PluginService.Configuration.SaltMethod);
             var bytes = Encoding.UTF8.GetBytes(input + salt + addedSalt);
-            return Convert.ToHexString(SHA512.Create().ComputeHash(bytes));
+            return Convert.ToHexString(SHA512.HashData(bytes));
         }
     }
 }
