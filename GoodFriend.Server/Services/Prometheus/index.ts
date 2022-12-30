@@ -35,7 +35,7 @@ export const totalSSESessionTime = new client.Counter({
 export const totalLoginstateUpdatesReceived = new client.Counter({
   name: 'total_loginstate_updates_received',
   help: 'The total number of loginstate updates received from the server.',
-  labelNames: ['type', 'homeworld', 'territory', 'world', 'datacenter'],
+  labelNames: ['type', 'territory', 'world', 'datacenter'],
   registers: [register],
 });
 

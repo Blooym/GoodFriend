@@ -408,17 +408,16 @@ namespace GoodFriend.Types
         ///     Send a login event to the configured API/logout endpoint.
         /// </summary>
         /// <param name="contentID">The content ID of the user logging in.</param>
-        /// <param name="homeworldID">The homeworld of the user logging in.</param>
         /// <param name="worldID">The world ID of the user logging in.</param>
         /// <param name="territoryID">The territory ID of the user logging in.</param>
         /// <param name="datacenterID">The datacenter ID of the user logging in.</param>
-        public void SendLogin(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
+        public void SendLogin(ulong contentID, uint worldID, uint territoryID, uint datacenterID)
         {
             var salt = CryptoUtil.GenerateRandom(32);
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"login?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
+                $"login?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
             );
 
             try
@@ -443,17 +442,16 @@ namespace GoodFriend.Types
         ///     Send a logout event to the configured API/logout endpoint.
         /// </summary>
         /// <param name="contentID">The content ID of the user logging out.</param>
-        /// <param name="homeworldID">The homeworld of the user logging out.</param>
         /// <param name="worldID">The world ID of the user logging out.</param>
         /// <param name="territoryID">The territory ID of the user logging out.</param>
         /// <param name="datacenterID">The datacenter ID of the user logging out.</param>
-        public void SendLogout(ulong contentID, uint homeworldID, uint worldID, uint territoryID, uint datacenterID)
+        public void SendLogout(ulong contentID, uint worldID, uint territoryID, uint datacenterID)
         {
             var salt = CryptoUtil.GenerateRandom(32);
             using var request = new HttpRequestMessage
             (
                 HttpMethod.Put,
-                $"logout?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&homeworldID={homeworldID}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
+                $"logout?contentID={HttpUtility.UrlEncode(CryptoUtil.HashSHA512(contentID.ToString(), salt))}&datacenterID={datacenterID}&worldID={worldID}&territoryID={territoryID}&salt={salt}"
             );
 
             try
@@ -481,7 +479,6 @@ namespace GoodFriend.Types
         {
             public string? ContentID { get; set; }
             public bool LoggedIn { get; set; }
-            public uint HomeworldID { get; set; }
             public uint WorldID { get; set; }
             public uint DatacenterID { get; set; }
             public uint TerritoryID { get; set; }

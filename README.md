@@ -57,39 +57,29 @@ If you wish to host your own instance, please read the README in the [GoodFriend
 
 ## Technical Details & Privacy Considerations
 
-**Client** refers to a user that is running the plugin.  
-**Server** refers to the API instance that is being used.  
-**Clients** refers to all users connected to the given **Server**.
+**Client** refers to a single user that is running the plugin.  
+**Clients** refers to all users connected to a given instance.
+**Server** refers to a web-accessible instance of the API.
 
 A general overview of how GoodFriend works is as follows:
 
 1. A **client** logs into a character, the plugin hashes their ID using a configured salt type, generates an additional salt and sends a PUT request to the **server** with the event information and the generated salt.
 2. The **client** then subscribes the server-sent event stream to receive all events for other users that are currently connected to the **server**.
 3. The **Server** distributes the information received from the PUT request to all **clients** listening to the server-sent event stream.
-4. All **clients** will receive the information and attempt to match all friends' hashes against the received ContentID hash using the generated salt and also the configured salt type.
+4. All **clients** will receive the information and attempt to match all in-memory friend hashes against the received ContentID hash using the generated salt and also the configured salt type.
 5. All **clients** that successfully match the hashed ContentID to a friend will then display a notification for the event using information from the game memory, preventing sending this information through the **server**.
-
-During this entire process, the **server** or any **clients** do not know anything about the original **client**'s character other than a hashed ContentID (which cannot be easily reversed). The information is only accessible to **clients** that are able to match the hashed ContentID to a friend and use the game memory to retrieve the information. ContentIDs sent through the **server** are random each time.
 
 Key Security implementations:
 
-- No identifying information about the client is stored on or known by the **server**, all information must be hashed before being sent to the **server**.
-- Additional salting is applied client-side wherever possible, using things like the plugin assembly manifest and the user's friendship code to make sure the hash is harder to reverse.
-- The **client** will not accept any data from the server that does not match the expected format.
-- The official **server** instance enforces strict rate-limiting to prevent abusive requests.
-- The official **server** is hosted inside a containerized environment with strict security policies, and all communication is encrypted using TLS.
-- The plugin will automatically disconnect from any unnecessary API event streams as soon as possible.
-- All interactions with the **server** are stored in the plugin event log.
-- The **server** will not accept any data from the client that does not match the expected format.
+- Identifying information about a client is hashed before being sent to the server.
+- Additional salt is generated for each request to prevent pre-computing hashes.
+- The client will only accept data from the server that matches the expected format.
+- The server enforces strict rate-limiting to mitigate spam and abusive requests.
+- The official server is hosted in a secure environment with strict security policies.
+- The plugin automatically disconnects from the server when the connection is unnecessary.
+- All interactions with the server are stored in the plugin event log for transparency.
+- The server will not accept any data from a client if it does not match the expected format.
 
-## Contributions
+## Translation & Localization
 
-### Code Changes
-
-Contributions are welcome for the plugin as long as they remain in-scope and follow the Dalamud plugin rules for submission. It is preferred you open an issue beforehand if you wish to work on something as this plugin is considered feature complete.
-
-If you would like to set up a development environment it is preferred, but not required, to use the provided [Dockerfile](/.devcontainer/Dockerfile) and [development container](/.devcontainer/devcontainer.json) configuration with a compliant tool (Eg. VSCode Devcontainers) which will automatically handle installing all the required dependencies both the plugin and the server, and also make sure the correct linting rules are applied.
-
-### Translation & Localizations
-
-If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend).
+If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend). If the language you wish to translate is not available, please create an issue and it will be added.

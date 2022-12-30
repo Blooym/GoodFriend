@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import SSEClient from '@mtypes/SSEClient';
 import { isValidContentIDHash, isValidIDUint } from '@utils/Validators';
 import { totalSSEMesssagesSent, totalLoginstateUpdatesReceived } from '@services/Prometheus';
+import UpdatePayload from '@mtypes/UpdatePayload';
 
 /**
  * Handles the login event endpoint.
@@ -12,35 +13,32 @@ import { totalSSEMesssagesSent, totalLoginstateUpdatesReceived } from '@services
  */
 export default (req: Request, res: Response, sseClients: SSEClient) => {
   const {
-    contentID, homeworldID, territoryID, worldID, datacenterID, salt,
+    contentID, territoryID, worldID, datacenterID, salt,
   } = req.query;
 
   // If the response is not valid, return a 400 Bad Request.
   if (!isValidContentIDHash(contentID as string)
-  || !isValidIDUint(homeworldID as string)
-  || !isValidIDUint(territoryID as string)
-  || !isValidIDUint(worldID as string)
-  || !isValidIDUint(datacenterID as string)) res.sendStatus(400);
+    || !isValidIDUint(territoryID)
+    || !isValidIDUint(worldID)
+    || !isValidIDUint(datacenterID)) res.sendStatus(400);
 
   else {
     // Send a 200 OK response.
     res.sendStatus(200);
 
     // Prepare the response.
-    const event = {
-      ContentID: contentID,
-      HomeworldID: homeworldID,
-      WorldID: worldID,
-      DatacenterID: datacenterID,
-      TerritoryID: territoryID,
-      Salt: salt,
+    const event: UpdatePayload = {
+      ContentID: Number(contentID),
+      WorldID: Number(worldID),
+      DatacenterID: Number(datacenterID),
+      TerritoryID: Number(territoryID),
+      Salt: salt as string,
       LoggedIn: false,
     };
 
     // Increment some metrics.
     totalLoginstateUpdatesReceived.inc({
       type: 'logout',
-      homeworld: homeworldID as string,
       world: worldID as string,
       datacenter: datacenterID as string,
       territory: territoryID as string,

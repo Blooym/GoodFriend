@@ -193,7 +193,7 @@ namespace GoodFriend.Managers
               this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
 
               // Send a login
-              this.apiClient.SendLogin(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+              this.apiClient.SendLogin(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
               PluginLog.Debug("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
           });
         }
@@ -212,7 +212,7 @@ namespace GoodFriend.Managers
 
             // Cancel any pending requests and send a logout.
             this.apiClient.CancelPendingRequests();
-            this.apiClient.SendLogout(this.currentContentId, this.currentHomeworldId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+            this.apiClient.SendLogout(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
 
             // Clear the current IDs
             this.currentTerritoryId = 0;
