@@ -75,6 +75,10 @@
     "message": "We're not sure what's going on here.",
     "description": "State.get_UnknownDescription"
   },
+  "State.MaxClients": {
+    "message": "The server supports {0} clients connected at once.",
+    "description": "State.MaxClients"
+  },
   "Window.Dropdown.Options.Status": {
     "message": "Status",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
