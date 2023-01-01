@@ -4,27 +4,27 @@
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Successfully connected to the API.",
+    "message": "APIへの接続に成功しました",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
+    "message": "APIへの接続中にエラーが発生しました。",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
-    "message": "Disconnected from the API.",
+    "message": "APIから切断しました。",
     "description": "Events.get_APIConnectionDisconnected"
   },
   "Event.Connection.Ratelimited": {
-    "message": "Ratelimited by the API, will auto-retry later.",
+    "message": "APIの上限を超えました。自動的に再接続されます。",
     "description": "Events.get_APIConnectionRatelimited"
   },
   "Event.LoggedIn": {
-    "message": "logged in.",
+    "message": "ログインしました。",
     "description": "Events.get_LoggedIn"
   },
   "Event.LoggedOut": {
-    "message": "logged out.",
+    "message": "ログアウトしました。",
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
@@ -32,7 +32,7 @@
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
-    "message": "There are currently {0} connected clients.",
+    "message": "現在接続中のクライアントは {0} 人です。",
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
@@ -40,23 +40,23 @@
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
-    "message": "Connection in progress, please wait.",
+    "message": "接続中です。しばらくお待ちください。",
     "description": "State.get_ConnectingDescription"
   },
   "State.Ratelimited": {
-    "message": "Ratelimited",
+    "message": "レート上限",
     "description": "State.get_Ratelimited"
   },
   "State.Ratelimited.Description": {
-    "message": "The API has ratelimited this client temporarily.",
+    "message": "APIはこのクライアントを一時的に制限しています。",
     "description": "State.get_RatelimitedDescription"
   },
   "State.Disconnected": {
-    "message": "Disconnected",
+    "message": "切断",
     "description": "State.get_Disconnected"
   },
   "State.Disconnected.Description": {
-    "message": "Login to connect to the API.",
+    "message": "ログインしてAPIに接続します。",
     "description": "State.get_DisconnectedDescription"
   },
   "State.ConnectionError": {
@@ -64,7 +64,7 @@
     "description": "State.get_ConnectionError"
   },
   "State.ConnectionError.Description": {
-    "message": "Something went wrong with the API connection.",
+    "message": "API接続に問題が発生しました。",
     "description": "State.get_ConnectionErrorDescription"
   },
   "State.Unknown": {
@@ -72,59 +72,59 @@
     "description": "State.get_Unknown"
   },
   "State.Unknown.Description": {
-    "message": "We're not sure what's going on here.",
+    "message": "不明なエラーが発生しています",
     "description": "State.get_UnknownDescription"
   },
   "Window.Dropdown.Options.Status": {
-    "message": "Status",
+    "message": "稼働状況(Web)",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
   },
   "Window.Dropdown.Options.Status.Tooltip": {
-    "message": "View the status page of this API instance.\n({0})",
+    "message": "この API インスタンスのステータスページを表示します。\n({0})",
     "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
   },
   "Window.Dropdown.Options.Support": {
-    "message": "Donate",
+    "message": "寄付",
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Support the developer and API instance host.",
+    "message": "開発者とAPIインスタンスホストをサポートします。",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
-    "message": "Event Log",
+    "message": "イベントログ",
     "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
   "Window.Dropdown.Options.EventLog.Tooltip": {
-    "message": "View the event log.",
+    "message": "イベントログを表示。",
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
-    "message": "Settings",
+    "message": "設定",
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
-    "message": "Change the settings for this plugin.",
+    "message": "プラグインの設定を変更します。",
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
-    "message": "Enabled",
+    "message": "有効",
     "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
   "Window.Dropdown.Settings.Disabled": {
-    "message": "Disabled",
+    "message": "無効",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
   "Window.Dropdown.Settings.RestartRequired": {
-    "message": "Plugin restart required to apply some configuration changes.",
+    "message": "一部の設定変更を適用するには、プラグインの再起動が必要です。",
     "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
   },
   "Window.Dropdown.Settings.IgnoreFC": {
-    "message": "Ignore FC Members",
+    "message": "FCメンバーを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
+    "message": "FCに所属するプレイヤーからの通知は、自分のホームワールド以外のインスタンスやワールドでは機能しない場合があります。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
@@ -252,7 +252,7 @@
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
-    "message": "Donate",
+    "message": "寄付",
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
