@@ -302,6 +302,12 @@ namespace GoodFriend.UI.Windows.Main
                         }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
                         ImGui.TableNextRow();
+
+                        // Logout message
+                        ImGui.TableSetColumnIndex(0);
+                        ImGui.Text(PrimaryWindow.DropdownSettingsLogoutMessage);
+                        ImGui.TableSetColumnIndex(1);
+                        ImGui.SetNextItemWidth(-1);
                         TextInput.Draw("##LogoutMessage", ref logoutMessage, () =>
                         {
                             var error = false;
@@ -323,9 +329,9 @@ namespace GoodFriend.UI.Windows.Main
                         }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLogoutMessageTooltip);
 
-                        ImGui.TableNextRow();
                         ImGui.EndTable();
                     }
+
                     ImGui.EndChild();
                     ImGui.EndTabItem();
                 }
