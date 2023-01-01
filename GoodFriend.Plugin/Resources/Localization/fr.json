@@ -124,7 +124,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "S'il faut ou non ignorer les notifications de connexion d'ami·e·s de votre Compagnie Libre.",
+    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
