@@ -1,14 +1,14 @@
 {
   "Event.Connection.Status": {
-    "message": "Verbindungsstatus",
+    "message": "Connection Status",
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Erfolgreich mit der API verbunden.",
+    "message": "Successfully connected to the API.",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "Beim Verbinden mit der API ist ein Fehler aufgetreten.",
+    "message": "An error occurred while connecting to the API.",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
@@ -28,7 +28,7 @@
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
-    "message": "Verbunden",
+    "message": "Connected",
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
@@ -36,7 +36,7 @@
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
-    "message": "Verbinden",
+    "message": "Connecting",
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
@@ -104,7 +104,7 @@
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
-    "message": "Einstellungen",
+    "message": "Settings",
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
@@ -112,11 +112,11 @@
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
-    "message": "Aktiviert",
+    "message": "Enabled",
     "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
   "Window.Dropdown.Settings.Disabled": {
-    "message": "Deaktiviert",
+    "message": "Disabled",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
   "Window.Dropdown.Settings.RestartRequired": {
@@ -164,7 +164,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
-    "message": "Benachrichtigungstyp",
+    "message": "Notification Type",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
   },
   "Window.Dropdown.Settings.NotificationType.Tooltip": {
@@ -172,7 +172,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
   },
   "Window.Dropdown.Settings.LoginMessage": {
-    "message": "Login-Nachricht",
+    "message": "Login Message",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
@@ -184,7 +184,7 @@
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
-    "message": "Logout-Nachricht",
+    "message": "Logout Message",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
@@ -204,7 +204,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
-    "message": "Freundschaftscode",
+    "message": "Friendship Code",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
   "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
@@ -212,7 +212,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
   "Window.Dropdown.Settings.APIUrl": {
-    "message": "API-URL",
+    "message": "API URL",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
@@ -224,7 +224,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
-    "message": "API-Token",
+    "message": "API Token",
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
