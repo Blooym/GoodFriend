@@ -76,7 +76,7 @@
     "description": "State.get_UnknownDescription"
   },
   "State.MaxClients": {
-    "message": "The server supports {0} clients connected at once.",
+    "message": "サーバーは {0} 人までのクライアントを同時に接続できます。",
     "description": "State.MaxClients"
   },
   "Window.Dropdown.Options.Status": {
