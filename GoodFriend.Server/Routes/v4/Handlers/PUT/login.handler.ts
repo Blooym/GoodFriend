@@ -27,7 +27,7 @@ export default (req: Request, res: Response, sseClients: SSEClient) => {
     res.sendStatus(200);
 
     const event: UpdatePayload = {
-      ContentID: Number(contentID),
+      ContentID: contentID as string,
       WorldID: Number(worldID),
       DatacenterID: Number(datacenterID),
       TerritoryID: Number(territoryID),

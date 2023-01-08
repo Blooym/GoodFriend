@@ -28,7 +28,7 @@ export default (req: Request, res: Response, sseClients: SSEClient) => {
 
     // Prepare the response.
     const event: UpdatePayload = {
-      ContentID: Number(contentID),
+      ContentID: contentID as string,
       WorldID: Number(worldID),
       DatacenterID: Number(datacenterID),
       TerritoryID: Number(territoryID),

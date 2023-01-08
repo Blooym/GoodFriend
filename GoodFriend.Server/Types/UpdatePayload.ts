@@ -1,5 +1,5 @@
 type UpdatePayload = {
-    ContentID: number;
+    ContentID: string;
     LoggedIn: boolean;
     WorldID: number;
     DatacenterID: number;

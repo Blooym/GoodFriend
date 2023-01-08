@@ -273,9 +273,6 @@ namespace GoodFriend.Managers
             FriendListEntry* friend = default;
             foreach (FriendListEntry* x in FriendListCache.Get())
             {
-#if DEBUG
-                PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Checking {x->Name} for match.");
-#endif
                 var hash = CryptoUtil.HashSHA512(x->ContentId.ToString(), data.Salt ?? string.Empty);
                 if (hash == data.ContentID)
                 {
@@ -285,7 +282,7 @@ namespace GoodFriend.Managers
             }
 
             // If friend is null, the user is not added by the client or the ID is invalid.
-            if (friend == null || data == null)
+            if (friend == null)
             {
                 PluginLog.Verbose("APIClientManager(OnSSEDataReceived): No friend found from the event, cannot display to client.");
                 return;

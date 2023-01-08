@@ -344,10 +344,12 @@ namespace GoodFriend.Types
                     message = message.Replace("data: ", "").Trim();
 
                     var data = JsonConvert.DeserializeObject<UpdatePayload>(message);
-                    if (data?.ContentID != null)
+                    if (data == null)
                     {
-                        SSEDataReceived?.Invoke(this, data);
+                        PluginLog.Verbose($"APIClient(OpenSSEStreamConnection): Received invalid data: {message}");
+                        continue;
                     }
+                    SSEDataReceived?.Invoke(this, data);
                 }
 
                 if (reader.EndOfStream && this.SSEIsConnected)
