@@ -6,7 +6,7 @@ namespace GoodFriend.UI.ImGuiFullComponents.TextInput
     /// <summary>
     ///     Text input component.
     /// </summary>
-    internal class TextInput
+    internal sealed class TextInput
     {
         /// <summary>
         ///     Draws a text input with a label and a save action.

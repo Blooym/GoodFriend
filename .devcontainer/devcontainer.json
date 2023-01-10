@@ -15,13 +15,11 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
-				"dbaeumer.vscode-eslint",
-				"rangav.vscode-thunder-client",
-				"EditorConfig.EditorConfig"
+				"tintoy.msbuild-project-tools",
+				"kreativ-software.csharpextensions"
 			],
 			"settings": {
-				"thunder-client.requestTimeout": 15000,
-				"editor.formatOnSave": true
+				"thunder-client.requestTimeout": 15000
 			}
 		}
 	},

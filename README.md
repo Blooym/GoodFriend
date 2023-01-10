@@ -4,7 +4,7 @@
 <img src="./.assets/icon.png" alt="GoodFriend Logo" width="15%">
   
 ### GoodFriend
-A server & plugin for sending/recieving login & logout notifications
+A server & plugin for sending/recieving login & logout notifications with friends.
 
 [![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
