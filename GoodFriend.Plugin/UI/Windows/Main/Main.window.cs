@@ -8,6 +8,7 @@ using GoodFriend.Localization;
 using GoodFriend.Managers;
 using GoodFriend.UI.ImGuiBasicComponents;
 using GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent;
+using GoodFriend.UI.ImGuiFullComponents.TextInput;
 using GoodFriend.Utils;
 using ImGuiNET;
 using DalamudNotifications = Dalamud.Interface.Internal.Notifications;
@@ -280,28 +281,25 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsLoginMessage);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##LoginMessage", ref loginMessage, 255))
+                        TextInput.Draw("##LoginMessage", ref loginMessage, () =>
                         {
                             var error = false;
 #pragma warning disable CA1806 // Do not ignore method results
                             try
-                            { string.Format(loginMessage, "test"); }
+                            { string.Format(loginMessage, "Test"); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 
                             if (error || !loginMessage.Contains("{0}"))
                             {
-                                if (ImGui.IsItemDeactivatedAfterEdit())
-                                {
-                                    Notifications.Show(PrimaryWindow.DropdownInvalidLoginMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
-                                }
+                                Notifications.Show(PrimaryWindow.DropdownInvalidLoginMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
                             }
                             else
                             {
                                 PluginService.Configuration.FriendLoggedInMessage = loginMessage.Trim();
                                 PluginService.Configuration.Save();
                             }
-                        }
+                        }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
                         ImGui.TableNextRow();
 
@@ -310,33 +308,30 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsLogoutMessage);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##LogoutMessage", ref logoutMessage, 255))
+                        TextInput.Draw("##LogoutMessage", ref logoutMessage, () =>
                         {
                             var error = false;
 #pragma warning disable CA1806 // Do not ignore method results
                             try
-                            { string.Format(logoutMessage, "test"); }
+                            { string.Format(logoutMessage, "Test"); }
 #pragma warning restore CA1806 // Do not ignore method results
                             catch { error = true; }
 
                             if (error || !logoutMessage.Contains("{0}"))
                             {
-                                if (ImGui.IsItemDeactivatedAfterEdit())
-                                {
-                                    Notifications.Show(PrimaryWindow.DropdownInvalidLogoutMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
-                                }
+                                Notifications.Show(PrimaryWindow.DropdownInvalidLogoutMessage, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
                             }
                             else
                             {
                                 PluginService.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
                                 PluginService.Configuration.Save();
                             }
-                        }
+                        }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLogoutMessageTooltip);
 
-                        ImGui.TableNextRow();
                         ImGui.EndTable();
                     }
+
                     ImGui.EndChild();
                     ImGui.EndTabItem();
                 }
@@ -384,11 +379,11 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsFriendshipCode);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##FriendshipCode", ref friendshipCode, 255))
+                        TextInput.Draw("##FriendshipCode", ref friendshipCode, () =>
                         {
                             PluginService.Configuration.FriendshipCode = friendshipCode.Trim();
                             PluginService.Configuration.Save();
-                        }
+                        }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendshipCodeTooltip);
                         ImGui.TableNextRow();
 
@@ -397,7 +392,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsAPIUrl);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##APIUrl", ref apiUrl, 255))
+                        TextInput.Draw("##APIUrl", ref apiUrl, () =>
                         {
                             if (apiUrl == PluginService.Configuration.APIUrl.ToString())
                             {
@@ -419,15 +414,12 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             else
                             {
-                                if (ImGui.IsItemDeactivatedAfterEdit())
-                                {
-                                    Notifications.Show(PrimaryWindow.DropdownSettingsAPIUrlInvalid, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
-                                }
+                                Notifications.Show(PrimaryWindow.DropdownSettingsAPIUrlInvalid, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
 
                                 PluginService.Configuration.APIUrl = PluginConstants.DefaultAPIUrl;
                                 PluginService.Configuration.Save();
                             }
-                        }
+                        }, 500);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
                         ImGui.TableNextRow();
 
@@ -436,12 +428,12 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsAPIToken);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.InputText("##APIAuth", ref apiAuth, 255))
+                        TextInput.Draw("##APIAuth", ref apiAuth, () =>
                         {
                             PluginService.Configuration.APIAuthentication = apiAuth.Trim();
                             PluginService.Configuration.Save();
                             this.presenter.RestartToApply = true;
-                        }
+                        }, 500);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
                         ImGui.TableNextRow();
 

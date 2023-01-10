@@ -4,27 +4,27 @@
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Successfully connected to the API.",
+    "message": "APIへの接続に成功しました",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
+    "message": "APIへの接続中にエラーが発生しました。",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
-    "message": "Disconnected from the API.",
+    "message": "APIから切断しました。",
     "description": "Events.get_APIConnectionDisconnected"
   },
   "Event.Connection.Ratelimited": {
-    "message": "Ratelimited by the API, will auto-retry later.",
+    "message": "APIの上限を超えました。自動的に再接続されます。",
     "description": "Events.get_APIConnectionRatelimited"
   },
   "Event.LoggedIn": {
-    "message": "logged in.",
+    "message": "ログインしました。",
     "description": "Events.get_LoggedIn"
   },
   "Event.LoggedOut": {
-    "message": "logged out.",
+    "message": "ログアウトしました。",
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
@@ -32,7 +32,7 @@
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
-    "message": "There are currently {0} connected clients.",
+    "message": "現在接続中のクライアントは {0} 人です。",
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
@@ -40,23 +40,23 @@
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
-    "message": "Connection in progress, please wait.",
+    "message": "接続中です。しばらくお待ちください。",
     "description": "State.get_ConnectingDescription"
   },
   "State.Ratelimited": {
-    "message": "Ratelimited",
+    "message": "レート上限",
     "description": "State.get_Ratelimited"
   },
   "State.Ratelimited.Description": {
-    "message": "The API has ratelimited this client temporarily.",
+    "message": "APIはこのクライアントを一時的に制限しています。",
     "description": "State.get_RatelimitedDescription"
   },
   "State.Disconnected": {
-    "message": "Disconnected",
+    "message": "切断",
     "description": "State.get_Disconnected"
   },
   "State.Disconnected.Description": {
-    "message": "Login to connect to the API.",
+    "message": "ログインしてAPIに接続します。",
     "description": "State.get_DisconnectedDescription"
   },
   "State.ConnectionError": {
@@ -64,7 +64,7 @@
     "description": "State.get_ConnectionError"
   },
   "State.ConnectionError.Description": {
-    "message": "Something went wrong with the API connection.",
+    "message": "API接続に問題が発生しました。",
     "description": "State.get_ConnectionErrorDescription"
   },
   "State.Unknown": {
@@ -72,139 +72,143 @@
     "description": "State.get_Unknown"
   },
   "State.Unknown.Description": {
-    "message": "We're not sure what's going on here.",
+    "message": "不明なエラーが発生しています",
     "description": "State.get_UnknownDescription"
   },
+  "State.MaxClients": {
+    "message": "サーバーは {0} 人までのクライアントを同時に接続できます。",
+    "description": "State.MaxClients"
+  },
   "Window.Dropdown.Options.Status": {
-    "message": "Status",
+    "message": "稼働状況(Web)",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
   },
   "Window.Dropdown.Options.Status.Tooltip": {
-    "message": "View the status page of this API instance.\n({0})",
+    "message": "この API インスタンスのステータスページを表示します。\n({0})",
     "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
   },
   "Window.Dropdown.Options.Support": {
-    "message": "Donate",
+    "message": "寄付",
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Support the developer and API instance host.",
+    "message": "開発者とAPIインスタンスホストをサポートします。",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
-    "message": "Event Log",
+    "message": "イベントログ",
     "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
   "Window.Dropdown.Options.EventLog.Tooltip": {
-    "message": "View the event log.",
+    "message": "イベントログを表示。",
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
-    "message": "Settings",
+    "message": "設定",
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
-    "message": "Change the settings for this plugin.",
+    "message": "プラグインの設定を変更します。",
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
-    "message": "Enabled",
+    "message": "有効",
     "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
   "Window.Dropdown.Settings.Disabled": {
-    "message": "Disabled",
+    "message": "無効",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
   "Window.Dropdown.Settings.RestartRequired": {
-    "message": "Plugin restart required to apply some configuration changes.",
+    "message": "一部の設定変更を適用するには、プラグインの再起動が必要です。",
     "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
   },
   "Window.Dropdown.Settings.IgnoreFC": {
-    "message": "Ignore FC Members",
+    "message": "FCメンバーを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
+    "message": "FCに所属するプレイヤーからの通知は、自分のホームワールド以外のインスタンスやワールドでは機能しない場合があります。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
-    "message": "Ignore Other Homeworlds",
+    "message": "他のホームワールドを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.",
+    "message": "自分と異なるホームワールドにいるプレイヤーからの通知を無効化するかどうか。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds": {
-    "message": "Ignore Other Worlds",
+    "message": "他のワールドを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different worlds than you.",
+    "message": "自分と異なるワールドにいるプレイヤーからの通知を無効化するかどうか。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories": {
-    "message": "Ignore Other Zones",
+    "message": "他のゾーンを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different zones.",
+    "message": "自分と異なるゾーンにいるプレイヤーからの通知を無効化するかどうか。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters": {
-    "message": "Ignore Other Datacenters",
+    "message": "他のデータセンターを除外",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacenters"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently on different datacenters.",
+    "message": "自分と異なるデータセンターにいるプレイヤーからの通知を無効化するかどうか。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
-    "message": "Notification Type",
+    "message": "通知の表示方法",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
   },
   "Window.Dropdown.Settings.NotificationType.Tooltip": {
-    "message": "The type of notification to show when a friend event occurs.",
+    "message": "フレンドの状態が変わった時に表示する通知の種類",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
   },
   "Window.Dropdown.Settings.LoginMessage": {
-    "message": "Login Message",
+    "message": "ログインメッセージ",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "友達がログインしたときに表示されるメッセージ。\n友達の名前を表示するには、メッセージに {0} が含まれている必要があります。",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLoginMessage": {
-    "message": "The login message must contain {0} at least once to insert the friend's name.",
+    "message": "ログインメッセージに友達の名前を表示するには、 {0} を含む必要があります。",
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
-    "message": "Logout Message",
+    "message": "ログアウトメッセージ",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "友達がログアウトしたときに表示されるメッセージ。\n友達の名前を表示するには、メッセージに {0} が含まれている必要があります。",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLogoutMessage": {
-    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "message": "ログアウトメッセージに友達の名前を表示するには、 {0} を含む必要があります。",
     "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
-    "message": "API Notifications",
+    "message": "APIの通知",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
   },
   "Window.Dropdown.Settings.APINotifications.Tooltip": {
-    "message": "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.",
+    "message": "APIのステータスが変更された時に通知するかどうかは、友達の通知とは関係ありません。",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
-    "message": "Friendship Code",
+    "message": "友達コード",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
   "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
-    "message": "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "message": "友達コードは、あなたが通知を送る相手を制限します。\n同じコードを持っている人にのみ、通知を送受信します。\n\n最高の体験をするために、空のままにしてください。",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
   "Window.Dropdown.Settings.APIUrl": {
@@ -212,11 +216,11 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
-    "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
+    "message": "接続するAPIインスタンスのURL。接続する前に、このインスタンスのホストを信頼してください。",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
   "Window.Dropdown.Settings.APIUrlInvalid": {
-    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "message": "API URLが無効です。プロトコル（http://またはhttps://）とポート（該当する場合）が含まれていることを再確認してください。",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
@@ -224,7 +228,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
-    "message": "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.",
+    "message": "APIへのすべてのリクエストで送信する'Authorization'ヘッダーの値を設定します。\n値の前には、認証スキーム (例: bearer、basic) を含める必要があります。\nAPIインスタンスはこの値を見ることができますが、決してログインパスワードのような機密情報を設定しないでください。",
     "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
   "Window.Dropdown.Settings.SaltMethod": {
@@ -232,119 +236,119 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
+    "message": "Strict: 認証はフレンドコードとプラグインマニフェストの両方を使用して行われます\n (ユーザーは同じプラグインを使用している必要があります。 バージョンとビルドでイベントを交換できます)\nRelaxed: バリデーションはフレンドコードを使用してのみ行われます\n(ユーザーは同じAPIを使用してどのソースからでもイベントを交換できます)\n\n特に変更する理由がない限り、Strictにしておいてください。",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Settings.FriendslistCaching": {
-    "message": "Friendslist Caching",
+    "message": "フレンドリストのキャッシュ",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCaching"
   },
   "Window.Dropdown.Settings.FriendslistCaching.Tooltip": {
-    "message": "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.",
+    "message": "フレンドリストをキャッシュして、利用できないときに通知を表示するかどうか（例：インスタンスコンテンツ内）。\n無効にすると、フレンドリストが利用できないときに通知を表示しません。\n\n注意：この設定を有効にすると、次にフレンドリストが利用可能になるまで、キャッシュは更新されません。",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCachingTooltip"
   },
   "Window.Dropdown.Support.Title": {
-    "message": "Support & Donations",
+    "message": "支援と寄付",
     "description": "PrimaryWindow.get_DropdownSupportTitle"
   },
   "Window.Dropdown.Support.FlavourText": {
-    "message": "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!",
+    "message": "プラグイン開発者またはAPIホストをサポートする方法を見つけることができます。",
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
-    "message": "Donate",
+    "message": "寄付",
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
-    "message": "Plugin/Server Developer",
+    "message": "プラグイン/サーバー開発者",
     "description": "PrimaryWindow.get_DropdownSupportDeveloper"
   },
   "Window.Dropdown.Support.Developer.Description": {
-    "message": "The developer is responsible for the code that makes the Plugin and API work.",
+    "message": "開発者はプラグインとAPIを動作させるコードを担当します。",
     "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
   },
   "Window.Dropdown.Support.APIHost": {
-    "message": "API Instance Host",
+    "message": "APIインスタンスホスト",
     "description": "PrimaryWindow.get_DropdownSupportAPIHost"
   },
   "Window.Dropdown.Support.APIHost.Description": {
-    "message": "The API instance host is responsible for running and maintaining the server that this plugin is connected to.",
+    "message": "APIインスタンスホストは、このプラグインが接続されているサーバーの実行と保守を担当します。",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostDescription"
   },
   "Window.Dropdown.Support.APIHost.InvalidUri": {
-    "message": "The API instance host has provided an invalid support URL.",
+    "message": "APIインスタンスホストは無効なサポート URLを提供しました。",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
   },
   "Window.Dropdown.Logs.Title": {
-    "message": "Logs",
+    "message": "ログ",
     "description": "PrimaryWindow.get_DropdownLogsTitle"
   },
   "Window.Dropdown.Logs.NoLogs": {
-    "message": "No logs to display.",
+    "message": "表示するログはありません。",
     "description": "PrimaryWindow.get_DropdownLogsNoLogs"
   },
   "Window.Dropdown.Logs.ClearAll": {
-    "message": "Clear All",
+    "message": "ログをクリア",
     "description": "PrimaryWindow.get_DropdownLogsClearAll"
   },
   "Window.Dropdown.Logs.Copy": {
-    "message": "Copy",
+    "message": "コピー",
     "description": "PrimaryWindow.get_DropdownLogsCopy"
   },
   "Window.Dropdown.Logs.FilterTooltip": {
-    "message": "Set the selected log level, any logs below this level will be hidden.",
+    "message": "選択したログレベルを設定すると、このレベル以下のログは非表示になります。",
     "description": "PrimaryWindow.get_DropdownLogsFilterTooltip"
   },
   "Window.Dropdown.Logs.CopySuccess": {
-    "message": "Successfully copied log to clipboard.",
+    "message": "ログをクリップボードにコピーしました。",
     "description": "PrimaryWindow.get_DropdownLogsCopySuccess"
   },
   "Window.Dropdown.Logs.Delete": {
-    "message": "Delete",
+    "message": "削除",
     "description": "PrimaryWindow.get_DropdownLogsDelete"
   },
   "Window.Dropdown.Logs.Table.Time": {
-    "message": "Time",
+    "message": "日時",
     "description": "PrimaryWindow.get_DropdownLogsTableTime"
   },
   "Window.Dropdown.Logs.Table.Type": {
-    "message": "Type",
+    "message": "種類",
     "description": "PrimaryWindow.get_DropdownLogsTableType"
   },
   "Window.Dropdown.Logs.Table.Message": {
-    "message": "Message",
+    "message": "メッセージ",
     "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
   "Window.Settings.Build.Official": {
-    "message": "Official Build",
+    "message": "公式ビルド",
     "description": "PrimaryWindow.get_SettingsOfficialBuild"
   },
   "Window.Settings.Build.Unofficial": {
-    "message": "Unofficial Build",
+    "message": "非公式ビルド",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
   },
   "Window.Settings.Tab.General": {
-    "message": "General",
+    "message": "基本設定",
     "description": "PrimaryWindow.get_SettingsTabGeneral"
   },
   "Window.Settings.Tab.Advanced": {
-    "message": "Advanced",
+    "message": "詳細設定",
     "description": "PrimaryWindow.get_SettingsTabAdvanced"
   },
   "Window.URLUpdateNag.Title": {
-    "message": "{0} - Update from {1}",
+    "message": "{0} - {1} からアップデート",
     "description": "URLNagWindow.URLUpdateNagTitle"
   },
   "Window.URLUpdateNag.Text": {
-    "message": "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option.",
+    "message": "設定されたインスタンスは、新しいAPI URLに更新することを推奨しています。これは、インスタンスのドメイン名またはホスティングプロバイダが変更されたためと思われます。\n\n新しいURL({0})が信頼できる場合は、以下のボタンを押して次回のプラグインロード時にAPI URLを更新してください。\nそうでない場合は、別のインスタンスプロバイダを見つけるとよいでしょう。\n\nオプションを選択するには、シフトを押したままか、{1}秒待ちます。",
     "description": "URLNagWindow.URLUpdateNagText"
   },
   "Window.URLUpdateNag.Button.Update": {
-    "message": "Update URL",
+    "message": "URLを更新",
     "description": "URLNagWindow.get_URLUpdateNagButtonUpdate"
   },
   "Window.URLUpdateNag.Button.Ignore": {
-    "message": "Ignore for this session",
+    "message": "このセッションを無視",
     "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
   }
 }

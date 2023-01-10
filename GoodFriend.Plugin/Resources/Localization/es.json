@@ -75,6 +75,10 @@
     "message": "No estamos seguros de lo que está pasando aquí.",
     "description": "State.get_UnknownDescription"
   },
+  "State.MaxClients": {
+    "message": "The server supports {0} clients connected at once.",
+    "description": "State.MaxClients"
+  },
   "Window.Dropdown.Options.Status": {
     "message": "Estado",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
@@ -124,7 +128,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Ignorar o no las notificaciones de amigos de jugadores en tu Free Company.",
+    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
