@@ -220,7 +220,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
   "Window.Dropdown.Settings.APIUrlInvalid": {
-    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "message": "L'URL de l'API est invalide, veuillez vérifier qu'elle contient le protocole (http:// ou https://) et le port (le cas échéant).",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
@@ -240,11 +240,11 @@
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Settings.FriendslistCaching": {
-    "message": "Friendslist Caching",
+    "message": "Mise en cache de la liste d'amis",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCaching"
   },
   "Window.Dropdown.Settings.FriendslistCaching.Tooltip": {
-    "message": "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.",
+    "message": "Indique s'il faut ou non mettre en cache la liste d'amis afin d'afficher des notifications lorsqu'elle n'est pas disponible (par exemple, à l'intérieur d'un contenu instancié).\nDésactivez pour ne pas afficher les notifications lorsque la liste d'amis est indisponible.\n\nNote : Lorsque vous activez ce paramètre, le cache ne sera pas mis à jour jusqu'à ce que la liste d'amis soit disponible à nouveau.",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCachingTooltip"
   },
   "Window.Dropdown.Support.Title": {
@@ -284,11 +284,11 @@
     "description": "PrimaryWindow.get_DropdownLogsTitle"
   },
   "Window.Dropdown.Logs.NoLogs": {
-    "message": "No logs to display.",
+    "message": "Aucuns logs à afficher.",
     "description": "PrimaryWindow.get_DropdownLogsNoLogs"
   },
   "Window.Dropdown.Logs.ClearAll": {
-    "message": "Clear All",
+    "message": "Effacer tout",
     "description": "PrimaryWindow.get_DropdownLogsClearAll"
   },
   "Window.Dropdown.Logs.Copy": {
@@ -296,15 +296,15 @@
     "description": "PrimaryWindow.get_DropdownLogsCopy"
   },
   "Window.Dropdown.Logs.FilterTooltip": {
-    "message": "Set the selected log level, any logs below this level will be hidden.",
+    "message": "Définir le niveau de log sélectionné, tous les logs en dessous de ce niveau seront cachés.",
     "description": "PrimaryWindow.get_DropdownLogsFilterTooltip"
   },
   "Window.Dropdown.Logs.CopySuccess": {
-    "message": "Successfully copied log to clipboard.",
+    "message": "Log copié avec succès dans le presse-papiers.",
     "description": "PrimaryWindow.get_DropdownLogsCopySuccess"
   },
   "Window.Dropdown.Logs.Delete": {
-    "message": "Delete",
+    "message": "Supprimer",
     "description": "PrimaryWindow.get_DropdownLogsDelete"
   },
   "Window.Dropdown.Logs.Table.Time": {
