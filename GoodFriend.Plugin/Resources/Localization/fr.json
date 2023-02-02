@@ -76,7 +76,7 @@
     "description": "State.get_UnknownDescription"
   },
   "State.MaxClients": {
-    "message": "The server supports {0} clients connected at once.",
+    "message": "Le serveur prend en charge {0} clients connectés en même temps.",
     "description": "State.MaxClients"
   },
   "Window.Dropdown.Options.Status": {
@@ -128,7 +128,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
+    "message": "Ignorer ou non les notifications d'amis des joueurs de votre compagnie libre, peut ne pas fonctionner dans des instances ou des mondes autres que votre monde d'origine.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
@@ -136,15 +136,15 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.",
+    "message": "Ignorer ou non les notifications d'amis des personnages joueurs dont le monde d'origine est différent du vôtre.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds": {
-    "message": "Ignore Other Worlds",
+    "message": "Ignorer les autres mondes",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different worlds than you.",
+    "message": "Ignorer ou non les notifications d'amis des joueurs se trouvant dans des mondes différents du vôtre.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories": {
@@ -152,15 +152,15 @@
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different zones.",
+    "message": "Ignorer ou non les notifications d'amis des joueurs se trouvant dans des zones différentes.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters": {
-    "message": "Ignore Other Datacenters",
+    "message": "Ignorer les autres centres de données",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacenters"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently on different datacenters.",
+    "message": "Ignorer ou non les notifications d'amis de joueurs se trouvant sur des centres de données différents.",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
@@ -180,7 +180,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLoginMessage": {
-    "message": "The login message must contain {0} at least once to insert the friend's name.",
+    "message": "Le message de connexion doit contenir {0} au moins une fois pour insérer le nom de votre ami(e).",
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
@@ -192,7 +192,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLogoutMessage": {
-    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "message": "Le message de déconnexion doit contenir {0} au moins une fois pour insérer le nom de l'ami(e).",
     "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
@@ -200,7 +200,7 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
   },
   "Window.Dropdown.Settings.APINotifications.Tooltip": {
-    "message": "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.",
+    "message": "Envoyer ou non des notifications lorsque l'état de la connexion à l'API change, ceci n'est pas lié aux notifications d'amis.",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
