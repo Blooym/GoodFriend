@@ -14,3 +14,4 @@ updates:
     directory: "/GoodFriend.Server"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 10
