@@ -1,126 +1,126 @@
 {
   "Event.Connection.Status": {
-    "message": "Connection Status",
+    "message": "连接状态",
     "description": "Events.get_APIConnectionStatus"
   },
   "Event.Connection.Successful": {
-    "message": "Successfully connected to the API.",
+    "message": "成功连接到API。",
     "description": "Events.get_APIConnectionSuccess"
   },
   "Event.Connection.Error": {
-    "message": "An error occurred while connecting to the API.",
+    "message": "连接到 API 时出错。",
     "description": "Events.get_APIConnectionError"
   },
   "Event.Connection.Disconnected": {
-    "message": "Disconnected from the API.",
+    "message": "已断开与 API 连接。",
     "description": "Events.get_APIConnectionDisconnected"
   },
   "Event.Connection.Ratelimited": {
-    "message": "Ratelimited by the API, will auto-retry later.",
+    "message": "由于 API 限制速率，将在稍后自动重试。",
     "description": "Events.get_APIConnectionRatelimited"
   },
   "Event.LoggedIn": {
-    "message": "logged in.",
+    "message": "已登录。",
     "description": "Events.get_LoggedIn"
   },
   "Event.LoggedOut": {
-    "message": "logged out.",
+    "message": "已退出登录。",
     "description": "Events.get_LoggedOut"
   },
   "State.Connected": {
-    "message": "Connected",
+    "message": "已连接",
     "description": "State.get_Connected"
   },
   "State.Connected.Description": {
-    "message": "There are currently {0} connected clients.",
+    "message": "目前有 {0} 个已连接的客户端。",
     "description": "State.ConnectedDescription"
   },
   "State.Connecting": {
-    "message": "Connecting",
+    "message": "连接中",
     "description": "State.get_Connecting"
   },
   "State.Connecting.Description": {
-    "message": "Connection in progress, please wait.",
+    "message": "连接正在进行，请稍候。",
     "description": "State.get_ConnectingDescription"
   },
   "State.Ratelimited": {
-    "message": "Ratelimited",
+    "message": "限制流量",
     "description": "State.get_Ratelimited"
   },
   "State.Ratelimited.Description": {
-    "message": "The API has ratelimited this client temporarily.",
+    "message": "API已暂时限制此客户端。",
     "description": "State.get_RatelimitedDescription"
   },
   "State.Disconnected": {
-    "message": "Disconnected",
+    "message": "未连接",
     "description": "State.get_Disconnected"
   },
   "State.Disconnected.Description": {
-    "message": "Login to connect to the API.",
+    "message": "登录以连接到 API。",
     "description": "State.get_DisconnectedDescription"
   },
   "State.ConnectionError": {
-    "message": "Connection Error",
+    "message": "连接错误",
     "description": "State.get_ConnectionError"
   },
   "State.ConnectionError.Description": {
-    "message": "Something went wrong with the API connection.",
+    "message": "API 连接出了错。",
     "description": "State.get_ConnectionErrorDescription"
   },
   "State.Unknown": {
-    "message": "Unknown",
+    "message": "未知",
     "description": "State.get_Unknown"
   },
   "State.Unknown.Description": {
-    "message": "We're not sure what's going on here.",
+    "message": "我们不能确定在这里发生了什么。",
     "description": "State.get_UnknownDescription"
   },
   "State.MaxClients": {
-    "message": "The server supports {0} clients connected at once.",
+    "message": "服务器支持一次连接 {0} 个客户端。",
     "description": "State.MaxClients"
   },
   "Window.Dropdown.Options.Status": {
-    "message": "Status",
+    "message": "状态",
     "description": "PrimaryWindow.get_DropdownOptionsStatus"
   },
   "Window.Dropdown.Options.Status.Tooltip": {
-    "message": "View the status page of this API instance.\n({0})",
+    "message": "查看此 API 实例的状态页面。\n({0})",
     "description": "PrimaryWindow.DropdownOptionsStatusTooltip"
   },
   "Window.Dropdown.Options.Support": {
-    "message": "Donate",
+    "message": "赞助",
     "description": "PrimaryWindow.get_DropdownOptionsSupport"
   },
   "Window.Dropdown.Options.Support.Tooltip": {
-    "message": "Support the developer and API instance host.",
+    "message": "支持开发者和 API 实例主机。",
     "description": "PrimaryWindow.get_DropdownOptionsSupportTooltip"
   },
   "Window.Dropdown.Options.EventLog": {
-    "message": "Event Log",
+    "message": "事件日志",
     "description": "PrimaryWindow.get_DropdownOptionsEventLog"
   },
   "Window.Dropdown.Options.EventLog.Tooltip": {
-    "message": "View the event log.",
+    "message": "查看事件日志。",
     "description": "PrimaryWindow.get_DropdownOptionsEventLogTooltip"
   },
   "Window.Dropdown.Options.Settings": {
-    "message": "Settings",
+    "message": "设置",
     "description": "PrimaryWindow.get_DropdownOptionsSettings"
   },
   "Window.Dropdown.Options.Settings.Tooltip": {
-    "message": "Change the settings for this plugin.",
+    "message": "更改此插件的设置。",
     "description": "PrimaryWindow.get_DropdownOptionsSettingsTooltip"
   },
   "Window.Dropdown.Settings.Enabled": {
-    "message": "Enabled",
+    "message": "启用",
     "description": "PrimaryWindow.get_DropdownSettingsEnabled"
   },
   "Window.Dropdown.Settings.Disabled": {
-    "message": "Disabled",
+    "message": "禁用",
     "description": "PrimaryWindow.get_DropdownSettingsDisabled"
   },
   "Window.Dropdown.Settings.RestartRequired": {
-    "message": "Plugin restart required to apply some configuration changes.",
+    "message": "需要重新启动插件来应用某些配置更改。",
     "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
   },
   "Window.Dropdown.Settings.IgnoreFC": {
@@ -256,7 +256,7 @@
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
-    "message": "Donate",
+    "message": "赞助",
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
