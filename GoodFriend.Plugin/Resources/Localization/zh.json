@@ -124,91 +124,91 @@
     "description": "PrimaryWindow.get_DropdownSettingsRestartRequired"
   },
   "Window.Dropdown.Settings.IgnoreFC": {
-    "message": "Ignore FC Members",
+    "message": "忽略部队成员",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFC"
   },
   "Window.Dropdown.Settings.IgnoreFC.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players in your Free Company, may not work inside of instances or worlds other than your homeworld.",
+    "message": "无论是否忽略来自部队玩家的好友通知，都可能无法在您的主服务器之外的地区或服务器中工作。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreFCTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds": {
-    "message": "Ignore Other Homeworlds",
+    "message": "忽略其它主服务器",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffHomeworlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from player characters who have a different homeworld than you.",
+    "message": "是否忽略来自与你有不同主服务器的玩家角色的好友通知。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffHomeworldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds": {
-    "message": "Ignore Other Worlds",
+    "message": "忽略其它服务器",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorlds"
   },
   "Window.Dropdown.Settings.IgnoreDiffWorlds.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different worlds than you.",
+    "message": "是否忽略当前来自不同服务器玩家的好友通知。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffWorldsTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories": {
-    "message": "Ignore Other Zones",
+    "message": "忽略其他区域",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritories"
   },
   "Window.Dropdown.Settings.IgnoreDiffTerritories.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently in different zones.",
+    "message": "是否忽略当前处于不同区域的玩家的好友通知。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffTerritoriesTooltip"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters": {
-    "message": "Ignore Other Datacenters",
+    "message": "忽略其它大区",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacenters"
   },
   "Window.Dropdown.Settings.IgnoreDiffDatacenters.Tooltip": {
-    "message": "Whether or not to ignore friend notifications from players currently on different datacenters.",
+    "message": "是否忽略当前在不同大区的玩家的好友通知。",
     "description": "PrimaryWindow.get_DropdownSettingsIgnoreDiffDatacentersTooltip"
   },
   "Window.Dropdown.Settings.NotificationType": {
-    "message": "Notification Type",
+    "message": "通知类型",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationType"
   },
   "Window.Dropdown.Settings.NotificationType.Tooltip": {
-    "message": "The type of notification to show when a friend event occurs.",
+    "message": "好友事件发生时要显示的通知类型。",
     "description": "PrimaryWindow.get_DropdownSettingsNotificationTypeTooltip"
   },
   "Window.Dropdown.Settings.LoginMessage": {
-    "message": "Login Message",
+    "message": "登录消息",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessage"
   },
   "Window.Dropdown.Settings.LoginMessage.Tooltip": {
-    "message": "The message to show when a friend logs in.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "好友登录时显示的消息。\n消息必须至少包含一次 {0} 才能插入好友的名字。",
     "description": "PrimaryWindow.get_DropdownSettingsLoginMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLoginMessage": {
-    "message": "The login message must contain {0} at least once to insert the friend's name.",
+    "message": "登录消息必须至少包含 {0} 一次才能插入好友的名字。",
     "description": "PrimaryWindow.get_DropdownInvalidLoginMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage": {
-    "message": "Logout Message",
+    "message": "下线消息",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessage"
   },
   "Window.Dropdown.Settings.LogoutMessage.Tooltip": {
-    "message": "The message to show when a friend logs out.\nMessage must contain {0} at least once to insert the friend's name.",
+    "message": "好友下线时显示的消息。\n消息必须至少包含一次 {0} 才能插入好友的名字。",
     "description": "PrimaryWindow.get_DropdownSettingsLogoutMessageTooltip"
   },
   "Window.Dropdown.Settings.InvalidLogoutMessage": {
-    "message": "The logout message must contain {0} at least once to insert the friend's name.",
+    "message": "下线消息必须至少包含 {0} 一次才能插入好友的名字。",
     "description": "PrimaryWindow.get_DropdownInvalidLogoutMessage"
   },
   "Window.Dropdown.Settings.APINotifications": {
-    "message": "API Notifications",
+    "message": "API 通知",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotifications"
   },
   "Window.Dropdown.Settings.APINotifications.Tooltip": {
-    "message": "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.",
+    "message": "API连接状态更改时是否通知，这与好友通知无关。",
     "description": "PrimaryWindow.get_DropdownSettingsAPINotificationsTooltip"
   },
   "Window.Dropdown.Settings.FriendshipCode": {
-    "message": "Friendship Code",
+    "message": "朋友代码",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCode"
   },
   "Window.Dropdown.Settings.FriendshipCode.Tooltip": {
-    "message": "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.",
+    "message": "您的好友代码限制您发送通知给谁。\n您只会与拥有相同代码的人发送和接收通知。\n\n留空以获取最佳体验。",
     "description": "PrimaryWindow.get_DropdownSettingsFriendshipCodeTooltip"
   },
   "Window.Dropdown.Settings.APIUrl": {
@@ -216,11 +216,11 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrl"
   },
   "Window.Dropdown.Settings.APIUrl.Tooltip": {
-    "message": "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.",
+    "message": "要连接的 API 实例的 URL。您应该先信任此实例的主机，然后再连接它。",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlTooltip"
   },
   "Window.Dropdown.Settings.APIUrlInvalid": {
-    "message": "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).",
+    "message": "API URL无效，请重新检查它包含的协议 (http:// 或 https://) 和端口(如果适用)。",
     "description": "PrimaryWindow.get_DropdownSettingsAPIUrlInvalid"
   },
   "Window.Dropdown.Settings.APIToken": {
@@ -228,31 +228,31 @@
     "description": "PrimaryWindow.get_DropdownSettingsAPIToken"
   },
   "Window.Dropdown.Settings.APIToken.Tooltip": {
-    "message": "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.",
+    "message": "为“Authorization”设置头部与所有到API的请求一起发送。\n您需要在值之前包含授权方案(例如bearer、basic)。\nAPI 实例将能够看到这个值，永远不要将其设置为敏感信息，如登录密码。",
     "description": "PrimaryWindow.get_DropdownSettingsAPITokenTooltip"
   },
   "Window.Dropdown.Settings.SaltMethod": {
-    "message": "Salt Method",
+    "message": "盐法",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethod"
   },
   "Window.Dropdown.Settings.SaltMethod.Tooltip": {
-    "message": "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.",
+    "message": "严格: 验证使用了好友代码和插件信息(用户必须使用同一个插件、版本 & 打包以交换事件)\n放松：验证只使用好友代码(用户可以使用相同的 API 从任何来源交换事件)\n\n除非你有理由改变，否则保持严格模式。",
     "description": "PrimaryWindow.get_DropdownSettingsSaltMethodTooltip"
   },
   "Window.Dropdown.Settings.FriendslistCaching": {
-    "message": "Friendslist Caching",
+    "message": "好友列表缓存",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCaching"
   },
   "Window.Dropdown.Settings.FriendslistCaching.Tooltip": {
-    "message": "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.",
+    "message": "是否缓存好友列表以在其不可用时显示通知(例如，在地图内部)。\n禁用可在好友列表不可用时不显示通知。\n\n注意：启用此设置时，直到下次好友列表可用时，缓存才会更新。",
     "description": "PrimaryWindow.get_DropdownSettingsFriendslistCachingTooltip"
   },
   "Window.Dropdown.Support.Title": {
-    "message": "Support & Donations",
+    "message": "支持与赞助",
     "description": "PrimaryWindow.get_DropdownSupportTitle"
   },
   "Window.Dropdown.Support.FlavourText": {
-    "message": "You can find ways to support either the plugin developer or API host here. Any support is greatly appreciated!",
+    "message": "您可以在这里找到支持插件开发者或 API 主机的方式。任何支持都非常感谢！",
     "description": "PrimaryWindow.get_DropdownSupportFlavourText"
   },
   "Window.Dropdown.Support.Button": {
@@ -260,95 +260,95 @@
     "description": "PrimaryWindow.get_DropdownSupportDonate"
   },
   "Window.Dropdown.Support.Developer": {
-    "message": "Plugin/Server Developer",
+    "message": "插件/服务器开发者",
     "description": "PrimaryWindow.get_DropdownSupportDeveloper"
   },
   "Window.Dropdown.Support.Developer.Description": {
-    "message": "The developer is responsible for the code that makes the Plugin and API work.",
+    "message": "开发者负责让插件和 API 正常工作的代码。",
     "description": "PrimaryWindow.get_DropdownSupportDeveloperDescription"
   },
   "Window.Dropdown.Support.APIHost": {
-    "message": "API Instance Host",
+    "message": "API 实例主机",
     "description": "PrimaryWindow.get_DropdownSupportAPIHost"
   },
   "Window.Dropdown.Support.APIHost.Description": {
-    "message": "The API instance host is responsible for running and maintaining the server that this plugin is connected to.",
+    "message": "API 实例主机负责运行和维护此插件所连接的服务器。",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostDescription"
   },
   "Window.Dropdown.Support.APIHost.InvalidUri": {
-    "message": "The API instance host has provided an invalid support URL.",
+    "message": "API 实例主机提供了一个无效的支持 URL。",
     "description": "PrimaryWindow.get_DropdownSupportAPIHostInvalidUri"
   },
   "Window.Dropdown.Logs.Title": {
-    "message": "Logs",
+    "message": "日志",
     "description": "PrimaryWindow.get_DropdownLogsTitle"
   },
   "Window.Dropdown.Logs.NoLogs": {
-    "message": "No logs to display.",
+    "message": "没有日志可显示。",
     "description": "PrimaryWindow.get_DropdownLogsNoLogs"
   },
   "Window.Dropdown.Logs.ClearAll": {
-    "message": "Clear All",
+    "message": "清除所有",
     "description": "PrimaryWindow.get_DropdownLogsClearAll"
   },
   "Window.Dropdown.Logs.Copy": {
-    "message": "Copy",
+    "message": "复制",
     "description": "PrimaryWindow.get_DropdownLogsCopy"
   },
   "Window.Dropdown.Logs.FilterTooltip": {
-    "message": "Set the selected log level, any logs below this level will be hidden.",
+    "message": "设置选中的日志级别，任何低于此级别的日志都将被隐藏。",
     "description": "PrimaryWindow.get_DropdownLogsFilterTooltip"
   },
   "Window.Dropdown.Logs.CopySuccess": {
-    "message": "Successfully copied log to clipboard.",
+    "message": "成功复制日志到剪贴板。",
     "description": "PrimaryWindow.get_DropdownLogsCopySuccess"
   },
   "Window.Dropdown.Logs.Delete": {
-    "message": "Delete",
+    "message": "删除",
     "description": "PrimaryWindow.get_DropdownLogsDelete"
   },
   "Window.Dropdown.Logs.Table.Time": {
-    "message": "Time",
+    "message": "时间",
     "description": "PrimaryWindow.get_DropdownLogsTableTime"
   },
   "Window.Dropdown.Logs.Table.Type": {
-    "message": "Type",
+    "message": "类型",
     "description": "PrimaryWindow.get_DropdownLogsTableType"
   },
   "Window.Dropdown.Logs.Table.Message": {
-    "message": "Message",
+    "message": "信息",
     "description": "PrimaryWindow.get_DropdownLogsTableMessage"
   },
   "Window.Settings.Build.Official": {
-    "message": "Official Build",
+    "message": "官方版本",
     "description": "PrimaryWindow.get_SettingsOfficialBuild"
   },
   "Window.Settings.Build.Unofficial": {
-    "message": "Unofficial Build",
+    "message": "非官方版本",
     "description": "PrimaryWindow.get_SettingsUnofficialBuild"
   },
   "Window.Settings.Tab.General": {
-    "message": "General",
+    "message": "通用",
     "description": "PrimaryWindow.get_SettingsTabGeneral"
   },
   "Window.Settings.Tab.Advanced": {
-    "message": "Advanced",
+    "message": "高级选项",
     "description": "PrimaryWindow.get_SettingsTabAdvanced"
   },
   "Window.URLUpdateNag.Title": {
-    "message": "{0} - Update from {1}",
+    "message": "{0} - 更新来自 {1}",
     "description": "URLNagWindow.URLUpdateNagTitle"
   },
   "Window.URLUpdateNag.Text": {
-    "message": "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option.",
+    "message": "您已配置的实例建议您更新到新的 API URL； 这可能是因为实例的域名或主机服务提供商发生了变化。\n\n如果您信任新的 URL({0})，请按下面的按钮来更新下一个插件加载的 API URL。 否则，您可能想要找到另一个实例提供者。\n\n按住 shift 或者等待 {1} 秒后选择一个选项。",
     "description": "URLNagWindow.URLUpdateNagText"
   },
   "Window.URLUpdateNag.Button.Update": {
-    "message": "Update URL",
+    "message": "更新 URL",
     "description": "URLNagWindow.get_URLUpdateNagButtonUpdate"
   },
   "Window.URLUpdateNag.Button.Ignore": {
-    "message": "Ignore for this session",
+    "message": "忽略此会话",
     "description": "URLNagWindow.get_URLUpdateNagButtonIgnore"
   }
 }
