@@ -27,7 +27,7 @@
     "express-rate-limit": "^6.7.0",
     "express-winston": "^4.2.0",
     "helmet": "^6.0.1",
-    "prom-client": "^14.1.1",
+    "prom-client": "^14.2.0",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
   },
