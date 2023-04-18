@@ -3,9 +3,8 @@ using System.IO;
 using System.Reflection;
 using CheapLoc;
 using Dalamud.Logging;
-using GoodFriend.Base;
 
-namespace GoodFriend.Managers
+namespace GoodFriend.Plugin.Managers
 {
     /// <summary>
     ///     Sets up and manages the plugin's resources and localization.
@@ -19,8 +18,8 @@ namespace GoodFriend.Managers
         {
             PluginLog.Debug("ResourceManager(ResourceManager): Initializing...");
 
-            this.Setup(PluginService.PluginInterface.UiLanguage);
-            PluginService.PluginInterface.LanguageChanged += this.Setup;
+            this.Setup(Services.PluginInterface.UiLanguage);
+            Services.PluginInterface.LanguageChanged += this.Setup;
 
             PluginLog.Debug("ResourceManager(ResourceManager): Initialization complete.");
         }
@@ -30,7 +29,7 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginService.PluginInterface.LanguageChanged -= this.Setup;
+            Services.PluginInterface.LanguageChanged -= this.Setup;
 
             PluginLog.Debug("ResourceManager(Dispose): Successfully disposed.");
         }
@@ -39,7 +38,7 @@ namespace GoodFriend.Managers
         ///     Sets up the plugin's resources.
         /// </summary>
         /// <param name="language">The new language 2-letter code.</param>
-        private void Setup(string language)
+        private static void Setup(string language)
         {
             try
             {

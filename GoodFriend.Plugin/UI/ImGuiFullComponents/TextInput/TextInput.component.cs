@@ -1,7 +1,7 @@
 using System;
 using ImGuiNET;
 
-namespace GoodFriend.UI.ImGuiFullComponents.TextInput
+namespace GoodFriend.Plugin.UI.ImGuiFullComponents.TextInput
 {
     /// <summary>
     ///     Text input component.

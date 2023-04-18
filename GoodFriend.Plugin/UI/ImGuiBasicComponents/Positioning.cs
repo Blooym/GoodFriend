@@ -1,7 +1,7 @@
 using System.Numerics;
 using ImGuiNET;
 
-namespace GoodFriend.UI.ImGuiBasicComponents
+namespace GoodFriend.Plugin.UI.ImGuiBasicComponents
 {
     /// <summary>
     ///     Components for positioning elements.

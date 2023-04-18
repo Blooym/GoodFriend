@@ -27,7 +27,7 @@ using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
-namespace GoodFriend.Managers.FriendList
+namespace GoodFriend.Plugin.Managers.FriendList
 {
     /// <summary>
     ///     The class containing friend list functionality

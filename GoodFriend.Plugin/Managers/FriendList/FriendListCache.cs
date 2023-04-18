@@ -1,6 +1,4 @@
-using GoodFriend.Base;
-
-namespace GoodFriend.Managers.FriendList
+namespace GoodFriend.Plugin.Managers.FriendList
 {
     /// <summary>
     ///     The class containing friend list cache functionality
@@ -14,7 +12,7 @@ namespace GoodFriend.Managers.FriendList
         /// </summary>
         public static unsafe FriendListEntry*[] Get()
         {
-            if (PluginService.ClientState.LocalContentId == 0)
+            if (Services.ClientState.LocalContentId == 0)
             {
                 return new FriendListEntry*[0];
             }
@@ -22,7 +20,7 @@ namespace GoodFriend.Managers.FriendList
             var friendList = FriendList.Get();
 
             // If caching of friends has been disabled, return the current friend list.
-            if (!PluginService.Configuration.FriendslistCaching)
+            if (!Services.Configuration.FriendslistCaching)
             {
                 return friendList;
             }

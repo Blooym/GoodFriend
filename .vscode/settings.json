@@ -11,4 +11,8 @@
     "csharp.referencesCodeLens.enabled": true,
     // C# Extensions Settings
     "csharpfixformat.enable": true,
+    "rust-analyzer.linkedProjects": [
+        "./GoodFriend.Api/Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false,
 }

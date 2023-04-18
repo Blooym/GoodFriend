@@ -1,19 +1,19 @@
 using System;
-using System.Linq;
 using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
-using GoodFriend.Base;
-using GoodFriend.Localization;
-using GoodFriend.Managers;
-using GoodFriend.UI.ImGuiBasicComponents;
-using GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent;
-using GoodFriend.UI.ImGuiFullComponents.TextInput;
-using GoodFriend.Utils;
+using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Common;
+using GoodFriend.Plugin.Localization;
+using GoodFriend.Plugin.UI.ImGuiBasicComponents;
+using GoodFriend.Plugin.UI.ImGuiFullComponents.ConnectionStatusComponent;
+using GoodFriend.Plugin.UI.ImGuiFullComponents.TextInput;
+using GoodFriend.Plugin.Utils;
 using ImGuiNET;
 using DalamudNotifications = Dalamud.Interface.Internal.Notifications;
 
-namespace GoodFriend.UI.Windows.Main
+namespace GoodFriend.Plugin.UI.Windows.Main
 {
     /// <summary>
     ///     The settings window for the plugin.
@@ -46,12 +46,12 @@ namespace GoodFriend.UI.Windows.Main
         /// </summary>
         public override void Draw()
         {
-            var statusPageUrl = MainPresenter.Metadata?.StatusPageUrl;
+            var statusPageUrl = MainPresenter.Metadata?.StatusUrl;
             ConnectionStatusComponent.Draw("ConnectionPageStatusComponent", new Vector2(0, 70 * ImGui.GetIO().FontGlobalScale));
 
             // Status button
             ImGui.BeginDisabled(statusPageUrl == null);
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsStatus, PrimaryWindow.DropdownOptionsStatusTooltip(statusPageUrl ?? "NULL"), new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsStatus, PrimaryWindow.DropdownOptionsStatusTooltip(statusPageUrl ?? "NULL"), new Vector2((ImGui.GetWindowWidth() / 3) - 10, 0)))
             {
                 if (statusPageUrl != null)
                 {
@@ -62,22 +62,14 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.SameLine();
 
             // Donate button
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSupport, PrimaryWindow.DropdownOptionsSupportTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSupport, PrimaryWindow.DropdownOptionsSupportTooltip, new Vector2((ImGui.GetWindowWidth() / 3) - 10, 0)))
             {
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Donate);
             }
             ImGui.SameLine();
 
-            // Event log button
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsEventLog, PrimaryWindow.DropdownOptionsEventLogTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
-            {
-                this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Logs);
-            }
-
-            ImGui.SameLine();
-
             // Settings button
-            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSettings, PrimaryWindow.DropdownOptionsSettingsTooltip, new Vector2((ImGui.GetWindowWidth() / 4) - 10, 0)))
+            if (Tooltips.TooltipButton(PrimaryWindow.DropdownOptionsSettings, PrimaryWindow.DropdownOptionsSettingsTooltip, new Vector2((ImGui.GetWindowWidth() / 3) - 10, 0)))
             {
                 this.presenter.ToggleVisibleDropdown(MainPresenter.VisibleDropdown.Settings);
             }
@@ -95,15 +87,9 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
                     DrawSupport();
                     break;
-                case MainPresenter.VisibleDropdown.Logs:
-                    ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 420 * ImGui.GetIO().FontGlobalScale));
-                    this.DrawEventLog();
-                    break;
                 case MainPresenter.VisibleDropdown.None:
                     ImGui.SetWindowSize(new Vector2(450 * ImGui.GetIO().FontGlobalScale, 175 * ImGui.GetIO().FontGlobalScale));
-                    var message = $"Plugin: {PluginConstants.Version} · APIClient: {APIClientManager.Version} · {(Common.IsOfficialSource ? PrimaryWindow.SettingsOfficialBuild : PrimaryWindow.SettingsUnofficialBuild)}";
-                    ImGui.SetCursorPosX(((ImGui.GetWindowWidth() - ImGui.CalcTextSize(message).X) / 2) - ImGui.GetStyle().WindowPadding.X);
-                    ImGui.TextDisabled(message);
+                    ImGuiHelpers.CenteredText(PluginConstants.Version);
                     break;
             }
         }
@@ -126,14 +112,14 @@ namespace GoodFriend.UI.Windows.Main
                 // "Basic" Settings
                 if (ImGui.BeginTabItem(PrimaryWindow.SettingsTabGeneral))
                 {
-                    var notificationType = PluginService.Configuration.NotificationType;
-                    var loginMessage = PluginService.Configuration.FriendLoggedInMessage;
-                    var logoutMessage = PluginService.Configuration.FriendLoggedOutMessage;
-                    var hideSameFC = PluginService.Configuration.HideSameFC;
-                    var hideDifferentHomeworld = PluginService.Configuration.HideDifferentHomeworld;
-                    var hideDifferentWorld = PluginService.Configuration.HideDifferentWorld;
-                    var hideDifferentTerritory = PluginService.Configuration.HideDifferentTerritory;
-                    var hideDifferentDatacenter = PluginService.Configuration.HideDifferentDatacenter;
+                    var notificationType = Services.Configuration.NotificationType;
+                    var loginMessage = Services.Configuration.FriendLoggedInMessage;
+                    var logoutMessage = Services.Configuration.FriendLoggedOutMessage;
+                    var hideSameFC = Services.Configuration.HideSameFC;
+                    var hideDifferentHomeworld = Services.Configuration.HideDifferentHomeworld;
+                    var hideDifferentWorld = Services.Configuration.HideDifferentWorld;
+                    var hideDifferentTerritory = Services.Configuration.HideDifferentTerritory;
+                    var hideDifferentDatacenter = Services.Configuration.HideDifferentDatacenter;
 
                     ImGui.BeginChild("GeneralSettings");
                     if (ImGui.BeginTable("###GeneralSettingsTable", 2))
@@ -150,15 +136,15 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideSameFC))
                             {
-                                PluginService.Configuration.HideSameFC = true;
+                                Services.Configuration.HideSameFC = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideSameFC))
                             {
-                                PluginService.Configuration.HideSameFC = false;
+                                Services.Configuration.HideSameFC = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreFCTooltip);
@@ -173,15 +159,15 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentWorld))
                             {
-                                PluginService.Configuration.HideDifferentWorld = true;
+                                Services.Configuration.HideDifferentWorld = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentWorld))
                             {
-                                PluginService.Configuration.HideDifferentWorld = false;
+                                Services.Configuration.HideDifferentWorld = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffWorldsTooltip);
@@ -196,15 +182,15 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentHomeworld))
                             {
-                                PluginService.Configuration.HideDifferentHomeworld = true;
+                                Services.Configuration.HideDifferentHomeworld = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentHomeworld))
                             {
-                                PluginService.Configuration.HideDifferentHomeworld = false;
+                                Services.Configuration.HideDifferentHomeworld = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffHomeworldsTooltip);
@@ -219,15 +205,15 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentDatacenter))
                             {
-                                PluginService.Configuration.HideDifferentDatacenter = true;
+                                Services.Configuration.HideDifferentDatacenter = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentDatacenter))
                             {
-                                PluginService.Configuration.HideDifferentDatacenter = false;
+                                Services.Configuration.HideDifferentDatacenter = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffDatacentersTooltip);
@@ -242,15 +228,15 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, hideDifferentTerritory))
                             {
-                                PluginService.Configuration.HideDifferentTerritory = true;
+                                Services.Configuration.HideDifferentTerritory = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !hideDifferentTerritory))
                             {
-                                PluginService.Configuration.HideDifferentTerritory = false;
+                                Services.Configuration.HideDifferentTerritory = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsIgnoreDiffTerritoriesTooltip);
@@ -267,8 +253,8 @@ namespace GoodFriend.UI.Windows.Main
                             {
                                 if (ImGui.Selectable(type, notificationType == Enum.Parse<NotificationType>(type)))
                                 {
-                                    PluginService.Configuration.NotificationType = (NotificationType)Enum.Parse(typeof(NotificationType), type);
-                                    PluginService.Configuration.Save();
+                                    Services.Configuration.NotificationType = (NotificationType)Enum.Parse(typeof(NotificationType), type);
+                                    Services.Configuration.Save();
                                 }
                             }
                             ImGui.EndCombo();
@@ -296,8 +282,8 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             else
                             {
-                                PluginService.Configuration.FriendLoggedInMessage = loginMessage.Trim();
-                                PluginService.Configuration.Save();
+                                Services.Configuration.FriendLoggedInMessage = loginMessage.Trim();
+                                Services.Configuration.Save();
                             }
                         }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLoginMessageTooltip);
@@ -323,8 +309,8 @@ namespace GoodFriend.UI.Windows.Main
                             }
                             else
                             {
-                                PluginService.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
-                                PluginService.Configuration.Save();
+                                Services.Configuration.FriendLoggedOutMessage = logoutMessage.Trim();
+                                Services.Configuration.Save();
                             }
                         }, 255);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsLogoutMessageTooltip);
@@ -339,11 +325,8 @@ namespace GoodFriend.UI.Windows.Main
                 // "Advanced" Settings
                 if (ImGui.BeginTabItem(PrimaryWindow.SettingsTabAdvanced))
                 {
-                    var showAPIEvents = PluginService.Configuration.ShowAPIEvents;
-                    var apiUrl = PluginService.Configuration.APIUrl.ToString();
-                    var friendshipCode = PluginService.Configuration.FriendshipCode;
-                    var apiAuth = PluginService.Configuration.APIAuthentication;
-                    var saltMethod = PluginService.Configuration.SaltMethod;
+                    var showAPIEvents = Services.Configuration.ShowAPIEvents;
+                    var apiUrl = Services.Configuration.APIUrl.ToString();
 
                     ImGui.BeginChild("##AdvancedSettings");
                     if (ImGui.BeginTable("SettingsTable", 2))
@@ -360,31 +343,18 @@ namespace GoodFriend.UI.Windows.Main
                         {
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, showAPIEvents))
                             {
-                                PluginService.Configuration.ShowAPIEvents = true;
+                                Services.Configuration.ShowAPIEvents = true;
                             }
 
                             if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !showAPIEvents))
                             {
-                                PluginService.Configuration.ShowAPIEvents = false;
+                                Services.Configuration.ShowAPIEvents = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPINotificationsTooltip);
-                        ImGui.TableNextRow();
-
-                        // Friendship code
-                        ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(PrimaryWindow.DropdownSettingsFriendshipCode);
-                        ImGui.TableSetColumnIndex(1);
-                        ImGui.SetNextItemWidth(-1);
-                        TextInput.Draw("##FriendshipCode", ref friendshipCode, () =>
-                        {
-                            PluginService.Configuration.FriendshipCode = friendshipCode.Trim();
-                            PluginService.Configuration.Save();
-                        }, 255);
-                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendshipCodeTooltip);
                         ImGui.TableNextRow();
 
                         // API URL
@@ -394,7 +364,7 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.SetNextItemWidth(-1);
                         TextInput.Draw("##APIUrl", ref apiUrl, () =>
                         {
-                            if (apiUrl == PluginService.Configuration.APIUrl.ToString())
+                            if (apiUrl == Services.Configuration.APIUrl.ToString())
                             {
                                 return;
                             }
@@ -408,53 +378,19 @@ namespace GoodFriend.UI.Windows.Main
 
                             if (!error)
                             {
-                                PluginService.Configuration.APIUrl = new Uri(apiUrl);
-                                PluginService.Configuration.Save();
+                                Services.Configuration.APIUrl = new Uri(apiUrl);
+                                Services.Configuration.Save();
                                 this.presenter.RestartToApply = true;
                             }
                             else
                             {
                                 Notifications.Show(PrimaryWindow.DropdownSettingsAPIUrlInvalid, NotificationType.Toast, DalamudNotifications.NotificationType.Error);
 
-                                PluginService.Configuration.APIUrl = PluginConstants.DefaultAPIUrl;
-                                PluginService.Configuration.Save();
+                                Services.Configuration.APIUrl = PluginConstants.DefaultAPIUrl;
+                                Services.Configuration.Save();
                             }
                         }, 500);
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPIUrlTooltip);
-                        ImGui.TableNextRow();
-
-                        // API Token
-                        ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(PrimaryWindow.DropdownSettingsAPIToken);
-                        ImGui.TableSetColumnIndex(1);
-                        ImGui.SetNextItemWidth(-1);
-                        TextInput.Draw("##APIAuth", ref apiAuth, () =>
-                        {
-                            PluginService.Configuration.APIAuthentication = apiAuth.Trim();
-                            PluginService.Configuration.Save();
-                            this.presenter.RestartToApply = true;
-                        }, 500);
-                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsAPITokenTooltip);
-                        ImGui.TableNextRow();
-
-                        // Salt Method
-                        ImGui.TableSetColumnIndex(0);
-                        ImGui.Text(PrimaryWindow.DropdownSettingsSaltMethod);
-                        ImGui.TableSetColumnIndex(1);
-                        ImGui.SetNextItemWidth(-1);
-                        if (ImGui.BeginCombo("##SaltMethod", saltMethod.ToString()))
-                        {
-                            foreach (var type in Enum.GetNames(typeof(SaltMethods)))
-                            {
-                                if (ImGui.Selectable(type, saltMethod == Enum.Parse<SaltMethods>(type)))
-                                {
-                                    PluginService.Configuration.SaltMethod = (SaltMethods)Enum.Parse(typeof(SaltMethods), type);
-                                    PluginService.Configuration.Save();
-                                }
-                            }
-                            ImGui.EndCombo();
-                        }
-                        Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsSaltMethodTooltip);
                         ImGui.TableNextRow();
 
                         // Don't cache friends list (dropdown "on" or "off")
@@ -462,19 +398,19 @@ namespace GoodFriend.UI.Windows.Main
                         ImGui.Text(PrimaryWindow.DropdownSettingsFriendslistCaching);
                         ImGui.TableSetColumnIndex(1);
                         ImGui.SetNextItemWidth(-1);
-                        if (ImGui.BeginCombo("##DontCacheFriends", PluginService.Configuration.FriendslistCaching ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
+                        if (ImGui.BeginCombo("##DontCacheFriends", Services.Configuration.FriendslistCaching ? PrimaryWindow.DropdownSettingsEnabled : PrimaryWindow.DropdownSettingsDisabled))
                         {
-                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, PluginService.Configuration.FriendslistCaching))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsEnabled, Services.Configuration.FriendslistCaching))
                             {
-                                PluginService.Configuration.FriendslistCaching = true;
+                                Services.Configuration.FriendslistCaching = true;
                             }
 
-                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !PluginService.Configuration.FriendslistCaching))
+                            if (ImGui.Selectable(PrimaryWindow.DropdownSettingsDisabled, !Services.Configuration.FriendslistCaching))
                             {
-                                PluginService.Configuration.FriendslistCaching = false;
+                                Services.Configuration.FriendslistCaching = false;
                             }
 
-                            PluginService.Configuration.Save();
+                            Services.Configuration.Save();
                             ImGui.EndCombo();
                         }
                         Tooltips.AddTooltipHover(PrimaryWindow.DropdownSettingsFriendslistCachingTooltip);
@@ -552,7 +488,7 @@ namespace GoodFriend.UI.Windows.Main
             ImGui.Dummy(new Vector2(0, 5));
 
             // Get the donation page from the API, if it doesnt exist then just disable the button.
-            var donationPageUrl = MainPresenter.Metadata?.DonationPageUrl;
+            var donationPageUrl = MainPresenter.Metadata?.DonateUrl;
             ImGui.TextDisabled(PrimaryWindow.DropdownSupportAPIHost);
             ImGui.TextWrapped(PrimaryWindow.DropdownSupportAPIHostDescription);
             if (donationPageUrl != null)
@@ -575,100 +511,6 @@ namespace GoodFriend.UI.Windows.Main
                 ImGui.BeginDisabled();
                 ImGui.Button(PrimaryWindow.DropdownSupportDonate);
                 ImGui.EndDisabled();
-            }
-            ImGui.EndChild();
-        }
-
-        /// <summary>
-        ///     Draw the event log dropdown.
-        /// </summary>
-        private void DrawEventLog()
-        {
-            ImGui.BeginChild("##EventlogDropdown");
-            ImGui.TextDisabled(PrimaryWindow.DropdownLogsTitle);
-            ImGui.Separator();
-
-            // Clear logs button.
-            if (ImGui.Button(PrimaryWindow.DropdownLogsClearAll))
-            {
-                MainPresenter.EventLog.ClearAll();
-            }
-            ImGui.SameLine();
-
-            // Dropdown to change the log level to display.
-            if (ImGui.BeginCombo("##LogFilter", this.presenter.EventLogFilter.ToString()))
-            {
-                foreach (var type in Enum.GetNames(typeof(EventLogManager.EventLogType)))
-                {
-                    if (ImGui.Selectable(type, this.presenter.EventLogFilter == Enum.Parse<EventLogManager.EventLogType>(type)))
-                    {
-                        this.presenter.EventLogFilter = (EventLogManager.EventLogType)Enum.Parse(typeof(EventLogManager.EventLogType), type);
-                    }
-                }
-                ImGui.EndCombo();
-            }
-            Tooltips.AddTooltipHover(PrimaryWindow.DropdownLogsFilterTooltip);
-            ImGui.Dummy(new Vector2(0, 5));
-
-            // Filter by the log level, if none exist at the level or higher then display a message.
-            var eventsAtLevel = MainPresenter.EventLog.GetEntries(this.presenter.EventLogFilter, true);
-            if (!eventsAtLevel.Any())
-            {
-                ImGui.TextWrapped(PrimaryWindow.DropdownLogsNoLogs);
-            }
-
-            // Otherwise, display a table of the logs at that level or higher.
-            else if (ImGui.BeginTable("LogsTable", 3, ImGuiTableFlags.ScrollY | ImGuiTableFlags.ScrollX | ImGuiTableFlags.BordersInner | ImGuiTableFlags.Hideable))
-            {
-                ImGui.TableSetupScrollFreeze(0, 1);
-                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableTime);
-                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableType);
-                ImGui.TableSetupColumn(PrimaryWindow.DropdownLogsTableMessage, ImGuiTableColumnFlags.NoHide);
-                ImGui.TableHeadersRow();
-
-                // only show the filtered log or anything above it (by enum value)
-                foreach (var log in eventsAtLevel.OrderByDescending(x => x.Timestamp))
-                {
-                    // Push a colour depending on the type of log it is.
-                    if (log.Type == EventLogManager.EventLogType.Warning)
-                    {
-                        ImGui.PushStyleColor(ImGuiCol.Text, Colours.Warning);
-                    }
-                    else if (log.Type == EventLogManager.EventLogType.Error)
-                    {
-                        ImGui.PushStyleColor(ImGuiCol.Text, Colours.Error);
-                    }
-                    else
-                    {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 1, 1));
-                    }
-
-                    ImGui.TableNextRow();
-                    ImGui.TableSetColumnIndex(0);
-                    ImGui.Text(log.Timestamp.ToString("HH:mm:ss"));
-                    ImGui.TableSetColumnIndex(1);
-                    ImGui.Text(log.Type.ToString());
-                    ImGui.TableSetColumnIndex(2);
-                    ImGui.Text(log.Message);
-                    ImGui.PopStyleColor();
-
-                    // Context menu to copy or delete the log.
-                    if (ImGui.BeginPopupContextItem($"##LogContextMenu{log.ID}"))
-                    {
-                        if (ImGui.Selectable(PrimaryWindow.DropdownLogsCopy))
-                        {
-                            ImGui.SetClipboardText(log.Message);
-                            Notifications.Show(PrimaryWindow.DropdownLogsCopySuccess, NotificationType.Toast, toastType: DalamudNotifications.NotificationType.Success);
-                        }
-                        ImGui.Separator();
-                        if (ImGui.Selectable(PrimaryWindow.DropdownLogsDelete))
-                        {
-                            MainPresenter.EventLog.RemoveEntry(log.ID);
-                        }
-                        ImGui.EndPopup();
-                    }
-                }
-                ImGui.EndTable();
             }
             ImGui.EndChild();
         }

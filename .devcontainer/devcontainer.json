@@ -1,8 +1,5 @@
 {
 	"dockerFile": "Dockerfile",
-	"forwardPorts": [
-		8000
-	],
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
@@ -10,23 +7,16 @@
 	"runArgs": [
 		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
 	],
-	"postAttachCommand": "cd GoodFriend.Plugin && dotnet restore && cd ../GoodFriend.Server && yarn",
+	"postAttachCommand": "cd GoodFriend.Api",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"tintoy.msbuild-project-tools",
-				"kreativ-software.csharpextensions"
-			],
-			"settings": {
-				"thunder-client.requestTimeout": 15000
-			}
-		}
-	},
-	"portsAttributes": {
-		"8000": {
-			"label": "GoodFriend API",
-			"protocol": "http"
+				"kreativ-software.csharpextensions",
+				"bungcip.better-toml",
+				"rust-lang.rust-analyzer"
+			]
 		}
 	}
 }

@@ -1,8 +1,8 @@
 using System;
 using CheapLoc;
-using GoodFriend.Base;
+using GoodFriend.Plugin.Base;
 
-namespace GoodFriend.Localization
+namespace GoodFriend.Plugin.Localization
 {
     public static class Events
     {
@@ -18,7 +18,7 @@ namespace GoodFriend.Localization
     public static class State
     {
         public static string Connected => Loc.Localize("State.Connected", "Connected");
-        public static string ConnectedDescription(int clients) => string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
+        public static string ConnectedDescription(uint clients) => string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
         public static string Connecting => Loc.Localize("State.Connecting", "Connecting");
         public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Connection in progress, please wait.");
         public static string Ratelimited => Loc.Localize("State.Ratelimited", "Ratelimited");

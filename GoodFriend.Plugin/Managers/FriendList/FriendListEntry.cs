@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Memory;
 
-namespace GoodFriend.Managers.FriendList
+namespace GoodFriend.Plugin.Managers.FriendList
 {
     /// <summary>
     ///     An entry in a player's friend list.

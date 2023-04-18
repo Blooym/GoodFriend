@@ -2,26 +2,9 @@ using System;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using GoodFriend.Base;
 
-namespace GoodFriend.Utils
+namespace GoodFriend.Plugin.Utils
 {
-    /// <summary>
-    ///     Salt methods that can be applied.
-    /// </summary>
-    public enum SaltMethods : byte
-    {
-        /// <summary>
-        /// Use the players salt (friend code) and the assembly manifest.
-        /// </summary>
-        Strict = 0,
-
-        /// <summary>
-        /// Only use the players salt (friend code) if set.
-        /// </summary>
-        Relaxed = 1,
-    }
-
     /// <summary> Crypto implementations and methods </summary>
     internal static class CryptoUtil
     {
@@ -30,12 +13,7 @@ namespace GoodFriend.Utils
         /// </summary>
         /// <param name="method"> The <see cref="SaltMethods"/> to use. </param>
         /// <returns> The generated salt. </returns>
-        private static string? CreateSalt(SaltMethods method) => method switch
-        {
-            SaltMethods.Relaxed => PluginService.Configuration.FriendshipCode ?? string.Empty,
-            SaltMethods.Strict => Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString() + PluginService.Configuration.FriendshipCode),
-            _ => PluginService.Configuration.FriendshipCode ?? string.Empty,
-        };
+        private static string? CreateSalt() => Common.RemoveWhitespace(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString());
 
         /// <summary>
         ///     Creates a random string of a given length.
@@ -58,7 +36,7 @@ namespace GoodFriend.Utils
         /// <returns> The hashed string. </returns>
         internal static string HashSHA512(string input, string addedSalt)
         {
-            var salt = CreateSalt(PluginService.Configuration.SaltMethod);
+            var salt = CreateSalt();
             var bytes = Encoding.UTF8.GetBytes(input + salt + addedSalt);
             return Convert.ToHexString(SHA512.HashData(bytes));
         }

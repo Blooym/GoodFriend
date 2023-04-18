@@ -1,0 +1,40 @@
+# -----------
+#    BUILD   
+# -----------
+FROM rustlang/rust:nightly-alpine as build
+WORKDIR /build
+
+# Install essential build tools.
+RUN apk add --no-cache --update build-base
+
+# Pre-cache cargo dependency builds.
+COPY ["Cargo.toml", "Cargo.lock", "./"]
+ARG RUSTC_CACHE_FLAGS=--release --lib
+RUN mkdir src \
+    && echo "// Placeholder" > src/lib.rs \
+    && cargo build ${RUSTC_CACHE_FLAGS} \
+    && rm src/lib.rs
+
+# Build api binary.
+COPY . .
+ARG RUSTC_APP_FLAGS=--release --bin
+RUN cargo build ${RUSTC_APP_FLAGS}
+
+# -----------
+#   RUNTIME  
+# -----------
+FROM alpine:latest as runtime
+WORKDIR /app
+
+# Grab api binary from build.
+COPY --from=build /build/target/release/ .
+
+# De-escalate to a non-root user.
+ENV USER prod
+RUN adduser --disabled-password --gecos "" -H ${USER}
+RUN chmod -R 550 .
+RUN chown -R ${USER}:${USER} .
+uSER ${USER}
+
+# Run the api.
+CMD ["./goodfriend-api"]

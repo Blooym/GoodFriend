@@ -8,5 +8,9 @@ ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 RUN adduser --disabled-password --gecos "" dev
 
 # Install required dependencies.
-RUN apk add --update npm openssh
-RUN npm i -g yarn
+RUN apk add --update openssh git curl build-base
+
+# Rust Nightly.
+USER dev
+RUN  curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y
+USER root

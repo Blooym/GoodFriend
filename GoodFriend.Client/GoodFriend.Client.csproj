@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Project Configuration -->
+  <PropertyGroup>
+    <Title>GoodFriend.Client</Title>
+    <Authors>BitsOfAByte</Authors>
+    <AssemblyName>GoodFriend.Client</AssemblyName>
+    <Description>A server and plugin for sending/recieving login and logout notifications with friends.</Description>
+    <Version>2.0.0.0</Version>
+    <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
+  </PropertyGroup>
+  
+  <!-- Build Configuration -->
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="restsharp" Version="110.2.0" />
+  </ItemGroup>
+</Project>

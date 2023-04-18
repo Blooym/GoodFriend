@@ -2,3 +2,9 @@
 
 # MacOS
 .DS_Store
+
+# IDE
+.idea/
+
+# Old
+*.Old

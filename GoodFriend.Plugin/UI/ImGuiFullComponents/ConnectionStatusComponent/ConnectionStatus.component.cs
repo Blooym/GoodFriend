@@ -1,9 +1,9 @@
 using System.Numerics;
-using GoodFriend.Localization;
-using GoodFriend.UI.ImGuiBasicComponents;
+using GoodFriend.Plugin.Localization;
+using GoodFriend.Plugin.UI.ImGuiBasicComponents;
 using ImGuiNET;
 
-namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
+namespace GoodFriend.Plugin.UI.ImGuiFullComponents.ConnectionStatusComponent
 {
     /// <summary>
     ///     ConnectionStatusComponent shows the current connection status of the API and some flavour text.
@@ -37,7 +37,6 @@ namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
 
                 // Connection status description
                 Positioning.CenteredText(connectionStatusDescription, Colours.Grey);
-                Tooltips.AddTooltipHover(State.MaxClients(ConnectionStatusPresenter.Metadata?.MaxCapacity.ToString() ?? "[???]"));
 
                 ImGui.EndChild();
             }

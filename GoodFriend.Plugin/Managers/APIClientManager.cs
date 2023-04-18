@@ -1,21 +1,17 @@
 using System;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Timers;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
 using Dalamud.Logging;
-using GoodFriend.Base;
-using GoodFriend.Enums;
-using GoodFriend.Localization;
-using GoodFriend.Managers.FriendList;
-using GoodFriend.Types;
-using GoodFriend.Utils;
-using Newtonsoft.Json;
+using GoodFriend.Client;
+using GoodFriend.Client.Responses;
+using GoodFriend.Plugin.Common;
+using GoodFriend.Plugin.Localization;
+using GoodFriend.Plugin.Managers.FriendList;
+using GoodFriend.Plugin.Utils;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
-namespace GoodFriend.Managers
+namespace GoodFriend.Plugin.Managers
 {
     /// <summary>
     ///     Manages an APIClient and its resources and handles events.
@@ -48,20 +44,9 @@ namespace GoodFriend.Managers
         private uint currentTerritoryId;
 
         /// <summary>
-        ///    Delegate for the OnMetadataRefresh event.
-        /// </summary>
-        /// <param name="metadata">The new metadata.</param>
-        public delegate void DelegateOnMetadataRefresh(object? sender, APIClient.MetadataPayload metadata);
-
-        /// <summary>
-        ///    Event that fires when the metadata cache is refreshed successfully.
-        /// </summary>
-        public event DelegateOnMetadataRefresh? OnMetadataRefresh;
-
-        /// <summary>
         ///    The cached metadata from the API.
         /// </summary>
-        public APIClient.MetadataPayload? MetadataCache { get; private set; }
+        public MetadataResponse? MetadataCache { get; private set; }
 
         /// <summary>
         ///    The timer for updating the metadata cache.
@@ -73,55 +58,30 @@ namespace GoodFriend.Managers
         /// </summary>
         /// <param name="source">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnMetadataTimerElapsed(object? source, ElapsedEventArgs e)
-        {
-            PluginLog.Verbose("APIClientManager(OnMetadataRefresh): Metadata timer elapsed, updating metadata cache.");
-            this.UpdateMetadataCache();
-        }
+        private void OnMetadataTimerElapsed(object? source, ElapsedEventArgs e) => this.UpdateMetadataCache();
 
         /// <summary>
         ///     The API Client associated with the manager.
         /// </summary>
-        private readonly APIClient apiClient = new(PluginService.Configuration);
+        private readonly GoodFriendClient apiClient = new(new Uri("http://127.0.0.1:8000"));
 
-        /// <summary>
-        ///     The APIClient version string.
-        /// </summary>
-        public static string Version => APIClient.ApiVersion;
-
-        /// <summary>
-        ///     The ClientState associated with the manager
-        /// </summary>
-        private readonly ClientState clientState;
-
-        /// <summary>
-        ///     The Framework associated with the manager
-        /// </summary>
-        private readonly Framework framework;
+        public EventStreamConnectionState ConnectionStatus => this.apiClient.ConnectionState;
 
         /// <summary>
         ///     Instantiates a new APIClientManager.
         /// </summary>
-        /// <param name="clientState">The ClientState to use.</param>
-        /// <param name="framework">The Framework to use.</param>
-        public APIClientManager(ClientState clientState, Framework framework)
+        public APIClientManager()
         {
-            PluginLog.Debug("APIClientManager(APIClientManager): Initializing...");
-
-            this.clientState = clientState;
-            this.framework = framework;
             this.UpdateMetadataCache();
 
             // Create event handlers
-            this.apiClient.SSEDataReceived += this.OnSSEDataReceived;
-            this.apiClient.SSEConnectionError += this.OnSSEAPIClientError;
-            this.apiClient.SSEConnectionEstablished += this.OnSSEAPIClientConnected;
-            this.apiClient.SSEConnectionClosed += this.OnSSEAPIClientDisconnected;
-            this.apiClient.RequestError += this.OnRequestError;
-            this.apiClient.RequestSuccess += this.OnRequestSuccess;
-            this.clientState.Login += this.OnLogin;
-            this.clientState.Logout += this.OnLogout;
-            this.framework.Update += this.OnFrameworkUpdate;
+            this.apiClient.OnEventStreamStateUpdate += this.OnSSEDataReceived;
+            this.apiClient.OnEventStreamException += this.OnSSEAPIClientError;
+            this.apiClient.OnEventStreamConnected += this.OnSSEAPIClientConnected;
+            this.apiClient.OnEventStreamDisconnected += this.OnSSEAPIClientDisconnected;
+            Services.ClientState.Login += this.OnLogin;
+            Services.ClientState.Logout += this.OnLogout;
+            Services.Framework.Update += this.OnFrameworkUpdate;
 
             // Metadata cache update timer
             this.metadataTimer.Elapsed += this.OnMetadataTimerElapsed;
@@ -129,15 +89,15 @@ namespace GoodFriend.Managers
             this.metadataTimer.Enabled = true;
 
             // If the player is logged in already, connect & set their ID.
-            if (this.clientState.LocalPlayer != null)
+            if (Services.ClientState.LocalPlayer != null)
             {
-                this.currentContentId = this.clientState.LocalContentId;
-                this.currentHomeworldId = this.clientState.LocalPlayer.HomeWorld.Id;
-                this.currentTerritoryId = this.clientState.TerritoryType;
-                this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
-                this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
+                this.currentContentId = Services.ClientState.LocalContentId;
+                this.currentHomeworldId = Services.ClientState.LocalPlayer.HomeWorld.Id;
+                this.currentTerritoryId = Services.ClientState.TerritoryType;
+                this.currentWorldId = Services.ClientState.LocalPlayer.CurrentWorld.Id;
+                this.currentDatacenterId = Services.ClientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
                 PluginLog.Debug("APIClientManager(APIClientManager): Player is already logged in, setting IDs and connecting to API.");
-                this.apiClient.OpenSSEStream();
+                this.apiClient.ConnectToEventStream();
             }
 
             PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
@@ -149,15 +109,13 @@ namespace GoodFriend.Managers
         public void Dispose()
         {
             this.apiClient.Dispose();
-            this.clientState.Login -= this.OnLogin;
-            this.clientState.Logout -= this.OnLogout;
-            this.framework.Update -= this.OnFrameworkUpdate;
-            this.apiClient.SSEDataReceived -= this.OnSSEDataReceived;
-            this.apiClient.SSEConnectionError -= this.OnSSEAPIClientError;
-            this.apiClient.SSEConnectionEstablished -= this.OnSSEAPIClientConnected;
-            this.apiClient.SSEConnectionClosed -= this.OnSSEAPIClientDisconnected;
-            this.apiClient.RequestError -= this.OnRequestError;
-            this.apiClient.RequestSuccess -= this.OnRequestSuccess;
+            Services.ClientState.Login -= this.OnLogin;
+            Services.ClientState.Logout -= this.OnLogout;
+            Services.Framework.Update -= this.OnFrameworkUpdate;
+            this.apiClient.OnEventStreamStateUpdate -= this.OnSSEDataReceived;
+            this.apiClient.OnEventStreamException -= this.OnSSEAPIClientError;
+            this.apiClient.OnEventStreamConnected -= this.OnSSEAPIClientConnected;
+            this.apiClient.OnEventStreamDisconnected -= this.OnSSEAPIClientDisconnected;
 
             this.metadataTimer.Elapsed -= this.OnMetadataTimerElapsed;
             this.metadataTimer.Stop();
@@ -173,27 +131,27 @@ namespace GoodFriend.Managers
         /// <param name="e">The event arguments.</param>
         private unsafe void OnLogin(object? sender, EventArgs e)
         {
-            if (!this.apiClient.SSEIsConnected)
+            if (this.apiClient.ConnectionState is EventStreamConnectionState.Disconnected or EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Exception)
             {
-                this.apiClient.OpenSSEStream();
+                this.apiClient.ConnectToEventStream();
             }
 
             Task.Run(() =>
           {
-              while (this.clientState.LocalContentId == 0 || this.clientState.LocalPlayer == null)
+              while (Services.ClientState.LocalContentId == 0 || Services.ClientState.LocalPlayer == null)
               {
                   Task.Delay(100).Wait();
               }
 
               // Set the current IDs
-              this.currentContentId = this.clientState.LocalContentId;
-              this.currentHomeworldId = this.clientState.LocalPlayer.HomeWorld.Id;
-              this.currentTerritoryId = this.clientState.TerritoryType;
-              this.currentWorldId = this.clientState.LocalPlayer.CurrentWorld.Id;
-              this.currentDatacenterId = this.clientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
+              this.currentContentId = Services.ClientState.LocalContentId;
+              this.currentHomeworldId = Services.ClientState.LocalPlayer.HomeWorld.Id;
+              this.currentTerritoryId = Services.ClientState.TerritoryType;
+              this.currentWorldId = Services.ClientState.LocalPlayer.CurrentWorld.Id;
+              this.currentDatacenterId = Services.ClientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
 
               // Send a login
-              this.apiClient.SendLogin(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+              this.apiClient.SendLogin(this.currentContentId.ToString(), this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
               PluginLog.Debug("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
           });
         }
@@ -205,14 +163,13 @@ namespace GoodFriend.Managers
         /// <param name="e">The event arguments.</param>
         private void OnLogout(object? sender, EventArgs e)
         {
-            if (this.apiClient.SSEIsConnected)
+            if (this.apiClient.ConnectionState is EventStreamConnectionState.Connected or EventStreamConnectionState.Connecting)
             {
-                this.apiClient.CloseSSEStream();
+                this.apiClient.DisconnectFromEventStream();
             }
 
             // Cancel any pending requests and send a logout.
-            this.apiClient.CancelPendingRequests();
-            this.apiClient.SendLogout(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+            this.apiClient.SendLogout(this.currentContentId.ToString(), this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
 
             // Clear the current IDs
             this.currentTerritoryId = 0;
@@ -231,8 +188,8 @@ namespace GoodFriend.Managers
         /// <param name="framework"></param>
         private void OnFrameworkUpdate(Framework framework)
         {
-            var currentWorld = this.clientState.LocalPlayer?.CurrentWorld;
-            var currentTerritory = this.clientState.TerritoryType;
+            var currentWorld = Services.ClientState.LocalPlayer?.CurrentWorld;
+            var currentTerritory = Services.ClientState.TerritoryType;
 
             if (currentWorld != null && currentWorld.Id != 0 && currentWorld.Id != this.currentWorldId)
             {
@@ -251,30 +208,30 @@ namespace GoodFriend.Managers
         ///     Handles data received from the APIClient.
         /// </summary>
         /// <param name="data">The data received.</param>
-        private unsafe void OnSSEDataReceived(object? sender, APIClient.UpdatePayload data)
+        private unsafe void OnSSEDataReceived(object? sender, EventStreamPlayerUpdate data)
         {
             // Don't process the data if the ContentID is null.
-            if (data.ContentID == null)
+            if (data.ContentIdHash == null)
             {
                 PluginLog.Verbose("APIClientManager(OnSSEDataReceived): Event was malformed due to a null ContentID, ignoring.");
                 return;
             }
 
             // Don't process the data if the hash matches the current player's hash.
-            if (data.ContentID == CryptoUtil.HashSHA512(this.currentContentId.ToString(), data.Salt ?? string.Empty))
+            if (data.ContentIdHash == CryptoUtil.HashSHA512(this.currentContentId.ToString(), data.ContentIdSalt ?? string.Empty))
             {
                 PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): ContentID is the same as the current character's ContentID, skipping.");
                 return;
             }
 
-            PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing it ({data.ContentID[..8]}...).");
+            PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing it ({data.ContentIdHash[..8]}...).");
 
             // Find if the friend is on the users friend list.
             FriendListEntry* friend = default;
             foreach (FriendListEntry* x in FriendListCache.Get())
             {
-                var hash = CryptoUtil.HashSHA512(x->ContentId.ToString(), data.Salt ?? string.Empty);
-                if (hash == data.ContentID)
+                var hash = CryptoUtil.HashSHA512(x->ContentId.ToString(), data.ContentIdSalt ?? string.Empty);
+                if (hash == data.ContentIdHash)
                 {
                     friend = x;
                     break;
@@ -289,54 +246,48 @@ namespace GoodFriend.Managers
             }
 
             // If the player has "Hide Same FC" enabled, check if the FC matches the current player's FC.
-            if (this.clientState.LocalPlayer?.CompanyTag?.ToString() != string.Empty
-                && friend->FreeCompany.ToString() == this.clientState?.LocalPlayer?.CompanyTag.ToString()
-                && friend->HomeWorld == this.clientState.LocalPlayer.HomeWorld.Id
-                && PluginService.Configuration.HideSameFC)
+            if (Services.ClientState.LocalPlayer?.CompanyTag?.ToString() != string.Empty
+                && friend->FreeCompany.ToString() == Services.ClientState?.LocalPlayer?.CompanyTag.ToString()
+                && friend->HomeWorld == Services.ClientState.LocalPlayer.HomeWorld.Id
+                && Services.Configuration.HideSameFC)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             // If the player has "Hide Different Homeworld" enabled, check if the home world matches the current player's home world.
-            if (this.currentHomeworldId != friend->HomeWorld && PluginService.Configuration.HideDifferentHomeworld)
+            if (this.currentHomeworldId != friend->HomeWorld && Services.Configuration.HideDifferentHomeworld)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             //// If the player has "Hide Different World" enabled, check if the world matches the current player's world.
-            if (this.currentWorldId != data.WorldID && PluginService.Configuration.HideDifferentWorld && data.WorldID != 0)
+            if (this.currentWorldId != data.WorldId && Services.Configuration.HideDifferentWorld && data.WorldId != 0)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldId}, You: {this.currentWorldId})");
                 return;
             }
 
             // If the player has "Hide Different Datacenter" enabled, check if the datacenter matches the current player's datacenter.
-            if (this.currentDatacenterId != data.DatacenterID && PluginService.Configuration.HideDifferentDatacenter)
+            if (this.currentDatacenterId != data.DatacenterId && Services.Configuration.HideDifferentDatacenter)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterId}, You: {this.currentDatacenterId})");
                 return;
             }
 
             // If the player has "Hide Different Territory" enabled, check if the territory matches the current player's territory.
-            if (data.TerritoryID != this.currentTerritoryId && PluginService.Configuration.HideDifferentTerritory)
+            if (data.TerritoryId != this.currentTerritoryId && Services.Configuration.HideDifferentTerritory)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryId}, You: {this.currentTerritoryId})");
                 return;
             }
 
             // Everything is good, send the event to the player and add it to the log.
-            PluginLog.Debug($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
-            PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
-            Notifications.ShowPreferred(data.LoggedIn ?
-            string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
-            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
+            PluginLog.Debug($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.IsLoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
+            Notifications.ShowPreferred(data.IsLoggedIn ?
+            string.Format(Services.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
+            : string.Format(Services.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
         }
 
         /// <summary>
@@ -350,9 +301,7 @@ namespace GoodFriend.Managers
         /// <param name="e">The error.</param>
         private void OnSSEAPIClientError(object? sender, Exception e)
         {
-            PluginLog.Error($"APIClientManager(OnSSEAPIClientError): A connection error occured: {e.Message}");
-            PluginService.EventLogManager.AddEntry($"{Events.APIConnectionError} ({e.Message})", EventLogManager.EventLogType.Error);
-            if (this.hasConnectedSinceError && PluginService.Configuration.ShowAPIEvents)
+            if (this.hasConnectedSinceError && Services.Configuration.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionError, NotificationType.Toast, ToastType.Error);
             }
@@ -364,10 +313,7 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnSSEAPIClientConnected(object? sender)
         {
-            PluginLog.Information("APIClientManager(OnSSEAPIClientConnected): Successfully connected to the API.");
-            PluginService.EventLogManager.AddEntry(Events.APIConnectionSuccess, EventLogManager.EventLogType.Info);
-
-            if (PluginService.Configuration.ShowAPIEvents)
+            if (Services.Configuration.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionSuccess, NotificationType.Toast, ToastType.Success);
             }
@@ -379,87 +325,12 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnSSEAPIClientDisconnected(object? sender)
         {
-            PluginLog.Information("APIClientManager(OnSSEAPIClientDisconnected): Disconnected from the API.");
-            PluginService.EventLogManager.AddEntry(Events.APIConnectionDisconnected, EventLogManager.EventLogType.Info);
-
-            if (PluginService.Configuration.ShowAPIEvents)
+            if (Services.Configuration.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionDisconnected, NotificationType.Toast, ToastType.Info);
             }
         }
 
-        /// <summary>
-        ///     Handles the APIClient RequestError event.
-        /// </summary>
-        /// <param name="e">The error.</param>
-        /// <param name="response">The request.</param>
-        private void OnRequestError(object? sender, Exception e, HttpResponseMessage? response)
-        {
-            var uri = response?.RequestMessage?.RequestUri?.ToString().Split('?')[0];
-
-            if (response?.StatusCode == HttpStatusCode.TooManyRequests)
-            {
-                PluginService.EventLogManager.AddEntry($"{Events.APIConnectionRatelimited}", EventLogManager.EventLogType.Warning);
-            }
-            else
-            {
-                PluginLog.Error($"APIClientManager(OnRequestError): An error occurred while making a request to the API: {e.Message}");
-                PluginService.EventLogManager.AddEntry($"{e.Message} ({uri})", EventLogManager.EventLogType.Error);
-            }
-        }
-
-        /// <summary>
-        ///     Handles the APIClient RequestSuccess event.
-        /// </summary>
-        /// <param name="response">The request.</param>
-        private void OnRequestSuccess(object? _, HttpResponseMessage response)
-        {
-            var uri = response.RequestMessage?.RequestUri?.ToString().Split('?')[0];
-            PluginLog.Debug($"APIClientManager(OnRequestSuccess): Request to {uri} was successful with status code {response.StatusCode}.");
-            PluginService.EventLogManager.AddEntry($"{response.StatusCode} ({uri})", EventLogManager.EventLogType.Debug);
-        }
-
-        /// <summary>
-        ///     Get the connection status of the API.
-        /// </summary>
-        public ConnectionStatus GetConnectionStatus()
-        {
-            if (this.apiClient.LastStatusCode == HttpStatusCode.TooManyRequests)
-            {
-                return ConnectionStatus.Ratelimited;
-            }
-            else if (!this.hasConnectedSinceError)
-            {
-                return ConnectionStatus.Error;
-            }
-            else if (this.apiClient.SSEIsConnected)
-            {
-                return ConnectionStatus.Connected;
-            }
-            else if (this.apiClient.SSEIsConnecting)
-            {
-                return ConnectionStatus.Connecting;
-            }
-            else
-            {
-                return ConnectionStatus.Disconnected;
-            }
-        }
-
-        private void UpdateMetadataCache()
-        {
-            var metadata = this.apiClient.GetMetadata();
-            if (metadata != null)
-            {
-                this.MetadataCache = metadata;
-                this.OnMetadataRefresh?.Invoke(this, metadata);
-                PluginLog.Verbose($"APIClientManager(GetMetadata): Metadata cache updated {JsonConvert.SerializeObject(this.MetadataCache)}");
-            }
-            else
-            {
-                PluginLog.Warning("APIClientManager(GetMetadata): Failed to update metadata cache, bad response.");
-                PluginService.EventLogManager.AddEntry("Failed to update metadata cache, bad response.", EventLogManager.EventLogType.Warning);
-            }
-        }
+        private void UpdateMetadataCache() => this.MetadataCache = this.apiClient.GetMetadata();
     }
 }

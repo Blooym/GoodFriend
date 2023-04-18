@@ -1,49 +1,48 @@
 using System.Numerics;
-using GoodFriend.Base;
-using GoodFriend.Enums;
-using GoodFriend.Localization;
-using GoodFriend.Types;
-using GoodFriend.UI.ImGuiBasicComponents;
+using GoodFriend.Client;
+using GoodFriend.Client.Responses;
+using GoodFriend.Plugin.Localization;
+using GoodFriend.Plugin.UI.ImGuiBasicComponents;
 
-namespace GoodFriend.UI.ImGuiFullComponents.ConnectionStatusComponent
+namespace GoodFriend.Plugin.UI.ImGuiFullComponents.ConnectionStatusComponent
 {
     /// <summary>
     ///     The connection status modal for the API
     /// </summary>
     public sealed class ConnectionStatusPresenter
     {
-        public static ConnectionStatus APIStatus => PluginService.APIClientManager.GetConnectionStatus();
+        public static EventStreamConnectionState APIStatus => Services.APIClientManager.ConnectionStatus;
 
         public static string GetConnectionStatusText() => APIStatus switch
         {
-            ConnectionStatus.Connected => State.Connected,
-            ConnectionStatus.Connecting => State.Connecting,
-            ConnectionStatus.Ratelimited => State.Ratelimited,
-            ConnectionStatus.Disconnected => State.Disconnected,
-            ConnectionStatus.Error => State.ConnectionError,
+            EventStreamConnectionState.Connected => State.Connected,
+            EventStreamConnectionState.Connecting => State.Connecting,
+            EventStreamConnectionState.Disconnected => State.Disconnected,
+            EventStreamConnectionState.Exception => State.ConnectionError,
+            EventStreamConnectionState.Disconnecting => throw new System.NotImplementedException(),
             _ => State.Unknown,
         };
 
         public static Vector4 GetConnectionStatusColour() => APIStatus switch
         {
-            ConnectionStatus.Connected => Colours.APIConnected,
-            ConnectionStatus.Connecting => Colours.APIConnecting,
-            ConnectionStatus.Ratelimited => Colours.APIRatelimited,
-            ConnectionStatus.Disconnected => Colours.APIDisconnected,
-            ConnectionStatus.Error => Colours.APIError,
+            EventStreamConnectionState.Connected => Colours.APIConnected,
+            EventStreamConnectionState.Connecting => Colours.APIConnecting,
+            EventStreamConnectionState.Disconnected => Colours.APIDisconnected,
+            EventStreamConnectionState.Exception => Colours.APIError,
+            EventStreamConnectionState.Disconnecting => throw new System.NotImplementedException(),
             _ => Colours.Error,
         };
 
         public static string GetConnectionStatusDescription() => APIStatus switch
         {
-            ConnectionStatus.Connected => State.ConnectedDescription(Metadata?.ConnectedClients ?? 0),
-            ConnectionStatus.Ratelimited => State.RatelimitedDescription,
-            ConnectionStatus.Connecting => State.ConnectingDescription,
-            ConnectionStatus.Disconnected => State.DisconnectedDescription,
-            ConnectionStatus.Error => State.ConnectionErrorDescription,
+            EventStreamConnectionState.Connected => State.ConnectedDescription(Metadata?.ConnectedClients ?? 0),
+            EventStreamConnectionState.Connecting => State.ConnectingDescription,
+            EventStreamConnectionState.Disconnected => State.DisconnectedDescription,
+            EventStreamConnectionState.Exception => State.ConnectionErrorDescription,
+            EventStreamConnectionState.Disconnecting => throw new System.NotImplementedException(),
             _ => State.UnknownDescription,
         };
 
-        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
+        public static MetadataResponse? Metadata => Services.APIClientManager.MetadataCache;
     }
 }

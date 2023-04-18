@@ -1,15 +1,10 @@
 {
   "version": 1,
   "dependencies": {
-    "net7.0-windows7.0": {
-      "DalamudPackager": {
-        "type": "Direct",
-        "requested": "[2.1.11, )",
-        "resolved": "2.1.11",
-        "contentHash": "9qlAWoRRTiL/geAvuwR/g6Bcbrd/bJJgVnB/RurBiyKs6srsP0bvpoo8IK+Eg8EA6jWeM6/YJWs66w4FIAzqPw=="
-      },
+    "net7.0": {
       "RestSharp": {
-        "type": "Transitive",
+        "type": "Direct",
+        "requested": "[110.2.0, )",
         "resolved": "110.2.0",
         "contentHash": "FXGw0IMcqY7yO/hzS9QrD3iNswNgb9UxJnxWmfOxmGs4kRlZWqdtBoGPLuhlbgsDzX1RFo4WKui8TGGKXWKalw==",
         "dependencies": {
@@ -28,15 +23,6 @@
         "dependencies": {
           "System.Text.Encodings.Web": "7.0.0"
         }
-      },
-      "goodfriend.client": {
-        "type": "Project",
-        "dependencies": {
-          "restsharp": "[110.2.0, )"
-        }
-      },
-      "sirensong": {
-        "type": "Project"
       }
     }
   }

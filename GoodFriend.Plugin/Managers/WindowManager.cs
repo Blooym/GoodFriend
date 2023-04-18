@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
-using GoodFriend.Base;
-using GoodFriend.UI.Windows.Main;
-using GoodFriend.UI.Windows.URLUpdateNag;
+using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.UI.Windows.Main;
 
-namespace GoodFriend.Managers
+namespace GoodFriend.Plugin.Managers
 {
     /// <summary>
     ///     Initializes and manages all windows and window-events for the plugin.
@@ -19,7 +18,6 @@ namespace GoodFriend.Managers
         private readonly List<Window> windows = new()
         {
             new MainWindow(),
-            new URLUpdateNagWindow(),
         };
 
         /// <summary>
@@ -35,8 +33,8 @@ namespace GoodFriend.Managers
                 this.windowSystem.AddWindow(window);
             }
 
-            PluginService.PluginInterface.UiBuilder.Draw += this.OnDrawUI;
-            PluginService.PluginInterface.UiBuilder.OpenConfigUi += this.OnOpenConfigUI;
+            Services.PluginInterface.UiBuilder.Draw += this.OnDrawUI;
+            Services.PluginInterface.UiBuilder.OpenConfigUi += this.OnOpenConfigUI;
 
             PluginLog.Debug("WindowManager(WindowManager): Successfully initialized.");
         }
@@ -49,6 +47,7 @@ namespace GoodFriend.Managers
         /// <summary>
         ///     Opens/Closes the plugin configuration window.
         /// </summary>
+        [Obsolete]
         private void OnOpenConfigUI()
         {
             if (this.windowSystem.GetWindow(PluginConstants.PluginName) is MainWindow window)
@@ -62,8 +61,8 @@ namespace GoodFriend.Managers
         /// </summary>
         public void Dispose()
         {
-            PluginService.PluginInterface.UiBuilder.Draw -= this.OnDrawUI;
-            PluginService.PluginInterface.UiBuilder.OpenConfigUi -= this.OnOpenConfigUI;
+            Services.PluginInterface.UiBuilder.Draw -= this.OnDrawUI;
+            Services.PluginInterface.UiBuilder.OpenConfigUi -= this.OnOpenConfigUI;
 
             foreach (var window in this.windows.OfType<IDisposable>())
             {

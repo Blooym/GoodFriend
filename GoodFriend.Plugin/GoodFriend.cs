@@ -1,10 +1,8 @@
 using Dalamud.IoC;
-using Dalamud.Logging;
 using Dalamud.Plugin;
-using GoodFriend.Base;
-using GoodFriend.Utils;
+using GoodFriend.Plugin.Base;
 
-namespace GoodFriend
+namespace GoodFriend.Plugin
 {
     public sealed class GoodFriendPlugin : IDalamudPlugin
     {
@@ -19,18 +17,13 @@ namespace GoodFriend
         /// <param name="pluginInterface"></param>
         public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
         {
-            pluginInterface.Create<PluginService>();
-            PluginService.Initialize();
-
-            if (!Common.IsOfficialSource && !Common.IsDevBuild)
-            {
-                PluginLog.Warning("This plugin has been downloaded from a 3rd-party source and may be unsafe. Consider using the official source instead. NO SUPPORT WILL BE PROVIDED FOR 3RD-PARTY SOURCES OR MODIFIED BUILDS.");
-            }
+            pluginInterface.Create<Services>();
+            Services.Initialize();
         }
 
         /// <summary>
         ///     Handles disposing of all resources used by the plugin.
         /// </summary>
-        public void Dispose() => PluginService.Dispose();
+        public void Dispose() => Services.Dispose();
     }
 }

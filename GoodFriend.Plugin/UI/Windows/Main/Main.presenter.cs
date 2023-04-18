@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using CheapLoc;
 using Dalamud.Interface.ImGuiFileDialog;
-using GoodFriend.Base;
-using GoodFriend.Managers;
-using GoodFriend.Managers.FriendList;
-using GoodFriend.Types;
+using GoodFriend.Client.Responses;
+using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Managers.FriendList;
 
-namespace GoodFriend.UI.Windows.Main
+namespace GoodFriend.Plugin.UI.Windows.Main
 {
     public sealed class MainPresenter : IDisposable
     {
@@ -18,10 +17,6 @@ namespace GoodFriend.UI.Windows.Main
         ///     Stores which dropdown menu is currently open.
         /// </summary>
         public VisibleDropdown CurrentVisibleDropdown { get; set; } = VisibleDropdown.None;
-        /// <summary>
-        ///     The filter to apply to the event log.
-        /// </summary>
-        internal EventLogManager.EventLogType EventLogFilter { get; set; } = EventLogManager.EventLogType.Info;
 
         /// <summary>
         ///     Boolean value indicating if the user needs to restart to apply changes.
@@ -29,14 +24,9 @@ namespace GoodFriend.UI.Windows.Main
         public bool RestartToApply { get; set; }
 
         /// <summary>
-        ///     The event log instance to use in the UI.
-        /// </summary>
-        internal static EventLogManager EventLog => PluginService.EventLogManager;
-
-        /// <summary>
         ///     The metadata cache instance to use in the UI.
         /// </summary>
-        public static APIClient.MetadataPayload? Metadata => PluginService.APIClientManager.MetadataCache;
+        public static MetadataResponse? Metadata => Services.APIClientManager.MetadataCache;
 
         /// <summary>
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.
@@ -51,7 +41,6 @@ namespace GoodFriend.UI.Windows.Main
         {
             None = 0,
             Donate = 1,
-            Logs = 2,
             Settings = 3,
         }
 
@@ -91,7 +80,7 @@ namespace GoodFriend.UI.Windows.Main
             Loc.ExportLocalizable();
             File.Copy(Path.Combine(path, "GoodFriend_Localizable.json"), Path.Combine(path, "en.json"), true);
             Directory.SetCurrentDirectory(directory);
-            PluginService.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
+            Services.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
         }
 #endif
     }
