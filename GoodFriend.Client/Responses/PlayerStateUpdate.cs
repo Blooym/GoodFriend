@@ -1,7 +1,9 @@
+using System;
 using System.Text.Json.Serialization;
 
 namespace GoodFriend.Client.Responses
 {
+    [Serializable]
     public readonly struct EventStreamPlayerUpdate
     {
         [JsonPropertyName("content_id_hash")]

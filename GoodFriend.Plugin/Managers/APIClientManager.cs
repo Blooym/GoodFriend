@@ -9,6 +9,7 @@ using GoodFriend.Plugin.Common;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Managers.FriendList;
 using GoodFriend.Plugin.Utils;
+using Sirensong.Game;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
 namespace GoodFriend.Plugin.Managers
@@ -100,7 +101,12 @@ namespace GoodFriend.Plugin.Managers
                 this.apiClient.ConnectToEventStream();
             }
 
-            PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
+            var motd = this.apiClient.GetMotd();
+            if (!motd.Ignore)
+            {
+                GameChat.Print($"[{motd.Urgency}/{motd.Brand}] {motd.Content}");
+                PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
+            }
         }
 
         /// <summary>
@@ -151,7 +157,7 @@ namespace GoodFriend.Plugin.Managers
               this.currentDatacenterId = Services.ClientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
 
               // Send a login
-              this.apiClient.SendLogin(this.currentContentId.ToString(), this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+              this.apiClient.SendLogin(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
               PluginLog.Debug("APIClientManager(OnLogin): successfully set stored IDs for the APIClientManager.");
           });
         }
@@ -169,7 +175,7 @@ namespace GoodFriend.Plugin.Managers
             }
 
             // Cancel any pending requests and send a logout.
-            this.apiClient.SendLogout(this.currentContentId.ToString(), this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
+            this.apiClient.SendLogout(this.currentContentId, this.currentWorldId, this.currentTerritoryId, this.currentDatacenterId);
 
             // Clear the current IDs
             this.currentTerritoryId = 0;
@@ -249,35 +255,35 @@ namespace GoodFriend.Plugin.Managers
             if (Services.ClientState.LocalPlayer?.CompanyTag?.ToString() != string.Empty
                 && friend->FreeCompany.ToString() == Services.ClientState?.LocalPlayer?.CompanyTag.ToString()
                 && friend->HomeWorld == Services.ClientState.LocalPlayer.HomeWorld.Id
-                && Services.Configuration.HideSameFC)
+                && Services.Configuration.EventStreamUpdateFilterConfig.HideSameFC)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
                 return;
             }
 
             // If the player has "Hide Different Homeworld" enabled, check if the home world matches the current player's home world.
-            if (this.currentHomeworldId != friend->HomeWorld && Services.Configuration.HideDifferentHomeworld)
+            if (this.currentHomeworldId != friend->HomeWorld && Services.Configuration.EventStreamUpdateFilterConfig.HideDifferentHomeworld)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})");
                 return;
             }
 
             //// If the player has "Hide Different World" enabled, check if the world matches the current player's world.
-            if (this.currentWorldId != data.WorldId && Services.Configuration.HideDifferentWorld && data.WorldId != 0)
+            if (this.currentWorldId != data.WorldId && Services.Configuration.EventStreamUpdateFilterConfig.HideDifferentWorld && data.WorldId != 0)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldId}, You: {this.currentWorldId})");
                 return;
             }
 
             // If the player has "Hide Different Datacenter" enabled, check if the datacenter matches the current player's datacenter.
-            if (this.currentDatacenterId != data.DatacenterId && Services.Configuration.HideDifferentDatacenter)
+            if (this.currentDatacenterId != data.DatacenterId && Services.Configuration.EventStreamUpdateFilterConfig.HideDifferentDatacenter)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterId}, You: {this.currentDatacenterId})");
                 return;
             }
 
             // If the player has "Hide Different Territory" enabled, check if the territory matches the current player's territory.
-            if (data.TerritoryId != this.currentTerritoryId && Services.Configuration.HideDifferentTerritory)
+            if (data.TerritoryId != this.currentTerritoryId && Services.Configuration.EventStreamUpdateFilterConfig.HideDifferentTerritory)
             {
                 PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryId}, You: {this.currentTerritoryId})");
                 return;
@@ -286,8 +292,8 @@ namespace GoodFriend.Plugin.Managers
             // Everything is good, send the event to the player and add it to the log.
             PluginLog.Debug($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.IsLoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
             Notifications.ShowPreferred(data.IsLoggedIn ?
-            string.Format(Services.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
-            : string.Format(Services.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
+            string.Format(Services.Configuration.EventStreamUpdateMessagesConfig.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
+            : string.Format(Services.Configuration.EventStreamUpdateMessagesConfig.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
         }
 
         /// <summary>
@@ -301,7 +307,7 @@ namespace GoodFriend.Plugin.Managers
         /// <param name="e">The error.</param>
         private void OnSSEAPIClientError(object? sender, Exception e)
         {
-            if (this.hasConnectedSinceError && Services.Configuration.ShowAPIEvents)
+            if (this.hasConnectedSinceError && Services.Configuration.ApiConfig.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionError, NotificationType.Toast, ToastType.Error);
             }
@@ -313,7 +319,7 @@ namespace GoodFriend.Plugin.Managers
         /// </summary>
         private void OnSSEAPIClientConnected(object? sender)
         {
-            if (Services.Configuration.ShowAPIEvents)
+            if (Services.Configuration.ApiConfig.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionSuccess, NotificationType.Toast, ToastType.Success);
             }
@@ -325,7 +331,7 @@ namespace GoodFriend.Plugin.Managers
         /// </summary>
         private void OnSSEAPIClientDisconnected(object? sender)
         {
-            if (Services.Configuration.ShowAPIEvents)
+            if (Services.Configuration.ApiConfig.ShowAPIEvents)
             {
                 Notifications.Show(Events.APIConnectionDisconnected, NotificationType.Toast, ToastType.Info);
             }

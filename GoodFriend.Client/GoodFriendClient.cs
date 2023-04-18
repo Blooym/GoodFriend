@@ -85,10 +85,10 @@ namespace GoodFriend.Client
             this.OnEventStreamDisconnected -= this.HandleEventStreamDisconnected;
         }
 
-        private static RestRequest BuildLoginRequest(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        private static RestRequest BuildLoginRequest(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
             var contentIdSalt = Crypto.GenerateCryptoRandom(32);
-            var contentIdHash = Crypto.HashSHA512(identifier, contentIdSalt);
+            var contentIdHash = Crypto.HashSHA512(contentId.ToString(), contentIdSalt);
             var request = new RestRequest(LoginRequestConstants.EndpointUrl);
             request.AddQueryParameter(LoginRequestConstants.ContentIdParam, contentIdHash);
             request.AddQueryParameter(LoginRequestConstants.ContentIdSaltParam, contentIdSalt);
@@ -99,24 +99,24 @@ namespace GoodFriend.Client
         }
 
         /// <inheritdoc />
-        public bool SendLogin(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        public bool SendLogin(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
-            var request = BuildLoginRequest(identifier, datacenterId, worldId, territoryId);
+            var request = BuildLoginRequest(contentId, datacenterId, worldId, territoryId);
             return this.restClient.Put(request).IsSuccessful;
         }
 
         /// <inheritdoc />
-        public async Task<bool> SendLoginAsync(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        public async Task<bool> SendLoginAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
-            var request = BuildLoginRequest(identifier, datacenterId, worldId, territoryId);
+            var request = BuildLoginRequest(contentId, datacenterId, worldId, territoryId);
             var response = await this.restClient.PutAsync(request);
             return response.IsSuccessful;
         }
 
-        private static RestRequest BuildLogoutRequest(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        private static RestRequest BuildLogoutRequest(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
             var contentIdSalt = Crypto.GenerateCryptoRandom(32);
-            var contentIdHash = Crypto.HashSHA512(identifier, contentIdSalt);
+            var contentIdHash = Crypto.HashSHA512(contentId.ToString(), contentIdSalt);
             var request = new RestRequest(LogoutRequestConstants.EndpointUrl);
             request.AddQueryParameter(LogoutRequestConstants.ContentIdParam, contentIdHash);
             request.AddQueryParameter(LogoutRequestConstants.ContentIdSaltParam, contentIdSalt);
@@ -127,16 +127,16 @@ namespace GoodFriend.Client
         }
 
         /// <inheritdoc />
-        public bool SendLogout(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        public bool SendLogout(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
-            var request = BuildLogoutRequest(identifier, datacenterId, worldId, territoryId);
+            var request = BuildLogoutRequest(contentId, datacenterId, worldId, territoryId);
             return this.restClient.Put(request).IsSuccessful;
         }
 
         /// <inheritdoc />
-        public async Task<bool> SendLogoutAsync(string identifier, uint datacenterId, uint worldId, uint territoryId)
+        public async Task<bool> SendLogoutAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
         {
-            var request = BuildLogoutRequest(identifier, datacenterId, worldId, territoryId);
+            var request = BuildLogoutRequest(contentId, datacenterId, worldId, territoryId);
             var response = await this.restClient.PutAsync(request);
             return response.IsSuccessful;
         }
@@ -155,6 +155,22 @@ namespace GoodFriend.Client
         {
             var request = BuildMetadataRequest();
             return this.restClient.GetAsync<MetadataResponse>(request);
+        }
+
+        private static RestRequest BuildMotdRequest() => new(MotdRequestConstants.EndpointUrl);
+
+        /// <inheritdoc />
+        public MotdResponse GetMotd()
+        {
+            var request = BuildMotdRequest();
+            return this.restClient.Get<MotdResponse>(request);
+        }
+
+        /// <inheritdoc />
+        public Task<MotdResponse> GetMotdAsync()
+        {
+            var request = BuildMotdRequest();
+            return this.restClient.GetAsync<MotdResponse>(request);
         }
 
         /// <inheritdoc />

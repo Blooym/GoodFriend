@@ -1,7 +1,7 @@
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Logging;
-using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Common;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
 namespace GoodFriend.Plugin.Utils
@@ -25,7 +25,7 @@ namespace GoodFriend.Plugin.Utils
         /// <param name="toastType"> The type of toast to send (if sending a toast). </param>
         internal static void ShowPreferred(string message, ToastType? toastType = null)
         {
-            var notificationType = Services.Configuration.NotificationType;
+            var notificationType = Services.Configuration.EventStreamUpdateMessagesConfig.NotificationType;
             Show(message, notificationType, toastType);
         }
 
@@ -59,7 +59,7 @@ namespace GoodFriend.Plugin.Utils
         /// <summary> Sends a toast notification to the user. </summary>
         /// <param name="message"> The message to send. </param>
         /// <param name="type"> The type of toast to send. </param>
-        private static void ShowToast(string message, ToastType type) => Services.PluginInterface.UiBuilder.AddNotification(message, PluginConstants.PluginName, type);
+        private static void ShowToast(string message, ToastType type) => Services.PluginInterface.UiBuilder.AddNotification(message, Constants.PluginName, type);
 
         /// <summary> Sends a popup notification to the user. </summary>
         /// <param name="message"> The message to send. </param>

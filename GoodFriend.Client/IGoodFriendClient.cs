@@ -22,28 +22,28 @@ namespace GoodFriend.Client
         /// <summary>
         ///     Sends a login event to the api.
         /// </summary>
-        /// <param name="identifier">The hashed player content id</param>
+        /// <param name="contentId">The unhashed player content id</param>
         /// <param name="datacenterId">The datacenter id of the player</param>
         /// <param name="worldId">The world id of the player</param>
         /// <param name="territoryId">The territory id of the player</param>
         /// <returns>A RestResponse for the request.</returns>
-        bool SendLogin(string identifier, uint datacenterId, uint worldId, uint territoryId);
+        bool SendLogin(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
 
-        /// <inheritdoc cref="SendLogin(string, uint, uint, uint)" />
-        Task<bool> SendLoginAsync(string identifier, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendLogin(ulong, uint, uint, uint)" />
+        Task<bool> SendLoginAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
 
         /// <summary>
         ///     Sends a logout event to the api.
         /// </summary>
-        /// <param name="identifier">The hashed player content id</param>
+        /// <param name="contentId">The unhashed player content id</param>
         /// <param name="datacenterId">The datacenter id of the player</param>
         /// <param name="worldId">The world id of the player</param>
         /// <param name="territoryId">The territory id of the player</param>
         /// <returns>A RestResponse for the request.</returns>
-        bool SendLogout(string identifier, uint datacenterId, uint worldId, uint territoryId);
+        bool SendLogout(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
 
-        /// <inheritdoc cref="SendLogout(string, uint, uint, uint)" />
-        Task<bool> SendLogoutAsync(string identifier, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendLogout(ulong, uint, uint, uint)" />
+        Task<bool> SendLogoutAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
 
         /// <summary>
         ///     Gets metadata from the api.
@@ -53,6 +53,15 @@ namespace GoodFriend.Client
 
         /// <inheritdoc cref="GetMetadata" />
         Task<MetadataResponse> GetMetadataAsync();
+
+        /// <summary>
+        ///     Gets the motd from the api.
+        /// </summary>
+        /// <returns>A <see cref="MotdResponse" /> instance</returns>
+        MotdResponse GetMotd();
+
+        /// <inheritdoc cref="GetMotd" />
+        Task<MotdResponse> GetMotdAsync();
 
         /// <summary>
         ///     Starts listening to the event stream.

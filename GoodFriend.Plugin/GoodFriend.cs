@@ -1,6 +1,7 @@
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Common;
+using Sirensong;
 
 namespace GoodFriend.Plugin
 {
@@ -9,7 +10,7 @@ namespace GoodFriend.Plugin
         /// <summary>
         ///     The plugin name, fetched from PStrings.
         /// </summary>
-        public string Name => PluginConstants.PluginName;
+        public string Name => Constants.PluginName;
 
         /// <summary>
         ///     The plugin's main entry point.
@@ -18,12 +19,17 @@ namespace GoodFriend.Plugin
         public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
         {
             pluginInterface.Create<Services>();
+            SirenCore.Initialize(pluginInterface, this.Name);
             Services.Initialize();
         }
 
         /// <summary>
         ///     Handles disposing of all resources used by the plugin.
         /// </summary>
-        public void Dispose() => Services.Dispose();
+        public void Dispose()
+        {
+            Services.Dispose();
+            SirenCore.Dispose();
+        }
     }
 }

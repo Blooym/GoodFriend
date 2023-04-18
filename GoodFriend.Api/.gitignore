@@ -1,5 +1,6 @@
 # Secrets
 *.env
+motd.json
 
 # Builds
 target/

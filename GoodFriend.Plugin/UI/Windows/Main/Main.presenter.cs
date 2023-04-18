@@ -4,7 +4,7 @@ using System.IO;
 using CheapLoc;
 using Dalamud.Interface.ImGuiFileDialog;
 using GoodFriend.Client.Responses;
-using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Common;
 using GoodFriend.Plugin.Managers.FriendList;
 
 namespace GoodFriend.Plugin.UI.Windows.Main
@@ -80,7 +80,7 @@ namespace GoodFriend.Plugin.UI.Windows.Main
             Loc.ExportLocalizable();
             File.Copy(Path.Combine(path, "GoodFriend_Localizable.json"), Path.Combine(path, "en.json"), true);
             Directory.SetCurrentDirectory(directory);
-            Services.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", PluginConstants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
+            Services.PluginInterface.UiBuilder.AddNotification("Localization exported successfully.", Constants.PluginName, Dalamud.Interface.Internal.Notifications.NotificationType.Success);
         }
 #endif
     }

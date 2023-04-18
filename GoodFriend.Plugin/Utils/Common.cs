@@ -10,10 +10,5 @@ namespace GoodFriend.Plugin.Utils
         /// </summary>
         /// <param name="text"> The string to remove whitespace from </param>
         public static string RemoveWhitespace(string text) => new(text.Where(c => !char.IsWhiteSpace(c)).ToArray());
-
-        /// <summary>
-        ///     Checks to see if the plugin is a dev build
-        /// </summary>
-        public static bool IsDevBuild => Services.PluginInterface.IsDev;
     }
 }

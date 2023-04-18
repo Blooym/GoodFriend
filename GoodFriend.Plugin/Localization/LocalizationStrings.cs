@@ -1,6 +1,4 @@
-using System;
 using CheapLoc;
-using GoodFriend.Plugin.Base;
 
 namespace GoodFriend.Plugin.Localization
 {
@@ -10,7 +8,6 @@ namespace GoodFriend.Plugin.Localization
         public static string APIConnectionSuccess => Loc.Localize("Event.Connection.Successful", "Successfully connected to the API.");
         public static string APIConnectionError => Loc.Localize("Event.Connection.Error", "An error occurred while connecting to the API.");
         public static string APIConnectionDisconnected => Loc.Localize("Event.Connection.Disconnected", "Disconnected from the API.");
-        public static string APIConnectionRatelimited => Loc.Localize("Event.Connection.Ratelimited", "Ratelimited by the API, will auto-retry later.");
         public static string LoggedIn => Loc.Localize("Event.LoggedIn", "logged in.");
         public static string LoggedOut => Loc.Localize("Event.LoggedOut", "logged out.");
     }
@@ -21,15 +18,12 @@ namespace GoodFriend.Plugin.Localization
         public static string ConnectedDescription(uint clients) => string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
         public static string Connecting => Loc.Localize("State.Connecting", "Connecting");
         public static string ConnectingDescription => Loc.Localize("State.Connecting.Description", "Connection in progress, please wait.");
-        public static string Ratelimited => Loc.Localize("State.Ratelimited", "Ratelimited");
-        public static string RatelimitedDescription => Loc.Localize("State.Ratelimited.Description", "The API has ratelimited this client temporarily.");
         public static string Disconnected => Loc.Localize("State.Disconnected", "Disconnected");
         public static string DisconnectedDescription => Loc.Localize("State.Disconnected.Description", "Login to connect to the API.");
         public static string ConnectionError => Loc.Localize("State.ConnectionError", "Connection Error");
         public static string ConnectionErrorDescription => Loc.Localize("State.ConnectionError.Description", "Something went wrong with the API connection.");
         public static string Unknown => Loc.Localize("State.Unknown", "Unknown");
         public static string UnknownDescription => Loc.Localize("State.Unknown.Description", "We're not sure what's going on here.");
-        public static string MaxClients(string maxClients) => string.Format(Loc.Localize("State.MaxClients", "The server supports {0} clients connected at once."), maxClients == "0" ? "unlimited" : maxClients);
     }
 
     public static class PrimaryWindow
@@ -38,8 +32,6 @@ namespace GoodFriend.Plugin.Localization
         public static string DropdownOptionsStatusTooltip(string url) => string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);
         public static string DropdownOptionsSupport => Loc.Localize("Window.Dropdown.Options.Support", "Donate");
         public static string DropdownOptionsSupportTooltip => Loc.Localize("Window.Dropdown.Options.Support.Tooltip", "Support the developer and API instance host.");
-        public static string DropdownOptionsEventLog => Loc.Localize("Window.Dropdown.Options.EventLog", "Event Log");
-        public static string DropdownOptionsEventLogTooltip => Loc.Localize("Window.Dropdown.Options.EventLog.Tooltip", "View the event log.");
         public static string DropdownOptionsSettings => Loc.Localize("Window.Dropdown.Options.Settings", "Settings");
         public static string DropdownOptionsSettingsTooltip => Loc.Localize("Window.Dropdown.Options.Settings.Tooltip", "Change the settings for this plugin.");
         public static string DropdownSettingsEnabled => Loc.Localize("Window.Dropdown.Settings.Enabled", "Enabled");
@@ -65,15 +57,11 @@ namespace GoodFriend.Plugin.Localization
         public static string DropdownInvalidLogoutMessage => Loc.Localize("Window.Dropdown.Settings.InvalidLogoutMessage", "The logout message must contain {0} at least once to insert the friend's name.");
         public static string DropdownSettingsAPINotifications => Loc.Localize("Window.Dropdown.Settings.APINotifications", "API Notifications");
         public static string DropdownSettingsAPINotificationsTooltip => Loc.Localize("Window.Dropdown.Settings.APINotifications.Tooltip", "Whether or not to notifications when the API connection status changes, this is not related to friend notifications.");
-        public static string DropdownSettingsFriendshipCode => Loc.Localize("Window.Dropdown.Settings.FriendshipCode", "Friendship Code");
-        public static string DropdownSettingsFriendshipCodeTooltip => Loc.Localize("Window.Dropdown.Settings.FriendshipCode.Tooltip", "Your friendship code limits who you send notifications to.\nYou will only send and receive notifications with people who have the same code.\n\nLeave empty for the best experience.");
         public static string DropdownSettingsAPIUrl => Loc.Localize("Window.Dropdown.Settings.APIUrl", "API URL");
         public static string DropdownSettingsAPIUrlTooltip => Loc.Localize("Window.Dropdown.Settings.APIUrl.Tooltip", "The URL of the API instance to connect to. You should trust the host of this instance before connecting to it.");
         public static string DropdownSettingsAPIUrlInvalid => Loc.Localize("Window.Dropdown.Settings.APIUrlInvalid", "The API URL is invalid, please double check it contains the protocol (http:// or https://) and the port (if applicable).");
         public static string DropdownSettingsAPIToken => Loc.Localize("Window.Dropdown.Settings.APIToken", "API Token");
         public static string DropdownSettingsAPITokenTooltip => Loc.Localize("Window.Dropdown.Settings.APIToken.Tooltip", "Sets the 'Authorization' header value to send with all requests to the API.\nYou will need to include the authorization scheme (eg. bearer, basic) before the value.\nThe API instance will be able to see this value, never set it to sensitive information like your login password.");
-        public static string DropdownSettingsSaltMethod => Loc.Localize("Window.Dropdown.Settings.SaltMethod", "Salt Method");
-        public static string DropdownSettingsSaltMethodTooltip => Loc.Localize("Window.Dropdown.Settings.SaltMethod.Tooltip", "Strict: Validation is done using both Friend Code & Plugin Manifest (Users must be using the same plugin, version & build to exchange events)\nRelaxed: Validation is only done using Friend Code (Users can exchange events from any source using the same API)\n\nKeep this on strict unless you have reason to change it.");
         public static string DropdownSettingsFriendslistCaching => Loc.Localize("Window.Dropdown.Settings.FriendslistCaching", "Friendslist Caching");
         public static string DropdownSettingsFriendslistCachingTooltip => Loc.Localize("Window.Dropdown.Settings.FriendslistCaching.Tooltip", "Whether or not to cache the friends list to show notifications when it is unavailable (eg. inside of instanced content).\nDisable to not show notifications when the friends list is unavailable.\n\nNote: When enabling this setting, the cache will not be updated until the next time the friends list is available.");
         public static string DropdownSupportTitle => Loc.Localize("Window.Dropdown.Support.Title", "Support & Donations");
@@ -84,26 +72,7 @@ namespace GoodFriend.Plugin.Localization
         public static string DropdownSupportAPIHost => Loc.Localize("Window.Dropdown.Support.APIHost", "API Instance Host");
         public static string DropdownSupportAPIHostDescription => Loc.Localize("Window.Dropdown.Support.APIHost.Description", "The API instance host is responsible for running and maintaining the server that this plugin is connected to.");
         public static string DropdownSupportAPIHostInvalidUri => Loc.Localize("Window.Dropdown.Support.APIHost.InvalidUri", "The API instance host has provided an invalid support URL.");
-        public static string DropdownLogsTitle => Loc.Localize("Window.Dropdown.Logs.Title", "Logs");
-        public static string DropdownLogsNoLogs => Loc.Localize("Window.Dropdown.Logs.NoLogs", "No logs to display.");
-        public static string DropdownLogsClearAll => Loc.Localize("Window.Dropdown.Logs.ClearAll", "Clear All");
-        public static string DropdownLogsCopy => Loc.Localize("Window.Dropdown.Logs.Copy", "Copy");
-        public static string DropdownLogsFilterTooltip => Loc.Localize("Window.Dropdown.Logs.FilterTooltip", "Set the selected log level, any logs below this level will be hidden.");
-        public static string DropdownLogsCopySuccess => Loc.Localize("Window.Dropdown.Logs.CopySuccess", "Successfully copied log to clipboard.");
-        public static string DropdownLogsDelete => Loc.Localize("Window.Dropdown.Logs.Delete", "Delete");
-        public static string DropdownLogsTableTime => Loc.Localize("Window.Dropdown.Logs.Table.Time", "Time");
-        public static string DropdownLogsTableType => Loc.Localize("Window.Dropdown.Logs.Table.Type", "Type");
-        public static string DropdownLogsTableMessage => Loc.Localize("Window.Dropdown.Logs.Table.Message", "Message");
-        public static string SettingsOfficialBuild => Loc.Localize("Window.Settings.Build.Official", "Official Build");
-        public static string SettingsUnofficialBuild => Loc.Localize("Window.Settings.Build.Unofficial", "Unofficial Build");
         public static string SettingsTabGeneral => Loc.Localize("Window.Settings.Tab.General", "General");
         public static string SettingsTabAdvanced => Loc.Localize("Window.Settings.Tab.Advanced", "Advanced");
-    }
-    public static class URLNagWindow
-    {
-        public static string URLUpdateNagTitle(Uri url) => string.Format(Loc.Localize("Window.URLUpdateNag.Title", "{0} - Update from {1}"), PluginConstants.PluginName, url);
-        public static string URLUpdateNagText(Uri? newUrl, int waitTime) => string.Format(Loc.Localize("Window.URLUpdateNag.Text", "Your configured instance is recommending that you update to a new API URL; this is likely due to a change in the instance's domain name or hosting provider.\n\nIf you trust the new URL({0}), press the button below to update the API URL for next plugin load. Otherwise, you may want to find another instance provider.\n\nHold shift or wait {1} seconds to select an option."), newUrl?.ToString() ?? "null", waitTime);
-        public static string URLUpdateNagButtonUpdate => Loc.Localize("Window.URLUpdateNag.Button.Update", "Update URL");
-        public static string URLUpdateNagButtonIgnore => Loc.Localize("Window.URLUpdateNag.Button.Ignore", "Ignore for this session");
     }
 }

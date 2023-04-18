@@ -73,7 +73,6 @@ namespace GoodFriend.Plugin.Common
                 VersionInformational.Contains("alpha") ||
                 VersionInformational.Contains("beta") ||
                 VersionInformational.Contains("rc");
-
         }
 
         /// <summary>
@@ -84,15 +83,6 @@ namespace GoodFriend.Plugin.Common
             internal const string KoFi = "https://ko-fi.com/BitsOfAByte";
             internal const string GitHubSponsors = "https://github.com/sponsors/BitsOfAByte";
             internal static readonly Uri DefaultAPIUrl = new("https://aether.bitsofabyte.dev/");
-        }
-
-        /// <summary>
-        ///     Plugin commands.
-        /// </summary>
-        internal static class Commands
-        {
-            internal const string WhoCommand = "/who";
-            internal const string WhoSettingsCommand = "/whosettings";
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Interface.Windowing;
 using Dalamud.Logging;
-using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Common;
 using GoodFriend.Plugin.UI.Windows.Main;
 
 namespace GoodFriend.Plugin.Managers
@@ -13,7 +13,7 @@ namespace GoodFriend.Plugin.Managers
     /// </summary>
     internal sealed class WindowManager : IDisposable
     {
-        private readonly WindowSystem windowSystem = new(PluginConstants.PluginName);
+        private readonly WindowSystem windowSystem = new(Constants.PluginName);
 
         private readonly List<Window> windows = new()
         {
@@ -47,14 +47,7 @@ namespace GoodFriend.Plugin.Managers
         /// <summary>
         ///     Opens/Closes the plugin configuration window.
         /// </summary>
-        [Obsolete]
-        private void OnOpenConfigUI()
-        {
-            if (this.windowSystem.GetWindow(PluginConstants.PluginName) is MainWindow window)
-            {
-                window.IsOpen = !window.IsOpen;
-            }
-        }
+        private void OnOpenConfigUI() => this.windows[0]?.Toggle();
 
         /// <summary>
         ///     Disposes of the WindowManager and associated resources.

@@ -23,15 +23,36 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
-  <!-- Git Commit Hash -->
-  <Target Name="GitCommitHash" BeforeTargets="GetAssemblyVersion" Returns="InformationalVersion">
-		<Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="low">
-			<Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
-		</Exec>
-    <PropertyGroup>
-        <InformationalVersion>$(Version) (#$(GitCommitHash))</InformationalVersion>
-		</PropertyGroup>
-	</Target>
+  <!-- Custom Runtime Variables -->
+  <Target Name="SetCustomVars" BeforeTargets="BeforeBuild">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash"/>
+    </Exec>
+    <Exec Command="git show -s --format=%ci HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime"/>
+    </Exec>
+    <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+    </Exec>
+    <Exec Command="git log -1 --pretty=%B" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage"/>
+    </Exec>
+
+    <ItemGroup>
+      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitHash">
+        <_Parameter1>$(GitHash)</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitCommitDate">
+        <_Parameter1>$(BuildTime)</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitBranch">
+        <_Parameter1>$(GitBranch)</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitCommitMessage">
+        <_Parameter1>$(LastCommitMessage)</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+  </Target>
   
   <!-- Plugin Resources -->
   <ItemGroup>

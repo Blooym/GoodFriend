@@ -18,7 +18,6 @@ namespace GoodFriend.Plugin.UI.ImGuiBasicComponents
         public static readonly Vector4 APIConnecting = new(1.0f, 0.5f, 0.0f, 1.0f);
         public static readonly Vector4 APIError = new(1.0f, 0.0f, 0.0f, 1.0f);
         public static readonly Vector4 APIDisconnected = new(0.5f, 0.5f, 0.5f, 1.0f);
-        public static readonly Vector4 APIRatelimited = new(1.0f, 0.5f, 0.0f, 1.0f);
 
         /// <summary>
         ///     Creates a ImgGui.TextWrapped() with the given text and colour.

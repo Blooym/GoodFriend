@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using CheapLoc;
 using Dalamud.Logging;
+using GoodFriend.Plugin.Common;
 
 namespace GoodFriend.Plugin.Managers
 {
@@ -38,11 +39,11 @@ namespace GoodFriend.Plugin.Managers
         ///     Sets up the plugin's resources.
         /// </summary>
         /// <param name="language">The new language 2-letter code.</param>
-        private static void Setup(string language)
+        private void Setup(string language)
         {
             try
             {
-                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream($"GoodFriend.Resources.Localization.{language}.json");
+                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream($"GoodFriend.Plugin.Resources.Localization.{language}.json");
 
                 if (resource == null)
                 {

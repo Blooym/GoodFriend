@@ -1,3 +1,5 @@
+using GoodFriend.Plugin.Common;
+
 namespace GoodFriend.Plugin.Managers.FriendList
 {
     /// <summary>
@@ -18,12 +20,6 @@ namespace GoodFriend.Plugin.Managers.FriendList
             }
 
             var friendList = FriendList.Get();
-
-            // If caching of friends has been disabled, return the current friend list.
-            if (!Services.Configuration.FriendslistCaching)
-            {
-                return friendList;
-            }
 
             // Otherwise, if the current friend list is not empty, update the cache.
             if (friendList.Length != 0)

@@ -1,6 +1,7 @@
 using System.Numerics;
 using GoodFriend.Client;
 using GoodFriend.Client.Responses;
+using GoodFriend.Plugin.Common;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.UI.ImGuiBasicComponents;
 
