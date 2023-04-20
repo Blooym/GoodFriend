@@ -1,13 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
+using RestSharp;
 
 namespace GoodFriend.Client
 {
     /// <summary>
     ///     Represents a client that can interact with the GoodFriend API.
     /// </summary>
-    public interface IGoodFriendClient
+    internal interface IGoodFriendClient
     {
         /// <summary>
         ///     The base uri of all api endpoints, should include version if applicable.
@@ -22,28 +24,18 @@ namespace GoodFriend.Client
         /// <summary>
         ///     Sends a login event to the api.
         /// </summary>
-        /// <param name="contentId">The unhashed player content id</param>
-        /// <param name="datacenterId">The datacenter id of the player</param>
-        /// <param name="worldId">The world id of the player</param>
-        /// <param name="territoryId">The territory id of the player</param>
-        /// <returns>A RestResponse for the request.</returns>
-        bool SendLogin(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        RestResponse SendLogin(LoginRequest requestData);
 
-        /// <inheritdoc cref="SendLogin(ulong, uint, uint, uint)" />
-        Task<bool> SendLoginAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendLogin(LoginRequest)" />
+        Task<RestResponse> SendLoginAsync(LoginRequest requestData);
 
         /// <summary>
         ///     Sends a logout event to the api.
         /// </summary>
-        /// <param name="contentId">The unhashed player content id</param>
-        /// <param name="datacenterId">The datacenter id of the player</param>
-        /// <param name="worldId">The world id of the player</param>
-        /// <param name="territoryId">The territory id of the player</param>
-        /// <returns>A RestResponse for the request.</returns>
-        bool SendLogout(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        RestResponse SendLogout(LogoutRequest requestData);
 
-        /// <inheritdoc cref="SendLogout(ulong, uint, uint, uint)" />
-        Task<bool> SendLogoutAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendLogout(LogoutRequest)" />
+        Task<RestResponse> SendLogoutAsync(LogoutRequest requestData);
 
         /// <summary>
         ///     Gets metadata from the api.

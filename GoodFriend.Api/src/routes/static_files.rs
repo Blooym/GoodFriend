@@ -6,7 +6,7 @@ use crate::Asset;
 
 /// Serves static assets that where bundled into the binary at build time.
 #[get("/<file..>")]
-pub async fn handle_static_files(file: PathBuf) -> Option<(ContentType, Cow<'static, [u8]>)> {
+pub async fn get_static_file(file: PathBuf) -> Option<(ContentType, Cow<'static, [u8]>)> {
     let filename = file.display().to_string();
     let asset = Asset::get(&filename)?;
     let content_type = file

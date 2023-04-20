@@ -7,7 +7,7 @@
 	"runArgs": [
 		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
 	],
-	"postAttachCommand": "cd GoodFriend.Api",
+	"postAttachCommand": "cd GoodFriend.Api && cargo build && cd ../GoodFriend.Client && dotnet restore && cd ../GoodFriend.Plugin && dotnet restore",
 	"customizations": {
 		"vscode": {
 			"extensions": [

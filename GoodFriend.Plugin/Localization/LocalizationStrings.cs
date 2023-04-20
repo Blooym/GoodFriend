@@ -2,7 +2,7 @@ using CheapLoc;
 
 namespace GoodFriend.Plugin.Localization
 {
-    public static class Events
+    internal static class Events
     {
         public static string APIConnectionStatus => Loc.Localize("Event.Connection.Status", "Connection Status");
         public static string APIConnectionSuccess => Loc.Localize("Event.Connection.Successful", "Successfully connected to the API.");
@@ -12,7 +12,7 @@ namespace GoodFriend.Plugin.Localization
         public static string LoggedOut => Loc.Localize("Event.LoggedOut", "logged out.");
     }
 
-    public static class State
+    internal static class State
     {
         public static string Connected => Loc.Localize("State.Connected", "Connected");
         public static string ConnectedDescription(uint clients) => string.Format(Loc.Localize("State.Connected.Description", "There are currently {0} connected clients."), clients);
@@ -26,7 +26,7 @@ namespace GoodFriend.Plugin.Localization
         public static string UnknownDescription => Loc.Localize("State.Unknown.Description", "We're not sure what's going on here.");
     }
 
-    public static class PrimaryWindow
+    internal static class PrimaryWindow
     {
         public static string DropdownOptionsStatus => Loc.Localize("Window.Dropdown.Options.Status", "Status");
         public static string DropdownOptionsStatusTooltip(string url) => string.Format(Loc.Localize("Window.Dropdown.Options.Status.Tooltip", "View the status page of this API instance.\n({0})"), url);

@@ -2,21 +2,23 @@
 extern crate rocket;
 
 mod constants;
+mod requests;
+mod responses;
 mod routes;
-mod types;
 use dotenv::dotenv;
+use responses::playerstate::PlayerStateUpdateResponse;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
-use routes::events::handle_events;
-use routes::index::handle_index;
-use routes::login::handle_login;
-use routes::logout::handle_logout;
-use routes::metadata::handle_metadata;
-use routes::motd::handle_motd;
-use routes::static_files::handle_static_files;
+
+use routes::events::get_events;
+use routes::index::get_index;
+use routes::login::put_login;
+use routes::logout::put_logout;
+use routes::metadata::get_metadata;
+use routes::motd::get_motd;
+use routes::static_files::get_static_file;
 use rust_embed::RustEmbed;
-use types::player::PlayerStateUpdate;
 
 /// Compiles the contents of the static directory into the binary at build-time
 /// for portability.
@@ -29,17 +31,17 @@ fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     rocket::build()
-        .manage(channel::<PlayerStateUpdate>(1024).0)
+        .manage(channel::<PlayerStateUpdateResponse>(1024).0)
         .mount(
             "/",
             routes![
-                handle_index,
-                handle_static_files,
-                handle_login,
-                handle_logout,
-                handle_metadata,
-                handle_events,
-                handle_motd
+                get_index,
+                get_static_file,
+                put_login,
+                put_logout,
+                get_metadata,
+                get_events,
+                get_motd,
             ],
         )
         .register("/", catchers![not_found])

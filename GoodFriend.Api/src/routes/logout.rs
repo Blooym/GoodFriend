@@ -1,30 +1,19 @@
-use rocket::http::Status;
 use rocket::tokio::sync::broadcast::Sender;
 use rocket::State;
 
-use crate::types::player::PlayerStateUpdate;
+use crate::requests::logout::LogoutRequest;
+use crate::responses::playerstate::PlayerStateUpdateResponse;
 
 /// Sends a logout to the server-sent event stream.
-#[put("/logout?<datacenter_id>&<world_id>&<territory_id>&<content_id_hash>&<content_id_salt>")]
-pub async fn handle_logout(
-    datacenter_id: usize,
-    world_id: usize,
-    territory_id: usize,
-    content_id_hash: String,
-    content_id_salt: String,
-    queue: &State<Sender<PlayerStateUpdate>>,
-) -> Status {
-    if content_id_hash.len() < 128 || content_id_salt.len() < 32 {
-        return Status::BadRequest;
-    }
-
-    let _ = queue.send(PlayerStateUpdate {
-        content_id_hash,
-        content_id_salt,
-        datacenter_id,
-        territory_id,
-        world_id,
+// #[put("/logout?<datacenter_id>&<world_id>&<territory_id>&<content_id_hash>&<content_id_salt>")]
+#[put("/logout?<update..>")]
+pub async fn put_logout(update: LogoutRequest, queue: &State<Sender<PlayerStateUpdateResponse>>) {
+    let _ = queue.send(PlayerStateUpdateResponse {
+        content_id_hash: update.content_id_hash.to_owned(),
+        content_id_salt: update.content_id_salt.to_owned(),
+        datacenter_id: update.datacenter_id,
+        world_id: update.world_id,
+        territory_id: update.territory_id,
         is_logged_in: false,
     });
-    Status::Ok
 }

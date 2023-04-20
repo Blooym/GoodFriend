@@ -1,6 +1,5 @@
 {
     "content": "",
-    "urgency": "Information",
-    "brand": "General",
+    "important": false,
     "ignore": true
 }

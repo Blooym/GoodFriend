@@ -1,7 +1,7 @@
 using System;
 using Dalamud.Configuration;
 using GoodFriend.Plugin.Common;
-using GoodFriend.Plugin.Utils;
+using GoodFriend.Plugin.Game;
 
 namespace GoodFriend.Plugin.Configuration
 {
@@ -9,7 +9,7 @@ namespace GoodFriend.Plugin.Configuration
     ///     Provides access to and determines the Plugin configuration.
     /// </summary>
     [Serializable]
-    public sealed class PluginConfiguration : IPluginConfiguration
+    internal sealed class PluginConfiguration : IPluginConfiguration
     {
         /// <summary>
         ///     The current configuration version, incremented on breaking changes.

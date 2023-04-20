@@ -26,16 +26,16 @@
   <!-- Custom Runtime Variables -->
   <Target Name="SetCustomVars" BeforeTargets="BeforeBuild">
     <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash" />
     </Exec>
     <Exec Command="git show -s --format=%ci HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime" />
     </Exec>
     <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch" />
     </Exec>
     <Exec Command="git log -1 --pretty=%B" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage" />
     </Exec>
 
     <ItemGroup>
@@ -54,11 +54,21 @@
     </ItemGroup>
   </Target>
   
-  <!-- Plugin Resources -->
+    <!-- Localization -->
   <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.*" Exclude="Resources\**\*Localizable.*" />
+    <EmbeddedResource Update="Resources\Localization\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  
+  <ItemGroup>
+    <Compile Update="Resources\Localization\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <!-- Dalamud Paths -->
   <PropertyGroup>
     <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>

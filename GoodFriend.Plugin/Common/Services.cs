@@ -7,6 +7,8 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Managers;
+using GoodFriend.Plugin.Resources.Localization;
+using GoodFriend.Plugin.UserInterface;
 using Sirensong.IoC;
 
 namespace GoodFriend.Plugin.Common
@@ -29,7 +31,6 @@ namespace GoodFriend.Plugin.Common
 
 
         internal static WindowManager WindowManager { get; private set; } = null!;
-        internal static ResourceManager ResourceManager { get; private set; } = null!;
         internal static APIClientManager APIClientManager { get; private set; } = null!;
         internal static PluginConfiguration Configuration { get; private set; } = null!;
 
@@ -39,7 +40,7 @@ namespace GoodFriend.Plugin.Common
         internal static void Initialize()
         {
             Configuration = PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
-            ResourceManager = ServiceContainer.GetOrCreateService<ResourceManager>();
+            ServiceContainer.CreateService<LocalizationManager>();
             APIClientManager = ServiceContainer.GetOrCreateService<APIClientManager>();
             WindowManager = ServiceContainer.GetOrCreateService<WindowManager>();
         }

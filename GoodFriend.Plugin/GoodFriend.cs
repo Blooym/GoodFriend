@@ -18,9 +18,11 @@ namespace GoodFriend.Plugin
         /// <param name="pluginInterface"></param>
         public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
         {
-            pluginInterface.Create<Services>();
             SirenCore.Initialize(pluginInterface, this.Name);
+            pluginInterface.Create<Services>();
             Services.Initialize();
+
+            CheapLoc.Loc.SetupWithFallbacks();
         }
 
         /// <summary>

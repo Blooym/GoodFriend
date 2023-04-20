@@ -5,9 +5,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
-using GoodFriend.Client.Constants;
+using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
-using GoodFriend.Client.Security;
 using RestSharp;
 
 namespace GoodFriend.Client
@@ -85,63 +84,57 @@ namespace GoodFriend.Client
             this.OnEventStreamDisconnected -= this.HandleEventStreamDisconnected;
         }
 
-        private static RestRequest BuildLoginRequest(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        private static RestRequest BuildLoginRequest(LoginRequest requestData)
         {
-            var contentIdSalt = Crypto.GenerateCryptoRandom(32);
-            var contentIdHash = Crypto.HashSHA512(contentId.ToString(), contentIdSalt);
-            var request = new RestRequest(LoginRequestConstants.EndpointUrl);
-            request.AddQueryParameter(LoginRequestConstants.ContentIdParam, contentIdHash);
-            request.AddQueryParameter(LoginRequestConstants.ContentIdSaltParam, contentIdSalt);
-            request.AddQueryParameter(LoginRequestConstants.DatacenterIdParam, datacenterId);
-            request.AddQueryParameter(LoginRequestConstants.WorldIdParam, worldId);
-            request.AddQueryParameter(LoginRequestConstants.TerritoryIdParam, territoryId);
+            var request = new RestRequest(LoginRequest.EndpointUrl);
+            request.AddQueryParameter(LoginRequest.ContentIdParam, requestData.ContentIdHash);
+            request.AddQueryParameter(LoginRequest.ContentIdSaltParam, requestData.ContentIdSalt);
+            request.AddQueryParameter(LoginRequest.DatacenterIdParam, requestData.DatacenterId);
+            request.AddQueryParameter(LoginRequest.WorldIdParam, requestData.WorldId);
+            request.AddQueryParameter(LoginRequest.TerritoryIdParam, requestData.TerritoryId);
             return request;
         }
 
         /// <inheritdoc />
-        public bool SendLogin(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        public RestResponse SendLogin(LoginRequest requestData)
         {
-            var request = BuildLoginRequest(contentId, datacenterId, worldId, territoryId);
-            return this.restClient.Put(request).IsSuccessful;
+            var request = BuildLoginRequest(requestData);
+            return this.restClient.Put(request);
         }
 
         /// <inheritdoc />
-        public async Task<bool> SendLoginAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        public Task<RestResponse> SendLoginAsync(LoginRequest requestData)
         {
-            var request = BuildLoginRequest(contentId, datacenterId, worldId, territoryId);
-            var response = await this.restClient.PutAsync(request);
-            return response.IsSuccessful;
+            var request = BuildLoginRequest(requestData);
+            return this.restClient.PutAsync(request);
         }
 
-        private static RestRequest BuildLogoutRequest(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        private static RestRequest BuildLogoutRequest(LogoutRequest requestData)
         {
-            var contentIdSalt = Crypto.GenerateCryptoRandom(32);
-            var contentIdHash = Crypto.HashSHA512(contentId.ToString(), contentIdSalt);
-            var request = new RestRequest(LogoutRequestConstants.EndpointUrl);
-            request.AddQueryParameter(LogoutRequestConstants.ContentIdParam, contentIdHash);
-            request.AddQueryParameter(LogoutRequestConstants.ContentIdSaltParam, contentIdSalt);
-            request.AddQueryParameter(LogoutRequestConstants.DatacenterIdParam, datacenterId);
-            request.AddQueryParameter(LogoutRequestConstants.WorldIdParam, worldId);
-            request.AddQueryParameter(LogoutRequestConstants.TerritoryIdParam, territoryId);
+            var request = new RestRequest(LogoutRequest.EndpointUrl);
+            request.AddQueryParameter(LogoutRequest.ContentIdParam, requestData.ContentIdHash);
+            request.AddQueryParameter(LogoutRequest.ContentIdSaltParam, requestData.ContentIdSalt);
+            request.AddQueryParameter(LogoutRequest.DatacenterIdParam, requestData.DatacenterId);
+            request.AddQueryParameter(LogoutRequest.WorldIdParam, requestData.WorldId);
+            request.AddQueryParameter(LogoutRequest.TerritoryIdParam, requestData.TerritoryId);
             return request;
         }
 
         /// <inheritdoc />
-        public bool SendLogout(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        public RestResponse SendLogout(LogoutRequest requestData)
         {
-            var request = BuildLogoutRequest(contentId, datacenterId, worldId, territoryId);
-            return this.restClient.Put(request).IsSuccessful;
+            var request = BuildLogoutRequest(requestData);
+            return this.restClient.Put(request);
         }
 
         /// <inheritdoc />
-        public async Task<bool> SendLogoutAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId)
+        public Task<RestResponse> SendLogoutAsync(LogoutRequest requestData)
         {
-            var request = BuildLogoutRequest(contentId, datacenterId, worldId, territoryId);
-            var response = await this.restClient.PutAsync(request);
-            return response.IsSuccessful;
+            var request = BuildLogoutRequest(requestData);
+            return this.restClient.PutAsync(request);
         }
 
-        private static RestRequest BuildMetadataRequest() => new(MetadataRequestConstants.EndpointUrl);
+        private static RestRequest BuildMetadataRequest() => new(MetadataRequest.EndpointUrl);
 
         /// <inheritdoc />
         public MetadataResponse GetMetadata()
@@ -157,7 +150,7 @@ namespace GoodFriend.Client
             return this.restClient.GetAsync<MetadataResponse>(request);
         }
 
-        private static RestRequest BuildMotdRequest() => new(MotdRequestConstants.EndpointUrl);
+        private static RestRequest BuildMotdRequest() => new(MotdRequest.EndpointUrl);
 
         /// <inheritdoc />
         public MotdResponse GetMotd()
@@ -185,7 +178,7 @@ namespace GoodFriend.Client
 
                 this.ConnectionState = EventStreamConnectionState.Connecting;
 
-                using var stream = await this.httpClient.GetStreamAsync(EventStreamRequestConstants.EndpointUrl);
+                using var stream = await this.httpClient.GetStreamAsync(EventsRequest.EndpointUrl);
                 using var reader = new StreamReader(stream);
 
                 this.ConnectionState = EventStreamConnectionState.Connected;
@@ -226,6 +219,20 @@ namespace GoodFriend.Client
             }
         }
 
+        /// <inheritdoc />
+        public void DisconnectFromEventStream()
+        {
+            if (this.ConnectionState is EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Disconnected)
+            {
+                throw new InvalidOperationException("Already disconnected from the event stream.");
+            }
+
+            this.ConnectionState = EventStreamConnectionState.Disconnecting;
+            this.httpClient.CancelPendingRequests();
+            this.ConnectionState = EventStreamConnectionState.Disconnected;
+            this.OnEventStreamDisconnected?.Invoke(this);
+        }
+
         private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
         {
             if (this.ConnectionState is not EventStreamConnectionState.Exception)
@@ -245,18 +252,5 @@ namespace GoodFriend.Client
 
         private void HandleEventStreamConnected(object? sender) => this.eventStreamReconnectTimer.Stop();
         private void HandleEventStreamDisconnected(object? sender) => this.eventStreamReconnectTimer.Stop();
-        /// <inheritdoc />
-        public void DisconnectFromEventStream()
-        {
-            if (this.ConnectionState is EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Disconnected)
-            {
-                throw new InvalidOperationException("Already disconnected from the event stream.");
-            }
-
-            this.ConnectionState = EventStreamConnectionState.Disconnecting;
-            this.httpClient.CancelPendingRequests();
-            this.ConnectionState = EventStreamConnectionState.Disconnected;
-            this.OnEventStreamDisconnected?.Invoke(this);
-        }
     }
 }
