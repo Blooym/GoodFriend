@@ -1,6 +1,6 @@
 namespace GoodFriend.Client.Requests
 {
-    internal static class MetadataRequest
+    internal readonly record struct MetadataRequest
     {
         /// <summary>
         ///     The endpoint url with a proceeding slash.

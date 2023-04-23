@@ -1,7 +1,6 @@
 using GoodFriend.Plugin.Common;
-using GoodFriend.Plugin.Game.Friends;
 
-namespace GoodFriend.Plugin.Managers
+namespace GoodFriend.Plugin.Game.Friends
 {
     /// <summary>
     ///     Manager for player friend list functionality.

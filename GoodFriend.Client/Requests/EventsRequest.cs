@@ -3,7 +3,7 @@ namespace GoodFriend.Client.Requests
     /// <summary>
     ///     constants for the events endpoint.
     /// </summary>
-    public static class EventsRequest
+    public readonly record struct EventsRequest
     {
         /// <summary>
         /// The endpoint url with a proceeding slash.

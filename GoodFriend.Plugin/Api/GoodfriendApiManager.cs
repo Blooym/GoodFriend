@@ -12,68 +12,34 @@ using GoodFriend.Plugin.Localization;
 using Sirensong.Game;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
-namespace GoodFriend.Plugin.Managers
+namespace GoodFriend.Plugin.Api
 {
-    /// <summary>
-    ///     Manages an APIClient and its resources and handles events.
-    /// </summary>
-    internal sealed class APIClientManager : IDisposable
+    internal sealed class GoodFriendApiManager : IDisposable
     {
-        /// <summary>
-        ///    The current player ContentID, saved on login and cleared on logout.
-        /// </summary>
         private ulong currentContentId;
-
-        /// <summary>
-        ///    The current player HomeworldID. Saved on login and cleared on logout.
-        /// </summary>
-        private uint currentHomeworldId;
-
-        /// <summary>
-        ///    The current player WorldID. Saved on login/world change and cleared on logout.
-        /// </summary>
         private uint currentWorldId;
-
-        /// <summary>
-        ///    The current player DataCenterID. Saved on login/world change and cleared on logout.
-        /// </summary>
         private uint currentDatacenterId;
+        private ushort currentTerritoryId;
 
-        /// <summary>
-        ///    The current player TerritoryID. Saved on login/zone change and cleared on logout.
-        /// </summary>
-        private uint currentTerritoryId;
+        public MetadataResponse MetadataCache { get; private set; }
+        public MotdResponse MotdCache { get; private set; }
 
-        /// <summary>
-        ///    The cached metadata from the API.
-        /// </summary>
-        public MetadataResponse? MetadataCache { get; private set; }
+        private readonly Timer cacheUpdateTimer = new(240000);
 
-        /// <summary>
-        ///    The timer for updating the metadata cache.
-        /// </summary>
-        private readonly Timer metadataTimer = new(240000);
-
-        /// <summary>
-        ///    The event that fires when the metadata timer elapses.
-        /// </summary>
-        /// <param name="source">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnMetadataTimerElapsed(object? source, ElapsedEventArgs e) => this.UpdateMetadataCache();
+        private void OnCacheUpdateElapse(object? source, ElapsedEventArgs e) => this.UpdateCachedData();
 
         /// <summary>
         ///     The API Client associated with the manager.
         /// </summary>
-        private readonly GoodFriendClient apiClient = new(new Uri("http://127.0.0.1:8000"));
-
+        private readonly GoodFriendClient apiClient = new(Services.Configuration.ApiConfig.APIUrl);
         public EventStreamConnectionState ConnectionStatus => this.apiClient.ConnectionState;
 
         /// <summary>
         ///     Instantiates a new APIClientManager.
         /// </summary>
-        public APIClientManager()
+        public GoodFriendApiManager()
         {
-            this.UpdateMetadataCache();
+            this.UpdateCachedData();
 
             // Create event handlers
             this.apiClient.OnEventStreamStateUpdate += this.OnSSEDataReceived;
@@ -85,15 +51,14 @@ namespace GoodFriend.Plugin.Managers
             Services.Framework.Update += this.OnFrameworkUpdate;
 
             // Metadata cache update timer
-            this.metadataTimer.Elapsed += this.OnMetadataTimerElapsed;
-            this.metadataTimer.AutoReset = true;
-            this.metadataTimer.Enabled = true;
+            this.cacheUpdateTimer.Elapsed += this.OnCacheUpdateElapse;
+            this.cacheUpdateTimer.AutoReset = true;
+            this.cacheUpdateTimer.Enabled = true;
 
             // If the player is logged in already, connect & set their ID.
             if (Services.ClientState.LocalPlayer != null)
             {
                 this.currentContentId = Services.ClientState.LocalContentId;
-                this.currentHomeworldId = Services.ClientState.LocalPlayer.HomeWorld.Id;
                 this.currentTerritoryId = Services.ClientState.TerritoryType;
                 this.currentWorldId = Services.ClientState.LocalPlayer.CurrentWorld.Id;
                 this.currentDatacenterId = Services.ClientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
@@ -104,14 +69,7 @@ namespace GoodFriend.Plugin.Managers
             var motd = this.apiClient.GetMotd();
             if (!motd.Ignore)
             {
-                if (motd.Urgent)
-                {
-                    GameChat.Print($"Important: {motd.Content}");
-                }
-                else
-                {
-                    GameChat.Print(motd.Content);
-                }
+                GameChat.Print(motd.Content);
                 PluginLog.Debug("APIClientManager(APIClientManager): Successfully initialized.");
             }
         }
@@ -130,9 +88,9 @@ namespace GoodFriend.Plugin.Managers
             this.apiClient.OnEventStreamConnected -= this.OnSSEAPIClientConnected;
             this.apiClient.OnEventStreamDisconnected -= this.OnSSEAPIClientDisconnected;
 
-            this.metadataTimer.Elapsed -= this.OnMetadataTimerElapsed;
-            this.metadataTimer.Stop();
-            this.metadataTimer.Dispose();
+            this.cacheUpdateTimer.Elapsed -= this.OnCacheUpdateElapse;
+            this.cacheUpdateTimer.Stop();
+            this.cacheUpdateTimer.Dispose();
 
             PluginLog.Debug("APIClientManager(Dispose): Successfully disposed.");
         }
@@ -158,7 +116,6 @@ namespace GoodFriend.Plugin.Managers
 
               // Set the current IDs
               this.currentContentId = Services.ClientState.LocalContentId;
-              this.currentHomeworldId = Services.ClientState.LocalPlayer.HomeWorld.Id;
               this.currentTerritoryId = Services.ClientState.TerritoryType;
               this.currentWorldId = Services.ClientState.LocalPlayer.CurrentWorld.Id;
               this.currentDatacenterId = Services.ClientState.LocalPlayer.CurrentWorld?.GameData?.DataCenter.Row ?? 0;
@@ -205,7 +162,6 @@ namespace GoodFriend.Plugin.Managers
             // Clear the current IDs
             this.currentTerritoryId = 0;
             this.currentWorldId = 0;
-            this.currentHomeworldId = 0;
             this.currentContentId = 0;
             this.currentDatacenterId = 0;
             this.hasConnectedSinceError = true;
@@ -362,6 +318,11 @@ namespace GoodFriend.Plugin.Managers
             }
         }
 
-        private void UpdateMetadataCache() => this.MetadataCache = this.apiClient.GetMetadata();
+        private void UpdateCachedData()
+        {
+            this.MetadataCache = this.apiClient.GetMetadata();
+            this.MotdCache = this.apiClient.GetMotd();
+            BetterLog.Information("Cached API data updated.");
+        }
     }
 }

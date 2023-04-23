@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace GoodFriend.Client.Responses
 {
     [Serializable]
-    public readonly struct EventStreamPlayerUpdate
+    public readonly record struct EventStreamPlayerUpdate
     {
         [JsonPropertyName("content_id_hash")]
         public readonly string ContentIdHash { get; init; }

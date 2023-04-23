@@ -1,6 +1,6 @@
 namespace GoodFriend.Client.Requests
 {
-    internal static class MotdRequest
+    internal readonly record struct MotdRequest
     {
         /// <summary>
         ///     The endpoint url with a proceeding slash.

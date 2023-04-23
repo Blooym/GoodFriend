@@ -5,8 +5,8 @@ using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using GoodFriend.Plugin.Api;
 using GoodFriend.Plugin.Configuration;
-using GoodFriend.Plugin.Managers;
 using GoodFriend.Plugin.Resources.Localization;
 using GoodFriend.Plugin.UserInterface;
 using Sirensong.IoC;
@@ -29,9 +29,8 @@ namespace GoodFriend.Plugin.Common
         [PluginService] internal static Condition Condition { get; private set; } = null!;
         [PluginService] internal static Framework Framework { get; private set; } = null!;
 
-
         internal static WindowManager WindowManager { get; private set; } = null!;
-        internal static APIClientManager APIClientManager { get; private set; } = null!;
+        internal static GoodFriendApiManager GoodFriendApiManager { get; private set; } = null!;
         internal static PluginConfiguration Configuration { get; private set; } = null!;
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace GoodFriend.Plugin.Common
         {
             Configuration = PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             ServiceContainer.CreateService<LocalizationManager>();
-            APIClientManager = ServiceContainer.GetOrCreateService<APIClientManager>();
+            GoodFriendApiManager = ServiceContainer.GetOrCreateService<GoodFriendApiManager>();
             WindowManager = ServiceContainer.GetOrCreateService<WindowManager>();
         }
 

@@ -7,7 +7,7 @@ namespace GoodFriend.Client.Responses
     ///     Represents a JSON response from the metadata endpoint.
     /// </summary>
     [Serializable]
-    public readonly struct MetadataResponse
+    public readonly record struct MetadataResponse
     {
         /// <summary>
         ///     The current number of connected clients.

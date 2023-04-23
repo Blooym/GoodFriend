@@ -12,7 +12,7 @@ namespace GoodFriend.Client
     internal interface IGoodFriendClient
     {
         /// <summary>
-        ///     The base uri of all api endpoints, should include version if applicable.
+        ///     The base URI of all API endpoints, should include version if applicable.
         /// </summary>
         Uri BaseUri { get; }
 
@@ -22,7 +22,7 @@ namespace GoodFriend.Client
         EventStreamConnectionState ConnectionState { get; }
 
         /// <summary>
-        ///     Sends a login event to the api.
+        ///     Sends a login event to the API.
         /// </summary>
         RestResponse SendLogin(LoginRequest requestData);
 
@@ -30,7 +30,7 @@ namespace GoodFriend.Client
         Task<RestResponse> SendLoginAsync(LoginRequest requestData);
 
         /// <summary>
-        ///     Sends a logout event to the api.
+        ///     Sends a logout event to the API.
         /// </summary>
         RestResponse SendLogout(LogoutRequest requestData);
 
@@ -38,7 +38,7 @@ namespace GoodFriend.Client
         Task<RestResponse> SendLogoutAsync(LogoutRequest requestData);
 
         /// <summary>
-        ///     Gets metadata from the api.
+        ///     Gets metadata from the API.
         /// </summary>
         /// <returns>A <see cref="MetadataResponse" /> instance.</returns>
         MetadataResponse GetMetadata();
@@ -47,7 +47,7 @@ namespace GoodFriend.Client
         Task<MetadataResponse> GetMetadataAsync();
 
         /// <summary>
-        ///     Gets the motd from the api.
+        ///     Gets the motd from the API.
         /// </summary>
         /// <returns>A <see cref="MotdResponse" /> instance</returns>
         MotdResponse GetMotd();

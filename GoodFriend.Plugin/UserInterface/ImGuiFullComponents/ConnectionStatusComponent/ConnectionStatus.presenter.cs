@@ -12,7 +12,7 @@ namespace GoodFriend.Plugin.UserInterface.ImGuiFullComponents.ConnectionStatusCo
     /// </summary>
     public sealed class ConnectionStatusPresenter
     {
-        public static EventStreamConnectionState APIStatus => Services.APIClientManager.ConnectionStatus;
+        public static EventStreamConnectionState APIStatus => Services.GoodFriendApiManager.ConnectionStatus;
 
         public static string GetConnectionStatusText() => APIStatus switch
         {
@@ -44,6 +44,6 @@ namespace GoodFriend.Plugin.UserInterface.ImGuiFullComponents.ConnectionStatusCo
             _ => State.UnknownDescription,
         };
 
-        public static MetadataResponse? Metadata => Services.APIClientManager.MetadataCache;
+        public static MetadataResponse? Metadata => Services.GoodFriendApiManager.MetadataCache;
     }
 }

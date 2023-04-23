@@ -25,7 +25,7 @@ namespace GoodFriend.Client
 
         private readonly RestClient restClient;
         private readonly HttpClient httpClient;
-        private readonly Timer eventStreamReconnectTimer;
+        private readonly Timer eventStreamReconnectTimer = new(30000);
 
         public delegate void DelegatePlayerStateUpdate(object? sender, EventStreamPlayerUpdate update);
         public event DelegatePlayerStateUpdate? OnEventStreamStateUpdate;
@@ -52,8 +52,8 @@ namespace GoodFriend.Client
             this.httpClient = new HttpClient()
             {
                 BaseAddress = this.BaseUri,
+                Timeout = TimeSpan.FromSeconds(20),
             };
-            this.eventStreamReconnectTimer = new(60000);
             this.eventStreamReconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
             this.OnEventStreamException += this.HandleEventStreamException;
             this.OnEventStreamConnected += this.HandleEventStreamConnected;

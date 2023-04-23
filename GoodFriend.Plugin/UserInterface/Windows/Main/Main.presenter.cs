@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Common;
 using GoodFriend.Plugin.Game.Friends;
-using GoodFriend.Plugin.Managers;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.Main
 {
@@ -24,7 +23,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.Main
         /// <summary>
         ///     The metadata cache instance to use in the UI.
         /// </summary>
-        public static MetadataResponse? Metadata => Services.APIClientManager.MetadataCache;
+        public static MetadataResponse? Metadata => Services.GoodFriendApiManager.MetadataCache;
 
         /// <summary>
         ///     Toggles the selected dropdown. If a dropdown of the same type is already open, the type is set to <see cref="VisibleDropdown.None"/>.

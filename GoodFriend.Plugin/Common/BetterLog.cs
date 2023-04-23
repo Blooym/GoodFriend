@@ -16,7 +16,7 @@ namespace GoodFriend.Plugin.Common
         /// <param name="caller"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        private static string Format(string message, string? caller, string? file) => $"<{Path.GetFileName(file)}::{caller}>: {message}";
+        private static string Format(string message, string? caller, string? file) => $"<{Path.GetFileName(file)?.Replace(".cs", "")}::{caller}>: {message}";
 
         /// <inheritdoc cref="PluginLog.Verbose(string, object[])" />
         internal static void Verbose(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Verbose(Format(message, caller, file));
