@@ -1,2 +1,1 @@
-pub mod login;
-pub mod logout;
+pub mod update_player_loginstate;

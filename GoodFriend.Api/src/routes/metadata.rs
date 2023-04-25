@@ -7,12 +7,12 @@ use crate::constants::{
     ENV_APP_META_STATUS_PAGE_DEFAULT,
 };
 use crate::responses::metadata::MetadataResponse;
-use crate::responses::playerstate::PlayerStateUpdateResponse;
+use crate::responses::playerstate::EventStreamPlayerStateUpdateResponse;
 
 /// Gets metadata about the current status of the API.
 #[get("/metadata")]
 pub async fn get_metadata(
-    queue: &State<Sender<PlayerStateUpdateResponse>>,
+    queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> Json<MetadataResponse> {
     Json(MetadataResponse {
         connected_clients: queue.receiver_count(),

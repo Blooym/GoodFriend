@@ -5,19 +5,19 @@ mod constants;
 mod requests;
 mod responses;
 mod routes;
+mod types;
+
 use dotenv::dotenv;
-use responses::playerstate::PlayerStateUpdateResponse;
+use responses::playerstate::EventStreamPlayerStateUpdateResponse;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
-
-use routes::events::get_events;
 use routes::index::get_index;
-use routes::login::put_login;
-use routes::logout::put_logout;
 use routes::metadata::get_metadata;
 use routes::motd::get_motd;
+use routes::player_events::get_player_events;
 use routes::static_files::get_static_file;
+use routes::update_loginstate::put_update_loginstate;
 use rust_embed::RustEmbed;
 
 /// Compiles the contents of the static directory into the binary at build-time
@@ -31,16 +31,15 @@ fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     rocket::build()
-        .manage(channel::<PlayerStateUpdateResponse>(1024).0)
+        .manage(channel::<EventStreamPlayerStateUpdateResponse>(1024).0)
         .mount(
             "/",
             routes![
                 get_index,
                 get_static_file,
-                put_login,
-                put_logout,
+                put_update_loginstate,
                 get_metadata,
-                get_events,
+                get_player_events,
                 get_motd,
             ],
         )

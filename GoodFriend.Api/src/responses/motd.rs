@@ -1,4 +1,4 @@
-/// Represents motd that a client can request.
+/// Message of the day that a client can request.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct MotdResponse {
