@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace GoodFriend.Client.Responses
 {
     /// <summary>
-    ///     Represents a JSON response from the metadata endpoint.
+    ///     Represents response from the metadata endpoint.
     /// </summary>
     [Serializable]
     public readonly record struct MetadataResponse

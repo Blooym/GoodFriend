@@ -1,13 +1,13 @@
 namespace GoodFriend.Client.Requests
 {
     /// <summary>
-    ///     constants for the events endpoint.
+    ///     Represents a request for a stream of player events.
     /// </summary>
-    public readonly record struct EventsRequest
+    public static class PlayerEventsRequest
     {
         /// <summary>
         /// The endpoint url with a proceeding slash.
         /// </summary>
-        public const string EndpointUrl = "/events";
+        internal const string EndpointUrl = "/playerevents";
     }
 }

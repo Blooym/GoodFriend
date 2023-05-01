@@ -9,7 +9,7 @@ namespace GoodFriend.Client
     /// <summary>
     ///     Represents a client that can interact with the GoodFriend API.
     /// </summary>
-    internal interface IGoodFriendClient
+    public interface IGoodFriendClient : IDisposable
     {
         /// <summary>
         ///     The base URI of all API endpoints, should include version if applicable.
@@ -22,20 +22,12 @@ namespace GoodFriend.Client
         EventStreamConnectionState ConnectionState { get; }
 
         /// <summary>
-        ///     Sends a login event to the API.
+        ///     Sends the players login state to the API.
         /// </summary>
-        RestResponse SendLogin(LoginRequest requestData);
+        RestResponse SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData);
 
-        /// <inheritdoc cref="SendLogin(LoginRequest)" />
-        Task<RestResponse> SendLoginAsync(LoginRequest requestData);
-
-        /// <summary>
-        ///     Sends a logout event to the API.
-        /// </summary>
-        RestResponse SendLogout(LogoutRequest requestData);
-
-        /// <inheritdoc cref="SendLogout(LogoutRequest)" />
-        Task<RestResponse> SendLogoutAsync(LogoutRequest requestData);
+        /// <inheritdoc cref="SendLogin(UpdatePlayerLoginStateRequest)" />
+        Task<RestResponse> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PutData requestData);
 
         /// <summary>
         ///     Gets metadata from the API.

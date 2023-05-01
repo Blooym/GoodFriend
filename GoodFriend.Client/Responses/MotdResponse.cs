@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace GoodFriend.Client.Responses
 {
+    /// <summary>
+    ///     Represents a response from the motd endpoint.
+    /// </summary>
     [Serializable]
     public readonly record struct MotdResponse
     {

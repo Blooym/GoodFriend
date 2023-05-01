@@ -1,10 +1,13 @@
 namespace GoodFriend.Client.Requests
 {
-    internal readonly record struct MetadataRequest
+    /// <summary>
+    ///     Represents a request for metadata.
+    /// </summary>
+    internal static class MetadataRequest
     {
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        public const string EndpointUrl = "/metadata";
+        internal const string EndpointUrl = "/metadata";
     }
 }

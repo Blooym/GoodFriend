@@ -1,10 +1,13 @@
 namespace GoodFriend.Client.Requests
 {
-    internal readonly record struct MotdRequest
+    /// <summary>
+    ///     Represents a request for the motd.
+    /// </summary>
+    internal static class MotdRequest
     {
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        public const string EndpointUrl = "/motd";
+        internal const string EndpointUrl = "/motd";
     }
 }
