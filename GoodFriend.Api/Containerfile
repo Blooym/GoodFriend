@@ -23,18 +23,11 @@ RUN cargo build ${RUSTC_APP_FLAGS}
 # -----------
 #   RUNTIME  
 # -----------
-FROM alpine:latest as runtime
+FROM gcr.io/distroless/static-debian11:nonroot as runtime
 WORKDIR /app
 
 # Grab api binary from build.
 COPY --from=build /build/target/release/ .
-
-# De-escalate to a non-root user.
-ENV USER prod
-RUN adduser --disabled-password --gecos "" -H ${USER}
-RUN chmod -R 550 .
-RUN chown -R ${USER}:${USER} .
-uSER ${USER}
 
 # Run the api.
 CMD ["./goodfriend-api"]

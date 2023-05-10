@@ -14,6 +14,9 @@ namespace GoodFriend.Client
         /// <summary>
         ///     The base URI of all API endpoints, should include version if applicable.
         /// </summary>
+        /// <remarks>
+        ///     You cannot use sub-paths (e.g. <c>/api/v1</c>) here, only the base URI (Limitation of RestSharp).
+        /// </remarks>
         Uri BaseUri { get; }
 
         /// <summary>

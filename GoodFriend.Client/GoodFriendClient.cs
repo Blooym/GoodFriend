@@ -16,11 +16,10 @@ namespace GoodFriend.Client
     /// </summary>
     public sealed class GoodFriendClient : IGoodFriendClient
     {
-        /// <inheritdoc />
-        public EventStreamConnectionState ConnectionState { get; private set; } = EventStreamConnectionState.Disconnected;
-
-        /// <inheritdoc />
-        public Uri BaseUri { get; }
+        /// <summary>
+        ///     How often the event stream should attempt to reconnect if it is disconnected.
+        /// </summary>
+        private const double AUTO_RECONNECT_SECONDS = 45;
 
         /// <summary>
         ///     The rest client instance.
@@ -35,7 +34,7 @@ namespace GoodFriend.Client
         /// <summary>
         ///     The event stream reconnect timer instance.
         /// </summary>
-        private readonly Timer eventStreamReconnectTimer = new(45000);
+        private readonly Timer eventStreamReconnectTimer = new(TimeSpan.FromSeconds(AUTO_RECONNECT_SECONDS));
 
         /// <summary>
         ///     Delegate for the <see cref="OnEventStreamPlayerStateUpdate" /> event.
@@ -101,31 +100,17 @@ namespace GoodFriend.Client
         /// </remarks>
         public event DelegateEventStreamDisconnected? OnEventStreamDisconnected;
 
-        /// <summary>
-        ///     Creates a new custom <see cref="RestClient" /> with the given <paramref name="baseUri" />.
-        /// </summary>
-        /// <param name="baseUri"></param>
-        /// <returns></returns>
-        private static RestClient CreateRestClient(Uri baseUri) => new(new RestClientOptions()
-        {
-            BaseUrl = baseUri,
-        });
+        /// <inheritdoc />
+        public EventStreamConnectionState ConnectionState { get; private set; } = EventStreamConnectionState.Disconnected;
 
-        /// <summary>
-        ///     Creates a new custom <see cref="HttpClient" /> with the given <paramref name="baseUri" />
-        /// </summary>
-        /// <param name="baseUri"></param>
-        /// <returns></returns>
-        private static HttpClient CreateHttpClient(Uri baseUri) => new()
-        {
-            BaseAddress = baseUri,
-            Timeout = TimeSpan.FromSeconds(10),
-        };
+        /// <inheritdoc />
+        public Uri BaseUri { get; }
 
         /// <summary>
         ///     Creates a new instance of the client.
         /// </summary>
         /// <param name="baseUri">The base uri of the api</param>
+        /// <param name="subPath">The sub path of the api</param>
         public GoodFriendClient(Uri baseUri)
         {
             this.BaseUri = baseUri;
@@ -154,12 +139,33 @@ namespace GoodFriend.Client
 
             this.eventStreamReconnectTimer.Stop();
             this.eventStreamReconnectTimer.Dispose();
-
             this.eventStreamReconnectTimer.Elapsed -= this.HandleReconnectTimerElapse;
+
             this.OnEventStreamException -= this.HandleEventStreamException;
             this.OnEventStreamConnected -= this.HandleEventStreamConnected;
             this.OnEventStreamDisconnected -= this.HandleEventStreamDisconnected;
         }
+
+        /// <summary>
+        ///     Creates a new custom <see cref="RestClient" /> with the given <paramref name="baseUri" />.
+        /// </summary>
+        /// <param name="baseUri"></param>
+        /// <returns></returns>
+        private static RestClient CreateRestClient(Uri baseUri) => new(new RestClientOptions()
+        {
+            BaseUrl = baseUri,
+        });
+
+        /// <summary>
+        ///     Creates a new custom <see cref="HttpClient" /> with the given <paramref name="baseUri" />
+        /// </summary>
+        /// <param name="baseUri"></param>
+        /// <returns></returns>
+        private static HttpClient CreateHttpClient(Uri baseUri) => new()
+        {
+            BaseAddress = baseUri,
+            Timeout = TimeSpan.FromSeconds(10),
+        };
 
         /// <summary>
         ///     Builds a new login state update request with the given <paramref name="requestData" />
@@ -229,43 +235,48 @@ namespace GoodFriend.Client
         }
 
         /// <inheritdoc />
-        // Note: in the future if there are multiple streams this could be turned into a generic instead and allow a manual URL to be passed,
-        // Although this would make connection management a lot harder.
         public async void ConnectToEventStream()
         {
             try
             {
+                // Avoid duplicate connections / connection attempts.
                 if (this.ConnectionState is EventStreamConnectionState.Connecting or EventStreamConnectionState.Connected)
                 {
-                    throw new InvalidOperationException("Already connected or connecting to the event stream");
+                    throw new InvalidOperationException("Already connected or connecting to the event stream.");
                 }
 
                 this.ConnectionState = EventStreamConnectionState.Connecting;
 
+                // Begin reading the event stream.
                 using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.EndpointUrl);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 
+                // Alert listeners that we are connected.
                 this.ConnectionState = EventStreamConnectionState.Connected;
                 this.OnEventStreamConnected?.Invoke(this);
 
+                // Begin waiting for events.
                 while (!reader.EndOfStream && this.ConnectionState == EventStreamConnectionState.Connected)
                 {
                     var message = reader.ReadLine();
                     message = HttpUtility.UrlDecode(message);
 
+                    // If the message was a heartbeat, alert listeners and continue.
                     if (message == null || message.Trim() == ":")
                     {
                         this.OnEventStreamHeartbeat?.Invoke(this);
                         continue;
                     }
 
+                    // If the message contains empty data, skip it.
                     message = message.Replace("data:", "").Trim();
                     if (string.IsNullOrEmpty(message))
                     {
                         continue;
                     }
 
+                    // Try to deserialize the message - if it fails due to invalid JSON, skip it, however if it fails for any other reason, break the loop.
                     try
                     {
                         var data = JsonSerializer.Deserialize<EventStreamPlayerStateUpdateResponse>(message, new JsonSerializerOptions() { IncludeFields = true, WriteIndented = true });
@@ -282,6 +293,7 @@ namespace GoodFriend.Client
                     }
                 }
 
+                // If the reader reaches the end of the stream without us intentionally disconnecting, alert listeners of the exception.
                 if (reader.EndOfStream && this.ConnectionState == EventStreamConnectionState.Connected)
                 {
                     this.OnEventStreamException?.Invoke(this, exception ?? new HttpRequestException("Connection to stream suddenly closed."));
@@ -289,6 +301,7 @@ namespace GoodFriend.Client
             }
             catch (Exception e)
             {
+                // Anything else that goes wrong, alert listeners of the exception.
                 this.OnEventStreamException?.Invoke(this, e);
             }
         }
@@ -296,25 +309,36 @@ namespace GoodFriend.Client
         /// <inheritdoc />
         public void DisconnectFromEventStream()
         {
+            // Avoid duplicate disconnections / disconnection attempts.
             if (this.ConnectionState is EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Disconnected)
             {
                 throw new InvalidOperationException("Already disconnected from the event stream.");
             }
 
+            // Cleanup and disconnect.
             this.ConnectionState = EventStreamConnectionState.Disconnecting;
             this.httpClient.CancelPendingRequests();
+
+            // Alert listeners of the disconnect.
             this.ConnectionState = EventStreamConnectionState.Disconnected;
             this.OnEventStreamDisconnected?.Invoke(this);
         }
 
+        /// <summary>
+        ///     When the event stream reconnect timer elapses, attempt to reconnect to the event stream.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
         {
+            // If we are not in an exception state, stop the timer and return.
             if (this.ConnectionState is not EventStreamConnectionState.Exception)
             {
                 this.eventStreamReconnectTimer.Stop();
                 return;
             }
 
+            // Attempt to reconnect to the event stream.
             this.ConnectToEventStream();
         }
 
@@ -326,6 +350,7 @@ namespace GoodFriend.Client
         private void HandleEventStreamException(object? sender, Exception exception)
         {
             this.ConnectionState = EventStreamConnectionState.Exception;
+            this.httpClient.CancelPendingRequests();
             this.eventStreamReconnectTimer.Start();
         }
 

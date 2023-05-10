@@ -31,7 +31,6 @@ struct Asset;
 #[launch]
 fn rocket() -> Rocket<Build> {
     dotenv().ok();
-
     rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(1024).0)
         .mount(
