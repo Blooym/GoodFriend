@@ -28,13 +28,11 @@ fn rocket() -> Rocket<Build> {
         );
         process::exit(1);
     }
-
     config::get_config_cached_prime_cache();
 
     println!("Starting GoodFriend API - Configuration cache primed.");
     rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(1024).0)
-        .manage(config::get_config_cached())
         .mount("/", api::web::routes())
         .mount([BASE_PATH, "/"].concat(), api::core::routes())
         .mount([BASE_PATH, "/update"].concat(), api::update::routes())
