@@ -3,48 +3,42 @@
 #[macro_use]
 extern crate rocket;
 
-mod constants;
-mod requests;
-mod responses;
-mod routes;
+mod api;
+mod config;
 mod types;
 
+use api::responses::playerevent::EventStreamPlayerStateUpdateResponse;
+use config::Config;
 use dotenv::dotenv;
-use responses::playerstate::EventStreamPlayerStateUpdateResponse;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
-use routes::index::get_index;
-use routes::metadata::get_metadata;
-use routes::motd::get_motd;
-use routes::player_events::get_player_events;
-use routes::static_files::get_static_file;
-use routes::update_loginstate::put_update_loginstate;
-use rust_embed::RustEmbed;
+use std::process;
 
-/// Compiles the contents of the static directory into the binary at build-time
-/// for portability.
-#[derive(RustEmbed)]
-#[folder = "./static"]
-struct Asset;
+const BASE_PATH: &str = "/api";
 
 #[launch]
 fn rocket() -> Rocket<Build> {
     dotenv().ok();
+
+    if !Config::exists() {
+        Config::default().save();
+        eprintln!(
+            "Error: Missing configuration file - one has been created for you. Please refer to the documentation and fill it out before starting the API again."
+        );
+        process::exit(1);
+    }
+
+    config::get_config_cached_prime_cache();
+
+    println!("Starting GoodFriend API - Configuration cache primed.");
     rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(1024).0)
-        .mount(
-            "/",
-            routes![
-                get_index,
-                get_static_file,
-                put_update_loginstate,
-                get_metadata,
-                get_player_events,
-                get_motd,
-            ],
-        )
-        .register("/", catchers![not_found])
+        .manage(config::get_config_cached())
+        .mount("/", api::web::routes())
+        .mount([BASE_PATH, "/"].concat(), api::core::routes())
+        .mount([BASE_PATH, "/update"].concat(), api::update::routes())
+        .mount([BASE_PATH, "/events"].concat(), api::events::routes())
         .attach(
             Shield::default()
                 .enable(shield::XssFilter::Enable)
@@ -53,9 +47,4 @@ fn rocket() -> Rocket<Build> {
                 .enable(shield::NoSniff::Enable)
                 .enable(shield::Prefetch::Off),
         )
-}
-
-#[catch(404)]
-fn not_found() -> &'static str {
-    "Not found"
 }

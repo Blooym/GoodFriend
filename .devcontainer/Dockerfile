@@ -1,4 +1,4 @@
-FROM ghcr.io/bitsofabyte/docker-dalamud:latest
+FROM ghcr.io/bitsofabyte/docker-dalamud:staging
 
 # Optout of telemtry.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -12,5 +12,5 @@ RUN adduser --disabled-password --gecos "" dev
 
 # Rust Nightly.
 USER dev
-RUN  curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y
+RUN  curl https://sh.rustup.rs -sSf | sh -s -- -y
 USER root
