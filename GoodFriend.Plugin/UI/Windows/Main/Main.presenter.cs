@@ -7,6 +7,7 @@ using GoodFriend.Base;
 using GoodFriend.Managers;
 using GoodFriend.Managers.FriendList;
 using GoodFriend.Types;
+using XivCommon.Functions.FriendList;
 
 namespace GoodFriend.UI.Windows.Main
 {
@@ -59,12 +60,12 @@ namespace GoodFriend.UI.Windows.Main
         /// <summary>
         ///     Fetches the users friendslist from the game.
         /// </summary>
-        public unsafe List<FriendListEntry> GetFriendList()
+        public static unsafe List<FriendListEntry> GetFriendList()
         {
             List<FriendListEntry> friends = new();
-            foreach (FriendListEntry* friend in FriendListCache.Get())
+            foreach (var friend in FriendListCache.Get())
             {
-                friends.Add(*friend);
+                friends.Add(friend);
             }
             return friends;
         }

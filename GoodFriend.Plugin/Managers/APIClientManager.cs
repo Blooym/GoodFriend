@@ -13,6 +13,7 @@ using GoodFriend.Managers.FriendList;
 using GoodFriend.Types;
 using GoodFriend.Utils;
 using Newtonsoft.Json;
+using XivCommon.Functions.FriendList;
 using ToastType = Dalamud.Interface.Internal.Notifications.NotificationType;
 
 namespace GoodFriend.Managers
@@ -270,73 +271,75 @@ namespace GoodFriend.Managers
             PluginLog.Verbose($"APIClientManager(OnSSEDataReceived): Data received from API, processing it ({data.ContentID[..8]}...).");
 
             // Find if the friend is on the users friend list.
-            FriendListEntry* friend = default;
-            foreach (FriendListEntry* x in FriendListCache.Get())
+            FriendListEntry? friendSearch = null;
+            foreach (var x in FriendListCache.Get())
             {
-                var hash = CryptoUtil.HashSHA512(x->ContentId.ToString(), data.Salt ?? string.Empty);
+                var hash = CryptoUtil.HashSHA512(x.ContentId.ToString(), data.Salt ?? string.Empty);
                 if (hash == data.ContentID)
                 {
-                    friend = x;
+                    friendSearch = x;
                     break;
                 }
             }
 
             // If friend is null, the user is not added by the client or the ID is invalid.
-            if (friend == null)
+            if (friendSearch == null)
             {
                 PluginLog.Verbose("APIClientManager(OnSSEDataReceived): No friend found from the event, cannot display to client.");
                 return;
             }
 
+            var friend = friendSearch.Value!;
+
             // If the player has "Hide Same FC" enabled, check if the FC matches the current player's FC.
             if (this.clientState.LocalPlayer?.CompanyTag?.ToString() != string.Empty
-                && friend->FreeCompany.ToString() == this.clientState?.LocalPlayer?.CompanyTag.ToString()
-                && friend->HomeWorld == this.clientState.LocalPlayer.HomeWorld.Id
+                && friend.FreeCompany.ToString() == this.clientState?.LocalPlayer?.CompanyTag.ToString()
+                && friend.HomeWorld == this.clientState.LocalPlayer.HomeWorld.Id
                 && PluginService.Configuration.HideSameFC)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend->FreeCompany})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend.Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend.FreeCompany})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend.Name} received; ignoring due to sharing the same free company & homeworld. (FC: {friend.FreeCompany})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             // If the player has "Hide Different Homeworld" enabled, check if the home world matches the current player's home world.
-            if (this.currentHomeworldId != friend->HomeWorld && PluginService.Configuration.HideDifferentHomeworld)
+            if (this.currentHomeworldId != friend.HomeWorld && PluginService.Configuration.HideDifferentHomeworld)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different homeworld. (Them: {friend->HomeWorld}, You: {this.currentHomeworldId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend.Name} received; ignoring due to being on a different homeworld. (Them: {friend.HomeWorld}, You: {this.currentHomeworldId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend.Name} received; ignoring due to being on a different homeworld. (Them: {friend.HomeWorld}, You: {this.currentHomeworldId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             //// If the player has "Hide Different World" enabled, check if the world matches the current player's world.
             if (this.currentWorldId != data.WorldID && PluginService.Configuration.HideDifferentWorld && data.WorldID != 0)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend.Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend.Name} received; ignoring due to being on a different world. (Them: {data.WorldID}, You: {this.currentWorldId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             // If the player has "Hide Different Datacenter" enabled, check if the datacenter matches the current player's datacenter.
             if (this.currentDatacenterId != data.DatacenterID && PluginService.Configuration.HideDifferentDatacenter)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend.Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend.Name} received; ignoring due to being on a different datacenter. (Them: {data.DatacenterID}, You: {this.currentDatacenterId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             // If the player has "Hide Different Territory" enabled, check if the territory matches the current player's territory.
             if (data.TerritoryID != this.currentTerritoryId && PluginService.Configuration.HideDifferentTerritory)
             {
-                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})");
-                PluginService.EventLogManager.AddEntry($"Event for {friend->Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})", EventLogManager.EventLogType.Info);
+                PluginLog.Debug($"APIClientManager(OnSSEDataReceived): Event for {friend.Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})");
+                PluginService.EventLogManager.AddEntry($"Event for {friend.Name} received; ignoring due to being for a different territory. (Them: {data.TerritoryID}, You: {this.currentTerritoryId})", EventLogManager.EventLogType.Info);
                 return;
             }
 
             // Everything is good, send the event to the player and add it to the log.
-            PluginLog.Debug($"APIClientManager(OnSSEDataReceived): {friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
-            PluginService.EventLogManager.AddEntry($"{friend->Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
+            PluginLog.Debug($"APIClientManager(OnSSEDataReceived): {friend.Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}");
+            PluginService.EventLogManager.AddEntry($"{friend.Name} {(data.LoggedIn ? Events.LoggedIn : Events.LoggedOut)}", EventLogManager.EventLogType.Info);
             Notifications.ShowPreferred(data.LoggedIn ?
-            string.Format(PluginService.Configuration.FriendLoggedInMessage, friend->Name, friend->FreeCompany)
-            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend->Name, friend->FreeCompany), ToastType.Info);
+            string.Format(PluginService.Configuration.FriendLoggedInMessage, friend.Name, friend.FreeCompany)
+            : string.Format(PluginService.Configuration.FriendLoggedOutMessage, friend.Name, friend.FreeCompany), ToastType.Info);
         }
 
         /// <summary>

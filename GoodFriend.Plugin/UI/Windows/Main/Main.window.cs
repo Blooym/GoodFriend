@@ -502,7 +502,7 @@ namespace GoodFriend.UI.Windows.Main
                     ImGui.TextDisabled("Detected Friends - Click to copy ContentID hash & salt");
                     ImGui.BeginChild("##Friends");
 
-                    var friendList = this.presenter.GetFriendList();
+                    var friendList = MainPresenter.GetFriendList();
                     if (friendList.Count == 0)
                     {
                         ImGui.TextWrapped("Unable to pull friends list data, the cache might be unavailable or disabled.");

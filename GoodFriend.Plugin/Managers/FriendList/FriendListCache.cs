@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using GoodFriend.Base;
+using XivCommon.Functions.FriendList;
 
 namespace GoodFriend.Managers.FriendList
 {
@@ -7,19 +10,19 @@ namespace GoodFriend.Managers.FriendList
     /// </summary>
     public static class FriendListCache
     {
-        private static unsafe FriendListEntry*[]? cache;
+        private static unsafe IList<FriendListEntry>? cache;
 
         /// <summary>
         ///     A list of the currently-logged-in player's friends, returns cached version if list is empty and the player is logged in.
         /// </summary>
-        public static unsafe FriendListEntry*[] Get()
+        public static unsafe IList<FriendListEntry> Get()
         {
             if (PluginService.ClientState.LocalContentId == 0)
             {
-                return new FriendListEntry*[0];
+                return Array.Empty<FriendListEntry>();
             }
 
-            var friendList = FriendList.Get();
+            var friendList = PluginService.XivCommon.Functions.FriendList.List;
 
             // If caching of friends has been disabled, return the current friend list.
             if (!PluginService.Configuration.FriendslistCaching)
@@ -28,12 +31,12 @@ namespace GoodFriend.Managers.FriendList
             }
 
             // Otherwise, if the current friend list is not empty, update the cache.
-            if (friendList.Length != 0)
+            if (friendList.Count != 0)
             {
                 cache = friendList;
             }
 
-            return cache ?? new FriendListEntry*[0];
+            return cache ?? Array.Empty<FriendListEntry>();
         }
     }
 }

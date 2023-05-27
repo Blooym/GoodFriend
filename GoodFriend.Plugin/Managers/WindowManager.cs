@@ -51,7 +51,7 @@ namespace GoodFriend.Managers
         /// </summary>
         private void OnOpenConfigUI()
         {
-            if (this.windowSystem.GetWindow(PluginConstants.PluginName) is MainWindow window)
+            if (this.windows.FirstOrDefault(window => window is MainWindow) is MainWindow window)
             {
                 window.IsOpen = !window.IsOpen;
             }

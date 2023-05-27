@@ -43,13 +43,7 @@ namespace GoodFriend.Managers
         {
             try
             {
-                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream($"GoodFriend.Resources.Localization.{language}.json");
-
-                if (resource == null)
-                {
-                    throw new FileNotFoundException($"Could not find resource file for language {language}.");
-                }
-
+                using var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream($"GoodFriend.Resources.Localization.{language}.json") ?? throw new FileNotFoundException($"Could not find resource file for language {language}.");
                 using var reader = new StreamReader(resource);
                 Loc.Setup(reader.ReadToEnd());
                 PluginLog.Information($"ResourceManager(Setup): Resource file for language {language} loaded successfully.");

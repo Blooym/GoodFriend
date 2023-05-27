@@ -7,6 +7,7 @@ using Dalamud.IoC;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using GoodFriend.Managers;
+using XivCommon;
 
 namespace GoodFriend.Base
 {
@@ -28,6 +29,7 @@ namespace GoodFriend.Base
         internal static APIClientManager APIClientManager { get; private set; }
         internal static Configuration Configuration { get; private set; }
         internal static EventLogManager EventLogManager { get; private set; }
+        internal static XivCommonBase XivCommon { get; private set; }
 #pragma warning restore CS8618, RCS1170
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace GoodFriend.Base
             EventLogManager = new EventLogManager();
             APIClientManager = new APIClientManager(ClientState, Framework);
             WindowManager = new WindowManager();
+            XivCommon = new XivCommonBase();
 
             EventLogManager.AddEntry("Services initialized successfully.", EventLogManager.EventLogType.Debug);
             PluginLog.Debug("PluginService(Initialize): Successfully initialized.");
@@ -53,6 +56,7 @@ namespace GoodFriend.Base
             APIClientManager.Dispose();
             WindowManager.Dispose();
             ResourceManager.Dispose();
+            XivCommon.Dispose();
         }
     }
 }
