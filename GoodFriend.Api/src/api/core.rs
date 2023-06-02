@@ -1,39 +1,33 @@
 use super::guards::user_agent::UserAgentGuard;
 use super::responses::metadata::MetadataResponse;
 use super::responses::minimum_game_version::MinimumGameVersionResponse;
-use super::responses::playerevent::EventStreamPlayerStateUpdateResponse;
+use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
 use crate::config::get_config_cached;
-use crate::types::motd::Motd;
 use rocket::serde::json::Json;
 use rocket::tokio::sync::broadcast::Sender;
 use rocket::Route;
 use rocket::State;
 
 pub fn routes() -> Vec<Route> {
-    routes![motd, metadata, minversion]
-}
-
-/// Relays a "message of the day" created from the motd.json file.
-#[get("/motd")]
-pub async fn motd(_agent_guard: UserAgentGuard) -> Json<Motd> {
-    Json(get_config_cached().motd)
+    routes![metadata, minversion]
 }
 
 /// Gets metadata about the current status of the API.
 #[get("/metadata")]
 pub async fn metadata(
-    queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
     _agent_guard: UserAgentGuard,
+    queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> Json<MetadataResponse> {
     let config = get_config_cached();
     Json(MetadataResponse {
+        motd: config.motd.clone(),
         connected_clients: queue.receiver_count(),
-        status_url: config.metadata.status_url,
-        donate_url: config.metadata.donation_url,
+        custom_urls: config.custom_urls.clone(),
     })
 }
 
-#[get("/minimum_game_version")]
+/// Gets the minimum game version required to use the API.
+#[get("/minversion")]
 pub async fn minversion(_agent_guard: UserAgentGuard) -> Json<MinimumGameVersionResponse> {
     Json(MinimumGameVersionResponse {
         version_string: get_config_cached().minimum_game_version.to_string(),

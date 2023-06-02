@@ -1,6 +1,4 @@
-use rocket::{
-    serde::{Deserialize, Serialize},
-};
+use rocket::serde::{Deserialize, Serialize};
 use std::{cmp::Ordering, fmt::Display};
 
 /// Represents a game version.
@@ -24,17 +22,6 @@ pub enum GameVersionError {
 }
 
 impl GameVersion {
-    /// Creates a new game version with default values.
-    pub fn default() -> Self {
-        Self {
-            year: String::from("2023"),
-            month: String::from("01"),
-            day: String::from("01"),
-            major: String::from("0000"),
-            minor: String::from("0000"),
-        }
-    }
-
     /// Creates a new game version from a string formatted as `YYYY.MM.DD.MAJOR.MINOR`.
     pub fn from_str(version: &str) -> Result<Self, GameVersionError> {
         let mut split = version.split('.');
@@ -69,7 +56,13 @@ impl GameVersion {
 
 impl Default for GameVersion {
     fn default() -> Self {
-        Self::default()
+        Self {
+            year: String::from("2023"),
+            month: String::from("01"),
+            day: String::from("01"),
+            major: String::from("0000"),
+            minor: String::from("0000"),
+        }
     }
 }
 

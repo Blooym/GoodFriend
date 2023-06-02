@@ -14,8 +14,8 @@
 				"ms-dotnettools.csharp",
 				"tintoy.msbuild-project-tools",
 				"kreativ-software.csharpextensions",
-				"bungcip.better-toml",
-				"rust-lang.rust-analyzer"
+				"rust-lang.rust-analyzer",
+				"tamasfe.even-better-toml"
 			]
 		}
 	}

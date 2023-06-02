@@ -1,8 +1,8 @@
 use super::{
     guards::{minimum_game_version::MinimumGameVersionGuard, user_agent::UserAgentGuard},
-    responses::playerevent::{EventStreamPlayerStateUpdateResponse, PlayerStateUpdateType},
+    responses::player_event::{EventStreamPlayerStateUpdateResponse, PlayerStateUpdateType},
 };
-use crate::types::content_id::ContentIdHash;
+use crate::types::content_id::{ContentIdHash, ContentIdSalt};
 use rocket::{
     response::status,
     serde::{Deserialize, Serialize},
@@ -10,6 +10,7 @@ use rocket::{
 };
 use rocket::{tokio::sync::broadcast::Sender, Route};
 
+/// Returns all routes for the update api.
 pub fn routes() -> Vec<Route> {
     routes![loginstate, world]
 }
@@ -19,6 +20,7 @@ pub fn routes() -> Vec<Route> {
 #[serde(crate = "rocket::serde")]
 pub struct UpdatePlayerLoginStateRequest {
     pub content_id_hash: ContentIdHash,
+    pub content_id_salt: ContentIdSalt,
     pub logged_in: bool,
     pub datacenter_id: u32,
     pub world_id: u32,
@@ -34,7 +36,8 @@ async fn loginstate(
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {
     let _ = queue.send(EventStreamPlayerStateUpdateResponse {
-        content_id_hash: update.content_id_hash.to_owned(),
+        content_id_hash: update.content_id_hash,
+        content_id_salt: update.content_id_salt,
         state_update_type: PlayerStateUpdateType::LoginStateChange {
             logged_in: update.logged_in,
             datacenter_id: update.datacenter_id,
@@ -51,6 +54,7 @@ async fn loginstate(
 #[serde(crate = "rocket::serde")]
 pub struct UpdatePlayerWorldRequest {
     pub content_id_hash: ContentIdHash,
+    pub content_id_salt: ContentIdSalt,
     pub world_id: u32,
 }
 
@@ -63,7 +67,8 @@ async fn world(
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {
     let _ = queue.send(EventStreamPlayerStateUpdateResponse {
-        content_id_hash: update.content_id_hash.to_owned(),
+        content_id_hash: update.content_id_hash,
+        content_id_salt: update.content_id_salt,
         state_update_type: PlayerStateUpdateType::WorldChange {
             world_id: update.world_id,
         },

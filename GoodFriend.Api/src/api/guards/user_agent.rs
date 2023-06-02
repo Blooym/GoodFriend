@@ -48,6 +48,7 @@ impl<'r> FromRequest<'r> for UserAgentGuard {
     }
 }
 
+/// The error that can occur when checking the user agent.
 #[derive(Debug, Clone)]
 pub enum BannedAgentError {
     AgentBanned,

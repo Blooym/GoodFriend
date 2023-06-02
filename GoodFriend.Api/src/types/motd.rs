@@ -9,18 +9,12 @@ pub struct Motd {
     pub ignore: bool,
 }
 
-impl Motd {
-    pub fn default() -> Self {
+impl Default for Motd {
+    fn default() -> Self {
         Self {
             message: String::default(),
             important: false,
             ignore: true,
         }
-    }
-}
-
-impl Default for Motd {
-    fn default() -> Self {
-        Self::default()
     }
 }

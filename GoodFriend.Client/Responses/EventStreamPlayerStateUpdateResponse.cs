@@ -16,7 +16,7 @@ namespace GoodFriend.Client.Responses
         public string ContentIdHash { get; set; }
 
         /// <summary>
-        ///     The salt used when making the ContentIdHash.
+        ///     The salt used when hashing the player's ContentID.
         /// </summary>
         [JsonPropertyName("content_id_salt")]
         public string ContentIdSalt { get; set; }

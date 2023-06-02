@@ -8,6 +8,6 @@ namespace GoodFriend.Client.Requests
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "/metadata";
+        internal const string ENDPOINT_URL = "/api/metadata";
     }
 }

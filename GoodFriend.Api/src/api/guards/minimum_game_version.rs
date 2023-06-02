@@ -40,6 +40,7 @@ impl<'r> FromRequest<'r> for MinimumGameVersionGuard {
     }
 }
 
+/// An error that can occur when checking the game version.
 #[derive(Debug, Clone)]
 pub enum GameVersionError {
     OldGameVersion,

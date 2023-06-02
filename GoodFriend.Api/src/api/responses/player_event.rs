@@ -1,4 +1,4 @@
-use crate::types::content_id::ContentIdHash;
+use crate::types::content_id::{ContentIdHash, ContentIdSalt};
 use rocket::serde::{Deserialize, Serialize};
 
 /// Represents a player state update that is sent to clients.
@@ -9,6 +9,7 @@ use rocket::serde::{Deserialize, Serialize};
 #[serde(crate = "rocket::serde")]
 pub struct EventStreamPlayerStateUpdateResponse {
     pub content_id_hash: ContentIdHash,
+    pub content_id_salt: ContentIdSalt,
     pub state_update_type: PlayerStateUpdateType,
 }
 

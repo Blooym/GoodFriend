@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
-using RestSharp;
 
 namespace GoodFriend.Client
 {
@@ -17,24 +21,28 @@ namespace GoodFriend.Client
     public sealed class GoodFriendClient : IGoodFriendClient
     {
         /// <summary>
-        ///     How often the event stream should attempt to reconnect if it is disconnected.
+        ///     The user-agent header value.
         /// </summary>
-        private const double AUTO_RECONNECT_SECONDS = 45;
+        private static readonly string UserAgent = $"GoodFriend.Client/{Assembly.GetExecutingAssembly().GetName().Version}";
 
         /// <summary>
-        ///     The rest client instance.
+        ///     The http client handler instance.
         /// </summary>
-        private readonly RestClient restClient;
+        private readonly HttpClientHandler httpClientHandler = new()
+        {
+            AutomaticDecompression = DecompressionMethods.All,
+            UseCookies = true,
+        };
 
         /// <summary>
         ///     The http client instance.
         /// </summary>
-        private readonly HttpClient httpClient;
+        private HttpClient httpClient;
 
         /// <summary>
         ///     The event stream reconnect timer instance.
         /// </summary>
-        private readonly Timer eventStreamReconnectTimer = new(TimeSpan.FromSeconds(AUTO_RECONNECT_SECONDS));
+        private readonly Timer eventStreamReconnectTimer;
 
         /// <summary>
         ///     Delegate for the <see cref="OnEventStreamPlayerStateUpdate" /> event.
@@ -104,18 +112,23 @@ namespace GoodFriend.Client
         public EventStreamConnectionState ConnectionState { get; private set; } = EventStreamConnectionState.Disconnected;
 
         /// <inheritdoc />
-        public Uri BaseUri { get; }
+        public GoodfriendClientOptions Options { get; private set; }
+
+        /// <inheritdoc />
+        public string GameVersion { get; }
 
         /// <summary>
         ///     Creates a new instance of the client.
         /// </summary>
         /// <param name="baseUri">The base uri of the api</param>
-        /// <param name="subPath">The sub path of the api</param>
-        public GoodFriendClient(Uri baseUri)
+        /// <param name="gameVersion">The current ffxivgame.ver value</param>
+        public GoodFriendClient(GoodfriendClientOptions options, string gameVersion)
         {
-            this.BaseUri = baseUri;
-            this.restClient = CreateRestClient(baseUri);
-            this.httpClient = CreateHttpClient(baseUri);
+            this.Options = options;
+            this.GameVersion = gameVersion;
+            this.httpClientHandler = CreateHttpClientHandler();
+            this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress, gameVersion);
+            this.eventStreamReconnectTimer = new Timer(options.ReconnectInterval);
             this.eventStreamReconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
             this.OnEventStreamException += this.HandleEventStreamException;
             this.OnEventStreamConnected += this.HandleEventStreamConnected;
@@ -134,8 +147,9 @@ namespace GoodFriend.Client
                 //
             }
 
-            this.restClient.Dispose();
+            this.httpClient.CancelPendingRequests();
             this.httpClient.Dispose();
+            this.httpClientHandler.Dispose();
 
             this.eventStreamReconnectTimer.Stop();
             this.eventStreamReconnectTimer.Dispose();
@@ -147,91 +161,190 @@ namespace GoodFriend.Client
         }
 
         /// <summary>
-        ///     Creates a new custom <see cref="RestClient" /> with the given <paramref name="baseUri" />.
+        ///     Creates a new custom <see cref="HttpClientHandler" />
         /// </summary>
-        /// <param name="baseUri"></param>
         /// <returns></returns>
-        private static RestClient CreateRestClient(Uri baseUri) => new(new RestClientOptions()
+        private static HttpClientHandler CreateHttpClientHandler() => new()
         {
-            BaseUrl = baseUri,
-        });
+            AutomaticDecompression = DecompressionMethods.All,
+            UseCookies = true,
+        };
 
         /// <summary>
         ///     Creates a new custom <see cref="HttpClient" /> with the given <paramref name="baseUri" />
         /// </summary>
         /// <param name="baseUri"></param>
+        /// <param name="gameVersion"></param>
         /// <returns></returns>
-        private static HttpClient CreateHttpClient(Uri baseUri) => new()
+        private static HttpClient CreateHttpClient(HttpClientHandler handler, Uri baseUri, string gameVersion) => new(handler)
         {
             BaseAddress = baseUri,
+            DefaultRequestHeaders =
+            {
+                { "User-Agent", UserAgent },
+                { "X-Game-Version", gameVersion },
+            },
             Timeout = TimeSpan.FromSeconds(10),
         };
+
+        /// <summary>
+        ///     Creates a query string from the given <paramref name="parameters" />
+        /// </summary>
+        /// <param name="parameters">The parameters to create the query string from</param>
+        /// <returns>A ready to use query string</returns>
+        private static string CreateParams(Dictionary<string, object> parameters)
+        {
+            var sb = new StringBuilder("?");
+            foreach (var (key, value) in parameters)
+            {
+                sb.Append($"{key}={value}&");
+            }
+            return sb.ToString().TrimEnd('&');
+        }
+
+        /// <summary>
+        ///     When the event stream reconnect timer elapses, attempt to reconnect to the event stream.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
+        {
+            // If we are not in an exception state, stop the timer and return.
+            if (this.ConnectionState is not EventStreamConnectionState.Exception)
+            {
+                this.eventStreamReconnectTimer.Stop();
+                return;
+            }
+
+            // Attempt to reconnect to the event stream.
+            this.ConnectToEventStream();
+        }
+
+        /// <summary>
+        ///     Handles the event stream exception event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="exception"></param>
+        private void HandleEventStreamException(object? sender, Exception exception)
+        {
+            this.ConnectionState = EventStreamConnectionState.Exception;
+            this.httpClient.CancelPendingRequests();
+            this.eventStreamReconnectTimer.Start();
+        }
+
+        /// <summary>
+        ///     Handles the event stream connected event.
+        /// </summary>
+        /// <param name="sender"></param>
+        private void HandleEventStreamConnected(object? sender) => this.eventStreamReconnectTimer.Stop();
+
+        /// <summary>
+        ///     Handles the event stream disconnected event.
+        /// </summary>
+        /// <param name="sender"></param>
+        private void HandleEventStreamDisconnected(object? sender) => this.eventStreamReconnectTimer.Stop();
 
         /// <summary>
         ///     Builds a new login state update request with the given <paramref name="requestData" />
         /// </summary>
         /// <param name="requestData"></param>
         /// <returns></returns>
-        private static RestRequest BuildLoginStateRequest(UpdatePlayerLoginStateRequest.PutData requestData)
+        private static HttpRequestMessage BuildLoginStatePutRequest(UpdatePlayerLoginStateRequest.PutData requestData)
         {
-            var request = new RestRequest(UpdatePlayerLoginStateRequest.EndpointUrl);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.ContentIdParam, requestData.ContentIdHash);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.ContentIdSaltParam, requestData.ContentIdSalt);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.DatacenterIdParam, requestData.DatacenterId);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.WorldIdParam, requestData.WorldId);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.TerritoryIdParam, requestData.TerritoryId);
-            request.AddQueryParameter(UpdatePlayerLoginStateRequest.PutData.LoggedInParam, requestData.LoggedIn);
-            return request;
+            var queryParams = CreateParams(new Dictionary<string, object>
+            {
+                { UpdatePlayerLoginStateRequest.PutData.CONTENT_ID_PARAM, requestData.ContentIdHash },
+                { UpdatePlayerLoginStateRequest.PutData.CONTENT_ID_SALT_PARAM, requestData.ContentIdSalt },
+                { UpdatePlayerLoginStateRequest.PutData.DATACENTER_ID_PARAM, requestData.WorldId },
+                { UpdatePlayerLoginStateRequest.PutData.WORLD_ID_PARAM, requestData.WorldId },
+                { UpdatePlayerLoginStateRequest.PutData.TERRITORY_ID_PARAM, requestData.TerritoryId },
+                { UpdatePlayerLoginStateRequest.PutData.LOGGED_IN_PARAM, requestData.LoggedIn },
+            });
+            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerLoginStateRequest.ENDPOINT_URL + queryParams);
         }
 
-        /// <inheritdoc />
-        public RestResponse SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData)
+        /// <summary>
+        ///     Builds a new world change request with the given <paramref name="requestData" />
+        /// </summary>
+        /// <param name="requestData"></param>
+        /// <returns></returns>
+        private static HttpRequestMessage BuildWorldChangePutRequest(UpdatePlayerWorldRequest.PutData requestData)
         {
-            var request = BuildLoginStateRequest(requestData);
-            return this.restClient.Put(request);
+            var queryParams = CreateParams(new Dictionary<string, object>
+            {
+                { UpdatePlayerWorldRequest.PutData.CONTENT_ID_PARAM, requestData.ContentIdHash },
+                { UpdatePlayerWorldRequest.PutData.CONTENT_ID_SALT_PARAM, requestData.ContentIdSalt },
+                { UpdatePlayerWorldRequest.PutData.WORLD_ID_PARAM, requestData.WorldId },
+            });
+            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerWorldRequest.ENDPOINT_URL + queryParams);
         }
 
-        /// <inheritdoc />
-        public Task<RestResponse> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PutData requestData)
-        {
-            var request = BuildLoginStateRequest(requestData);
-            return this.restClient.PutAsync(request);
-        }
+        private static HttpRequestMessage BuildMinimumVersionRequest() => new(HttpMethod.Get, MinimumGameVersionRequest.ENDPOINT_URL);
 
         /// <summary>
         ///     Builds a new metadata request.
         /// </summary>
         /// <returns></returns>
-        private static RestRequest BuildMetadataRequest() => new(MetadataRequest.EndpointUrl);
+        private static HttpRequestMessage BuildMetadataRequest() => new(HttpMethod.Get, MetadataRequest.ENDPOINT_URL);
 
         /// <inheritdoc />
-        public MetadataResponse GetMetadata()
+        public HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData)
+        {
+            var request = BuildLoginStatePutRequest(requestData);
+            return this.httpClient.Send(request);
+        }
+
+        /// <inheritdoc />
+        public Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PutData requestData)
+        {
+            var request = BuildLoginStatePutRequest(requestData);
+            return this.httpClient.SendAsync(request);
+        }
+
+        /// <inheritdoc />
+        public HttpResponseMessage SendWorldChange(UpdatePlayerWorldRequest.PutData requestData)
+        {
+            var request = BuildWorldChangePutRequest(requestData);
+            return this.httpClient.Send(request);
+        }
+
+        /// <inheritdoc />
+        public Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerWorldRequest.PutData requestData)
+        {
+            var request = BuildWorldChangePutRequest(requestData);
+            return this.httpClient.SendAsync(request);
+        }
+
+        /// <inheritdoc />
+        public (MetadataResponse, HttpResponseMessage) GetMetadata()
         {
             var request = BuildMetadataRequest();
-            return this.restClient.Get<MetadataResponse>(request);
+            var response = this.httpClient.Send(request);
+            return (response.Content.ReadFromJsonAsync<MetadataResponse>().Result, response);
         }
 
         /// <inheritdoc />
-        public Task<MetadataResponse> GetMetadataAsync()
+        public async Task<(MetadataResponse, HttpResponseMessage)> GetMetadataAsync()
         {
             var request = BuildMetadataRequest();
-            return this.restClient.GetAsync<MetadataResponse>(request);
-        }
-
-        private static RestRequest BuildMotdRequest() => new(MotdRequest.EndpointUrl);
-
-        /// <inheritdoc />
-        public MotdResponse GetMotd()
-        {
-            var request = BuildMotdRequest();
-            return this.restClient.Get<MotdResponse>(request);
+            var response = await this.httpClient.SendAsync(request);
+            return (await response.Content.ReadFromJsonAsync<MetadataResponse>(), response);
         }
 
         /// <inheritdoc />
-        public Task<MotdResponse> GetMotdAsync()
+        public (MinimumGameVersionResponse, HttpResponseMessage) GetMinimumVersion()
         {
-            var request = BuildMotdRequest();
-            return this.restClient.GetAsync<MotdResponse>(request);
+            var request = BuildMinimumVersionRequest();
+            var response = this.httpClient.Send(request);
+            return (response.Content.ReadFromJsonAsync<MinimumGameVersionResponse>().Result, response);
+        }
+
+        /// <inheritdoc />
+        public async Task<(MinimumGameVersionResponse, HttpResponseMessage)> GetMinimumVersionAsync()
+        {
+            var request = BuildMinimumVersionRequest();
+            var response = await this.httpClient.SendAsync(request);
+            return (await response.Content.ReadFromJsonAsync<MinimumGameVersionResponse>(), response);
         }
 
         /// <inheritdoc />
@@ -248,7 +361,8 @@ namespace GoodFriend.Client
                 this.ConnectionState = EventStreamConnectionState.Connecting;
 
                 // Begin reading the event stream.
-                using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.EndpointUrl);
+                using var request = new HttpRequestMessage(HttpMethod.Get, PlayerEventsRequest.ENDPOINT_URL);
+                using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.ENDPOINT_URL);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 
@@ -324,46 +438,52 @@ namespace GoodFriend.Client
             this.OnEventStreamDisconnected?.Invoke(this);
         }
 
-        /// <summary>
-        ///     When the event stream reconnect timer elapses, attempt to reconnect to the event stream.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
+        ///<inheritdoc/>
+        public void UpdateOptions(GoodfriendClientOptions options)
         {
-            // If we are not in an exception state, stop the timer and return.
-            if (this.ConnectionState is not EventStreamConnectionState.Exception)
+            if (options.BaseAddress != this.Options.BaseAddress)
             {
-                this.eventStreamReconnectTimer.Stop();
-                return;
+                var wasConnected = this.ConnectionState == EventStreamConnectionState.Connected;
+                if (wasConnected)
+                {
+                    this.DisconnectFromEventStream();
+                }
+
+                this.httpClient.Dispose();
+                this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress, this.GameVersion);
+
+                if (wasConnected)
+                {
+                    this.ConnectToEventStream();
+                }
             }
 
-            // Attempt to reconnect to the event stream.
-            this.ConnectToEventStream();
+            if (options.ReconnectInterval != this.Options.ReconnectInterval)
+            {
+                this.eventStreamReconnectTimer.Interval = options.ReconnectInterval.TotalMilliseconds;
+            }
+
+            this.Options = options;
         }
+    }
+
+    /// <summary>
+    ///     Represents the options for a <see cref="GoodfriendClient"/>.
+    /// </summary>
+    public readonly struct GoodfriendClientOptions
+    {
+        /// <summary>
+        ///     The interval at which the client should attempt to reconnect to the event stream after a connection loss.
+        /// </summary>
+        public readonly TimeSpan ReconnectInterval { get; init; } = TimeSpan.FromSeconds(30);
 
         /// <summary>
-        ///     Handles the event stream exception event.
+        ///     The base address of the Goodfriend API.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="exception"></param>
-        private void HandleEventStreamException(object? sender, Exception exception)
+        public readonly required Uri BaseAddress { get; init; }
+
+        public GoodfriendClientOptions()
         {
-            this.ConnectionState = EventStreamConnectionState.Exception;
-            this.httpClient.CancelPendingRequests();
-            this.eventStreamReconnectTimer.Start();
         }
-
-        /// <summary>
-        ///     Handles the event stream connected event.
-        /// </summary>
-        /// <param name="sender"></param>
-        private void HandleEventStreamConnected(object? sender) => this.eventStreamReconnectTimer.Stop();
-
-        /// <summary>
-        ///     Handles the event stream disconnected event.
-        /// </summary>
-        /// <param name="sender"></param>
-        private void HandleEventStreamDisconnected(object? sender) => this.eventStreamReconnectTimer.Stop();
     }
 }

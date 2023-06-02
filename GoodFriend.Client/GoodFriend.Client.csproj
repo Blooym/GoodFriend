@@ -20,9 +20,4 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-
-  <!-- Packages -->
-  <ItemGroup>
-    <PackageReference Include="restsharp" Version="110.2.0" />
-  </ItemGroup>
 </Project>

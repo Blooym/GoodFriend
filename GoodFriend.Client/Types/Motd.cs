@@ -1,19 +1,19 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace GoodFriend.Client.Responses
+namespace GoodFriend.Client.Types
 {
     /// <summary>
     ///     Represents a response from the motd endpoint.
     /// </summary>
     [Serializable]
-    public readonly record struct MotdResponse
+    public readonly record struct Motd
     {
         /// <summary>
-        ///     The text content of the "message of the day".
+        ///     The message content of the "message of the day".
         /// </summary>
-        [JsonPropertyName("content")]
-        public readonly string Content { get; init; }
+        [JsonPropertyName("message")]
+        public readonly string Message { get; init; }
 
         /// <summary>
         ///     Whether the message is important or not.

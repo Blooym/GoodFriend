@@ -2,6 +2,7 @@ use rocket::{http::ContentType, response::content::RawHtml};
 use rust_embed::RustEmbed;
 use std::{borrow::Cow, ffi::OsStr, path::PathBuf};
 
+/// Returns a list of routes for the web API.
 pub fn routes() -> Vec<rocket::Route> {
     routes![serve_static, index]
 }

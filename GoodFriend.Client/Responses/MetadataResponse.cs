@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using GoodFriend.Client.Types;
 
 namespace GoodFriend.Client.Responses
 {
@@ -16,15 +18,15 @@ namespace GoodFriend.Client.Responses
         public readonly uint ConnectedClients { get; init; }
 
         /// <summary>
-        ///     The status page URL.
+        ///     The message of the day.
         /// </summary>
-        [JsonPropertyName("status_url")]
-        public readonly string StatusUrl { get; init; }
+        [JsonPropertyName("motd")]
+        public readonly Motd Motd { get; init; }
 
         /// <summary>
-        ///     The donation page URL.
+        ///     Custom URLs.
         /// </summary>
-        [JsonPropertyName("donate_url")]
-        public readonly string DonateUrl { get; init; }
+        [JsonPropertyName("custom_urls")]
+        public readonly Dictionary<string, Uri> CustomUrls { get; init; }
     }
 }

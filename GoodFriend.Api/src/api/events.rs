@@ -1,6 +1,6 @@
 use super::guards::minimum_game_version::MinimumGameVersionGuard;
 use super::guards::user_agent::UserAgentGuard;
-use super::responses::playerevent::EventStreamPlayerStateUpdateResponse;
+use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
 use rocket::response::stream::{Event, EventStream};
 use rocket::tokio::select;
 use rocket::tokio::sync::broadcast::{error::RecvError, Sender};
@@ -16,10 +16,10 @@ pub fn routes() -> Vec<rocket::Route> {
 pub async fn player_events(
     _version_guard: MinimumGameVersionGuard,
     _agent_guard: UserAgentGuard,
-    queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
+    player_event_queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
     mut end: Shutdown,
 ) -> EventStream![] {
-    let mut rx = queue.subscribe();
+    let mut rx = player_event_queue.subscribe();
     EventStream! {
         loop {
             let msg = select! {

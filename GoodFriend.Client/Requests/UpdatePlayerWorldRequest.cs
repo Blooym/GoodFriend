@@ -3,14 +3,14 @@ using System;
 namespace GoodFriend.Client.Requests
 {
     /// <summary>
-    ///     Represents a request to update the players login state.
+    ///     Represents a request to update the players world.
     /// </summary>
-    public static class UpdatePlayerLoginStateRequest
+    public static class UpdatePlayerWorldRequest
     {
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        internal const string ENDPOINT_URL = "/api/update/loginstate";
+        internal const string ENDPOINT_URL = "/api/update/world";
 
         public readonly record struct PutData
         {
@@ -28,24 +28,9 @@ namespace GoodFriend.Client.Requests
             internal const string CONTENT_ID_SALT_PARAM = "content_id_salt";
 
             /// <summary>
-            ///     The datacenter id query parameter name.
-            /// </summary>
-            internal const string DATACENTER_ID_PARAM = "datacenter_id";
-
-            /// <summary>
             ///     The world id query parameter name.
             /// </summary>
             internal const string WORLD_ID_PARAM = "world_id";
-
-            /// <summary>
-            ///     The territory id query parameter name.
-            /// </summary>
-            internal const string TERRITORY_ID_PARAM = "territory_id";
-
-            /// <summary>
-            ///     The "is logged in" query parameter name.
-            /// </summary>
-            internal const string LOGGED_IN_PARAM = "logged_in";
 
             private readonly string contentIdHashBackingField;
 
@@ -88,24 +73,9 @@ namespace GoodFriend.Client.Requests
             }
 
             /// <summary>
-            ///     The player's current DatacenterID
-            /// </summary>
-            public required uint DatacenterId { get; init; }
-
-            /// <summary>
-            ///     The player's current WorldId.
+            ///     The player's new world id.
             /// </summary>
             public required uint WorldId { get; init; }
-
-            /// <summary>
-            ///     The player's current TerritoryId.
-            /// </summary>
-            public required ushort TerritoryId { get; init; }
-
-            /// <summary>
-            ///     Whether or not the player is now logged in.
-            /// </summary>
-            public required bool LoggedIn { get; init; }
         }
     }
 }
