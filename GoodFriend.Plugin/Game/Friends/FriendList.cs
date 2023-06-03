@@ -26,6 +26,7 @@
 using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using GoodFriend.Plugin.Base;
 
 namespace GoodFriend.Plugin.Game.Friends
 {
@@ -37,6 +38,12 @@ namespace GoodFriend.Plugin.Game.Friends
         private const int InfoOffset = 0x28;
         private const int LengthOffset = 0x10;
         private const int ListOffset = 0x98;
+
+        /// <summary>
+        /// The currently cached player friend-list.
+        /// </summary>
+        private static unsafe FriendListEntry*[]? cache;
+
         /// <summary>
         /// <para>
         ///     A live list of the currently-logged-in player's friends.
@@ -76,6 +83,24 @@ namespace GoodFriend.Plugin.Game.Friends
                 entries[i] = (FriendListEntry*)(list + (i * FriendListEntry.Size));
             }
             return entries;
+        }
+
+        /// <summary>
+        ///     Get the current players friends list, or a cached version if empty.
+        /// </summary>
+        internal static unsafe FriendListEntry*[] GetWithCache()
+        {
+            if (DalamudInjections.ClientState.LocalContentId == 0)
+            {
+                return new FriendListEntry*[0];
+            }
+
+            var friendList = Get();
+            if (friendList.Length != 0)
+            {
+                cache = friendList;
+            }
+            return cache ?? new FriendListEntry*[0];
         }
     }
 }

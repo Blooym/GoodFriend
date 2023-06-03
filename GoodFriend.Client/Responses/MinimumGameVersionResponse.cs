@@ -10,16 +10,17 @@ namespace GoodFriend.Client.Responses
     [Serializable]
     public readonly record struct MinimumGameVersionResponse
     {
-        /// <summary>
-        ///     The API's minimum allowed game version.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public readonly GameVersion GameVersion { get; init; }
 
         /// <summary>
         ///     The API's minimum allowed game version as a string.
         /// </summary>
         [JsonPropertyName("version_string")]
         public readonly string GameVersionString { get; init; }
+
+        /// <summary>
+        ///     The API's minimum allowed game version.
+        /// </summary>
+        [JsonPropertyName("version")]
+        public readonly GameVersion GameVersion { get; init; }
     }
 }

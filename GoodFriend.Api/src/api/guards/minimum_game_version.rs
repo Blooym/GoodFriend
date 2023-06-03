@@ -22,18 +22,16 @@ impl<'r> FromRequest<'r> for MinimumGameVersionGuard {
             .get_one(GAME_VERSION_HEADER)
             .unwrap_or_default();
         if sent_version_header.is_empty() {
-            return Outcome::Failure((Status::BadRequest, GameVersionError::NoGameVersion));
+            return Outcome::Failure((Status::BadRequest, GameVersionError::NotPresent));
         }
 
         let sent_version_result = GameVersion::from_str(sent_version_header);
         let sent_version: GameVersion = match sent_version_result {
             Ok(version) => version,
-            Err(_) => {
-                return Outcome::Failure((Status::BadRequest, GameVersionError::InvalidGameVersion))
-            }
+            Err(_) => return Outcome::Failure((Status::BadRequest, GameVersionError::Invalid)),
         };
-        if get_config_cached().minimum_game_version < sent_version {
-            return Outcome::Failure((Status::Forbidden, GameVersionError::OldGameVersion));
+        if get_config_cached().minimum_game_version > sent_version {
+            return Outcome::Failure((Status::Forbidden, GameVersionError::Outdated));
         }
 
         Outcome::Success(MinimumGameVersionGuard)
@@ -43,7 +41,7 @@ impl<'r> FromRequest<'r> for MinimumGameVersionGuard {
 /// An error that can occur when checking the game version.
 #[derive(Debug, Clone)]
 pub enum GameVersionError {
-    OldGameVersion,
-    InvalidGameVersion,
-    NoGameVersion,
+    Outdated,
+    Invalid,
+    NotPresent,
 }

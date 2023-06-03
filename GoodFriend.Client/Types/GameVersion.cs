@@ -86,9 +86,16 @@ namespace GoodFriend.Client.Types
         /// <inheritdoc />
         public override string ToString() => $"{this.Year}.{this.Month}.{this.Day}.{this.Major}.{this.Minor}";
 
+        /// <inheritdoc />
         public static bool operator >(GameVersion a, GameVersion b) => a.ToInt() > b.ToInt();
+
+        /// <inheritdoc />
         public static bool operator <(GameVersion a, GameVersion b) => a.ToInt() < b.ToInt();
+
+        /// <inheritdoc />
         public static bool operator >=(GameVersion a, GameVersion b) => a.ToInt() >= b.ToInt();
+
+        /// <inheritdoc />
         public static bool operator <=(GameVersion a, GameVersion b) => a.ToInt() <= b.ToInt();
     }
 }

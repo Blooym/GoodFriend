@@ -7,13 +7,14 @@
 	"runArgs": [
 		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
 	],
-	"postAttachCommand": "cd GoodFriend.Api && cargo build && cd ../GoodFriend.Client && dotnet restore && cd ../GoodFriend.Plugin && dotnet restore",
+	"postAttachCommand": "cd GoodFriend.Api && cargo build && cd ../GoodFriend.Plugin && dotnet build",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"tintoy.msbuild-project-tools",
 				"kreativ-software.csharpextensions",
+				"fernandoescolar.vscode-solution-explorer",
 				"rust-lang.rust-analyzer",
 				"tamasfe.even-better-toml"
 			]

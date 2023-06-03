@@ -27,12 +27,12 @@ pub struct UpdatePlayerLoginStateRequest {
     pub territory_id: u16,
 }
 
-/// Sends a loginstate change to the server-sent event stream.
+/// Sends a login state change to the server-sent player event stream.
 #[put("/loginstate?<update..>")]
 async fn loginstate(
-    update: UpdatePlayerLoginStateRequest,
     _version_guard: MinimumGameVersionGuard,
     _agent_guard: UserAgentGuard,
+    update: UpdatePlayerLoginStateRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {
     let _ = queue.send(EventStreamPlayerStateUpdateResponse {
@@ -58,12 +58,12 @@ pub struct UpdatePlayerWorldRequest {
     pub world_id: u32,
 }
 
-/// Sends a world change to the server-sent event stream.
+/// Sends a world change to the server-sent player event stream.
 #[put("/world?<update..>")]
 async fn world(
-    update: UpdatePlayerWorldRequest,
     _version_guard: MinimumGameVersionGuard,
     _agent_guard: UserAgentGuard,
+    update: UpdatePlayerWorldRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {
     let _ = queue.send(EventStreamPlayerStateUpdateResponse {

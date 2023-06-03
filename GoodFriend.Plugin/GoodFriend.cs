@@ -1,6 +1,5 @@
-using Dalamud.IoC;
 using Dalamud.Plugin;
-using GoodFriend.Plugin.Common;
+using GoodFriend.Plugin.Base;
 using Sirensong;
 
 namespace GoodFriend.Plugin
@@ -8,30 +7,24 @@ namespace GoodFriend.Plugin
     public sealed class GoodFriendPlugin : IDalamudPlugin
     {
         /// <summary>
-        ///     The plugin name, fetched from PStrings.
+        ///     The plugin name.
         /// </summary>
-        public string Name => Constants.PluginName;
+        public string Name { get; } = Constants.PluginName;
 
         /// <summary>
         ///     The plugin's main entry point.
         /// </summary>
         /// <param name="pluginInterface"></param>
-        public GoodFriendPlugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+        public unsafe GoodFriendPlugin(DalamudPluginInterface pluginInterface)
         {
             SirenCore.Initialize(pluginInterface, this.Name);
-            pluginInterface.Create<Services>();
-            Services.Initialize();
-
-            CheapLoc.Loc.SetupWithFallbacks();
+            pluginInterface.Create<DalamudInjections>();
+            Services.Initialize(pluginInterface);
         }
 
         /// <summary>
-        ///     Handles disposing of all resources used by the plugin.
+        ///     Disposes of the plugin.
         /// </summary>
-        public void Dispose()
-        {
-            Services.Dispose();
-            SirenCore.Dispose();
-        }
+        public void Dispose() => Services.Dispose();
     }
 }

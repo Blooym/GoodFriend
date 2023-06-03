@@ -15,6 +15,7 @@ use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
 use rocket_async_compression::Compression;
 use std::process;
+use std::time::SystemTime;
 
 /// The base path for all API routes.
 const BASE_PATH: &str = "/api";
@@ -44,8 +45,14 @@ fn rocket() -> Rocket<Build> {
     };
     config::get_config_cached_prime_cache();
 
+    let start_time = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_secs();
+
     let server = rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(50000).0)
+        .manage(start_time)
         .mount("/", api::static_content::routes())
         .mount([BASE_PATH, "/"].concat(), api::core::routes())
         .mount([BASE_PATH, "/update"].concat(), api::update::routes())

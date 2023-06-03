@@ -17,9 +17,9 @@ namespace GoodFriend.Client
         GoodfriendClientOptions Options { get; }
 
         /// <summary>
-        ///     The current connection state of the client to the server-sent event stream.
+        ///     The current connection state of the client to player event stream.
         /// </summary>
-        EventStreamConnectionState ConnectionState { get; }
+        EventStreamConnectionState PlayerStreamConnectionState { get; }
 
         /// <summary>
         ///     Sends the players login state to the API.
@@ -60,14 +60,14 @@ namespace GoodFriend.Client
         Task<(MinimumGameVersionResponse, HttpResponseMessage)> GetMinimumVersionAsync();
 
         /// <summary>
-        ///     Starts listening to the event stream.
+        ///     Starts listening to the player event stream.
         /// </summary>
-        void ConnectToEventStream();
+        void ConnectToPlayerEventStream();
 
         /// <summary>
-        ///     Stops listening to the event stream.
+        ///     Stops listening to the player event stream.
         /// </summary>
-        void DisconnectFromEventStream();
+        void DisconnectFromPlayerEventStream();
 
         /// <summary>
         ///     Updates the options used to configure the client.

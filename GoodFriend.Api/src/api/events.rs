@@ -10,8 +10,7 @@ pub fn routes() -> Vec<rocket::Route> {
     routes![player_events]
 }
 
-/// The server-sent event stream that clients will subscribe to so that
-/// they can see `PlayerStateUpdate` events.
+/// The server-sent player event stream that will relay player state updates to clients.
 #[get("/players")]
 pub async fn player_events(
     _version_guard: MinimumGameVersionGuard,

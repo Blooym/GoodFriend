@@ -92,12 +92,10 @@ impl PartialOrd for GameVersion {
         .parse::<usize>()
         .unwrap_or(0);
 
-        if self_version < other_version {
-            Some(Ordering::Greater)
-        } else if self_version > other_version {
-            Some(Ordering::Less)
-        } else {
-            Some(Ordering::Equal)
+        match self_version.cmp(&other_version) {
+            Ordering::Less => Some(Ordering::Less),
+            Ordering::Equal => Some(Ordering::Equal),
+            Ordering::Greater => Some(Ordering::Greater),
         }
     }
 }

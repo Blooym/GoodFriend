@@ -40,82 +40,82 @@ namespace GoodFriend.Client
         private HttpClient httpClient;
 
         /// <summary>
-        ///     The event stream reconnect timer instance.
+        ///     The player event stream reconnect timer instance.
         /// </summary>
-        private readonly Timer eventStreamReconnectTimer;
+        private readonly Timer playerStreamReconnectTimer;
 
         /// <summary>
-        ///     Delegate for the <see cref="OnEventStreamPlayerStateUpdate" /> event.
+        ///     Delegate for the <see cref="OnPlayerStreamMessage" /> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="update">Player update data.</param>
-        public delegate void DelegatePlayerStateUpdate(object? sender, EventStreamPlayerStateUpdateResponse update);
+        public delegate void DelegatePlayerStateUpdate(object? sender, PlayerEventStreamUpdate update);
 
         /// <summary>
-        ///     The event for when a player state update is recieved.
+        ///     The event for when a player state update is recieved and is not a heartbeat.
         /// </summary>
-        public event DelegatePlayerStateUpdate? OnEventStreamPlayerStateUpdate;
+        public event DelegatePlayerStateUpdate? OnPlayerStreamMessage;
 
         /// <summary>
-        ///     Delegate for the <see cref="OnEventStreamException" /> event.
+        ///     Delegate for the <see cref="OnPlayerStreamException" /> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="exception"></param>
-        public delegate void DelegateEventStreamError(object? sender, Exception exception);
+        public delegate void DelegatePlayerStreamError(object? sender, Exception exception);
 
         /// <summary>
-        ///     The event for when an exception relating to the event stream connection is recieved.
+        ///     The event for when an exception relating to the player event stream connection is recieved.
         /// </summary>
         /// <remarks>
         ///     Automatic reconnection is handled by the client and does not need to be implemented
         ///     by listening for this event.
         /// </remarks>
-        public event DelegateEventStreamError? OnEventStreamException;
+        public event DelegatePlayerStreamError? OnPlayerStreamException;
 
         /// <summary>
-        ///     Delegate for the <see cref="OnEventStreamConnected" /> event.
+        ///     Delegate for the <see cref="OnPlayerStreamConnected" /> event.
         /// </summary>
         /// <param name="sender"></param>
-        public delegate void DelegateEventStreamConnected(object? sender);
+        public delegate void DelegatePlayerStreamConnected(object? sender);
 
         /// <summary>
-        ///     The event for when the event stream has finished connecting successfully.
+        ///     The event for when the player event stream has finished connecting successfully.
         /// </summary>
-        public event DelegateEventStreamConnected? OnEventStreamConnected;
+        public event DelegatePlayerStreamConnected? OnPlayerStreamConnected;
 
         /// <summary>
-        ///     Delegate for the <see cref="OnEventStreamHeartbeat" /> event.
-        /// </summary>
-        /// <param name="sender"></param>
-        public delegate void DelegateEventStreamHeartbeat(object? sender);
-
-        /// <summary>
-        ///     The event for when a heartbeat is recieved from the event stream.
-        /// </summary>
-        public event DelegateEventStreamHeartbeat? OnEventStreamHeartbeat;
-
-        /// <summary>
-        ///     Delegate for the <see cref="OnEventStreamConnected" /> event.
+        ///     Delegate for the <see cref="OnPlayerStreamHeartbeat" /> event.
         /// </summary>
         /// <param name="sender"></param>
-        public delegate void DelegateEventStreamDisconnected(object? sender);
+        public delegate void DelegatePlayerStreamHeartbeat(object? sender);
 
         /// <summary>
-        ///     The event for when the event stream has disconnected.
+        ///     The event for when a heartbeat is recieved from the player event stream.
+        /// </summary>
+        public event DelegatePlayerStreamHeartbeat? OnPlayerStreamHeartbeat;
+
+        /// <summary>
+        ///     Delegate for the <see cref="OnPlayerStreamConnected" /> event.
+        /// </summary>
+        /// <param name="sender"></param>
+        public delegate void DelegatePlayerStreamDisconnected(object? sender);
+
+        /// <summary>
+        ///     The event for when the player event stream has disconnected.
         /// </summary>
         /// <remarks>
         ///     Not fired when an exception is handled, only when the client disconnected properly.
         /// </remarks>
-        public event DelegateEventStreamDisconnected? OnEventStreamDisconnected;
+        public event DelegatePlayerStreamDisconnected? OnPlayerStreamDisconnected;
 
         /// <inheritdoc />
-        public EventStreamConnectionState ConnectionState { get; private set; } = EventStreamConnectionState.Disconnected;
+        public EventStreamConnectionState PlayerStreamConnectionState { get; private set; } = EventStreamConnectionState.Disconnected;
 
         /// <inheritdoc />
         public GoodfriendClientOptions Options { get; private set; }
 
         /// <inheritdoc />
-        public string GameVersion { get; }
+        private string GameVersion { get; }
 
         /// <summary>
         ///     Creates a new instance of the client.
@@ -128,11 +128,11 @@ namespace GoodFriend.Client
             this.GameVersion = gameVersion;
             this.httpClientHandler = CreateHttpClientHandler();
             this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress, gameVersion);
-            this.eventStreamReconnectTimer = new Timer(options.ReconnectInterval);
-            this.eventStreamReconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
-            this.OnEventStreamException += this.HandleEventStreamException;
-            this.OnEventStreamConnected += this.HandleEventStreamConnected;
-            this.OnEventStreamDisconnected += this.HandleEventStreamDisconnected;
+            this.playerStreamReconnectTimer = new Timer(options.ReconnectInterval);
+            this.playerStreamReconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
+            this.OnPlayerStreamException += this.HandlePlayerStreamException;
+            this.OnPlayerStreamConnected += this.HandlePlayerStreamConnected;
+            this.OnPlayerStreamDisconnected += this.HandlePlayerStreamDisconnected;
         }
 
         /// <inheritdoc />
@@ -140,7 +140,7 @@ namespace GoodFriend.Client
         {
             try
             {
-                this.DisconnectFromEventStream();
+                this.DisconnectFromPlayerEventStream();
             }
             catch
             {
@@ -151,13 +151,13 @@ namespace GoodFriend.Client
             this.httpClient.Dispose();
             this.httpClientHandler.Dispose();
 
-            this.eventStreamReconnectTimer.Stop();
-            this.eventStreamReconnectTimer.Dispose();
-            this.eventStreamReconnectTimer.Elapsed -= this.HandleReconnectTimerElapse;
+            this.playerStreamReconnectTimer.Stop();
+            this.playerStreamReconnectTimer.Dispose();
+            this.playerStreamReconnectTimer.Elapsed -= this.HandleReconnectTimerElapse;
 
-            this.OnEventStreamException -= this.HandleEventStreamException;
-            this.OnEventStreamConnected -= this.HandleEventStreamConnected;
-            this.OnEventStreamDisconnected -= this.HandleEventStreamDisconnected;
+            this.OnPlayerStreamException -= this.HandlePlayerStreamException;
+            this.OnPlayerStreamConnected -= this.HandlePlayerStreamConnected;
+            this.OnPlayerStreamDisconnected -= this.HandlePlayerStreamDisconnected;
         }
 
         /// <summary>
@@ -203,46 +203,46 @@ namespace GoodFriend.Client
         }
 
         /// <summary>
-        ///     When the event stream reconnect timer elapses, attempt to reconnect to the event stream.
+        ///     When the player event stream reconnect timer elapses, attempt to reconnect to the player event stream.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
         {
             // If we are not in an exception state, stop the timer and return.
-            if (this.ConnectionState is not EventStreamConnectionState.Exception)
+            if (this.PlayerStreamConnectionState is not EventStreamConnectionState.Exception)
             {
-                this.eventStreamReconnectTimer.Stop();
+                this.playerStreamReconnectTimer.Stop();
                 return;
             }
 
-            // Attempt to reconnect to the event stream.
-            this.ConnectToEventStream();
+            // Attempt to reconnect to the player event stream.
+            this.ConnectToPlayerEventStream();
         }
 
         /// <summary>
-        ///     Handles the event stream exception event.
+        ///     Handles the player event stream exception event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="exception"></param>
-        private void HandleEventStreamException(object? sender, Exception exception)
+        private void HandlePlayerStreamException(object? sender, Exception exception)
         {
-            this.ConnectionState = EventStreamConnectionState.Exception;
+            this.PlayerStreamConnectionState = EventStreamConnectionState.Exception;
             this.httpClient.CancelPendingRequests();
-            this.eventStreamReconnectTimer.Start();
+            this.playerStreamReconnectTimer.Start();
         }
 
         /// <summary>
-        ///     Handles the event stream connected event.
+        ///     Handles the player event stream connected event.
         /// </summary>
         /// <param name="sender"></param>
-        private void HandleEventStreamConnected(object? sender) => this.eventStreamReconnectTimer.Stop();
+        private void HandlePlayerStreamConnected(object? sender) => this.playerStreamReconnectTimer.Stop();
 
         /// <summary>
-        ///     Handles the event stream disconnected event.
+        ///     Handles the player event stream disconnected event.
         /// </summary>
         /// <param name="sender"></param>
-        private void HandleEventStreamDisconnected(object? sender) => this.eventStreamReconnectTimer.Stop();
+        private void HandlePlayerStreamDisconnected(object? sender) => this.playerStreamReconnectTimer.Stop();
 
         /// <summary>
         ///     Builds a new login state update request with the given <paramref name="requestData" />
@@ -348,30 +348,30 @@ namespace GoodFriend.Client
         }
 
         /// <inheritdoc />
-        public async void ConnectToEventStream()
+        public async void ConnectToPlayerEventStream()
         {
             try
             {
                 // Avoid duplicate connections / connection attempts.
-                if (this.ConnectionState is EventStreamConnectionState.Connecting or EventStreamConnectionState.Connected)
+                if (this.PlayerStreamConnectionState is EventStreamConnectionState.Connecting or EventStreamConnectionState.Connected)
                 {
-                    throw new InvalidOperationException("Already connected or connecting to the event stream.");
+                    throw new InvalidOperationException("Already connected or connecting to the player event stream.");
                 }
 
-                this.ConnectionState = EventStreamConnectionState.Connecting;
+                this.PlayerStreamConnectionState = EventStreamConnectionState.Connecting;
 
-                // Begin reading the event stream.
+                // Begin reading the player event stream.
                 using var request = new HttpRequestMessage(HttpMethod.Get, PlayerEventsRequest.ENDPOINT_URL);
                 using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.ENDPOINT_URL);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 
                 // Alert listeners that we are connected.
-                this.ConnectionState = EventStreamConnectionState.Connected;
-                this.OnEventStreamConnected?.Invoke(this);
+                this.PlayerStreamConnectionState = EventStreamConnectionState.Connected;
+                this.OnPlayerStreamConnected?.Invoke(this);
 
                 // Begin waiting for events.
-                while (!reader.EndOfStream && this.ConnectionState == EventStreamConnectionState.Connected)
+                while (!reader.EndOfStream && this.PlayerStreamConnectionState == EventStreamConnectionState.Connected)
                 {
                     var message = reader.ReadLine();
                     message = HttpUtility.UrlDecode(message);
@@ -379,7 +379,7 @@ namespace GoodFriend.Client
                     // If the message was a heartbeat, alert listeners and continue.
                     if (message == null || message.Trim() == ":")
                     {
-                        this.OnEventStreamHeartbeat?.Invoke(this);
+                        this.OnPlayerStreamHeartbeat?.Invoke(this);
                         continue;
                     }
 
@@ -393,8 +393,8 @@ namespace GoodFriend.Client
                     // Try to deserialize the message - if it fails due to invalid JSON, skip it, however if it fails for any other reason, break the loop.
                     try
                     {
-                        var data = JsonSerializer.Deserialize<EventStreamPlayerStateUpdateResponse>(message, new JsonSerializerOptions() { IncludeFields = true, WriteIndented = true });
-                        this.OnEventStreamPlayerStateUpdate?.Invoke(this, data);
+                        var data = JsonSerializer.Deserialize<PlayerEventStreamUpdate>(message, new JsonSerializerOptions() { IncludeFields = true, WriteIndented = true });
+                        this.OnPlayerStreamMessage?.Invoke(this, data);
                     }
                     catch (JsonException)
                     {
@@ -408,34 +408,34 @@ namespace GoodFriend.Client
                 }
 
                 // If the reader reaches the end of the stream without us intentionally disconnecting, alert listeners of the exception.
-                if (reader.EndOfStream && this.ConnectionState == EventStreamConnectionState.Connected)
+                if (reader.EndOfStream && this.PlayerStreamConnectionState == EventStreamConnectionState.Connected)
                 {
-                    this.OnEventStreamException?.Invoke(this, exception ?? new HttpRequestException("Connection to stream suddenly closed."));
+                    this.OnPlayerStreamException?.Invoke(this, exception ?? new HttpRequestException("Connection to stream suddenly closed."));
                 }
             }
             catch (Exception e)
             {
                 // Anything else that goes wrong, alert listeners of the exception.
-                this.OnEventStreamException?.Invoke(this, e);
+                this.OnPlayerStreamException?.Invoke(this, e);
             }
         }
 
         /// <inheritdoc />
-        public void DisconnectFromEventStream()
+        public void DisconnectFromPlayerEventStream()
         {
             // Avoid duplicate disconnections / disconnection attempts.
-            if (this.ConnectionState is EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Disconnected)
+            if (this.PlayerStreamConnectionState is EventStreamConnectionState.Disconnecting or EventStreamConnectionState.Disconnected)
             {
-                throw new InvalidOperationException("Already disconnected from the event stream.");
+                throw new InvalidOperationException("Already disconnected from the player event stream.");
             }
 
             // Cleanup and disconnect.
-            this.ConnectionState = EventStreamConnectionState.Disconnecting;
+            this.PlayerStreamConnectionState = EventStreamConnectionState.Disconnecting;
             this.httpClient.CancelPendingRequests();
 
             // Alert listeners of the disconnect.
-            this.ConnectionState = EventStreamConnectionState.Disconnected;
-            this.OnEventStreamDisconnected?.Invoke(this);
+            this.PlayerStreamConnectionState = EventStreamConnectionState.Disconnected;
+            this.OnPlayerStreamDisconnected?.Invoke(this);
         }
 
         ///<inheritdoc/>
@@ -443,10 +443,10 @@ namespace GoodFriend.Client
         {
             if (options.BaseAddress != this.Options.BaseAddress)
             {
-                var wasConnected = this.ConnectionState == EventStreamConnectionState.Connected;
+                var wasConnected = this.PlayerStreamConnectionState == EventStreamConnectionState.Connected;
                 if (wasConnected)
                 {
-                    this.DisconnectFromEventStream();
+                    this.DisconnectFromPlayerEventStream();
                 }
 
                 this.httpClient.Dispose();
@@ -454,13 +454,13 @@ namespace GoodFriend.Client
 
                 if (wasConnected)
                 {
-                    this.ConnectToEventStream();
+                    this.ConnectToPlayerEventStream();
                 }
             }
 
             if (options.ReconnectInterval != this.Options.ReconnectInterval)
             {
-                this.eventStreamReconnectTimer.Interval = options.ReconnectInterval.TotalMilliseconds;
+                this.playerStreamReconnectTimer.Interval = options.ReconnectInterval.TotalMilliseconds;
             }
 
             this.Options = options;
@@ -473,7 +473,7 @@ namespace GoodFriend.Client
     public readonly struct GoodfriendClientOptions
     {
         /// <summary>
-        ///     The interval at which the client should attempt to reconnect to the event stream after a connection loss.
+        ///     The interval at which the client should attempt to reconnect to the player event stream after a connection loss.
         /// </summary>
         public readonly TimeSpan ReconnectInterval { get; init; } = TimeSpan.FromSeconds(30);
 

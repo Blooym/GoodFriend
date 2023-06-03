@@ -79,7 +79,7 @@ namespace GoodFriend.Plugin.Game.Friends
         /// <summary>
         ///     The friend's name.
         /// </summary>
-        internal SeString Name
+        internal readonly SeString Name
         {
             get
             {
@@ -93,7 +93,7 @@ namespace GoodFriend.Plugin.Game.Friends
         /// <summary>
         ///     The friend's free company tag.
         /// </summary>
-        internal SeString FreeCompany
+        internal readonly SeString FreeCompany
         {
             get
             {

@@ -1,13 +1,12 @@
 use rocket::serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
-use crate::types::motd::Motd;
+use crate::types::api_about::ApiAbout;
 
 /// Metadata about the current state of the API.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct MetadataResponse {
+    pub start_time: u64,
     pub connected_clients: usize,
-    pub motd: Motd,
-    pub custom_urls: HashMap<String, String>,
+    pub about: ApiAbout,
 }
