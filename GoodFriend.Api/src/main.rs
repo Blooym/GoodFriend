@@ -39,6 +39,7 @@ fn rocket() -> Rocket<Build> {
         },
         false => {
             eprintln!("Error: No configuration file was detected - please create in the data directory and restart the API.");
+            eprintln!("See the documentation for more information.");
             process::exit(1);
         }
     };
