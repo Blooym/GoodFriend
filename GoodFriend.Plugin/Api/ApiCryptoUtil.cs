@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GoodFriend.Plugin.Api
 {
-    internal static class CryptoUtil
+    internal static class ApiCryptoUtil
     {
         /// <summary>
         ///     The recommended length for a salt value.

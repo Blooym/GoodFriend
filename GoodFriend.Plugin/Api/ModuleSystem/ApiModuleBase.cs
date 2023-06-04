@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using GoodFriend.Client;
 using GoodFriend.Plugin.Base;
 using Newtonsoft.Json;
@@ -40,7 +39,12 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         public virtual uint LoadPriority { get; }
 
         /// <summary>
-        ///     Enables the module, ran inside of a background task to prevent game freezes.
+        ///     The priority of this module when displaying it with others. Higher numbers are displayed first.
+        /// </summary>
+        public virtual uint DisplayWeight { get; }
+
+        /// <summary>
+        ///     Enables the module.
         /// </summary>
         /// <returns>True if the module was enabled successfully, otherwise false.</returns>
         protected abstract void EnableAction();
@@ -51,41 +55,32 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// <exception cref="InvalidOperationException">Thrown if the module is already enabled or is in an error state.</exception>
         public void Enable()
         {
-            if (this.State is ApiModuleState.Enabled or ApiModuleState.Error)
+            try
             {
-                Logger.Verbose($"Not Loading module {this.GetType().FullName} as it is already enabled or is in an error state.");
-                return;
-            }
+                Logger.Debug($"Loading module {this.GetType().FullName}...");
+                this.State = ApiModuleState.Loading;
 
-            Task.Run(() =>
+                this.EnableAction();
+                this.State = ApiModuleState.Enabled;
+                Logger.Debug($"Enabled module {this.GetType().FullName}.");
+            }
+            catch (Exception e)
             {
+                this.State = ApiModuleState.Error;
+                Logger.Error($"Failed to enable module {this.GetType().FullName}: {e}");
                 try
                 {
-                    Logger.Information($"Loading module {this.GetType().FullName}...");
-                    this.State = ApiModuleState.Loading;
-
-                    this.EnableAction();
-                    this.State = ApiModuleState.Enabled;
-                    Logger.Information($"Enabled module {this.GetType().FullName}.");
+                    this.DisableAction();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    this.State = ApiModuleState.Error;
-                    Logger.Error($"Failed to enable module {this.GetType().FullName}: {e}");
-                    try
-                    {
-                        this.DisableAction();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error($"Failed to disable module {this.GetType().FullName} after it errored: {ex}");
-                    }
+                    Logger.Error($"Failed to disable module {this.GetType().FullName} after it errored: {ex}");
                 }
-            });
+            }
         }
 
         /// <summary>
-        ///     Disables the module, ran inside of a background task to prevent game freezes.
+        ///     Disables the module.
         /// </summary>
         /// <returns>True if the module was disabled successfully, otherwise false.</returns>
         protected abstract void DisableAction();
@@ -97,27 +92,24 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         {
             if (this.State is ApiModuleState.Disabled)
             {
-                Logger.Verbose($"Not Unloading module {this.GetType().FullName} as it is already disabled or is in an error state.");
+                Logger.Warning($"Not Unloading module {this.GetType().FullName} as it is already disabled or is in an error state.");
                 return;
             }
 
-            Task.Run(() =>
+            try
             {
-                try
-                {
-                    this.State = ApiModuleState.Unloading;
-                    Logger.Information($"Unloading module {this.GetType().FullName}...");
+                this.State = ApiModuleState.Unloading;
+                Logger.Debug($"Unloading module {this.GetType().FullName}...");
 
-                    this.DisableAction();
-                    this.State = ApiModuleState.Disabled;
-                    Logger.Information($"Disabled module {this.GetType().FullName}.");
-                }
-                catch (Exception e)
-                {
-                    this.State = ApiModuleState.Error;
-                    Logger.Error($"Failed to disable module {this.GetType().FullName}: {e}");
-                }
-            });
+                this.DisableAction();
+                this.State = ApiModuleState.Disabled;
+                Logger.Debug($"Disabled module {this.GetType().FullName}.");
+            }
+            catch (Exception e)
+            {
+                this.State = ApiModuleState.Error;
+                Logger.Error($"Failed to disable module {this.GetType().FullName}: {e}");
+            }
         }
 
         /// <summary>
@@ -220,7 +212,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// </summary>
         /// <typeparam name="T">The type of the module configuration to load.</typeparam>
         /// <returns>A module configuration either from disk or new if not found.</returns>
-        public static T Load<T>() where T : ApiOptionalModuleConfig, new()
+        public static T Load<T>() where T : ApiModuleConfigBase, new()
         {
             if (!Directory.Exists(Constants.Directory.ApiModuleConfig))
             {
@@ -281,13 +273,8 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         Information,
 
         /// <summary>
-        ///     A module that facilitates event sharing between users.
+        ///     A module that facilitates event sharing between friends.
         /// </summary>
-        Social,
-
-        /// <summary>
-        ///     A module that provides operational functionality to the plugin or other modules.
-        /// </summary>
-        Operational,
+        Friends,
     }
 }

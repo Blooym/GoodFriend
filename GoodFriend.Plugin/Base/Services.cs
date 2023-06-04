@@ -11,8 +11,8 @@ namespace GoodFriend.Plugin.Base
     /// </summary>
     internal static class Services
     {
+        private static LocalizationService LocalizationService { get; set; } = null!;
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
-        public static LocalizationService LocalizationService { get; private set; } = null!;
         public static WindowingService WindowingService { get; private set; } = null!;
         public static RelayApiService ApiModuleService { get; private set; } = null!;
 
@@ -23,8 +23,8 @@ namespace GoodFriend.Plugin.Base
         {
             PluginConfiguration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             LocalizationService = new LocalizationService();
-            WindowingService = new WindowingService();
             ApiModuleService = new RelayApiService();
+            WindowingService = new WindowingService();
         }
 
         /// <summary>

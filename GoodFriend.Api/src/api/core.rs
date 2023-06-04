@@ -18,11 +18,9 @@ pub fn routes() -> Vec<Route> {
 pub async fn metadata(
     _agent_guard: UserAgentGuard,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
-    start_time: &State<u64>,
 ) -> Json<MetadataResponse> {
     let config = get_config_cached();
     Json(MetadataResponse {
-        start_time: **start_time,
         connected_clients: queue.receiver_count(),
         about: config.about,
     })

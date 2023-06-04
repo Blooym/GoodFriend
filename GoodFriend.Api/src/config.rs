@@ -5,7 +5,7 @@ use std::{collections::HashMap, env, fs, path::Path};
 use validator::{Validate, ValidationErrors};
 
 /// Gets the currently cached config.
-#[cached(time = 60)]
+#[cached(time = 300)]
 pub fn get_config_cached() -> Config {
     Config::get().unwrap_or_default()
 }

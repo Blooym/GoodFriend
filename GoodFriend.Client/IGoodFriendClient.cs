@@ -53,7 +53,7 @@ namespace GoodFriend.Client
         /// <summary>
         ///     Gets the minimum allowed game version from the API.
         /// </summary>
-        /// <returns>A <see cref="MinimumGa,eVersionResponse" /> instance.</returns>
+        /// <returns>A <see cref="MinimumGameVersionResponse" /> instance.</returns>
         (MinimumGameVersionResponse, HttpResponseMessage) GetMinimumVersion();
 
         /// <inheritdoc cref="GetMinimumVersion" />

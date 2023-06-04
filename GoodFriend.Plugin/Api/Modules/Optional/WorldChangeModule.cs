@@ -1,16 +1,25 @@
 using System;
 using Dalamud.Game;
 using Dalamud.Logging;
+using Dalamud.Memory;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
+using Lumina.Excel.GeneratedSheets;
+using Sirensong;
+using Sirensong.Cache;
 using Sirensong.Game.Helpers;
 
 namespace GoodFriend.Plugin.Api.Modules.Optional
 {
     internal sealed class WorldChangeModule : ApiOptionalModule
     {
+        /// <summary>
+        ///     World lumina sheet for discovering the real name of a world.
+        /// </summary>
+        private readonly LuminaCacheService<World> worldCache = SirenCore.GetOrCreateService<LuminaCacheService<World>>();
+
         /// <summary>
         ///     The last world ID of the player.
         /// </summary>
@@ -22,10 +31,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         private bool firstWorldUpdate = true;
 
         /// <inheritdoc />
-        public override string Name => "World Change";
+        public override string Name => "World Change Notifications";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Social;
+        public override ApiModuleTag Tag => ApiModuleTag.Friends;
 
         /// <inheritdoc />
         protected override WorldChangeModuleConfig Config { get; } = ApiModuleConfigBase.Load<WorldChangeModuleConfig>();
@@ -35,7 +44,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.OnPlayerStreamMessage += OnPlayerStreamMessage;
+            ApiClient.OnPlayerStreamMessage += this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -43,7 +52,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.OnPlayerStreamMessage -= OnPlayerStreamMessage;
+            ApiClient.OnPlayerStreamMessage -= this.OnPlayerStreamMessage;
         }
 
         /// <summary>
@@ -61,16 +70,30 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         ///     Called when a player event is recieved.
         /// </summary>
         /// <param name="_"></param>
-        /// <param name="data"></param>
-        private static void OnPlayerStreamMessage(object? _, PlayerEventStreamUpdate data)
+        /// <param name="rawEvent"></param>
+        private unsafe void OnPlayerStreamMessage(object? _, PlayerEventStreamUpdate rawEvent)
         {
-            if (data.StateUpdateType.WorldChange == null)
+            if (!rawEvent.StateUpdateType.WorldChange.HasValue)
             {
-                Logger.Verbose("Ignoring player state update with no world change information.");
+                return;
+            }
+            var stateData = rawEvent.StateUpdateType.WorldChange.Value;
+
+            var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            if (!friendData.HasValue)
+            {
                 return;
             }
 
-            ChatHelper.Print($"{data.ContentIdHash} changed to {data.StateUpdateType.WorldChange.Value.WorldId}");
+            var friend = friendData.Value;
+            var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name);
+            var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
+            if (world == null)
+            {
+                return;
+            }
+
+            ChatHelper.Print($"{friendName} moved world to to {world}.");
         }
 
         /// <summary>
@@ -98,8 +121,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 PluginLog.Information($"World changed from {this.currentWorldId} to {worldId}.");
                 this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
 
-                var salt = CryptoUtil.GenerateSalt();
-                var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
+                var salt = ApiCryptoUtil.GenerateSalt();
+                var hash = ApiCryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
                 ApiClient.SendWorldChangeAsync(new UpdatePlayerWorldRequest.PutData()
                 {
                     ContentIdHash = hash,

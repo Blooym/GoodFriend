@@ -39,7 +39,9 @@ impl Default for ApiAbout {
     fn default() -> Self {
         Self {
             identifier: String::from("GoodFriend"),
-            banner_url: String::from(""),
+            banner_url: String::from(
+                "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/banner.png",
+            ),
             motd: Motd::default(),
             custom_urls: HashMap::default(),
         }
@@ -51,7 +53,6 @@ impl Default for ApiAbout {
 #[serde(crate = "rocket::serde")]
 pub struct Motd {
     pub message: String,
-    pub important: bool,
     pub ignore: bool,
 }
 
@@ -59,7 +60,6 @@ impl Default for Motd {
     fn default() -> Self {
         Self {
             message: String::default(),
-            important: false,
             ignore: true,
         }
     }

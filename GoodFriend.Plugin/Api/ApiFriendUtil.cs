@@ -4,7 +4,7 @@ using Sirensong.Cache;
 
 namespace GoodFriend.Plugin.Api
 {
-    internal static class ApiUtil
+    internal static class ApiFriendUtil
     {
         /// <summary>
         ///     The friend list cache.
@@ -17,11 +17,11 @@ namespace GoodFriend.Plugin.Api
         /// <param name="contentIdHash">The content ID hash to search for.</param>
         /// <param name="contentIdSalt">The salt used to hash the original content ID.</param>
         /// <returns>The friend if found, otherwise null.</returns>
-        public static InfoProxyCommonList.CharacterData? GetFriendByContentIdHash(string contentIdHash, string contentIdSalt)
+        public static InfoProxyCommonList.CharacterData? GetFriendByHash(string contentIdHash, string contentIdSalt)
         {
             foreach (var friend in FriendListCache.List)
             {
-                if (CryptoUtil.HashValue(friend.ContentId, contentIdSalt) == contentIdHash)
+                if (ApiCryptoUtil.HashValue(friend.ContentId, contentIdSalt) == contentIdHash)
                 {
                     return friend;
                 }

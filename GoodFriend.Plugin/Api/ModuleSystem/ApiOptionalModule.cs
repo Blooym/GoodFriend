@@ -16,7 +16,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         protected abstract ApiOptionalModuleConfig Config { get; }
 
         /// <summary>
-        ///     Whether or not the module is enabled.
+        ///     Whether or not the module is running.
         /// </summary>
         public bool Enabled => this.Config.Enabled;
 
@@ -39,8 +39,10 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
                     this.Disable();
                 }
             }
+            SiGui.AddTooltip("Whether or not the module is enabled.");
             ImGui.SameLine();
-            SiGui.TextWrapped("Enabled");
+            SiGui.Text("Enabled");
+            SiGui.AddTooltip("Whether or not the module is enabled.");
             ImGui.Dummy(Spacing.SectionSpacing);
 
             if (enabled)

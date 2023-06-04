@@ -1,112 +1,109 @@
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using GoodFriend.Plugin.Api.ModuleSystem;
+using Dalamud.Utility;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.UserInterface.Components;
+using GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
 using ImGuiNET;
 using Sirensong.UserInterface;
-using Sirensong.UserInterface.Style;
-using Sirensong.UserInterface.Windowing;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
 {
-    internal sealed class MainWindow : Window
+    internal sealed partial class MainWindow : Window
     {
-        /// <inheritdoc />
-        public MainWindow() : base("Settings")
-        {
-            this.Size = new Vector2(700, 450);
-            this.SizeCondition = ImGuiCond.FirstUseEver;
-            this.Flags = ImGuiWindowFlagExtra.NoScroll;
-        }
+        /// <summary>
+        ///     The width of the sidebar.
+        /// </summary>
+        private const float SidebarWidthPercentage = 0.25f;
 
-        private ApiModuleBase? SelectedModule { get; set; }
+        /// <summary>
+        ///     The width of the list.
+        /// </summary>
+        private const float ListWidthPercentage = 0.75f;
+
+        /// <summary>
+        ///     The space left at the bottom of the window wrapper.
+        /// </summary>
+        private const uint WindowWrapperBottomSpace = 40;
+
+        /// <summary>
+        ///     The currently selected tab.
+        /// </summary>
+        private MainWindowScreen CurrentScreen { get; set; } = MainWindowScreen.Modules;
+
+        /// <inheritdoc />
+        public MainWindow() : base(Constants.PluginName)
+        {
+            this.Size = new Vector2(680, 660);
+            this.SizeConstraints = new WindowSizeConstraints()
+            {
+                MinimumSize = new Vector2(750, 660),
+                MaximumSize = new Vector2(950, 700)
+            };
+            this.SizeCondition = ImGuiCond.FirstUseEver;
+            this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
+        }
 
         /// <inheritdoc />
         public override void Draw()
         {
-            var selectedModule = this.SelectedModule;
-            if (ImGui.BeginTable("PluginSettings", 2, ImGuiTableFlags.BordersInnerV))
+            SiGui.TextDisabledWrapped(this.CurrentScreen.ToString());
+            if (ImGui.BeginChild("MainWindowWrapper", new Vector2(0, ImGui.GetContentRegionAvail().Y - WindowWrapperBottomSpace), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
-                ImGui.TableSetupColumn("PluginSettingsSidebar", ImGuiTableColumnFlags.WidthFixed, ImGui.GetContentRegionAvail().X * 0.25f);
-                ImGui.TableSetupColumn("PluginSettingsList", ImGuiTableColumnFlags.WidthFixed, ImGui.GetContentRegionAvail().X * 0.75f);
-                ImGui.TableNextRow();
-
-                // Sidebar
-                ImGui.TableNextColumn();
-                if (ImGui.BeginChild("PluginSettingsSidebarChild"))
+                switch (this.CurrentScreen)
                 {
-                    // Display modules under their appropriate tag
-                    ApiModuleTag? lastTag = null;
-                    foreach (var module in Services.ApiModuleService.GetModules().OrderBy(x => x.Tag))
-                    {
-                        if (lastTag != module.Tag)
-                        {
-                            if (lastTag != null)
-                            {
-                                ImGui.Dummy(Spacing.SidebarSectionSpacing);
-                            }
-                            lastTag = module.Tag;
-                            SiGui.Heading(module.Tag.ToString());
-                        }
-
-                        if (ImGui.Selectable(module.Name, selectedModule == module))
-                        {
-                            this.SelectedModule = module;
-                        }
-                    }
+                    case MainWindowScreen.Modules:
+                        DrawModules();
+                        break;
+                    case MainWindowScreen.Settings:
+                        DrawSettings();
+                        break;
                 }
-                ImGui.EndChild();
-
-                if (selectedModule == null)
-                {
-                    ImGui.EndTable();
-                    return;
-                }
-
-                // Listings
-                ImGui.TableNextColumn();
-                if (ImGui.BeginChild("PluginSettingsListChild"))
-                {
-                    SiGui.TextDisabledWrapped(selectedModule.Name);
-                    ImGui.SameLine();
-                    switch (selectedModule.State)
-                    {
-                        case ApiModuleState.Enabled:
-                            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGui.CalcTextSize("Enabled").X - 10);
-                            SiGui.TextColoured(Colours.Success, "Enabled");
-                            break;
-                        case ApiModuleState.Loading:
-                            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGui.CalcTextSize("Loading").X - 10);
-                            SiGui.TextColoured(Colours.Warning, "Loading");
-                            break;
-                        case ApiModuleState.Disabled:
-                            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGui.CalcTextSize("Disabled").X - 10);
-                            SiGui.TextColoured(ImGuiColors.DalamudGrey, "Disabled");
-                            break;
-                        case ApiModuleState.Unloading:
-                            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGui.CalcTextSize("Unloading").X - 10);
-                            SiGui.TextColoured(Colours.Warning, "Unloading");
-                            break;
-                        case ApiModuleState.Error:
-                            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGui.CalcTextSize("Error").X - 10);
-                            SiGui.TextColoured(Colours.Error, "Error");
-                            break;
-                    }
-                    ImGui.Separator();
-                    ImGui.Dummy(Spacing.HeaderSpacing);
-
-                    if (ImGui.BeginChild("PluginSettingsListChildScrolling"))
-                    {
-                        selectedModule?.Draw();
-                    }
-                    ImGui.EndChild();
-                }
-                ImGui.EndChild();
-
-                ImGui.EndTable();
             }
+            ImGui.EndChild();
+
+            ButtonRowComponent.DrawRow(new Dictionary<(FontAwesomeIcon, Vector4?, string), Action>
+            {
+                { (FontAwesomeIcon.Home, null, "Modules"), () => this.CurrentScreen = MainWindowScreen.Modules },
+                { (FontAwesomeIcon.Cog, null, "Settings"), () => this.CurrentScreen = MainWindowScreen.Settings },
+                { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, "Donate (Opens in browser)"), () => Util.OpenLink(Constants.Link.Donate) },
+            });
+        }
+
+        /// <summary>
+        ///     Draws the module content.
+        /// </summary>
+        private static void DrawModules()
+        => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+            ModuleScreen.DrawModuleList,
+            ModuleScreen.DrawModuleDetails);
+
+        /// <summary>
+        ///     Draws the settings content.
+        /// </summary>
+        private static void DrawSettings()
+            => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+                SettingsScreen.DrawSettingsList,
+                SettingsScreen.DrawSettingDetails);
+
+        /// <summary>
+        ///     The tabs of the main window.
+        /// </summary>
+        private enum MainWindowScreen
+        {
+            /// <summary>
+            ///     The modules tab.
+            /// </summary>
+            Modules,
+
+            /// <summary>
+            ///     The settings tab.
+            /// </summary>
+            Settings,
         }
     }
 }

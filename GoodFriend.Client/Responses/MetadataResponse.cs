@@ -11,12 +11,6 @@ namespace GoodFriend.Client.Responses
     public readonly record struct MetadataResponse
     {
         /// <summary>
-        ///     The start time of the API as a Unix timestamp in seoonds.
-        /// </summary>
-        [JsonPropertyName("start_time")]
-        public readonly long StartTime { get; init; }
-
-        /// <summary>
         ///     The current number of connected clients.
         /// </summary>
         [JsonPropertyName("connected_clients")]
@@ -71,12 +65,6 @@ namespace GoodFriend.Client.Responses
         /// </summary>
         [JsonPropertyName("message")]
         public readonly string Message { get; init; }
-
-        /// <summary>
-        ///     Whether the message is important or not.
-        /// </summary>
-        [JsonPropertyName("important")]
-        public bool Important { get; init; }
 
         /// <summary>
         ///     Whether or not the API wants the client to ignore this message.

@@ -6,7 +6,6 @@ use crate::types::api_about::ApiAbout;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct MetadataResponse {
-    pub start_time: u64,
     pub connected_clients: usize,
     pub about: ApiAbout,
 }

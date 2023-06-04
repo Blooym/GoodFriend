@@ -56,6 +56,5 @@ namespace GoodFriend.Plugin.UserInterface
 
             this.disposedValue = true;
         }
-
     }
 }

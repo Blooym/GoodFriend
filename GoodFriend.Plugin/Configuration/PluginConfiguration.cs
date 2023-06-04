@@ -30,7 +30,7 @@ namespace GoodFriend.Plugin.Configuration
             ///     The default API URL to use.
             /// </summary>
             [NonSerialized]
-            public static readonly Uri DefaultApiBaseUrl = new("https://aether.bitsofabyte.dev/");
+            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/");
 
             /// <summary>
             ///     The BaseURL to use when interacting with the API.
