@@ -1,6 +1,5 @@
 using System;
 using Dalamud.Game;
-using Dalamud.Logging;
 using Dalamud.Memory;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
@@ -10,6 +9,7 @@ using Lumina.Excel.GeneratedSheets;
 using Sirensong;
 using Sirensong.Cache;
 using Sirensong.Game.Helpers;
+using Sirensong.UserInterface;
 
 namespace GoodFriend.Plugin.Api.Modules.Optional
 {
@@ -55,6 +55,19 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             ApiClient.OnPlayerStreamMessage -= this.OnPlayerStreamMessage;
         }
 
+        /// <inheritdoc />
+        protected override void DrawModule()
+        {
+            SiGui.Heading("Filtering Options");
+
+            var onlyShowCurrentWorld = this.Config.OnlyShowCurrentWorld;
+            if (SiGui.Checkbox("Only show for current world", "When enabled, you will only be notified when a friend changes to your current world.", ref onlyShowCurrentWorld))
+            {
+                this.Config.OnlyShowCurrentWorld = onlyShowCurrentWorld;
+                this.Config.Save();
+            }
+        }
+
         /// <summary>
         ///     Called when the player logs out to reset the world ID and first world update.
         /// </summary>
@@ -79,12 +92,20 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             }
             var stateData = rawEvent.StateUpdateType.WorldChange.Value;
 
+            // Ignore the event if it does not come from the current world if enabled.
+            if (this.Config.OnlyShowCurrentWorld && stateData.WorldId != this.currentWorldId)
+            {
+                return;
+            }
+
+            // Find the friend that changed worlds, if not found then ignore.
             var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
                 return;
             }
 
+            // Find the world name, if not found then ignore.
             var friend = friendData.Value;
             var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name);
             var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
@@ -93,6 +114,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 return;
             }
 
+            // Print the message.
             ChatHelper.Print($"{friendName} moved world to to {world}.");
         }
 
@@ -102,23 +124,26 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         /// <param name="framework"></param>
         private void OnFrameworkUpdate(Framework framework)
         {
+            // Ignore if not logged in.
             if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
             {
                 return;
             }
 
+            // Set the current world ID if this is the first world update.
             var worldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
             if (this.firstWorldUpdate)
             {
-                Logger.Information($"First update, setting last world id to {worldId} and dropping event.");
+                Logger.Debug($"First update, setting last world id to {worldId} and dropping event.");
                 this.currentWorldId = worldId;
                 this.firstWorldUpdate = false;
                 return;
             }
 
+            // Send the world change event if the world ID has changed.
             if (worldId != 0 && this.currentWorldId != worldId)
             {
-                PluginLog.Information($"World changed from {this.currentWorldId} to {worldId}.");
+                Logger.Information($"World changed from {this.currentWorldId} to {worldId}, sending event.");
                 this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
 
                 var salt = ApiCryptoUtil.GenerateSalt();
@@ -146,5 +171,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
 
         /// <inheritdoc />
         public override bool Enabled { get; set; }
+
+        /// <summary>
+        ///     Whether to only show when a player travels to the current world.
+        /// </summary>
+        public bool OnlyShowCurrentWorld { get; set; } = true;
     }
 }

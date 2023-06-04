@@ -116,11 +116,15 @@ namespace GoodFriend.Plugin.Api.Modules.Required
             {
                 SiGui.Image(metadata.About.BannerUrl.ToString(), ScalingMode.None, new(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().X / 3));
             }
+
+            // Server name
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.DalamudGrey3);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.DalamudGrey3);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.DalamudGrey3);
             ImGui.Button(metadata.About.Identifier, new(ImGui.GetContentRegionAvail().X, 40));
             ImGui.PopStyleColor(3);
+
+            // Clients connected
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.ParsedBlue);
@@ -136,6 +140,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
 
             if (ImGui.BeginChild("InstanceInfoChild"))
             {
+                // MOTD.
                 SiGui.Heading("Message of the Day");
                 if (!metadata.About.Motd.Ignore)
                 {
@@ -146,6 +151,8 @@ namespace GoodFriend.Plugin.Api.Modules.Required
                     SiGui.TextDisabledWrapped("No message of the day has been set.");
                 }
                 ImGui.Dummy(Spacing.ReadableSpacing);
+
+                // Motd toggle button.
                 var showOnLogin = this.Config.ShowMotdOnLogin;
                 if (SiGui.Checkbox("Show MOTD on login", ref showOnLogin))
                 {
@@ -154,6 +161,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
                 }
                 ImGui.Dummy(Spacing.SectionSpacing);
 
+                // Links.
                 SiGui.Heading("Custom Links");
                 if (metadata.About.CustomUrls.Count == 0)
                 {
@@ -190,7 +198,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
             catch (Exception e)
             {
                 this.lastMetadataUpdateFailed = true;
-                Logger.Warning($"Failed to get metadata: {e}");
+                Logger.Warning($"Failed to get metadata: {e.Message}");
             }
         }
 
@@ -206,6 +214,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
                 return;
             }
 
+            Logger.Information($"Displaying message of the day: {this.metadata.Value.About.Motd.Message}");
             ChatHelper.Print(new SeStringBuilder()
                         .AddText(this.metadata.Value.About.Motd.Message)
                         .AddText(" ")

@@ -57,24 +57,24 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         {
             try
             {
-                Logger.Debug($"Loading module {this.GetType().FullName}...");
+                Logger.Information($"Began loading module {this.GetType().FullName}...");
                 this.State = ApiModuleState.Loading;
 
                 this.EnableAction();
                 this.State = ApiModuleState.Enabled;
-                Logger.Debug($"Enabled module {this.GetType().FullName}.");
+                Logger.Information($"Loaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
                 this.State = ApiModuleState.Error;
-                Logger.Error($"Failed to enable module {this.GetType().FullName}: {e}");
+                Logger.Error($"Failed to load module {this.GetType().FullName}: {e}");
                 try
                 {
                     this.DisableAction();
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Failed to disable module {this.GetType().FullName} after it errored: {ex}");
+                    Logger.Error($"Failed to unload module {this.GetType().FullName} after it errored: {ex}");
                 }
             }
         }
@@ -92,23 +92,23 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         {
             if (this.State is ApiModuleState.Disabled)
             {
-                Logger.Warning($"Not Unloading module {this.GetType().FullName} as it is already disabled or is in an error state.");
+                Logger.Warning($"Not unloading module {this.GetType().FullName} as it is already disabled or is in an error state.");
                 return;
             }
 
             try
             {
                 this.State = ApiModuleState.Unloading;
-                Logger.Debug($"Unloading module {this.GetType().FullName}...");
+                Logger.Information($"Unloading module {this.GetType().FullName}...");
 
                 this.DisableAction();
                 this.State = ApiModuleState.Disabled;
-                Logger.Debug($"Disabled module {this.GetType().FullName}.");
+                Logger.Information($"Unloaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
                 this.State = ApiModuleState.Error;
-                Logger.Error($"Failed to disable module {this.GetType().FullName}: {e}");
+                Logger.Error($"Failed to unload module {this.GetType().FullName}: {e}");
             }
         }
 
@@ -119,7 +119,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         {
             if (this.State is ApiModuleState.Error)
             {
-                SiGui.TextWrappedColoured(Colours.Error, "This module has encountered an error and cannot be used.");
+                SiGui.TextWrappedColoured(Colours.Error, "This module has encountered an error while running and was disabled. Please check the logs for more information.");
                 return;
             }
 

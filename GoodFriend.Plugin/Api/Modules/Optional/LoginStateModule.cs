@@ -78,35 +78,35 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             // Filtering
             SiGui.Heading("Filtering Options");
             var hideSameFc = this.Config.HideSameFC;
-            if (SiGui.Checkbox("Hide same free company", ref hideSameFc))
+            if (SiGui.Checkbox("Hide same free company", "Hides events from friends in the same free company as you.", ref hideSameFc))
             {
                 this.Config.HideSameFC = hideSameFc;
                 this.Config.Save();
             }
 
             var hideDifferentHomeworld = this.Config.HideDifferentHomeworld;
-            if (SiGui.Checkbox("Hide different homeworld", ref hideDifferentHomeworld))
+            if (SiGui.Checkbox("Hide different homeworld", "Hides events from friends that aren't from your homeworld.", ref hideDifferentHomeworld))
             {
                 this.Config.HideDifferentHomeworld = hideDifferentHomeworld;
                 this.Config.Save();
             }
 
             var hideDifferentTerritory = this.Config.HideDifferentTerritory;
-            if (SiGui.Checkbox("Hide different territory", ref hideDifferentTerritory))
+            if (SiGui.Checkbox("Hide different territory", "Hides events from friends that logged outside of your current territory.", ref hideDifferentTerritory))
             {
                 this.Config.HideDifferentTerritory = hideDifferentTerritory;
                 this.Config.Save();
             }
 
             var hideDifferentWorld = this.Config.HideDifferentWorld;
-            if (SiGui.Checkbox("Hide different world", ref hideDifferentWorld))
+            if (SiGui.Checkbox("Hide different world", "Hides events from friends that logged outside of your current world.", ref hideDifferentWorld))
             {
                 this.Config.HideDifferentWorld = hideDifferentWorld;
                 this.Config.Save();
             }
 
             var hideDifferentDatacenter = this.Config.HideDifferentDatacenter;
-            if (SiGui.Checkbox("Hide different data center", ref hideDifferentDatacenter))
+            if (SiGui.Checkbox("Hide different data center", "Hides events from friends that logged outside of your current data center.", ref hideDifferentDatacenter))
             {
                 this.Config.HideDifferentDatacenter = hideDifferentDatacenter;
                 this.Config.Save();
@@ -177,40 +177,40 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var friendFcTag = MemoryHelper.ReadSeStringNullTerminated((nint)friend.FCTag).TextValue;
             var stateData = rawEvent.StateUpdateType.LoginStateChange.Value;
 
-            Logger.Debug($"Recieved state update from {friendName}.");
+            Logger.Debug($"Recieved login state update from {friendName}, checking if it should be displayed.");
 
             // Check if the friend is in the same free company.
             if (this.Config.HideSameFC && friendFcTag != localPlayer.CompanyTag.TextValue)
             {
-                Logger.Debug($"Ignoring state update from {friendName} due to being in the same free company.");
+                Logger.Debug($"Ignoring login state update from {friendName} due to being in the same free company.");
                 return;
             }
 
             // Check if the friend is in the same homeworld.
             if (this.Config.HideDifferentHomeworld && friend.HomeWorld != this.currentHomeworldId)
             {
-                Logger.Verbose($"Ignoring state update from different homeworld ({friend.HomeWorld} != {this.currentHomeworldId}).");
+                Logger.Debug($"Ignoring login state update from different homeworld ({friend.HomeWorld} != {this.currentHomeworldId}).");
                 return;
             }
 
             // Check if the friend is in the same territory.
             if (this.Config.HideDifferentTerritory && stateData.TerritoryId != this.currentTerritoryId)
             {
-                Logger.Verbose($"Ignoring state update from different territory ({stateData.TerritoryId} != {this.currentTerritoryId}).");
+                Logger.Debug($"Ignoring login state update from different territory ({stateData.TerritoryId} != {this.currentTerritoryId}).");
                 return;
             }
 
             // Check if the friend is in the same world.
             if (this.Config.HideDifferentWorld && stateData.WorldId != this.currentWorldId)
             {
-                Logger.Verbose($"Ignoring state update from different world ({stateData.WorldId} != {this.currentWorldId}).");
+                Logger.Debug($"Ignoring login state update from different world ({stateData.WorldId} != {this.currentWorldId}).");
                 return;
             }
 
             // Check if the friend is in the same data center.
             if (this.Config.HideDifferentDatacenter && stateData.DatacenterId != this.currentDatacenterId)
             {
-                Logger.Verbose($"Ignoring state update from different data center ({stateData.DatacenterId} != {this.currentDatacenterId}).");
+                Logger.Debug($"Ignoring login state update from different data center ({stateData.DatacenterId} != {this.currentDatacenterId}).");
                 return;
             }
 
@@ -218,34 +218,32 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             ChatHelper.Print(stateData.LoggedIn ? this.Config.LoginMessage.Format(friendName) : this.Config.LogoutMessage.Format(friendName));
         }
 
-        private void OnLogin(object? sender, EventArgs e)
-        {
-            // Task.Run(() =>
-            // {
-            while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
-            {
-                Thread.Sleep(100);
-            }
+        private void OnLogin(object? sender, EventArgs e) =>
+                Task.Run(() =>
+                {
+                    while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
+                    {
+                        Thread.Sleep(100);
+                    }
 
-            this.currentContentId = DalamudInjections.ClientState.LocalContentId;
-            this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.Id;
-            this.currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.GameData!.DataCenter.Row;
-            this.currentTerritoryId = DalamudInjections.ClientState.TerritoryType;
-            this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
+                    this.currentContentId = DalamudInjections.ClientState.LocalContentId;
+                    this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.Id;
+                    this.currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.GameData!.DataCenter.Row;
 
-            var salt = ApiCryptoUtil.GenerateSalt();
-            var hash = ApiCryptoUtil.HashValue(this.currentContentId, salt);
-            ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
-            {
-                ContentIdHash = hash,
-                ContentIdSalt = salt,
-                LoggedIn = true,
-                DatacenterId = this.currentDatacenterId,
-                TerritoryId = this.currentTerritoryId,
-                WorldId = this.currentWorldId
-            });
-            // }).Start();
-        }
+                    Logger.Information("Sending login event.");
+
+                    var salt = ApiCryptoUtil.GenerateSalt();
+                    var hash = ApiCryptoUtil.HashValue(this.currentContentId, salt);
+                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
+                    {
+                        ContentIdHash = hash,
+                        ContentIdSalt = salt,
+                        LoggedIn = true,
+                        DatacenterId = this.currentDatacenterId,
+                        TerritoryId = this.currentTerritoryId,
+                        WorldId = this.currentWorldId
+                    });
+                }).Start();
 
         private void OnLogout(object? sender, EventArgs e) =>
             Task.Run(() =>
@@ -255,6 +253,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                     this.currentDatacenterId = 0;
                     this.currentTerritoryId = 0;
                     this.currentWorldId = 0;
+
+                    Logger.Information("Sending logout event.");
 
                     var salt = ApiCryptoUtil.GenerateSalt();
                     var hash = ApiCryptoUtil.HashValue(this.currentContentId, salt);

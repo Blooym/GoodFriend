@@ -32,7 +32,7 @@ namespace GoodFriend.Plugin.Api
             var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ThenByDescending(x => x is ApiRequiredModule).ThenByDescending(x => x is ApiOptionalModule).ToList();
             foreach (var module in modules)
             {
-                Logger.Information($"Loading module {module.GetType().FullName} with priority {module.LoadPriority}.");
+                Logger.Information($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
 
                 // If the module is optional, check its configuration
                 if (module is ApiOptionalModule optionalModule && optionalModule.Enabled)
@@ -54,7 +54,6 @@ namespace GoodFriend.Plugin.Api
         {
             foreach (var module in this.modules)
             {
-                Logger.Information($"Unloading module {module.GetType().FullName}.");
                 module.Disable();
             }
 

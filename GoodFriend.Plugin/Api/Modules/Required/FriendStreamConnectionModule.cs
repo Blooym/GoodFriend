@@ -150,7 +150,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         /// <param name="e"></param>
         private void OnPlayerStreamEvent(object? sender, PlayerEventStreamUpdate e)
         {
-            Logger.Verbose($"Event recieved from event stream.");
+            Logger.Verbose($"Event recieved from player event stream.");
             this.LasEventTime = DateTime.Now;
             this.EventsRecieved++;
         }
