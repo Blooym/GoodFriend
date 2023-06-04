@@ -58,7 +58,7 @@ jobs:
         run: dotnet restore
 
       - name: Build Plugin
-        run: dotnet build --no-restore --no-logo
+        run: dotnet build --no-restore --nologo
 
       - name: Check for Lint Errors
         id: lint
