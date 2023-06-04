@@ -13,7 +13,7 @@ namespace GoodFriend.Plugin.Api
         /// <summary>
         ///     All loaded modules.
         /// </summary>
-        private readonly ICollection<ApiModuleBase> modules;
+        private readonly ICollection<ApiModuleBase> loadedModules;
 
         /// <summary>
         ///     The client used to communicate with the API, shared between all modules.
@@ -46,13 +46,13 @@ namespace GoodFriend.Plugin.Api
                     continue;
                 }
             }
-            this.modules = modules;
+            this.loadedModules = modules;
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            foreach (var module in this.modules)
+            foreach (var module in this.loadedModules)
             {
                 module.Disable();
             }
@@ -96,14 +96,13 @@ namespace GoodFriend.Plugin.Api
         /// <returns>The module instance if found, otherwise null.</returns>
         public T? GetModule<T>() where T : ApiModuleBase
         {
-            foreach (var module in this.modules)
+            foreach (var module in this.loadedModules)
             {
                 if (module is T t)
                 {
                     return t;
                 }
             }
-
             return null;
         }
 
@@ -111,6 +110,6 @@ namespace GoodFriend.Plugin.Api
         ///     Gets all loaded modules.
         /// </summary>
         /// <returns>All loaded modules.</returns>
-        public ICollection<ApiModuleBase> GetModules() => this.modules;
+        public ICollection<ApiModuleBase> GetModules() => this.loadedModules;
     }
 }

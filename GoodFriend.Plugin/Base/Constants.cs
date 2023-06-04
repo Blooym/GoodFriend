@@ -16,7 +16,7 @@ namespace GoodFriend.Plugin.Base
         /// <summary>
         ///     Plugin build information.
         /// </summary>
-        public static class Build
+        internal static class Build
         {
             /// <summary>
             ///     The version of the plugin.
@@ -57,7 +57,7 @@ namespace GoodFriend.Plugin.Base
         /// <summary>
         ///     Links to various places.
         /// </summary>
-        public static class Link
+        internal static class Link
         {
             /// <summary>
             ///     The URL to the donation page.
@@ -73,7 +73,7 @@ namespace GoodFriend.Plugin.Base
         /// <summary>
         ///     The plugin's directories.
         /// </summary>
-        public static class Directory
+        internal static class Directory
         {
             /// <summary>
             ///     The directory where the api module configurations are stored.
