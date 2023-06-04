@@ -15,6 +15,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>

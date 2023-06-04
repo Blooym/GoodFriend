@@ -114,7 +114,9 @@ namespace GoodFriend.Client
         /// <inheritdoc />
         public GoodfriendClientOptions Options { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     The saved game version.
+        /// </summary>
         private string GameVersion { get; }
 
         /// <summary>
@@ -253,14 +255,14 @@ namespace GoodFriend.Client
         {
             var queryParams = CreateParams(new Dictionary<string, object>
             {
-                { UpdatePlayerLoginStateRequest.PutData.CONTENT_ID_PARAM, requestData.ContentIdHash },
-                { UpdatePlayerLoginStateRequest.PutData.CONTENT_ID_SALT_PARAM, requestData.ContentIdSalt },
-                { UpdatePlayerLoginStateRequest.PutData.DATACENTER_ID_PARAM, requestData.WorldId },
-                { UpdatePlayerLoginStateRequest.PutData.WORLD_ID_PARAM, requestData.WorldId },
-                { UpdatePlayerLoginStateRequest.PutData.TERRITORY_ID_PARAM, requestData.TerritoryId },
-                { UpdatePlayerLoginStateRequest.PutData.LOGGED_IN_PARAM, requestData.LoggedIn },
+                { UpdatePlayerLoginStateRequest.PutData.ContentIdParam, requestData.ContentIdHash },
+                { UpdatePlayerLoginStateRequest.PutData.ContentIDSaltParam, requestData.ContentIdSalt },
+                { UpdatePlayerLoginStateRequest.PutData.DatacenterIdParam, requestData.WorldId },
+                { UpdatePlayerLoginStateRequest.PutData.WorldIdParam, requestData.WorldId },
+                { UpdatePlayerLoginStateRequest.PutData.TerritoryIdParam, requestData.TerritoryId },
+                { UpdatePlayerLoginStateRequest.PutData.LoggedInParam, requestData.LoggedIn },
             });
-            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerLoginStateRequest.ENDPOINT_URL + queryParams);
+            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerLoginStateRequest.EndpointUrl + queryParams);
         }
 
         /// <summary>
@@ -272,20 +274,20 @@ namespace GoodFriend.Client
         {
             var queryParams = CreateParams(new Dictionary<string, object>
             {
-                { UpdatePlayerWorldRequest.PutData.CONTENT_ID_PARAM, requestData.ContentIdHash },
-                { UpdatePlayerWorldRequest.PutData.CONTENT_ID_SALT_PARAM, requestData.ContentIdSalt },
-                { UpdatePlayerWorldRequest.PutData.WORLD_ID_PARAM, requestData.WorldId },
+                { UpdatePlayerWorldRequest.PutData.ContentIdParam, requestData.ContentIdHash },
+                { UpdatePlayerWorldRequest.PutData.ContentIdSaltParam, requestData.ContentIdSalt },
+                { UpdatePlayerWorldRequest.PutData.WorldIdParam, requestData.WorldId },
             });
-            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerWorldRequest.ENDPOINT_URL + queryParams);
+            return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerWorldRequest.EndpointUrl + queryParams);
         }
 
-        private static HttpRequestMessage BuildMinimumVersionRequest() => new(HttpMethod.Get, MinimumGameVersionRequest.ENDPOINT_URL);
+        private static HttpRequestMessage BuildMinimumVersionRequest() => new(HttpMethod.Get, MinimumGameVersionRequest.EndpointUrl);
 
         /// <summary>
         ///     Builds a new metadata request.
         /// </summary>
         /// <returns></returns>
-        private static HttpRequestMessage BuildMetadataRequest() => new(HttpMethod.Get, MetadataRequest.ENDPOINT_URL);
+        private static HttpRequestMessage BuildMetadataRequest() => new(HttpMethod.Get, MetadataRequest.EndpointUrl);
 
         /// <inheritdoc />
         public HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData)
@@ -361,8 +363,8 @@ namespace GoodFriend.Client
                 this.PlayerStreamConnectionState = EventStreamConnectionState.Connecting;
 
                 // Begin reading the player event stream.
-                using var request = new HttpRequestMessage(HttpMethod.Get, PlayerEventsRequest.ENDPOINT_URL);
-                using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.ENDPOINT_URL);
+                using var request = new HttpRequestMessage(HttpMethod.Get, PlayerEventsRequest.EndpointUrl);
+                using var stream = await this.httpClient.GetStreamAsync(PlayerEventsRequest.EndpointUrl);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 

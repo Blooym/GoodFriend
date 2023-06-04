@@ -10,27 +10,27 @@ namespace GoodFriend.Client.Requests
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        internal const string ENDPOINT_URL = "/api/update/world";
+        internal const string EndpointUrl = "/api/update/world";
 
         public readonly record struct PutData
         {
-            private const uint CONTENT_ID_HASH_MIN_LENGTH = GlobalRequestData.CONTENT_ID_HASH_MIN_LENGTH;
-            private const uint CONTENT_ID_SALT_MIN_LENGTH = GlobalRequestData.CONTENT_ID_SALT_MIN_LENGTH;
+            private const uint ContentIdHashMinLength = GlobalRequestData.ContentIdHashMinLength;
+            private const uint ContentIdSaltMinLength = GlobalRequestData.ContentIdHashMinLength;
 
             /// <summary>
             ///     The content id query parameter name.
             /// </summary>
-            internal const string CONTENT_ID_PARAM = "content_id_hash";
+            internal const string ContentIdParam = "content_id_hash";
 
             /// <summary>
             ///     The content id salt query parameter name.
             /// </summary>
-            internal const string CONTENT_ID_SALT_PARAM = "content_id_salt";
+            internal const string ContentIdSaltParam = "content_id_salt";
 
             /// <summary>
             ///     The world id query parameter name.
             /// </summary>
-            internal const string WORLD_ID_PARAM = "world_id";
+            internal const string WorldIdParam = "world_id";
 
             private readonly string contentIdHashBackingField;
 
@@ -44,7 +44,7 @@ namespace GoodFriend.Client.Requests
             {
                 get => this.contentIdHashBackingField; init
                 {
-                    if (value.Length < CONTENT_ID_HASH_MIN_LENGTH)
+                    if (value.Length < ContentIdHashMinLength)
                     {
                         throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
                     }
@@ -64,7 +64,7 @@ namespace GoodFriend.Client.Requests
             {
                 get => this.contentIdSaltBackingField; init
                 {
-                    if (value.Length < CONTENT_ID_SALT_MIN_LENGTH)
+                    if (value.Length < ContentIdSaltMinLength)
                     {
                         throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
                     }
