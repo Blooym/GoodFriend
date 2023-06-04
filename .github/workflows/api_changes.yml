@@ -19,9 +19,6 @@ jobs:
   Test:
     if: github.event.pull_request.draft == false || github.event_name == 'push'
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
     defaults:
         run:
           working-directory: ./GoodFriend.Api/
