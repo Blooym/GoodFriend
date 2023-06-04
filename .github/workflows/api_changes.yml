@@ -14,6 +14,7 @@ on:
       - "GoodFriend.Api/Cargo.toml"
       - "GoodFriend.Api/Cargo.lock"
     types: [ready_for_review, opened, synchronize]
+  workflow_dispatch:
 
 jobs:
   Test:
