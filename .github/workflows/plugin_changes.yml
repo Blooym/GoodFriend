@@ -1,0 +1,81 @@
+name: "Plugin Changes"
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Plugin/**.cs"
+      - "GoodFriend.Plugin/*.csproj"
+      - "GoodFriend.Plugin/packages.lock.json"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Plugin/**.cs"
+      - "GoodFriend.Plugin/*.csproj"
+      - "GoodFriend.Plugin/packages.lock.json"
+    types: [ready_for_review, opened, synchronize]
+
+jobs:
+  Test:
+    if: github.event.pull_request.draft == false || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    defaults:
+        run:
+          working-directory: ./GoodFriend.Plugin/
+    strategy:
+        matrix:
+          dotnet: [7.0.x]
+          dalamud_version: ["latest", "stg/latest"]
+    env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        DALAMUD_HOME: "/tmp/"
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Cache Nuget Packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Download Dalamud
+        run: |
+          wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O ${{ env.DALAMUD_HOME }}.zip
+          unzip ${{ env.DALAMUD_HOME }}.zip -d ${{ env.DALAMUD_HOME }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+            dotnet-version: ${{ matrix.dotnet }}
+            include-prerelease: true
+        
+      - name: Restore Nuget Packages
+        run: dotnet restore
+
+      - name: Build Plugin
+        run: dotnet build --no-restore --no-logo
+
+      - name: Check for Lint Errors
+        id: lint
+        working-directory: Wholist
+        continue-on-error: true
+        run: | 
+          dotnet format --verify-no-changes > lint.txt 2>&1
+
+      - name: Report Lint Errors
+        working-directory: Wholist
+        if : steps.lint.outcome == 'failure'
+        run: |
+          cat lint.txt | sed -E 's/^(.*)$/::warning:: \1/g'
+
+      - name: Run Tests
+        run: dotnet test --no-restore --no-build --verbosity normal

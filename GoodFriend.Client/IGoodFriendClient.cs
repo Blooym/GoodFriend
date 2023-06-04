@@ -1,5 +1,7 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 
 namespace GoodFriend.Client
@@ -7,70 +9,70 @@ namespace GoodFriend.Client
     /// <summary>
     ///     Represents a client that can interact with the GoodFriend API.
     /// </summary>
-    public interface IGoodFriendClient
+    public interface IGoodFriendClient : IDisposable
     {
         /// <summary>
-        ///     The base uri of all api endpoints, should include version if applicable.
+        ///     The options used to configure the client.
         /// </summary>
-        Uri BaseUri { get; }
+        GoodfriendClientOptions Options { get; }
 
         /// <summary>
-        ///     The current connection state of the client to the server-sent event stream.
+        ///     The current connection state of the client to player event stream.
         /// </summary>
-        EventStreamConnectionState ConnectionState { get; }
+        EventStreamConnectionState PlayerStreamConnectionState { get; }
 
         /// <summary>
-        ///     Sends a login event to the api.
+        ///     Sends the players login state to the API.
         /// </summary>
-        /// <param name="contentId">The unhashed player content id</param>
-        /// <param name="datacenterId">The datacenter id of the player</param>
-        /// <param name="worldId">The world id of the player</param>
-        /// <param name="territoryId">The territory id of the player</param>
-        /// <returns>A RestResponse for the request.</returns>
-        bool SendLogin(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <param name="requestData">The data to send.</param>
+        /// <returns>A <see cref="RestResponse" /> instance.</returns>
+        HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData);
 
-        /// <inheritdoc cref="SendLogin(ulong, uint, uint, uint)" />
-        Task<bool> SendLoginAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendLogin(UpdatePlayerLoginStateRequest)" />
+        Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PutData requestData);
 
         /// <summary>
-        ///     Sends a logout event to the api.
+        ///     Sends the players world change to the API.
         /// </summary>
-        /// <param name="contentId">The unhashed player content id</param>
-        /// <param name="datacenterId">The datacenter id of the player</param>
-        /// <param name="worldId">The world id of the player</param>
-        /// <param name="territoryId">The territory id of the player</param>
-        /// <returns>A RestResponse for the request.</returns>
-        bool SendLogout(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <param name="requestData">The data to send.</param>
+        /// <returns>A <see cref="RestResponse" /> instance.</returns>
+        HttpResponseMessage SendWorldChange(UpdatePlayerWorldRequest.PutData requestData);
 
-        /// <inheritdoc cref="SendLogout(ulong, uint, uint, uint)" />
-        Task<bool> SendLogoutAsync(ulong contentId, uint datacenterId, uint worldId, uint territoryId);
+        /// <inheritdoc cref="SendWorldChange(UpdatePlayerWorldRequest.PutData) />
+        Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerWorldRequest.PutData requestData);
 
         /// <summary>
-        ///     Gets metadata from the api.
+        ///     Gets metadata from the API.
         /// </summary>
         /// <returns>A <see cref="MetadataResponse" /> instance.</returns>
-        MetadataResponse GetMetadata();
+        (MetadataResponse, HttpResponseMessage) GetMetadata();
 
         /// <inheritdoc cref="GetMetadata" />
-        Task<MetadataResponse> GetMetadataAsync();
+        Task<(MetadataResponse, HttpResponseMessage)> GetMetadataAsync();
 
         /// <summary>
-        ///     Gets the motd from the api.
+        ///     Gets the minimum allowed game version from the API.
         /// </summary>
-        /// <returns>A <see cref="MotdResponse" /> instance</returns>
-        MotdResponse GetMotd();
+        /// <returns>A <see cref="MinimumGameVersionResponse" /> instance.</returns>
+        (MinimumGameVersionResponse, HttpResponseMessage) GetMinimumVersion();
 
-        /// <inheritdoc cref="GetMotd" />
-        Task<MotdResponse> GetMotdAsync();
-
-        /// <summary>
-        ///     Starts listening to the event stream.
-        /// </summary>
-        void ConnectToEventStream();
+        /// <inheritdoc cref="GetMinimumVersion" />
+        Task<(MinimumGameVersionResponse, HttpResponseMessage)> GetMinimumVersionAsync();
 
         /// <summary>
-        ///     Stops listening to the event stream.
+        ///     Starts listening to the player event stream.
         /// </summary>
-        void DisconnectFromEventStream();
+        void ConnectToPlayerEventStream();
+
+        /// <summary>
+        ///     Stops listening to the player event stream.
+        /// </summary>
+        void DisconnectFromPlayerEventStream();
+
+        /// <summary>
+        ///     Updates the options used to configure the client.
+        /// </summary>
+        /// <param name="options">The new options.</param>
+        void UpdateOptions(GoodfriendClientOptions options);
     }
 }

@@ -1,0 +1,85 @@
+name: "API Changes"
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Api/**.rs"
+      - "GoodFriend.Api/Cargo.toml"
+      - "GoodFriend.Api/Cargo.lock"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Api/**.rs"
+      - "GoodFriend.Api/Cargo.toml"
+      - "GoodFriend.Api/Cargo.lock"
+    types: [ready_for_review, opened, synchronize]
+
+jobs:
+  Test:
+    if: github.event.pull_request.draft == false || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    defaults:
+        run:
+          working-directory: ./GoodFriend.Api/
+    strategy:
+        matrix:
+          rust: [stable]
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Cache Cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - name: Build Project
+        run: cargo build --all
+
+      - name: Run Tests
+        run: cargo test --all
+
+      - name: Run Clippy
+        run: cargo clippy --all -- -D warnings
+
+      - name: Run Rustfmt
+        run: cargo fmt --all --check
+
+  Docker-Build:
+    needs: [Test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./GoodFriend.Api/
+          file: ./GoodFriend.Api/Dockerfile
+          push: false
+          tags: testbuild/testbuild:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

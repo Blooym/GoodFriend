@@ -1,7 +1,6 @@
 files:
-  - source: /GoodFriend.Plugin/Resources/Localization/GoodFriend_Localizable.json
-    translation: /%original_path%/%two_letters_code%.json
- 
-pull_request_title: "chore(i18n): Translation updates (Crowdin)"
-commit_message: "chore(i18n): translations updates for %original_file_name% (%language%) [skip ci]"
-append_commit_message: false
+  - source: /GoodFriend.Plugin/Localization/Resources/Strings.resx
+    translation: /%original_path%/Strings.%two_letters_code%.resx
+pull_request_title: 'Translation updates (Crowdin)'
+commit_message: 'chore(l10n): translations updates for %original_file_name% (%language%) [skip ci]'
+append_commit_message: 1

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <!-- Project Configuration -->
+  <!-- Project Information -->
   <PropertyGroup>
     <Title>GoodFriend.Plugin</Title>
     <Authors>BitsOfAByte</Authors>
     <AssemblyName>GoodFriend.Plugin</AssemblyName>
-    <Description>A server and plugin for sending/recieving login and logout notifications with friends.</Description>
-    <Version>1.4.6.0</Version>
+    <Description>A Dalamud plugin for syncing various player events with others.</Description>
+    <Version>2.0.0.0-rc1</Version>
     <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
   
@@ -16,9 +16,9 @@
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
     <Nullable>enable</Nullable>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
@@ -26,39 +26,56 @@
   <!-- Custom Runtime Variables -->
   <Target Name="SetCustomVars" BeforeTargets="BeforeBuild">
     <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitHash" />
     </Exec>
     <Exec Command="git show -s --format=%ci HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime" />
     </Exec>
     <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch" />
     </Exec>
     <Exec Command="git log -1 --pretty=%B" ConsoleToMSBuild="true" IgnoreExitCode="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage" />
     </Exec>
 
     <ItemGroup>
-      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitHash">
+      <AssemblyAttribute Include="GoodFriend.Plugin.Base.GitHash">
         <_Parameter1>$(GitHash)</_Parameter1>
       </AssemblyAttribute>
-      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitCommitDate">
+      <AssemblyAttribute Include="GoodFriend.Plugin.Base.GitCommitDate">
         <_Parameter1>$(BuildTime)</_Parameter1>
       </AssemblyAttribute>
-      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitBranch">
+      <AssemblyAttribute Include="GoodFriend.Plugin.Base.GitBranch">
         <_Parameter1>$(GitBranch)</_Parameter1>
       </AssemblyAttribute>
-      <AssemblyAttribute Include="GoodFriend.Plugin.Common.GitCommitMessage">
+      <AssemblyAttribute Include="GoodFriend.Plugin.Base.GitCommitMessage">
         <_Parameter1>$(LastCommitMessage)</_Parameter1>
       </AssemblyAttribute>
     </ItemGroup>
   </Target>
   
-  <!-- Plugin Resources -->
+    <!-- Localization -->
   <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.*" Exclude="Resources\**\*Localizable.*" />
+    <EmbeddedResource Update="Localization\Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  
+  <ItemGroup>
+    <Compile Update="Localization\Resources\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Packages -->
+  <ItemGroup>
+    <ProjectReference Include="../GoodFriend.Client/GoodFriend.Client.csproj" />
+    <ProjectReference Include="../Sirensong/Sirensong/Sirensong.csproj" />
+    <PackageReference Include="DalamudPackager" Version="2.1.11" />
+  </ItemGroup>
+
   <!-- Dalamud Paths -->
   <PropertyGroup>
     <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
@@ -69,15 +86,8 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <!-- Packages -->
-  <ItemGroup>
-    <ProjectReference Include="../GoodFriend.Client/GoodFriend.Client.csproj" />
-    <ProjectReference Include="../Sirensong/Sirensong/Sirensong.csproj" />
-  </ItemGroup>
-
   <!-- Dalamud References -->
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.11" />
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>
@@ -106,13 +116,5 @@
       <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-		<Reference Include="CheapLoc">
-			<Private>false</Private>
-			<HintPath>$(DalamudLibPath)CheapLoc.dll</HintPath>
-		</Reference>
   </ItemGroup>
 </Project>

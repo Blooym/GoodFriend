@@ -1,17 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: "nuget"
-    directory: "/GoodFriend.Plugin"
-    schedule:
-      interval: "monthly"
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "npm"
-    directory: "/GoodFriend.Server"
+  - package-ecosystem: "nuget"
+    directory: "/GoodFriend.Plugin"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 10
+
+  - package-ecosystem: "nuget"
+    directory: "/GoodFriend.Client"
+    schedule:
+      interval: "monthly"
+
+  - package-ecosystem: "cargo"
+    directory: "/GoodFriend.Api"
+    schedule:
+      interval: "monthly"

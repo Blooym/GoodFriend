@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace GoodFriend.Client.Responses
 {
     /// <summary>
-    ///     Represents a JSON response from the metadata endpoint.
+    ///     Represents response from the metadata endpoint.
     /// </summary>
     [Serializable]
-    public readonly struct MetadataResponse
+    public readonly record struct MetadataResponse
     {
         /// <summary>
         ///     The current number of connected clients.
@@ -16,15 +17,59 @@ namespace GoodFriend.Client.Responses
         public readonly uint ConnectedClients { get; init; }
 
         /// <summary>
-        ///     The status page URL.
+        ///     The about section of the API.
         /// </summary>
-        [JsonPropertyName("status_url")]
-        public readonly string StatusUrl { get; init; }
+        [JsonPropertyName("about")]
+        public readonly About About { get; init; }
+    }
+
+    /// <summary>
+    ///     Represents the about section of metadata.
+    /// </summary>
+    [Serializable]
+    public readonly record struct About
+    {
+        /// <summary>
+        ///     The identifier or "name" of the API, purely cosmetic.
+        /// </summary>
+        [JsonPropertyName("identifier")]
+        public readonly string Identifier { get; init; }
 
         /// <summary>
-        ///     The donation page URL.
+        ///     The URL to the banner of the API.
         /// </summary>
-        [JsonPropertyName("donate_url")]
-        public readonly string DonateUrl { get; init; }
+        [JsonPropertyName("banner_url")]
+        public readonly Uri BannerUrl { get; init; }
+
+        /// <summary>
+        ///     The message of the day.
+        /// </summary>
+        [JsonPropertyName("motd")]
+        public readonly Motd Motd { get; init; }
+
+        /// <summary>
+        ///     Custom URLs.
+        /// </summary>
+        [JsonPropertyName("custom_urls")]
+        public readonly Dictionary<string, Uri> CustomUrls { get; init; }
+    }
+
+    /// <summary>
+    ///     Represents a message of the day.
+    /// </summary>
+    [Serializable]
+    public readonly record struct Motd
+    {
+        /// <summary>
+        ///     The message content of the "message of the day".
+        /// </summary>
+        [JsonPropertyName("message")]
+        public readonly string Message { get; init; }
+
+        /// <summary>
+        ///     Whether or not the API wants the client to ignore this message.
+        /// </summary>
+        [JsonPropertyName("ignore")]
+        public readonly bool Ignore { get; init; }
     }
 }

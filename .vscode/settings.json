@@ -1,18 +1,16 @@
 {
-    // OmniSharp Settings
+    // OmniSharp
     "omnisharp.enableRoslynAnalyzers": true,
     "omnisharp.enableImportCompletion": true,
     "omnisharp.organizeImportsOnFormat": true,
     "omnisharp.enableAsyncCompletion": true,
     "omnisharp.analyzeOpenDocumentsOnly": false,
     "omnisharp.enableEditorConfigSupport": true,
-    // C# Settings
+    // C#
     "csharp.format.enable": true,
     "csharp.referencesCodeLens.enabled": true,
-    // C# Extensions Settings
-    "csharpfixformat.enable": true,
+    // Rust
     "rust-analyzer.linkedProjects": [
-        "./GoodFriend.Api/Cargo.toml"
-    ],
-    "rust-analyzer.showUnlinkedFileNotification": false,
+        "./GoodFriend.Api/Cargo.toml",
+    ]
 }
