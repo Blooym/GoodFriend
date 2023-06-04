@@ -63,13 +63,11 @@ jobs:
 
       - name: Check for Lint Errors
         id: lint
-        working-directory: Wholist
         continue-on-error: true
         run: | 
           dotnet format --verify-no-changes > lint.txt 2>&1
 
       - name: Report Lint Errors
-        working-directory: Wholist
         if : steps.lint.outcome == 'failure'
         run: |
           cat lint.txt | sed -E 's/^(.*)$/::warning:: \1/g'
