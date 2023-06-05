@@ -2,9 +2,9 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GoodFriend.Plugin.Api
+namespace GoodFriend.Plugin.Utility
 {
-    internal static class ApiCryptoUtil
+    internal static class CryptoUtil
     {
         /// <summary>
         ///     The recommended length for a salt value.

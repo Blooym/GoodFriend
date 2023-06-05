@@ -1,4 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
+using GoodFriend.Plugin.Utility;
 using Sirensong;
 using Sirensong.Cache;
 
@@ -21,7 +22,7 @@ namespace GoodFriend.Plugin.Api
         {
             foreach (var friend in FriendListCache.List)
             {
-                if (ApiCryptoUtil.HashValue(friend.ContentId, contentIdSalt) == contentIdHash)
+                if (CryptoUtil.HashValue(friend.ContentId, contentIdSalt) == contentIdHash)
                 {
                     return friend;
                 }

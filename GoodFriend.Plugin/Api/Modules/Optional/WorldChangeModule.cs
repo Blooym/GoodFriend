@@ -1,15 +1,20 @@
 using System;
 using Dalamud.Game;
 using Dalamud.Memory;
+using Dalamud.Utility;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Utility;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Sirensong;
 using Sirensong.Cache;
+using Sirensong.Extensions;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
+using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.Api.Modules.Optional
 {
@@ -66,6 +71,22 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 this.Config.OnlyShowCurrentWorld = onlyShowCurrentWorld;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.SectionSpacing);
+
+            SiGui.Heading("Message Options");
+            var changeMessage = this.Config.ChangeMessage;
+            if (SiGui.InputText("World change message", ref changeMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            {
+                if (!WorldChangeModuleConfig.ValidateMessage(changeMessage))
+                {
+                    NotificationUtil.ShowErrorToast("Invalid world change message, please check your syntax.");
+                    return;
+                }
+
+                this.Config.ChangeMessage = changeMessage.TrimAndSquish();
+                this.Config.Save();
+            }
+            SiGui.AddTooltip("Your message must contain {0} for the player's name and {1} for the world name.");
         }
 
         /// <summary>
@@ -115,7 +136,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             }
 
             // Print the message.
-            ChatHelper.Print($"{friendName} moved world to to {world}.");
+            ChatHelper.Print(this.Config.ChangeMessage.Format(friendName, world));
         }
 
         /// <summary>
@@ -146,8 +167,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 Logger.Information($"World changed from {this.currentWorldId} to {worldId}, sending event.");
                 this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
 
-                var salt = ApiCryptoUtil.GenerateSalt();
-                var hash = ApiCryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
+                var salt = CryptoUtil.GenerateSalt();
+                var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
                 ApiClient.SendWorldChangeAsync(new UpdatePlayerWorldRequest.PutData()
                 {
                     ContentIdHash = hash,
@@ -176,5 +197,17 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         ///     Whether to only show when a player travels to the current world.
         /// </summary>
         public bool OnlyShowCurrentWorld { get; set; } = true;
+
+        /// <summary>
+        ///     The message to send when a player changes worlds.
+        /// </summary>
+        public string ChangeMessage { get; set; } = "{0} moved world to {1}.";
+
+        /// <summary>
+        ///     Validates a world change message.
+        /// </summary>
+        /// <param name="message">The message to validate.</param>
+        /// <returns>Whether or not the message is valid.</returns>
+        public static bool ValidateMessage(string message) => message.Contains("{0}") && message.Contains("{1}");
     }
 }

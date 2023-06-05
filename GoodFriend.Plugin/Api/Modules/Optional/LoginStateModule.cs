@@ -8,9 +8,9 @@ using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Sirensong.Extensions;
-using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -83,6 +83,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 this.Config.HideSameFC = hideSameFc;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentHomeworld = this.Config.HideDifferentHomeworld;
             if (SiGui.Checkbox("Hide different homeworld", "Hides events from friends that aren't from your homeworld.", ref hideDifferentHomeworld))
@@ -90,6 +91,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 this.Config.HideDifferentHomeworld = hideDifferentHomeworld;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentTerritory = this.Config.HideDifferentTerritory;
             if (SiGui.Checkbox("Hide different territory", "Hides events from friends that logged outside of your current territory.", ref hideDifferentTerritory))
@@ -97,6 +99,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 this.Config.HideDifferentTerritory = hideDifferentTerritory;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentWorld = this.Config.HideDifferentWorld;
             if (SiGui.Checkbox("Hide different world", "Hides events from friends that logged outside of your current world.", ref hideDifferentWorld))
@@ -104,6 +107,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                 this.Config.HideDifferentWorld = hideDifferentWorld;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentDatacenter = this.Config.HideDifferentDatacenter;
             if (SiGui.Checkbox("Hide different data center", "Hides events from friends that logged outside of your current data center.", ref hideDifferentDatacenter))
@@ -120,7 +124,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             {
                 if (!LoginStateModuleConfig.ValidateMessage(loginMessage))
                 {
-                    InvalidMessagePopup();
+                    NotificationUtil.ShowErrorToast("Invalid login message, please check your syntax.");
                     return;
                 }
 
@@ -134,7 +138,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             {
                 if (!LoginStateModuleConfig.ValidateMessage(logoutMessage))
                 {
-                    InvalidMessagePopup();
+                    NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
                     return;
                 }
 
@@ -232,8 +236,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
 
                     Logger.Information("Sending login event.");
 
-                    var salt = ApiCryptoUtil.GenerateSalt();
-                    var hash = ApiCryptoUtil.HashValue(this.currentContentId, salt);
+                    var salt = CryptoUtil.GenerateSalt();
+                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
                         ContentIdHash = hash,
@@ -256,8 +260,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
 
                     Logger.Information("Sending logout event.");
 
-                    var salt = ApiCryptoUtil.GenerateSalt();
-                    var hash = ApiCryptoUtil.HashValue(this.currentContentId, salt);
+                    var salt = CryptoUtil.GenerateSalt();
+                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
                         ContentIdHash = hash,
@@ -297,15 +301,6 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             {
                 this.currentDatacenterId = currentDatacenterId;
             }
-        }
-
-        /// <summary>
-        ///     Called when the user enters an invalid message.
-        /// </summary>
-        private static void InvalidMessagePopup()
-        {
-            ToastHelper.ShowErrorToast("The message you entered is invalid.");
-            SoundEffectHelper.PlaySound(SoundEffect.Se11);
         }
 
         /// <inheritdoc />
