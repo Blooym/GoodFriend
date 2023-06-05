@@ -27,7 +27,7 @@ FROM gcr.io/distroless/static-debian11:nonroot as runtime
 WORKDIR /app
 
 # Grab api binary from build.
-COPY --from=build /build/target/release/ .
+COPY --from=build /build/target/release/goodfriend-api .
 
 # Run the api.
 CMD ["./goodfriend-api"]
