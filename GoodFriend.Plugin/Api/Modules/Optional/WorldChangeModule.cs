@@ -11,7 +11,6 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Sirensong;
 using Sirensong.Cache;
-using Sirensong.Extensions;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -77,14 +76,16 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var changeMessage = this.Config.ChangeMessage;
             if (SiGui.InputText("World change message", ref changeMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
-                if (!WorldChangeModuleConfig.ValidateMessage(changeMessage))
+                switch (!WorldChangeModuleConfig.ValidateMessage(changeMessage))
                 {
-                    NotificationUtil.ShowErrorToast("Invalid world change message, please check your syntax.");
-                    return;
+                    case true:
+                        NotificationUtil.ShowErrorToast("Invalid world change message, please check your syntax.");
+                        break;
+                    case false:
+                        this.Config.ChangeMessage = changeMessage;
+                        this.Config.Save();
+                        break;
                 }
-
-                this.Config.ChangeMessage = changeMessage.TrimAndSquish();
-                this.Config.Save();
             }
             SiGui.AddTooltip("Your message must contain {0} for the player's name and {1} for the world name.");
         }

@@ -13,7 +13,6 @@ use dotenv::dotenv;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
-use rocket_async_compression::Compression;
 use std::process;
 
 /// The base path for all API routes.
@@ -45,7 +44,7 @@ fn rocket() -> Rocket<Build> {
     };
     config::get_config_cached_prime_cache();
 
-    let server = rocket::build()
+    rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(50000).0)
         .mount("/", api::static_content::routes())
         .mount([BASE_PATH, "/"].concat(), api::core::routes())
@@ -58,11 +57,5 @@ fn rocket() -> Rocket<Build> {
                 .enable(shield::Referrer::NoReferrer)
                 .enable(shield::NoSniff::Enable)
                 .enable(shield::Prefetch::Off),
-        );
-
-    if cfg!(debug_assertions) {
-        server
-    } else {
-        server.attach(Compression::fairing())
-    }
+        )
 }

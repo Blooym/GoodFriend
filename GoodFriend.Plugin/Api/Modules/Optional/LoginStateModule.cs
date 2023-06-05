@@ -122,28 +122,32 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var loginMessage = this.Config.LoginMessage;
             if (SiGui.InputText("Login message", ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
-                if (!LoginStateModuleConfig.ValidateMessage(loginMessage))
+                switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
                 {
-                    NotificationUtil.ShowErrorToast("Invalid login message, please check your syntax.");
-                    return;
+                    case true:
+                        this.Config.LoginMessage = loginMessage.TrimAndSquish();
+                        this.Config.Save();
+                        break;
+                    case false:
+                        NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
+                        break;
                 }
-
-                this.Config.LoginMessage = loginMessage.TrimAndSquish();
-                this.Config.Save();
             }
             SiGui.AddTooltip("Your message must contain {0} for the player's name.");
 
             var logoutMessage = this.Config.LogoutMessage;
             if (SiGui.InputText("Logout message", ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
-                if (!LoginStateModuleConfig.ValidateMessage(logoutMessage))
+                switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
                 {
-                    NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
-                    return;
+                    case true:
+                        this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
+                        this.Config.Save();
+                        break;
+                    case false:
+                        NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
+                        break;
                 }
-
-                this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
-                this.Config.Save();
             }
             SiGui.AddTooltip("Your message must contain {0} for the player's name.");
         }
@@ -158,6 +162,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             // Check if the update is a login/logout.
             if (!rawEvent.StateUpdateType.LoginStateChange.HasValue)
             {
+                Logger.Verbose("Recieved player state update that is not a login/logout.");
                 return;
             }
 
@@ -165,6 +170,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var localPlayer = DalamudInjections.ClientState.LocalPlayer;
             if (localPlayer is null)
             {
+                Logger.Verbose("Recieved player state update but the local player is null.");
                 return;
             }
 
@@ -172,6 +178,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
+                Logger.Verbose("Recieved player state update but the friend data is null, friend not found.");
                 return;
             }
 

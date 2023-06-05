@@ -26,6 +26,9 @@ RUN cargo build ${RUSTC_APP_FLAGS}
 FROM gcr.io/distroless/static-debian11:nonroot as runtime
 WORKDIR /app
 
+# Bind to all interfaces.
+ENV ROCKET_ADDRESS=0.0.0.0 
+
 # Grab api binary from build.
 COPY --from=build /build/target/release/goodfriend-api .
 
