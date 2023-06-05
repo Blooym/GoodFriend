@@ -1,7 +1,7 @@
 # -----------
 #    BUILD   
 # -----------
-FROM rustlang/rust:nightly-alpine as build
+FROM rust:1-alpine as build
 WORKDIR /build
 
 # Install essential build tools.
