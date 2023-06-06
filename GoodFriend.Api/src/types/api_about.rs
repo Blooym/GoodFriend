@@ -40,7 +40,7 @@ impl Default for ApiAbout {
         Self {
             identifier: String::from("GoodFriend"),
             banner_url: String::from(
-                "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/rewrite/.assets/api-banner.png",
+                "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/api-banner.png",
             ),
             motd: Motd::default(),
             custom_urls: HashMap::default(),
