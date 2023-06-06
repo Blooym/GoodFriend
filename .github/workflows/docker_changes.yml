@@ -1,0 +1,35 @@
+name: "Docker Changes"
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Api/Dockerfile"
+      - "GoodFriend.Api/.dockerignore"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "GoodFriend.Api/Dockerfile"
+      - "GoodFriend.Api/.dockerignore"
+    types: [ready_for_review, opened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  Build-Image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./GoodFriend.Api/
+          file: ./GoodFriend.Api/Dockerfile
+          push: false
+          tags: testbuild/testbuild:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
