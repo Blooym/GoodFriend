@@ -1,15 +1,15 @@
-<!-- Repository Header Begin -->
 <div align="center">
 
 <img src="./.assets/icon.png" alt="GoodFriend Logo" width="15%">
   
 ### GoodFriend
-A server & plugin for sending/recieving login & logout notifications with friends.
 
-[![Download Count](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
-[![Crowdin](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
-[![Latest Release](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Release)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
-[![Latest Preview](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=orange&include_prereleases&label=Testing)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
+A Dalamud plugin & associated web-API that provides improved in-game social functionality 
+
+[![Latest Version](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Version)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
+[![Downloads](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Downloads)](https://github.com/BitsOfAByte/GoodFriend)
+[![Crowdin Localization](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
+[![Licence](https://img.shields.io/github/license/BitsOfAByte/Wholist?color=blue "Licence")](https://github.com/BitsOfAByte/Wholist/blob/main/LICENSE)
 
 **[Issues](https://github.com/BitsOfAByte/GoodFriend/issues) · [Pull Requests](https://github.com/BitsOfAByte/GoodFriend/pulls) · [Releases](https://github.com/BitsOfAByte/GoodFriend/releases/latest)**
 
@@ -17,69 +17,44 @@ A server & plugin for sending/recieving login & logout notifications with friend
 
 ---
 
-<!-- Repository Header End -->
-
 ## About
 
-GoodFriend is a [plugin](./GoodFriend.Plugin/) & [server](./GoodFriend.Server/) tool that allows for sending and recieving friend information such as login/logout notifications without the need for in-game polling, achieved by utilising a custom-built API to work around some of the in-game limitations regarding friend data; essentially acting as a "relay" server between clients to protect individual privacy. Due to the nature of this design, most of the functionality provided by GoodFriend can only by friends who both have the plugin installed.
+GoodFriend is split into **three** components:
 
-The API is easily self-hostable with little work needed to get it going, just in-case anything ever happens to the official instance. You can find out more about the API [here](./GoodFriend.Server/)
+1. **[Plugin](./src/Plugin/)**: Interacts with the API on behalf of the user and automatically handles any interactions. The plugin is designed in a modular way that allows for the easy addition of new functionality that can be enabled/disabled/configured by the user easily. Not all modules interact with the API and can be used without any connection.
+
+2. **[Client](./src/Client/)**: A usage-agnostic client library that handles interacting with the API directly and handles automatic reconnection, serialization/deserialization, authentication, etc. This library is used by the plugin to interact with the API but is not tied directly to Dalamud and can, in theory, be used by any application.
+
+3. **[API](./src/Api/)**: A web REST API that handles the actual communication between clients, as well as various other tasks. The API is designed to be easy self-hostable and lightweight as possible while still providing everything needed for the plugin to work. By default the plugin will use the official API instance, but this can be changed to any other instance if desired.
+
+### Why?
+
+This plugin was initially created as a way to get around the limitations of the in-game friend system as it was unable to provide notifications when people on my friends list logged in or out of the game. It has since been redesigned to allow for additional functionality to be added without much additional groundwork.
+
+### Drawbacks
+
+Due to the nature of the implementation only users with the plugin installed can send and recieve events with the API as the plugin is responsible for handling the actual event sending & recieving. This means that if you have the plugin installed but your friend does not, you will not recieve any events from them and vice-versa. Unfortunately, the only way to get around this is to ask your friends that you want to recieve events from to install the plugin.
 
 ### Features
 
-- Quick friend notifications between GoodFriend users.
-- Event log for viewing server events and other information for transparency and debugging.
+- Modular design with customizable and toggleable modules, enable only the functionality you want.
 - Powerful filtering options for customising what events are sent to you.
-- Easy to [selfhost](./GoodFriend.Server/) API with Docker.
-- Privacy-focused design with unidentifiable event relaying.
-- Authentication support (bearer, basic) built into client.
-- Localisation support for the entire plugin.
-- Easy to use user interface.
-- Multiple notification types, like in-game chat messages or toast notifications.
-
-### Screenshots
-
-<img src="./.assets/Screenshots/screenshot1.png" alt="GoodFriend Screenshot 1" width="32%"> <img src="./.assets/Screenshots/screenshot2.png" alt="GoodFriend Screenshot 2" width="32%"> <img src="./.assets/Screenshots/screenshot3.png" alt="GoodFriend Screenshot 3" width="32%">
+- Easy to [selfhost](./src/Api/) API, a pre-built docker image is available on GitHub Container Registry for amd64 and arm64.
+- Privacy-focused design from end-to-end, no identifiable information is ever available about you when sent to other users.
+- & more that I definitely forgot to mention, probably.
 
 ## Installing
 
-[GoodFriend.Plugin](./GoodFriend.Plugin/) is available from the official Dalamud plugin repository which is accessible in-game by opening the Dalamud Plugin Installer and searching for "GoodFriend". Once installed, you will be automatically connected to the default (official) API instance and ready to go without the need for any further configuration.
+The plugin is available to install from the official Dalamud Plugin Repository, accessible in-game by opening the Dalamud Plugin Installer and searching for "GoodFriend". Once installed, you will be automatically connected to the default (official) API instance and ready to go! If you wish to do any further configuration, simply open up the plugin window and look around.
 
-If you would like to configure any of the settings, you can do so by opening the configuration window and clicking on the "settings" button.
+## Selfhosting & 3rd-party Instances
 
-## 3rd-party API Instances / Selfhosting
+The web API has been designed to be easy to self-host and is available as a pre-built docker image on GitHub Container Registry [here](https://github.com/BitsOfAByte/GoodFriend/pkgs/container/goodfriend). No support is provided for self-hosted instances, but if you run into any issues with the API itself please open an issue and I will try to help as best I can.
 
-[GoodFriend.Plugin](./GoodFriend.Plugin/) allows for changing your API instance to any other instance you would like to use. It is highly recommended you use the official instance for privacy and security reasons as any 3rd-party instance may be running insecure/malicious code.
-
-If you still wish to use a 3rd-party instance, you can do so by clicking the settings button in the configuration window, navigating to the "Advanced" tab and changing the "API URL" to the URL of the instance you wish to use and restarting the plugin. As long as the server route version (eg. `/v4/`) matches the APIClient version everything should work properly. If the server is running an incompatible version you may run into issues and no support will be provided from this repository, so you will need to contact the instance owner for support.
-
-If you wish to host your own instance, please read the README in the [GoodFriend.Server directory](./GoodFriend.Server/README.md).
-
-## Technical Details & Privacy Considerations
-
-**Client** refers to a single user that is running the plugin.  
-**Clients** refers to all users connected to a given instance.
-**Server** refers to a web-accessible instance of the API.
-
-A general overview of how GoodFriend works is as follows:
-
-1. A **client** logs into a character, the plugin hashes their ID using a configured salt type, generates an additional salt and sends a PUT request to the **server** with the event information and the generated salt.
-2. The **client** then subscribes the server-sent event stream to receive all events for other users that are currently connected to the **server**.
-3. The **Server** distributes the information received from the PUT request to all **clients** listening to the server-sent event stream.
-4. All **clients** will receive the information and attempt to match all in-memory friend hashes against the received ContentID hash using the generated salt and also the configured salt type.
-5. All **clients** that successfully match the hashed ContentID to a friend will then display a notification for the event using information from the game memory, preventing sending this information through the **server**.
-
-Key Security implementations:
-
-- Identifying information about a client is hashed before being sent to the server.
-- Additional salt is generated for each request to prevent pre-computing hashes.
-- The client will only accept data from the server that matches the expected format.
-- The server enforces strict rate-limiting to mitigate spam and abusive requests.
-- The official server is hosted in a secure environment with strict security policies.
-- The plugin automatically disconnects from the server when the connection is unnecessary.
-- All interactions with the server are stored in the plugin event log for transparency.
-- The server will not accept any data from a client if it does not match the expected format.
+If you wish to host your own instance, please read the README in the [API Directory](./src/Api/README.md).
 
 ## Translation & Localization
+
+*GoodFriend currently has no implementation localizations after a recent rewrite, but will be added back in the very near future.*
 
 If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend). If the language you wish to translate is not available, please create an issue and it will be added.
