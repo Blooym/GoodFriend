@@ -4,7 +4,7 @@ using System.Reflection;
 namespace GoodFriend.Plugin.Base
 {
     /// <summary>
-    ///     A collection of translatable strings for the plugin.
+    ///     A collection of constant values used throughout the plugin.
     /// </summary>
     internal static class Constants
     {

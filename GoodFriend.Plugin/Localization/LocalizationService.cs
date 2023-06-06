@@ -22,11 +22,13 @@ namespace GoodFriend.Plugin.Localization
         /// </summary>
         public void Dispose()
         {
-            if (!this.disposedValue)
+            if (this.disposedValue)
             {
-                DalamudInjections.PluginInterface.LanguageChanged -= SetupLocalization;
-                this.disposedValue = true;
+                return;
             }
+
+            DalamudInjections.PluginInterface.LanguageChanged -= SetupLocalization;
+            this.disposedValue = true;
         }
 
         /// <summary>
