@@ -51,12 +51,12 @@ namespace GoodFriend.Plugin.Configuration
         /// </summary>
         internal void Save()
         {
-            DalamudInjections.PluginInterface.SavePluginConfig(this);
             var path = Path.Combine(DalamudInjections.PluginInterface.ConfigDirectory.FullName, "GoodFriend.json");
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
+            DalamudInjections.PluginInterface.SavePluginConfig(this);
         }
     }
 }

@@ -56,7 +56,7 @@ jobs:
       - name: Build Plugin
         run: |
           dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ env.tag }}
-          sha512sum bin/Release/GoodFriend.Plugin.dll > checksums.txt
+          sha512sum bin/Release/GoodFriend.dll > checksums.txt
           sha512sum bin/Release/GoodFriend.Client.dll >> checksums.txt
           sha512sum bin/Release/Sirensong.dll >> checksums.txt
           cat checksums.txt
@@ -67,8 +67,8 @@ jobs:
           generate_release_notes: true
           prerelease: false
           files: |
-            GoodFriend.Plugin/bin/Release/GoodFriend.Plugin/latest.zip
-            GoodFriend.Plugin/checksums.txt
+            src/Plugin/bin/Release/GoodFriend.Plugin/latest.zip
+            src/Plugin/checksums.txt
 
   Api:
     runs-on: ubuntu-latest

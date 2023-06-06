@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Title>GoodFriend.Plugin</Title>
     <Authors>BitsOfAByte</Authors>
-    <AssemblyName>GoodFriend.Plugin</AssemblyName>
+    <AssemblyName>GoodFriend</AssemblyName>
     <Description>A Dalamud plugin for syncing various player events with others.</Description>
     <Version>2.0.0.0</Version>
     <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
