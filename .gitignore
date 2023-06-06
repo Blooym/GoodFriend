@@ -1,13 +1,8 @@
-*.log
+# Log files
+**/*.log
 
 # MacOS
-.DS_Store
+**/.DS_Store
 
 # IDE
 .idea/
-
-# Old
-*.Old
-
-# Testing
-test/

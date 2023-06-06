@@ -1,14 +1,14 @@
 changes | l10n/i18n:
-  - "GoodFriend.Plugin/Localization/Resources/**/*"
+  - "src/Plugin/Localization/Resources/**/*"
 
 changes | ci:
   - ".github/workflows/**/*"
 
 changes | api:
-  - "GoodFriend.Api/**/*"
+  - "src/Api/**/*"
 
 changes | client:
-  - "GoodFriend.Client/**/*"
+  - "src/Client/**/*"
 
 changes | plugin:
-  - "GoodFriend.Plugin/**/*"
+  - "src/Plugin/**/*"

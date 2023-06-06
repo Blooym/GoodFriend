@@ -21,7 +21,7 @@ jobs:
       DALAMUD_HOME: "/tmp/"
     defaults:
       run:
-        working-directory: ./GoodFriend.Plugin/
+        working-directory: ./src/Plugin/
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -103,8 +103,8 @@ jobs:
       - name: Build & Publish Image
         uses: docker/build-push-action@v4
         with:
-          file: ./GoodFriend.Api/Dockerfile
-          context: ./GoodFriend.Api/
+          file: ./src/Api/Dockerfile
+          context: ./src/Api/
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}

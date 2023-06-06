@@ -71,7 +71,7 @@
 
   <!-- Packages -->
   <ItemGroup>
-    <ProjectReference Include="../GoodFriend.Client/GoodFriend.Client.csproj" />
+    <ProjectReference Include="../Client/GoodFriend.Client.csproj" />
     <ProjectReference Include="../Sirensong/Sirensong/Sirensong.csproj" />
     <PackageReference Include="DalamudPackager" Version="2.1.11" />
   </ItemGroup>

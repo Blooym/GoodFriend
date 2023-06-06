@@ -1,5 +1,5 @@
 files:
-  - source: /GoodFriend.Plugin/Localization/Resources/Strings.resx
+  - source: /src/Plugin/Localization/Resources/Strings.resx
     translation: /%original_path%/Strings.%two_letters_code%.resx
 pull_request_title: 'Translation updates (Crowdin)'
 commit_message: 'chore(l10n): translations updates for %original_file_name% (%language%) [skip ci]'

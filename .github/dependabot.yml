@@ -6,16 +6,16 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "nuget"
-    directory: "/GoodFriend.Plugin"
+    directory: "/src/Plugin"
     schedule:
       interval: "monthly"
 
   - package-ecosystem: "nuget"
-    directory: "/GoodFriend.Client"
+    directory: "/src/Client"
     schedule:
       interval: "monthly"
 
   - package-ecosystem: "cargo"
-    directory: "/GoodFriend.Api"
+    directory: "/src/Api"
     schedule:
       interval: "monthly"

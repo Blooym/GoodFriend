@@ -4,13 +4,13 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "GoodFriend.Api/Dockerfile"
-      - "GoodFriend.Api/.dockerignore"
+      - "src/Api/Dockerfile"
+      - "src/Api/.dockerignore"
   pull_request:
     branches: ["main"]
     paths:
-      - "GoodFriend.Api/Dockerfile"
-      - "GoodFriend.Api/.dockerignore"
+      - "src/Api/Dockerfile"
+      - "src/Api/.dockerignore"
     types: [ready_for_review, opened, synchronize]
   workflow_dispatch:
 
@@ -27,8 +27,8 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: ./GoodFriend.Api/
-          file: ./GoodFriend.Api/Dockerfile
+          context: ./src/Api/
+          file: ./src/Api/Dockerfile
           push: false
           tags: testbuild/testbuild:latest
           cache-from: type=gha

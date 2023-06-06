@@ -4,15 +4,15 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "GoodFriend.Api/**.rs"
-      - "GoodFriend.Api/Cargo.toml"
-      - "GoodFriend.Api/Cargo.lock"
+      - "src/Api/**.rs"
+      - "src/Api/Cargo.toml"
+      - "src/Api/Cargo.lock"
   pull_request:
     branches: ["main"]
     paths:
-      - "GoodFriend.Api/**.rs"
-      - "GoodFriend.Api/Cargo.toml"
-      - "GoodFriend.Api/Cargo.lock"
+      - "src/Api/**.rs"
+      - "src/Api/Cargo.toml"
+      - "src/Api/Cargo.lock"
     types: [ready_for_review, opened, synchronize]
   workflow_dispatch:
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
         run:
-          working-directory: ./GoodFriend.Api/
+          working-directory: ./src/Api/
     strategy:
         matrix:
           rust: [stable]

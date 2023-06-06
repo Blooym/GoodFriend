@@ -11,6 +11,6 @@
     "csharp.referencesCodeLens.enabled": true,
     // Rust
     "rust-analyzer.linkedProjects": [
-        "./GoodFriend.Api/Cargo.toml",
+        "./src/Api/Cargo.toml",
     ]
 }

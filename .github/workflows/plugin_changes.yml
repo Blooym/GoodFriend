@@ -4,15 +4,15 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "GoodFriend.Plugin/**.cs"
-      - "GoodFriend.Plugin/*.csproj"
-      - "GoodFriend.Plugin/packages.lock.json"
+      - "src/Plugin/**.cs"
+      - "src/Plugin/*.csproj"
+      - "src/Plugin/packages.lock.json"
   pull_request:
     branches: ["main"]
     paths:
-      - "GoodFriend.Plugin/**.cs"
-      - "GoodFriend.Plugin/*.csproj"
-      - "GoodFriend.Plugin/packages.lock.json"
+      - "src/Plugin/**.cs"
+      - "src/Plugin/*.csproj"
+      - "src/Plugin/packages.lock.json"
     types: [ready_for_review, opened, synchronize]
   workflow_dispatch:
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
         run:
-          working-directory: ./GoodFriend.Plugin/
+          working-directory: ./src/Plugin/
     strategy:
         matrix:
           dotnet: [7.0.x]
