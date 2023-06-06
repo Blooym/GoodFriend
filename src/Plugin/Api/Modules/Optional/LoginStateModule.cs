@@ -362,7 +362,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             /// </summary>
             /// <param name="message">The message to validate.</param>
             /// <returns>Whether or not the message is valid.</returns>
-            public static bool ValidateMessage(string message) => message.Contains("{0}");
+            public static bool ValidateMessage(string message) => ValidatorUtil.TestFormatString(message, 1, true);
         }
     }
 }
