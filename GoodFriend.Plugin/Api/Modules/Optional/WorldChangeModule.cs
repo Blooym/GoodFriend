@@ -110,6 +110,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         {
             if (!rawEvent.StateUpdateType.WorldChange.HasValue)
             {
+                Logger.Verbose("Ignoring player event as it is not a world change.");
                 return;
             }
             var stateData = rawEvent.StateUpdateType.WorldChange.Value;
@@ -117,6 +118,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             // Ignore the event if it does not come from the current world if enabled.
             if (this.Config.OnlyShowCurrentWorld && stateData.WorldId != this.currentWorldId)
             {
+                Logger.Verbose($"Ignoring player event as it is not from the current world (current: {stateData.WorldId} != {this.currentWorldId}).");
                 return;
             }
 
@@ -124,6 +126,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
+                Logger.Verbose($"Ignoring player event as the friend could not be found.");
                 return;
             }
 
@@ -133,6 +136,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
             if (world == null)
             {
+                Logger.Warning($"Could not perform lookup to find world name for world id {stateData.WorldId}.");
                 return;
             }
 

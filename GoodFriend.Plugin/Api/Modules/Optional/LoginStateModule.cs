@@ -170,7 +170,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var localPlayer = DalamudInjections.ClientState.LocalPlayer;
             if (localPlayer is null)
             {
-                Logger.Verbose("Recieved player state update but the local player is null.");
+                Logger.Verbose("Ignoring player state update as the local player is null.");
                 return;
             }
 
@@ -178,7 +178,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
-                Logger.Verbose("Recieved player state update but the friend data is null, friend not found.");
+                Logger.Verbose($"Ignoring player event as the friend could not be found.");
                 return;
             }
 

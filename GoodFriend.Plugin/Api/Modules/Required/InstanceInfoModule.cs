@@ -132,12 +132,6 @@ namespace GoodFriend.Plugin.Api.Modules.Required
             ImGui.PopStyleColor(3);
             ImGui.Dummy(Spacing.SectionSpacing);
 
-            if (this.lastMetadataUpdateFailed)
-            {
-                ImGui.Dummy(Spacing.SectionSpacing);
-                SiGui.TextWrappedColoured(Colours.Error, "The last metadata update failed, currently using cached data.");
-            }
-
             if (ImGui.BeginChild("InstanceInfoChild"))
             {
                 // MOTD.
@@ -181,6 +175,13 @@ namespace GoodFriend.Plugin.Api.Modules.Required
                     ImGui.Dummy(Spacing.ReadableSpacing);
                 }
             }
+
+            if (this.lastMetadataUpdateFailed)
+            {
+                ImGui.Dummy(Spacing.SectionSpacing);
+                SiGui.TextWrappedColoured(Colours.Error, "The last metadata update failed, currently using cached data.");
+            }
+
             ImGui.EndChild();
         }
 
