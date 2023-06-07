@@ -29,7 +29,7 @@ namespace GoodFriend.Plugin.Configuration
             ///     The default API URL to use.
             /// </summary>
             [NonSerialized]
-            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/v1/");
+            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/v2/");
 
             /// <summary>
             ///     The BaseURL to use when interacting with the API.
@@ -57,7 +57,12 @@ namespace GoodFriend.Plugin.Configuration
         {
             var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
 
-            // A check for updating the default api version can be implemented here if api version changes.
+            // Migrate api version if not up to date
+            if (config.ApiConfig.ApiBaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", StringComparison.OrdinalIgnoreCase) && !config.ApiConfig.ApiBaseUrl.AbsoluteUri.EndsWith("/v2/", StringComparison.OrdinalIgnoreCase))
+            {
+                Logger.Information($"Updating API Base URL from {config.ApiConfig.ApiBaseUrl} to {ApiConfiguration.DefaultApiBaseUrl}");
+                config.ApiConfig.ApiBaseUrl = ApiConfiguration.DefaultApiBaseUrl;
+            }
 
             return config;
         }
