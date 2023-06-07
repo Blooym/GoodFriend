@@ -39,8 +39,8 @@ jobs:
 
       - name: Download Dalamud
         run: |
-          wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O ${{ env.DALAMUD_HOME }}.zip
-          unzip ${{ env.DALAMUD_HOME }}.zip -d ${{ env.DALAMUD_HOME }}
+          wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O /tmp/dalamud.zip
+          unzip dalamud.zip -d ${{ env.DALAMUD_HOME }}
 
       - name: Cache Nuget Packages
         uses: actions/cache@v3

@@ -29,7 +29,7 @@ jobs:
           dalamud_version: ["latest", "stg/latest"]
     env:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
-        DALAMUD_HOME: "/tmp/"
+        DALAMUD_HOME: "/tmp/dalamud"
     steps:
       - name: GitHub Checkout
         uses: actions/checkout@v3
@@ -47,8 +47,8 @@ jobs:
 
       - name: Download Dalamud
         run: |
-          wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O ${{ env.DALAMUD_HOME }}.zip
-          unzip ${{ env.DALAMUD_HOME }}.zip -d ${{ env.DALAMUD_HOME }}
+          wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O /tmp/dalamud.zip
+          unzip dalamud.zip -d ${{ env.DALAMUD_HOME }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
