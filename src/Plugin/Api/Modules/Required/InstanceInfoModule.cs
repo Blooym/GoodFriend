@@ -55,7 +55,6 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         /// <inheritdoc />
         public override ApiModuleTag Tag { get; } = ApiModuleTag.Information;
 
-
         /// <inheritdoc />
         public override uint DisplayWeight { get; } = 1;
 
@@ -222,7 +221,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
             Logger.Information($"Displaying message of the day: {this.metadata.Value.About.Motd.Message}");
             ChatHelper.Print(new SeStringBuilder()
                         .AddText(this.metadata.Value.About.Motd.Message)
-                        .AddText(" ")
+                        .AddText(" - ")
                         .Add(this.unsubMotdLinkPayload!)
                         .AddUiForeground((ushort)ChatUiColourKey.Orange)
                         .AddText("[Disable messages on login]")

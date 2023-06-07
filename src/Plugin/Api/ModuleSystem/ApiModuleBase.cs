@@ -273,8 +273,8 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         Information,
 
         /// <summary>
-        ///     A module that facilitates event sharing between friends.
+        ///     A module that facilitates notifications to the user.
         /// </summary>
-        Friends,
+        Notifications,
     }
 }

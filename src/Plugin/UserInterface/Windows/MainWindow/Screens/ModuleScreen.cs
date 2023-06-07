@@ -10,6 +10,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 {
+    // TODO: cleanup the gui code here.
     internal static class ModuleScreen
     {
         /// <summary>
@@ -33,6 +34,10 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                     }
                     lastTag = module.Tag;
                     SiGui.Heading(module.Tag.ToString());
+                }
+                else
+                {
+                    ImGui.Dummy(new Vector2(0, 1.5f));
                 }
 
                 if (ImGui.Selectable(module.Name, CurrentModule == module))
@@ -68,8 +73,6 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                         SiGui.TextColoured(Colours.Error, errorText);
                         break;
                 }
-
-                ImGui.Dummy(Spacing.ReadableSpacing);
             }
         }
 

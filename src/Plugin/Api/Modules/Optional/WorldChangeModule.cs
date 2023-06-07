@@ -35,10 +35,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         private bool firstWorldUpdate = true;
 
         /// <inheritdoc />
-        public override string Name => "World Change Notifications";
+        public override string Name => "Friend World Changes";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Friends;
+        public override ApiModuleTag Tag => ApiModuleTag.Notifications;
 
         /// <inheritdoc />
         protected override WorldChangeModuleConfig Config { get; } = ApiModuleConfigBase.Load<WorldChangeModuleConfig>();

@@ -46,10 +46,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         private ulong currentContentId;
 
         /// <inheritdoc />
-        public override string Name => "Login State Notifications";
+        public override string Name => "Friend Login & Logout";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Friends;
+        public override ApiModuleTag Tag => ApiModuleTag.Notifications;
 
         /// <inheritdoc />
         protected override LoginStateModuleConfig Config { get; } = ApiModuleConfigBase.Load<LoginStateModuleConfig>();
