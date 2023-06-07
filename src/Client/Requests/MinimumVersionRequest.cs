@@ -8,6 +8,6 @@ namespace GoodFriend.Client.Requests
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "/api/minversion";
+        internal const string EndpointUrl = "api/minversion";
     }
 }

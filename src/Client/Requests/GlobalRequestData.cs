@@ -3,9 +3,9 @@ namespace GoodFriend.Client.Requests
     /// <summary>
     ///     Represents data that is used across multiple requests.
     /// </summary>
-    public static class GlobalRequestData
+    internal static class GlobalRequestData
     {
-        public const uint ContentIdHashMinLength = 64;
-        public const uint ContentIdSaltMinLength = 32;
+        internal const uint ContentIdHashMinLength = 64;
+        internal const uint ContentIdSaltMinLength = 32;
     }
 }

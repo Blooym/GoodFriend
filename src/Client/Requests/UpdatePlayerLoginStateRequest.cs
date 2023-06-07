@@ -10,7 +10,7 @@ namespace GoodFriend.Client.Requests
         /// <summary>
         ///     The endpoint url with a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "/api/update/loginstate";
+        internal const string EndpointUrl = "api/update/loginstate";
 
         public readonly record struct PutData
         {
