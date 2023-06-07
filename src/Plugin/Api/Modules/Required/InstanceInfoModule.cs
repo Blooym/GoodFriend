@@ -236,20 +236,20 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UpdateMetadataTimerOnElapsed(object? sender, ElapsedEventArgs e) => this.UpdateMetadataSafely();
-    }
-
-    /// <inheritdoc />
-    internal sealed class InstanceInfoModuleConfig : ApiRequiredModuleConfig
-    {
-        /// <inheritdoc />
-        public override uint Version { get; protected set; }
 
         /// <inheritdoc />
-        protected override string Identifier { get; set; } = "InstanceInfo";
+        private sealed class InstanceInfoModuleConfig : ApiRequiredModuleConfig
+        {
+            /// <inheritdoc />
+            public override uint Version { get; protected set; }
 
-        /// <summary>
-        ///     Whether or not to show the MOTD on login.
-        /// </summary>
-        public bool ShowMotdOnLogin { get; set; } = true;
+            /// <inheritdoc />
+            protected override string Identifier { get; set; } = "InstanceInfo";
+
+            /// <summary>
+            ///     Whether or not to show the MOTD on login.
+            /// </summary>
+            public bool ShowMotdOnLogin { get; set; } = true;
+        }
     }
 }

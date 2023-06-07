@@ -61,6 +61,11 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
+
+            if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer != null)
+            {
+                this.SetStoredValues();
+            }
         }
 
         /// <inheritdoc />
@@ -70,6 +75,8 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
+
+            this.ClearStoredValues();
         }
 
         /// <inheritdoc />
@@ -229,6 +236,11 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             ChatHelper.Print(stateData.LoggedIn ? this.Config.LoginMessage.Format(friendName) : this.Config.LogoutMessage.Format(friendName));
         }
 
+        /// <summary>
+        ///     Called when the player logs in.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLogin(object? sender, EventArgs e) =>
                 Task.Run(() =>
                 {
@@ -237,11 +249,9 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                         Thread.Sleep(100);
                     }
 
-                    this.currentContentId = DalamudInjections.ClientState.LocalContentId;
-                    this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.Id;
-                    this.currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.GameData!.DataCenter.Row;
+                    this.SetStoredValues();
 
-                    Logger.Information("Sending login event.");
+                    Logger.Debug("Sending login event.");
 
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
@@ -256,12 +266,17 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                     });
                 }).Start();
 
+        /// <summary>
+        ///     Called when the player logs out, sends a logout event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLogout(object? sender, EventArgs e) =>
             Task.Run(() =>
                 {
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    Logger.Information("Sending logout event.");
+                    Logger.Debug("Sending logout event.");
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
                         ContentIdHash = hash,
@@ -272,11 +287,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                         WorldId = this.currentWorldId
                     });
 
-                    this.currentContentId = 0;
-                    this.currentHomeworldId = 0;
-                    this.currentDatacenterId = 0;
-                    this.currentTerritoryId = 0;
-                    this.currentWorldId = 0;
+                    this.ClearStoredValues();
                 }).Start();
 
         /// <summary>
@@ -306,59 +317,87 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             }
         }
 
-        /// <inheritdoc />
-        internal sealed class LoginStateModuleConfig : ApiOptionalModuleConfig
+        /// <summary>
+        ///     Sets stored values to their current values, will error if the local player is null.
+        /// </summary>
+        private void SetStoredValues()
         {
-            /// <inheritdoc />
-            public override uint Version { get; protected set; }
+            this.currentContentId = DalamudInjections.ClientState.LocalContentId;
+            this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer!.HomeWorld.Id;
+            this.currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.GameData!.DataCenter.Row;
+            this.currentTerritoryId = DalamudInjections.ClientState.TerritoryType;
+            this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.GameData!.RowId;
 
-            /// <inheritdoc />
-            protected override string Identifier { get; set; } = "LoginStateModule";
-
-            /// <inheritdoc />
-            public override bool Enabled { get; set; } = true;
-
-            /// <summary>
-            ///     Whether or not to hide notifications for the same free company.
-            /// </summary>
-            public bool HideSameFC { get; set; } = true;
-
-            /// <summary>
-            ///     Whether or not to hide notifications from users from different homeworlds.
-            /// </summary>
-            public bool HideDifferentHomeworld { get; set; }
-
-            /// <summary>
-            ///     Whether or not to hide notifications from users in different territories.
-            /// </summary>
-            public bool HideDifferentTerritory { get; set; }
-
-            /// <summary>
-            ///     Whether or not to hide notifications from users in different worlds.
-            /// </summary>
-            public bool HideDifferentWorld { get; set; }
-
-            /// <summary>
-            ///     Whether or not to hide notifications from users in different data centers.
-            /// </summary>
-            public bool HideDifferentDatacenter { get; set; }
-
-            /// <summary>
-            ///     The message to display when a friend logs in.
-            /// </summary>
-            public string LoginMessage { get; set; } = "{0} has logged in.";
-
-            /// <summary>
-            ///     The message to display when a friend logs out.
-            /// </summary>
-            public string LogoutMessage { get; set; } = "{0} has logged out.";
-
-            /// <summary>
-            ///     Validates a login/logout message.
-            /// </summary>
-            /// <param name="message">The message to validate.</param>
-            /// <returns>Whether or not the message is valid.</returns>
-            public static bool ValidateMessage(string message) => ValidatorUtil.TestFormatString(message, 1, true);
+            Logger.Debug($"Set stored values: CID: {this.currentContentId}, HW: {this.currentHomeworldId}, DC: {this.currentDatacenterId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
         }
+
+        /// <summary>
+        ///     Clears all stored values.
+        /// </summary>
+        private void ClearStoredValues()
+        {
+            this.currentContentId = 0;
+            this.currentHomeworldId = 0;
+            this.currentDatacenterId = 0;
+            this.currentTerritoryId = 0;
+            this.currentWorldId = 0;
+
+            Logger.Debug("Cleared stored all values.");
+        }
+    }
+
+    /// <inheritdoc />
+    internal sealed class LoginStateModuleConfig : ApiOptionalModuleConfig
+    {
+        /// <inheritdoc />
+        public override uint Version { get; protected set; }
+
+        /// <inheritdoc />
+        protected override string Identifier { get; set; } = "LoginStateModule";
+
+        /// <inheritdoc />
+        public override bool Enabled { get; set; } = true;
+
+        /// <summary>
+        ///     Whether or not to hide notifications for the same free company.
+        /// </summary>
+        public bool HideSameFC { get; set; } = true;
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users from different homeworlds.
+        /// </summary>
+        public bool HideDifferentHomeworld { get; set; }
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different territories.
+        /// </summary>
+        public bool HideDifferentTerritory { get; set; }
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different worlds.
+        /// </summary>
+        public bool HideDifferentWorld { get; set; }
+
+        /// <summary>
+        ///     Whether or not to hide notifications from users in different data centers.
+        /// </summary>
+        public bool HideDifferentDatacenter { get; set; }
+
+        /// <summary>
+        ///     The message to display when a friend logs in.
+        /// </summary>
+        public string LoginMessage { get; set; } = "{0} has logged in.";
+
+        /// <summary>
+        ///     The message to display when a friend logs out.
+        /// </summary>
+        public string LogoutMessage { get; set; } = "{0} has logged out.";
+
+        /// <summary>
+        ///     Validates a login/logout message.
+        /// </summary>
+        /// <param name="message">The message to validate.</param>
+        /// <returns>Whether or not the message is valid.</returns>
+        public static bool ValidateMessage(string message) => ValidatorUtil.TestFormatString(message, 1, true);
     }
 }

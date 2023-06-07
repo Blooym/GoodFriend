@@ -169,7 +169,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             // Send the world change event if the world ID has changed.
             if (worldId != 0 && this.currentWorldId != worldId)
             {
-                Logger.Information($"World changed from {this.currentWorldId} to {worldId}, sending event.");
+                Logger.Debug($"World changed from {this.currentWorldId} to {worldId}, sending event.");
                 this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
 
                 var salt = CryptoUtil.GenerateSalt();
