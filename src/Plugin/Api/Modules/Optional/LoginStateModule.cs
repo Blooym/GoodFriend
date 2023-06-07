@@ -286,27 +286,24 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         /// <param name="framework"></param>
         private void OnFrameworkUpdate(Framework framework)
         {
+            // Don't run when not logged in.
             if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
             {
                 return;
             }
 
+            // Update current world.
             var currentWorld = DalamudInjections.ClientState.LocalPlayer.CurrentWorld;
             if (currentWorld != null && currentWorld.Id != 0 && currentWorld.Id != this.currentWorldId)
             {
                 this.currentWorldId = currentWorld.Id;
             }
 
+            // Update current territory.
             var currentTerritory = DalamudInjections.ClientState.TerritoryType;
             if (currentTerritory != 0 && currentTerritory != this.currentTerritoryId)
             {
                 this.currentTerritoryId = currentTerritory;
-            }
-
-            var currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.GameData?.DataCenter.Row ?? 0;
-            if (currentDatacenterId != 0 && currentDatacenterId != this.currentDatacenterId)
-            {
-                this.currentDatacenterId = currentDatacenterId;
             }
         }
 

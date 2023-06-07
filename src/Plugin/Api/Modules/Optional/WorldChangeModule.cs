@@ -150,7 +150,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         /// <param name="framework"></param>
         private void OnFrameworkUpdate(Framework framework)
         {
-            // Ignore if not logged in.
+            // Don't run if not logged in.
             if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
             {
                 return;
