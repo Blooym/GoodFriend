@@ -1,4 +1,3 @@
-using Dalamud.Plugin;
 using GoodFriend.Plugin.Api;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
@@ -19,9 +18,9 @@ namespace GoodFriend.Plugin.Base
         /// <summary>
         ///     Initializes the service class.
         /// </summary>
-        internal static void Initialize(DalamudPluginInterface pluginInterface)
+        internal static void Initialize()
         {
-            PluginConfiguration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
             ApiModuleService = new RelayApiService();
             WindowingService = new WindowingService();

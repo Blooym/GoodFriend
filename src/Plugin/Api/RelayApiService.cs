@@ -20,7 +20,7 @@ namespace GoodFriend.Plugin.Api
         /// </summary>
         internal static unsafe GoodFriendClient ApiClientInstance { get; private set; } = new GoodFriendClient(new GoodfriendClientOptions()
         {
-            BaseAddress = Services.PluginConfiguration.ApiConfig.ApiBaseUrl,
+            BaseAddress = new(Services.PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
         }, Framework.Instance()->GameVersion.Base);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace GoodFriend.Plugin.Api
         /// </summary>
         public unsafe RelayApiService()
         {
-            // load higher priority required modules, then required modules, then optional modules in descending order
+            // Load required modules first and then by load priority.
             var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ThenByDescending(x => x is ApiRequiredModule).ThenByDescending(x => x is ApiOptionalModule).ToList();
             foreach (var module in modules)
             {

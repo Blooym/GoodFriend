@@ -10,6 +10,7 @@ using GoodFriend.Plugin.UserInterface.Components;
 using GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
 using ImGuiNET;
 using Sirensong.UserInterface;
+using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
 {
@@ -62,15 +63,24 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
                     case MainWindowScreen.Settings:
                         DrawSettings();
                         break;
+#if DEBUG
+                    case MainWindowScreen.Debug:
+                        DrawDebug();
+                        break;
+#endif
                 }
             }
             ImGui.EndChild();
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
             ButtonRowComponent.DrawRow(new Dictionary<(FontAwesomeIcon, Vector4?, string), Action>
             {
                 { (FontAwesomeIcon.Home, null, "Modules"), () => this.CurrentScreen = MainWindowScreen.Modules },
                 { (FontAwesomeIcon.Cog, null, "Settings"), () => this.CurrentScreen = MainWindowScreen.Settings },
                 { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, "Donate (Opens in browser)"), () => Util.OpenLink(Constants.Link.Donate) },
+                #if DEBUG
+                { (FontAwesomeIcon.Bug, null, "Debug"), () => this.CurrentScreen = MainWindowScreen.Debug },
+                #endif
             });
         }
 
@@ -90,6 +100,13 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
                 SettingsScreen.DrawSettingsList,
                 SettingsScreen.DrawSettingDetails);
 
+#if DEBUG
+        private static void DrawDebug()
+            => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+                DebugScreen.DrawDebugList,
+                DebugScreen.DrawDebugDetails);
+#endif
+
         /// <summary>
         ///     The tabs of the main window.
         /// </summary>
@@ -104,6 +121,14 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
             ///     The settings tab.
             /// </summary>
             Settings,
+
+
+#if DEBUG
+            /// <summary>
+            ///     The debug tab.
+            /// </summary>
+            Debug,
+#endif
         }
     }
 }

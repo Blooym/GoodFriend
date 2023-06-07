@@ -19,7 +19,7 @@ namespace GoodFriend.Plugin
         {
             SirenCore.Initialize(pluginInterface, this.Name);
             pluginInterface.Create<DalamudInjections>();
-            Services.Initialize(pluginInterface);
+            Services.Initialize();
         }
 
         /// <summary>

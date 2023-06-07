@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Dalamud.Configuration;
 using GoodFriend.Plugin.Base;
 
@@ -30,7 +29,7 @@ namespace GoodFriend.Plugin.Configuration
             ///     The default API URL to use.
             /// </summary>
             [NonSerialized]
-            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/");
+            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/v1/");
 
             /// <summary>
             ///     The BaseURL to use when interacting with the API.
@@ -45,18 +44,22 @@ namespace GoodFriend.Plugin.Configuration
             /// </summary>
             public void ResetApiBaseUrl() => this.ApiBaseUrl = DefaultApiBaseUrl;
         }
-
         /// <summary>
         ///     Saves the current configuration to disk.
         /// </summary>
-        internal void Save()
+        internal void Save() => DalamudInjections.PluginInterface.SavePluginConfig(this);
+
+        /// <summary>
+        ///     Loads the configuration from the disk or creates a new one if not found.
+        /// </summary>
+        /// <returns>The configuration instance.</returns>
+        public static PluginConfiguration Load()
         {
-            var path = Path.Combine(DalamudInjections.PluginInterface.ConfigDirectory.FullName, "GoodFriend.json");
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-            DalamudInjections.PluginInterface.SavePluginConfig(this);
+            var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+
+            // A check for updating the default api version can be implemented here if api version changes.
+
+            return config;
         }
     }
 }

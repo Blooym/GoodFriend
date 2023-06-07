@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using GoodFriend.Plugin.Base;
 using ImGuiNET;
 using Sirensong.Game.Enums;
@@ -19,7 +18,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         /// </summary>
         public static void DrawSettingsList()
         {
-            foreach (var setting in Enum.GetValues(typeof(SettingsOption)).Cast<SettingsOption>())
+            foreach (var setting in Enum.GetValues<SettingsOption>())
             {
                 if (ImGui.Selectable(setting.ToString(), setting == CurrentSetting))
                 {

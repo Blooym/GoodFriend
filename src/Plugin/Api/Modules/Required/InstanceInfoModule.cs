@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -72,7 +73,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
 
             DalamudInjections.ClientState.Login += this.OnLogin;
 
-            this.UpdateMetadataSafely();
+            Task.Run(this.UpdateMetadataSafely);
 
             this.unsubMotdLinkPayload = DalamudInjections.PluginInterface.AddChatLinkHandler(MotdCommandId, (i, m) =>
             {
@@ -97,6 +98,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
 
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.PluginInterface.RemoveChatLinkHandler(MotdCommandId);
+            this.unsubMotdLinkPayload = null;
         }
 
         /// <inheritdoc />
@@ -112,6 +114,8 @@ namespace GoodFriend.Plugin.Api.Modules.Required
             }
 
             var metadata = this.metadata.Value;
+
+            // TODO: Improve handling of STBI not loading image.
             if (!string.IsNullOrEmpty(metadata.About.BannerUrl.ToString()))
             {
                 SiGui.Image(metadata.About.BannerUrl.ToString(), ScalingMode.None, new(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().X / 3));
