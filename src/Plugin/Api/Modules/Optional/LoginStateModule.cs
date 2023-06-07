@@ -259,16 +259,9 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         private void OnLogout(object? sender, EventArgs e) =>
             Task.Run(() =>
                 {
-                    this.currentContentId = 0;
-                    this.currentHomeworldId = 0;
-                    this.currentDatacenterId = 0;
-                    this.currentTerritoryId = 0;
-                    this.currentWorldId = 0;
-
-                    Logger.Information("Sending logout event.");
-
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+                    Logger.Information("Sending logout event.");
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
                         ContentIdHash = hash,
@@ -278,6 +271,12 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
                         TerritoryId = this.currentTerritoryId,
                         WorldId = this.currentWorldId
                     });
+
+                    this.currentContentId = 0;
+                    this.currentHomeworldId = 0;
+                    this.currentDatacenterId = 0;
+                    this.currentTerritoryId = 0;
+                    this.currentWorldId = 0;
                 }).Start();
 
         /// <summary>
