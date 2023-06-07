@@ -48,7 +48,7 @@ jobs:
       - name: Download Dalamud
         run: |
           wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O /tmp/dalamud.zip
-          unzip dalamud.zip -d ${{ env.DALAMUD_HOME }}
+          unzip /tmp/dalamud.zip -d ${{ env.DALAMUD_HOME }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
