@@ -4,7 +4,6 @@ using Dalamud.Memory;
 using Dalamud.Utility;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
@@ -15,9 +14,9 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.Modules.Optional
+namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
 {
-    internal sealed class WorldChangeModule : ApiOptionalModule
+    internal sealed class WorldChangeModule : OptionalModuleBase
     {
         /// <summary>
         ///     World lumina sheet for discovering the real name of a world.
@@ -38,10 +37,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         public override string Name => "Friend World Changes";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Notifications;
+        public override ModuleTag Tag => ModuleTag.Notifications;
 
         /// <inheritdoc />
-        protected override WorldChangeModuleConfig Config { get; } = ApiModuleConfigBase.Load<WorldChangeModuleConfig>();
+        protected override WorldChangeModuleConfig Config { get; } = ModuleConfigBase.Load<WorldChangeModuleConfig>();
 
         /// <inheritdoc />
         protected override void EnableAction()
@@ -123,7 +122,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             }
 
             // Find the friend that changed worlds, if not found then ignore.
-            var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            var friendData = FriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
                 Logger.Verbose($"Ignoring player event as the friend could not be found.");
@@ -187,7 +186,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
     /// <summary>
     ///     Configuration for the world change module.
     /// </summary>
-    internal sealed class WorldChangeModuleConfig : ApiOptionalModuleConfig
+    internal sealed class WorldChangeModuleConfig : OptionalModuleConfigBase
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }

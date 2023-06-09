@@ -7,7 +7,6 @@ using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using GoodFriend.Client.Responses;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
 using ImGuiNET;
 using Sirensong.Game.Enums;
@@ -15,9 +14,9 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.Modules.Required
+namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
 {
-    internal sealed class InstanceInfoModule : ApiRequiredModule, IDisposable
+    internal sealed class InstanceInfoModule : RequiredModuleBase, IDisposable
     {
         /// <summary>
         ///     The command ID for the MOTD unsubscribe command.
@@ -53,7 +52,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         public override string Name { get; } = "About Instance";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag { get; } = ApiModuleTag.Information;
+        public override ModuleTag Tag { get; } = ModuleTag.Information;
 
         /// <inheritdoc />
         public override uint DisplayWeight { get; } = 1;
@@ -61,7 +60,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         /// <summary>
         ///     The configuration for this module.
         /// </summary>
-        private InstanceInfoModuleConfig Config { get; set; } = ApiModuleConfigBase.Load<InstanceInfoModuleConfig>();
+        private InstanceInfoModuleConfig Config { get; set; } = ModuleConfigBase.Load<InstanceInfoModuleConfig>();
 
         /// <inheritdoc />
         protected override void EnableAction()
@@ -238,7 +237,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         private void UpdateMetadataTimerOnElapsed(object? sender, ElapsedEventArgs e) => this.UpdateMetadataSafely();
 
         /// <inheritdoc />
-        private sealed class InstanceInfoModuleConfig : ApiRequiredModuleConfig
+        private sealed class InstanceInfoModuleConfig : RequiredModuleConfigBase
         {
             /// <inheritdoc />
             public override uint Version { get; protected set; }

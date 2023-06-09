@@ -3,17 +3,17 @@ using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.ModuleSystem
+namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
 {
     /// <summary>
     ///     A module that can be enabled or disabled freely at runtime.
     /// </summary>
-    internal abstract class ApiOptionalModule : ApiModuleBase
+    internal abstract class OptionalModuleBase : ModuleBase
     {
         /// <summary>
         ///     The configuration for this module.
         /// </summary>
-        protected abstract ApiOptionalModuleConfig Config { get; }
+        protected abstract OptionalModuleConfigBase Config { get; }
 
         /// <summary>
         ///     Whether or not the module is running.
@@ -53,9 +53,9 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
     }
 
     /// <summary>
-    ///     The configuration for <see cref="ApiOptionalModule" />.
+    ///     The configuration for <see cref="OptionalModuleBase" />.
     /// </summary>
-    internal abstract class ApiOptionalModuleConfig : ApiModuleConfigBase
+    internal abstract class OptionalModuleConfigBase : ModuleConfigBase
     {
         /// <summary>
         ///     Whether or not the module is enabled.

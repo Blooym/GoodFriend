@@ -6,17 +6,20 @@ using Newtonsoft.Json;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.ModuleSystem
+namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
     /// <summary>
-    ///     The base class for all API modules.
+    ///     The base class for all modules.
     /// </summary>
-    internal abstract class ApiModuleBase
+    internal abstract class ModuleBase
     {
         /// <summary>
-        ///     The API client instance.
+        ///     The API client instance shared between all modules.
         /// </summary>
-        protected static GoodFriendClient ApiClient => RelayApiService.ApiClientInstance;
+        /// <remarks>
+        ///    This is a convenience property for <see cref="Services.GoodFriendApiClient" />.
+        /// </remarks>
+        protected static GoodFriendClient ApiClient => Services.GoodFriendApiClient;
 
         /// <summary>
         ///     A user-friendly name for this module.
@@ -26,12 +29,12 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// <summary>
         ///     The tag for this module to help categorize it.
         /// </summary>
-        public abstract ApiModuleTag Tag { get; }
+        public abstract ModuleTag Tag { get; }
 
         /// <summary>
         ///     The current state of this module.
         /// </summary>
-        public ApiModuleState State { get; set; } = ApiModuleState.Disabled;
+        public ModuleState State { get; set; } = ModuleState.Disabled;
 
         /// <summary>
         ///     The priority of this module when loading. Higher numbers are loaded first.
@@ -58,15 +61,15 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
             try
             {
                 Logger.Information($"Began loading module {this.GetType().FullName}...");
-                this.State = ApiModuleState.Loading;
+                this.State = ModuleState.Loading;
 
                 this.EnableAction();
-                this.State = ApiModuleState.Enabled;
+                this.State = ModuleState.Enabled;
                 Logger.Information($"Loaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
-                this.State = ApiModuleState.Error;
+                this.State = ModuleState.Error;
                 Logger.Error($"Failed to load module {this.GetType().FullName}: {e}");
                 try
                 {
@@ -90,7 +93,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// </summary>
         public void Disable()
         {
-            if (this.State is ApiModuleState.Disabled)
+            if (this.State is ModuleState.Disabled)
             {
                 Logger.Warning($"Not unloading module {this.GetType().FullName} as it is already disabled or is in an error state.");
                 return;
@@ -98,16 +101,16 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
 
             try
             {
-                this.State = ApiModuleState.Unloading;
+                this.State = ModuleState.Unloading;
                 Logger.Information($"Unloading module {this.GetType().FullName}...");
 
                 this.DisableAction();
-                this.State = ApiModuleState.Disabled;
+                this.State = ModuleState.Disabled;
                 Logger.Information($"Unloaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
-                this.State = ApiModuleState.Error;
+                this.State = ModuleState.Error;
                 Logger.Error($"Failed to unload module {this.GetType().FullName}: {e}");
             }
         }
@@ -117,7 +120,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// </summary>
         public void Draw()
         {
-            if (this.State is ApiModuleState.Error)
+            if (this.State is ModuleState.Error)
             {
                 SiGui.TextWrappedColoured(Colours.Error, "This module has encountered an error while running and was disabled. Please check the logs for more information.");
                 return;
@@ -158,7 +161,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
     /// <summary>
     ///     The base class for all module configurations.
     /// </summary>
-    internal abstract class ApiModuleConfigBase
+    internal abstract class ModuleConfigBase
     {
         /// <summary>
         ///     The version of the module configuration.
@@ -180,12 +183,12 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// </summary>
         public void Save()
         {
-            if (!Directory.Exists(Constants.Directory.ApiModuleConfig))
+            if (!Directory.Exists(Constants.Directory.ModuleConfig))
             {
-                Directory.CreateDirectory(Constants.Directory.ApiModuleConfig);
+                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
             var configJson = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(Path.Combine(Constants.Directory.ApiModuleConfig, $"{this.Identifier}.json"), configJson);
+            File.WriteAllText(Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json"), configJson);
         }
 
         /// <summary>
@@ -195,12 +198,12 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// <param name="newIdentifier">The new identifier.</param>
         public static void Rename(string oldIdentifier, string newIdentifier)
         {
-            if (!Directory.Exists(Constants.Directory.ApiModuleConfig))
+            if (!Directory.Exists(Constants.Directory.ModuleConfig))
             {
-                Directory.CreateDirectory(Constants.Directory.ApiModuleConfig);
+                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
-            var oldConfigPath = Path.Combine(Constants.Directory.ApiModuleConfig, $"{oldIdentifier}.json");
-            var newConfigPath = Path.Combine(Constants.Directory.ApiModuleConfig, $"{newIdentifier}.json");
+            var oldConfigPath = Path.Combine(Constants.Directory.ModuleConfig, $"{oldIdentifier}.json");
+            var newConfigPath = Path.Combine(Constants.Directory.ModuleConfig, $"{newIdentifier}.json");
             if (File.Exists(oldConfigPath))
             {
                 File.Move(oldConfigPath, newConfigPath);
@@ -212,14 +215,14 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
         /// </summary>
         /// <typeparam name="T">The type of the module configuration to load.</typeparam>
         /// <returns>A module configuration either from disk or new if not found.</returns>
-        public static T Load<T>() where T : ApiModuleConfigBase, new()
+        public static T Load<T>() where T : ModuleConfigBase, new()
         {
-            if (!Directory.Exists(Constants.Directory.ApiModuleConfig))
+            if (!Directory.Exists(Constants.Directory.ModuleConfig))
             {
-                Directory.CreateDirectory(Constants.Directory.ApiModuleConfig);
+                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
 
-            var configPath = Path.Combine(Constants.Directory.ApiModuleConfig, $"{new T().Identifier}.json");
+            var configPath = Path.Combine(Constants.Directory.ModuleConfig, $"{new T().Identifier}.json");
 
             if (!File.Exists(configPath))
             {
@@ -234,7 +237,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
     /// <summary>
     ///     The current state of the module.
     /// </summary>
-    internal enum ApiModuleState
+    internal enum ModuleState
     {
         /// <summary>
         ///     The module is currently enabled.
@@ -265,7 +268,7 @@ namespace GoodFriend.Plugin.Api.ModuleSystem
     /// <summary>
     ///     The tag applied to this module for helping users understand its purpose.
     /// </summary>
-    internal enum ApiModuleTag
+    internal enum ModuleTag
     {
         /// <summary>
         ///     A module that provides information to the user.

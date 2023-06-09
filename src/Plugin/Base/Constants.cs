@@ -14,7 +14,7 @@ namespace GoodFriend.Plugin.Base
         public const string PluginName = "GoodFriend";
 
         /// <summary>
-        ///     Plugin build information.
+        ///     Plugin build information.   
         /// </summary>
         internal static class Build
         {
@@ -76,9 +76,9 @@ namespace GoodFriend.Plugin.Base
         internal static class Directory
         {
             /// <summary>
-            ///     The directory where the api module configurations are stored.
+            ///     The directory where the module configurations are stored.
             /// </summary>
-            public static readonly string ApiModuleConfig = @$"{DalamudInjections.PluginInterface.ConfigDirectory}\ModuleConfig\";
+            public static readonly string ModuleConfig = @$"{DalamudInjections.PluginInterface.ConfigDirectory}\ModuleConfig\";
         }
     }
 

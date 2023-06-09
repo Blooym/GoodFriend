@@ -15,7 +15,7 @@ namespace GoodFriend.Plugin
         ///     The plugin's main entry point.
         /// </summary>
         /// <param name="pluginInterface"></param>
-        public unsafe GoodFriendPlugin(DalamudPluginInterface pluginInterface)
+        public GoodFriendPlugin(DalamudPluginInterface pluginInterface)
         {
             SirenCore.Initialize(pluginInterface, this.Name);
             pluginInterface.Create<DalamudInjections>();

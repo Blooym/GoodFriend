@@ -1,11 +1,10 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
-using GoodFriend.Plugin.Utility;
 using Sirensong;
 using Sirensong.Cache;
 
-namespace GoodFriend.Plugin.Api
+namespace GoodFriend.Plugin.Utility
 {
-    internal static class ApiFriendUtil
+    internal static class FriendUtil
     {
         /// <summary>
         ///     The friend list cache.

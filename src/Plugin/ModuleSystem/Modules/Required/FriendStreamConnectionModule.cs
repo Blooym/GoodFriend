@@ -1,15 +1,14 @@
 using System;
 using GoodFriend.Client;
 using GoodFriend.Client.Responses;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
 using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.Modules.Required
+namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
 {
-    internal sealed class FriendStreamConnectionModule : ApiRequiredModule
+    internal sealed class FriendStreamConnectionModule : RequiredModuleBase
     {
         /// <summary>
         ///     The last time a heartbeat was recieved from the player event stream.
@@ -35,7 +34,7 @@ namespace GoodFriend.Plugin.Api.Modules.Required
         public override string Name => "Friend Stream Connection";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Information;
+        public override ModuleTag Tag => ModuleTag.Information;
 
         /// <inheritdoc />
         public override uint LoadPriority { get; } = 1;

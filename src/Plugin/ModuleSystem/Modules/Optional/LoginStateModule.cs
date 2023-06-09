@@ -6,7 +6,6 @@ using Dalamud.Memory;
 using Dalamud.Utility;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
@@ -15,10 +14,10 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.Api.Modules.Optional
+namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
 {
     /// <inheritdoc />
-    internal sealed class LoginStateModule : ApiOptionalModule
+    internal sealed class LoginStateModule : OptionalModuleBase
     {
         /// <summary>
         ///     The current world ID.
@@ -49,10 +48,10 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
         public override string Name => "Friend Login & Logout";
 
         /// <inheritdoc />
-        public override ApiModuleTag Tag => ApiModuleTag.Notifications;
+        public override ModuleTag Tag => ModuleTag.Notifications;
 
         /// <inheritdoc />
-        protected override LoginStateModuleConfig Config { get; } = ApiModuleConfigBase.Load<LoginStateModuleConfig>();
+        protected override LoginStateModuleConfig Config { get; } = ModuleConfigBase.Load<LoginStateModuleConfig>();
 
         /// <inheritdoc />
         protected override void EnableAction()
@@ -182,7 +181,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
             }
 
             // Check if the local player is the same as the player who logged in/out.
-            var friendData = ApiFriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            var friendData = FriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendData.HasValue)
             {
                 Logger.Verbose($"Ignoring player event as the friend could not be found.");
@@ -347,7 +346,7 @@ namespace GoodFriend.Plugin.Api.Modules.Optional
     }
 
     /// <inheritdoc />
-    internal sealed class LoginStateModuleConfig : ApiOptionalModuleConfig
+    internal sealed class LoginStateModuleConfig : OptionalModuleConfigBase
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }

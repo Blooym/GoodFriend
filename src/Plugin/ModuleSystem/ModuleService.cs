@@ -1,46 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
-using GoodFriend.Client;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.ModuleSystem.Modules;
+using GoodFriend.Plugin.ModuleSystem.Modules.Optional;
+using GoodFriend.Plugin.ModuleSystem.Modules.Required;
 
-namespace GoodFriend.Plugin.Api
+namespace GoodFriend.Plugin.ModuleSystem
 {
-    internal sealed class RelayApiService : IDisposable
+    internal sealed class ModuleService : IDisposable
     {
         /// <summary>
         ///     All loaded modules.
         /// </summary>
-        private readonly ICollection<ApiModuleBase> loadedModules;
+        private readonly ICollection<ModuleBase> loadedModules;
 
         /// <summary>
-        ///     The client used to communicate with the API, shared between all modules.
+        ///     Initializes a new instance of the <see cref="ModuleService" /> class.
         /// </summary>
-        internal static unsafe GoodFriendClient ApiClientInstance { get; private set; } = new GoodFriendClient(new GoodfriendClientOptions()
-        {
-            BaseAddress = new(Services.PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
-        }, Framework.Instance()->GameVersion.Base);
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RelayApiService" /> class.
-        /// </summary>
-        public unsafe RelayApiService()
+        public ModuleService()
         {
             // Load required modules first and then by load priority.
-            var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ThenByDescending(x => x is ApiRequiredModule).ThenByDescending(x => x is ApiOptionalModule).ToList();
+            var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ThenByDescending(x => x is RequiredModuleBase).ToList();
             foreach (var module in modules)
             {
                 Logger.Information($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
 
                 // If the module is optional, check its configuration
-                if (module is ApiOptionalModule optionalModule && optionalModule.Enabled)
+                if (module is OptionalModuleBase optionalModule && optionalModule.Enabled)
                 {
                     module.Enable();
                     continue;
                 }
-                else if (module is not ApiOptionalModule)
+                else if (module is not OptionalModuleBase)
                 {
                     module.Enable();
                     continue;
@@ -56,29 +48,27 @@ namespace GoodFriend.Plugin.Api
             {
                 module.Disable();
             }
-
-            ApiClientInstance.Dispose();
         }
 
         /// <summary>
         ///     Loads all modules and initializes them.
         /// </summary>
         /// <returns></returns>
-        private static ICollection<ApiModuleBase> LoadModules()
+        private static ICollection<ModuleBase> LoadModules()
         {
-            var modules = new List<ApiModuleBase>();
-            foreach (var module in typeof(RelayApiService).Assembly.GetTypes())
+            var modules = new List<ModuleBase>();
+            foreach (var module in typeof(ModuleService).Assembly.GetTypes())
             {
                 try
                 {
-                    if (module.IsAbstract || !typeof(ApiModuleBase).IsAssignableFrom(module))
+                    if (module.IsAbstract || !typeof(ModuleBase).IsAssignableFrom(module))
                     {
                         continue;
                     }
 
                     Logger.Information($"Creating instance of module {module.FullName}.");
                     var ctor = module.GetConstructor(Type.EmptyTypes) ?? throw new InvalidOperationException($"The module {module.FullName} does not have a parameterless constructor.");
-                    var instance = (ApiModuleBase)ctor.Invoke(null);
+                    var instance = (ModuleBase)ctor.Invoke(null);
                     modules.Add(instance);
                 }
                 catch (Exception e)
@@ -94,7 +84,7 @@ namespace GoodFriend.Plugin.Api
         /// </summary>
         /// <typeparam name="T">The type of the module to get.</typeparam>
         /// <returns>The module instance if found, otherwise null.</returns>
-        public T? GetModule<T>() where T : ApiModuleBase
+        public T? GetModule<T>() where T : ModuleBase
         {
             foreach (var module in this.loadedModules)
             {
@@ -110,6 +100,6 @@ namespace GoodFriend.Plugin.Api
         ///     Gets all loaded modules.
         /// </summary>
         /// <returns>All loaded modules.</returns>
-        public ICollection<ApiModuleBase> GetModules() => this.loadedModules;
+        public ICollection<ModuleBase> GetModules() => this.loadedModules;
     }
 }

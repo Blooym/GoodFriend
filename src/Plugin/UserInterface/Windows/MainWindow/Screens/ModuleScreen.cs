@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Colors;
-using GoodFriend.Plugin.Api.Modules.Required;
-using GoodFriend.Plugin.Api.ModuleSystem;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.ModuleSystem.Modules;
+using GoodFriend.Plugin.ModuleSystem.Modules.Required;
 using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -16,15 +16,15 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         /// <summary>
         ///     The current module.
         /// </summary>
-        private static ApiModuleBase? CurrentModule { get; set; } = Services.ApiModuleService.GetModule<InstanceInfoModule>();
+        private static ModuleBase? CurrentModule { get; set; } = Services.ModuleService.GetModule<InstanceInfoModule>();
 
         /// <summary>
         ///     Draws the list panel of the main window.
         /// </summary>
         public static void DrawModuleList()
         {
-            ApiModuleTag? lastTag = null;
-            foreach (var module in Services.ApiModuleService.GetModules().OrderBy(x => x.Tag).OrderByDescending(x => x.DisplayWeight))
+            ModuleTag? lastTag = null;
+            foreach (var module in Services.ModuleService.GetModules().OrderBy(x => x.Tag).OrderByDescending(x => x.DisplayWeight))
             {
                 if (lastTag != module.Tag)
                 {
@@ -45,30 +45,30 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                     CurrentModule = module;
                 }
 
-                if (module.GetType().BaseType == typeof(ApiRequiredModule))
+                if (module.GetType().BaseType == typeof(RequiredModuleBase))
                 {
                     continue;
                 }
 
                 switch (module.State)
                 {
-                    case ApiModuleState.Enabled:
+                    case ModuleState.Enabled:
                         var enabledText = "Enabled";
                         SiGui.TextColoured(Colours.Success, enabledText);
                         break;
-                    case ApiModuleState.Loading:
+                    case ModuleState.Loading:
                         var loadingText = "Loading";
                         SiGui.TextColoured(Colours.Warning, loadingText);
                         break;
-                    case ApiModuleState.Disabled:
+                    case ModuleState.Disabled:
                         var disabledText = "Disabled";
                         SiGui.TextColoured(ImGuiColors.DalamudGrey, disabledText);
                         break;
-                    case ApiModuleState.Unloading:
+                    case ModuleState.Unloading:
                         var unloadingText = "Unloading";
                         SiGui.TextColoured(Colours.Warning, unloadingText);
                         break;
-                    case ApiModuleState.Error:
+                    case ModuleState.Error:
                         var errorText = "Error";
                         SiGui.TextColoured(Colours.Error, errorText);
                         break;
