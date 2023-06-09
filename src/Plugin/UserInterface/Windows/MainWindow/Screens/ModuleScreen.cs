@@ -89,6 +89,11 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             }
 
             SiGui.Heading(CurrentModule.Name);
+            if (!string.IsNullOrEmpty(CurrentModule.Description))
+            {
+                SiGui.TextWrapped(CurrentModule.Description);
+                ImGui.Dummy(Spacing.SectionSpacing);
+            }
             if (ImGui.BeginChild("PluginSettingsListChildScrolling"))
             {
                 CurrentModule.Draw();

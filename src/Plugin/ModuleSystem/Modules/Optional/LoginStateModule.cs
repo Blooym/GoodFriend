@@ -48,6 +48,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         public override string Name => "Friend Login & Logout";
 
         /// <inheritdoc />
+        public override string? Description => "Automatically send & recieve notifications when friends log in or out of their characters.";
+
+        /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
 
         /// <inheritdoc />

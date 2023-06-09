@@ -34,7 +34,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private bool firstWorldUpdate = true;
 
         /// <inheritdoc />
-        public override string Name => "Friend World Changes";
+        public override string Name => "Friend World Change";
+
+        /// <inheritdoc />
+        public override string? Description => "Automatically send and recieve notifications when friends change worlds.";
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;

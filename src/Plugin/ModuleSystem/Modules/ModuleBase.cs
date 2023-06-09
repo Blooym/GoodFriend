@@ -27,6 +27,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public abstract string Name { get; }
 
         /// <summary>
+        ///     A user-friendly optional description for this module.
+        /// </summary>
+        public virtual string? Description { get; }
+
+        /// <summary>
         ///     The tag for this module to help categorize it.
         /// </summary>
         public abstract ModuleTag Tag { get; }
