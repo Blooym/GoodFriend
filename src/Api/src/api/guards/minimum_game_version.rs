@@ -9,7 +9,6 @@ use rocket::{
 const GAME_VERSION_HEADER: &str = "X-Game-Version";
 
 /// A guard that checks the game version is up to date.
-#[derive(Debug, Clone)]
 pub struct MinimumGameVersionGuard;
 
 #[rocket::async_trait]
@@ -39,7 +38,7 @@ impl<'r> FromRequest<'r> for MinimumGameVersionGuard {
 }
 
 /// An error that can occur when checking the game version.
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum GameVersionError {
     Outdated,
     Invalid,

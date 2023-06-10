@@ -53,7 +53,8 @@ namespace GoodFriend.Client.Requests
             ///     The string of a hashed player ContentId.
             /// </summary>
             /// <remarks>
-            ///     The given string must be at least 64 characters in length.
+            ///     - The given string must be at least 64 characters in length. <br/>
+            ///     - You cannot use the same hash across requests and must generate a new one each time. <br/>
             /// </remarks>
             public required string ContentIdHash
             {

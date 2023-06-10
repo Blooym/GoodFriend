@@ -1,5 +1,8 @@
 use super::{
-    guards::{minimum_game_version::MinimumGameVersionGuard, user_agent::UserAgentGuard},
+    guards::{
+        cid_hash_duplicate_guard::CidHashDuplicateGuard,
+        minimum_game_version::MinimumGameVersionGuard, user_agent::UserAgentGuard,
+    },
     responses::player_event::{EventStreamPlayerStateUpdateResponse, PlayerStateUpdateType},
 };
 use crate::types::content_id::{ContentIdHash, ContentIdSalt};
@@ -32,6 +35,7 @@ pub struct UpdatePlayerLoginStateRequest {
 async fn loginstate(
     _version_guard: MinimumGameVersionGuard,
     _agent_guard: UserAgentGuard,
+    _spam_guard: CidHashDuplicateGuard,
     update: UpdatePlayerLoginStateRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {
@@ -63,6 +67,7 @@ pub struct UpdatePlayerWorldRequest {
 async fn world(
     _version_guard: MinimumGameVersionGuard,
     _agent_guard: UserAgentGuard,
+    _spam_guard: CidHashDuplicateGuard,
     update: UpdatePlayerWorldRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> status::Accepted<()> {

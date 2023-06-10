@@ -9,7 +9,6 @@ use rocket::{
 const USER_AGENT_HEADER: &str = "User-Agent";
 
 /// A guard that checks if the user agent is accepted or not.
-#[derive(Debug, Clone)]
 pub struct UserAgentGuard;
 
 #[rocket::async_trait]
@@ -49,7 +48,7 @@ impl<'r> FromRequest<'r> for UserAgentGuard {
 }
 
 /// The error that can occur when checking the user agent.
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum BannedAgentError {
     AgentBanned,
     AgentMissing,
