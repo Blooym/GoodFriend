@@ -8,6 +8,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
@@ -49,7 +50,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         private DalamudLinkPayload? unsubMotdLinkPayload;
 
         /// <inheritdoc />
-        public override string Name { get; } = "About Instance";
+        public override string Name { get; } = Strings.Modules_InstanceInfoModule_Name;
 
         /// <inheritdoc />
         public override ModuleTag Tag { get; } = ModuleTag.Information;
@@ -77,13 +78,13 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
             {
                 if (!this.Config.ShowMotdOnLogin)
                 {
-                    ChatHelper.PrintError("You have already disabled messages of the day.");
+                    ChatHelper.PrintError(Strings.Modules_InstanceInfoModule_Motd_AlreadyDisabled);
                     return;
                 }
 
                 this.Config.ShowMotdOnLogin = false;
                 this.Config.Save();
-                ChatHelper.Print("You will no longer see messages of the day when you log in. You can re-enable them in the Instance Info settings.");
+                ChatHelper.Print(Strings.Modules_InstanceInfoModule_Motd_Disabled);
             });
         }
 
@@ -107,7 +108,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         {
             if (!this.metadata.HasValue)
             {
-                SiGui.TextWrappedColoured(this.lastMetadataUpdateFailed ? Colours.Error : Colours.Informational, this.lastMetadataUpdateFailed ? "Failed to fetch metadata, will try again later." : "Fetching metadata...");
+                SiGui.TextWrappedColoured(this.lastMetadataUpdateFailed ? Colours.Error : Colours.Informational, this.lastMetadataUpdateFailed ? Strings.Modules_InstanceInfoModule_MetadataFetch_Failed : Strings.Modules_InstanceInfoModule_MetadataFetch_Fetching);
                 return;
             }
 
@@ -130,27 +131,27 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.ParsedBlue);
-            ImGui.Button($"There are currently {metadata.ConnectedClients} players online", new(ImGui.GetContentRegionAvail().X, 0));
+            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.ConnectedClients), new(ImGui.GetContentRegionAvail().X, 0));
             ImGui.PopStyleColor(3);
             ImGui.Dummy(Spacing.SectionSpacing);
 
             if (ImGui.BeginChild("InstanceInfoChild"))
             {
                 // MOTD.
-                SiGui.Heading("Message of the Day");
+                SiGui.Heading(Strings.Modules_InstanceInfoModule_Motd_Title);
                 if (!metadata.About.Motd.Ignore)
                 {
                     SiGui.TextWrapped(metadata.About.Motd.Message);
                 }
                 else
                 {
-                    SiGui.TextDisabledWrapped("No message of the day has been set.");
+                    SiGui.TextDisabledWrapped(Strings.Modules_InstanceInfoModule_Motd_Unset);
                 }
                 ImGui.Dummy(Spacing.ReadableSpacing);
 
                 // Motd toggle button.
                 var showOnLogin = this.Config.ShowMotdOnLogin;
-                if (SiGui.Checkbox("Show MOTD on login", ref showOnLogin))
+                if (SiGui.Checkbox(Strings.Modules_InstanceInfoModule_Motd_OnLogin, ref showOnLogin))
                 {
                     this.Config.ShowMotdOnLogin = showOnLogin;
                     this.Config.Save();
@@ -158,10 +159,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
                 ImGui.Dummy(Spacing.SectionSpacing);
 
                 // Links.
-                SiGui.Heading("Custom Links");
+                SiGui.Heading(Strings.Modules_InstanceInfoModule_CustomLinks_Title);
                 if (metadata.About.CustomUrls.Count == 0)
                 {
-                    SiGui.TextDisabledWrapped("No custom links have been set.");
+                    SiGui.TextDisabledWrapped(Strings.Modules_InstanceInfoModule_CustomLinks_Unset);
                 }
                 else
                 {
@@ -181,7 +182,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
             if (this.lastMetadataUpdateFailed)
             {
                 ImGui.Dummy(Spacing.SectionSpacing);
-                SiGui.TextWrappedColoured(Colours.Error, "The last metadata update failed, currently using cached data.");
+                SiGui.TextWrappedColoured(Colours.Error, Strings.Modules_InstanceInfoModule_MetadataFetch_LastFailed);
             }
 
             ImGui.EndChild();
@@ -223,7 +224,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
                         .AddText(" - ")
                         .Add(this.unsubMotdLinkPayload!)
                         .AddUiForeground((ushort)ChatUiColourKey.Orange)
-                        .AddText("[Disable messages on login]")
+                        .AddText(Strings.Modules_InstanceInfoModule_Motd_DisableChatPrompt)
                         .AddUiForegroundOff()
                         .Add(RawPayload.LinkTerminator)
                         .Build());

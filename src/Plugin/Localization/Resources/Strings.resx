@@ -18,7 +18,247 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="test" xml:space="preserve">
-    <value>test</value>
+  <data name="Modules_LoginStateModule_Name" xml:space="preserve">
+    <value>Friend Login &amp; Logout</value>
+  </data>
+  <data name="Modules_LoginStateModule_Description" xml:space="preserve">
+    <value>Automatically send and recieve notifications when friends log in or out of their characters.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_FilteringOptions" xml:space="preserve">
+    <value>Filtering Options</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideSameCompany" xml:space="preserve">
+    <value>Ignore same free company</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideSameCompany_Description" xml:space="preserve">
+    <value>Ignores events from friends in the same free company as you.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffHomeworld" xml:space="preserve">
+    <value>Ignore different homeworld</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffHomeworld_Description" xml:space="preserve">
+    <value>Ignores events from friends that aren't from your homeworld.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffTerritory" xml:space="preserve">
+    <value>Ignore different territory</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffTerritory_Description" xml:space="preserve">
+    <value>Ignore events from friends that logged outside of your current territory.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffWorld" xml:space="preserve">
+    <value>Ignore different world</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffWorld_Description" xml:space="preserve">
+    <value>Ignore events from friends that logged outside of your current world.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
+    <value>ignore different datacenter</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
+    <value>Hides events from friends that logged outside of your current datacenter.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_MessageOptions" xml:space="preserve">
+    <value>Message Options</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LoginMessage" xml:space="preserve">
+    <value>Login message</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LoginMessage_Tooltip" xml:space="preserve">
+    <value>Your message must contain {0} for the player's name.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LoginMessage_Invalid" xml:space="preserve">
+    <value>Invalid login message, please check your syntax.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LogoutMessage" xml:space="preserve">
+    <value>Logout Message</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LogoutMessage_Invalid" xml:space="preserve">
+    <value>Invalid logout message, please check your syntax.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
+    <value>Your message must contain {0} for the player's name.</value>
+  </data>
+  <data name="Modules_OptionalModuleBase_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Modules_OptionalModuleBase_EnabledSwitch" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Modules_OptionalModuleBase_EnabledSwitch_Tooltip" xml:space="preserve">
+    <value>Whether or not the module is enabled.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
+    <value>Filtering Options</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
+    <value>Only show current world</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description" xml:space="preserve">
+    <value>When enabled, you will only be notified when a friend changes to your current world.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_MessageOptions" xml:space="preserve">
+    <value>Message Options</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_WorldChangeMessage" xml:space="preserve">
+    <value>World Change Message</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid" xml:space="preserve">
+    <value>Invalid world change message, please check your syntax.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip" xml:space="preserve">
+    <value>Your message must contain {0} for the player's name and {1} for the world name.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_Name" xml:space="preserve">
+    <value>Friend Stream Connection</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus" xml:space="preserve">
+    <value>Connection status:</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
+    <value>Connecting...</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
+    <value>Disconnecting...</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
+    <value>You are currently recieving events from other friends and are fully connected to the player event stream.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
+    <value>Attempting to connect you to the player event stream, please wait.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
+    <value>You are not currently recieving events from other friends and are not connected to the player event stream.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
+    <value>Disconnecting you from the player event stream, please wait.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
+    <value>Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down. You will automatically be reconnected when possible. For more information check /xllog.</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
+    <value>Connection Statistics</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
+    <value>Events recieved: {0}</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
+    <value>Last event: {0}</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
+    <value>Heartbeats recieved: {0}</value>
+  </data>
+  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
+    <value>Last heartbeat: {0}</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
+    <value>About Instance</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
+    <value>You have already disabled messages of the day.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
+    <value>You will no longer see messages of the day when you log in. You can re-enable them in the Instance Info settings.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
+    <value>Failed to fetch metadata, will try again later.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_MetadataFetch_Fetching" xml:space="preserve">
+    <value>Fetching metadata...</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
+    <value>There are currently {0} players online</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
+    <value>Message of the Day</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
+    <value>No message of the day has been set.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
+    <value>Show MOTD on login</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
+    <value>Custom Links</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_CustomLinks_Unset" xml:space="preserve">
+    <value>No custom links have been set.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
+    <value>The last metadata update failed, currently using cached data.</value>
+  </data>
+  <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
+    <value>[Disable messages on login]</value>
+  </data>
+  <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
+    <value>This module has encountered an error while running and was disabled. Please check the logs for more information.</value>
+  </data>
+  <data name="Modules_ModuleBase_FailedDraw" xml:space="preserve">
+    <value>Failed to draw module {0}: {1}</value>
+  </data>
+  <data name="UI_MainWindow_DebugScreen_DetectedFriends" xml:space="preserve">
+    <value>Detected Friends</value>
+  </data>
+  <data name="UI_MainWindow_DebugScreen_DetectedFriends_Usage" xml:space="preserve">
+    <value>Click on a friend to copy their content id hash and salt</value>
+  </data>
+  <data name="UI_MainWindow_DebugScreen_DetectedFriends_Copied" xml:space="preserve">
+    <value>Copied {0}'s data to clipboard</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_Unloading" xml:space="preserve">
+    <value>Unloading</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="UI_MainWindow_ModuleScreen_SelectToView" xml:space="preserve">
+    <value>Select a module to view its settings.</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_RestartNeeded" xml:space="preserve">
+    <value>One or more changes may require a plugin restart to take effect.</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Setting_APIURL" xml:space="preserve">
+    <value>API URL</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid" xml:space="preserve">
+    <value>Please enter a valid URL.</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Setting_APIURL_Description" xml:space="preserve">
+    <value>This is the URL that the plugin will communicate with for API requests. Most users will not need to change this.</value>
+  </data>
+  <data name="UI_MainWindow_Button_Modules" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="UI_MainWindow_Button_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="UI_MainWindow_Button_Donate" xml:space="preserve">
+    <value>Donate (Opens in browser)</value>
+  </data>
+  <data name="UI_MainWindow_Button_Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Modules_WorldChangeModule_Title" xml:space="preserve">
+    <value>Friend World Change</value>
+  </data>
+  <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
+    <value>Automatically send and recieve notifications when friends change worlds.</value>
   </data>
 </root>

@@ -7,6 +7,7 @@ using Dalamud.Utility;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Sirensong.Extensions;
@@ -45,10 +46,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private ulong currentContentId;
 
         /// <inheritdoc />
-        public override string Name => "Friend Login & Logout";
+        public override string Name => Strings.Modules_LoginStateModule_Name;
 
         /// <inheritdoc />
-        public override string? Description => "Automatically send & recieve notifications when friends log in or out of their characters.";
+        public override string? Description => Strings.Modules_LoginStateModule_Description;
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
@@ -85,9 +86,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         protected override void DrawModule()
         {
             // Filtering
-            SiGui.Heading("Filtering Options");
+            SiGui.Heading(Strings.Modules_LoginStateModule_UI_FilteringOptions);
             var hideSameFc = this.Config.HideSameFC;
-            if (SiGui.Checkbox("Hide same free company", "Hides events from friends in the same free company as you.", ref hideSameFc))
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideSameCompany, Strings.Modules_LoginStateModule_UI_HideSameCompany_Description, ref hideSameFc))
             {
                 this.Config.HideSameFC = hideSameFc;
                 this.Config.Save();
@@ -95,7 +96,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentHomeworld = this.Config.HideDifferentHomeworld;
-            if (SiGui.Checkbox("Hide different homeworld", "Hides events from friends that aren't from your homeworld.", ref hideDifferentHomeworld))
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffHomeworld, Strings.Modules_LoginStateModule_UI_HideDiffHomeworld_Description, ref hideDifferentHomeworld))
             {
                 this.Config.HideDifferentHomeworld = hideDifferentHomeworld;
                 this.Config.Save();
@@ -103,7 +104,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentTerritory = this.Config.HideDifferentTerritory;
-            if (SiGui.Checkbox("Hide different territory", "Hides events from friends that logged outside of your current territory.", ref hideDifferentTerritory))
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffTerritory, Strings.Modules_LoginStateModule_UI_HideDiffTerritory_Description, ref hideDifferentTerritory))
             {
                 this.Config.HideDifferentTerritory = hideDifferentTerritory;
                 this.Config.Save();
@@ -111,7 +112,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentWorld = this.Config.HideDifferentWorld;
-            if (SiGui.Checkbox("Hide different world", "Hides events from friends that logged outside of your current world.", ref hideDifferentWorld))
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffWorld, Strings.Modules_LoginStateModule_UI_HideDiffWorld_Description, ref hideDifferentWorld))
             {
                 this.Config.HideDifferentWorld = hideDifferentWorld;
                 this.Config.Save();
@@ -119,7 +120,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             var hideDifferentDatacenter = this.Config.HideDifferentDatacenter;
-            if (SiGui.Checkbox("Hide different data center", "Hides events from friends that logged outside of your current data center.", ref hideDifferentDatacenter))
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffDC, Strings.Modules_LoginStateModule_UI_HideDiffDC_Description, ref hideDifferentDatacenter))
             {
                 this.Config.HideDifferentDatacenter = hideDifferentDatacenter;
                 this.Config.Save();
@@ -127,9 +128,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             ImGui.Dummy(Spacing.SectionSpacing);
 
             // Messages
-            SiGui.Heading("Message Options");
+            SiGui.Heading(Strings.Modules_LoginStateModule_UI_MessageOptions);
             var loginMessage = this.Config.LoginMessage;
-            if (SiGui.InputText("Login message", ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LoginMessage, ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
                 switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
                 {
@@ -138,14 +139,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                         this.Config.Save();
                         break;
                     case false:
-                        NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
+                        NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LoginMessage_Invalid);
                         break;
                 }
             }
-            SiGui.AddTooltip("Your message must contain {0} for the player's name.");
+            SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LoginMessage_Tooltip);
 
             var logoutMessage = this.Config.LogoutMessage;
-            if (SiGui.InputText("Logout message", ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LogoutMessage, ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
                 switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
                 {
@@ -154,11 +155,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                         this.Config.Save();
                         break;
                     case false:
-                        NotificationUtil.ShowErrorToast("Invalid logout message, please check your syntax.");
+                        NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LogoutMessage_Invalid);
                         break;
                 }
             }
-            SiGui.AddTooltip("Your message must contain {0} for the player's name.");
+            SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LogoutMessage_Tooltip);
         }
 
         /// <summary>

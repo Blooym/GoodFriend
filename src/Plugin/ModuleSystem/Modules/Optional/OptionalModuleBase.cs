@@ -1,4 +1,5 @@
 using Dalamud.Interface.Components;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -23,7 +24,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override void DrawBase()
         {
-            SiGui.Heading("Status");
+            SiGui.Heading(Strings.Modules_OptionalModuleBase_Enabled);
             var enabled = this.Config.Enabled;
 
             if (ImGuiComponents.ToggleButton($"Enabled##{this.GetType().FullName}", ref enabled))
@@ -39,10 +40,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                     this.Disable();
                 }
             }
-            SiGui.AddTooltip("Whether or not the module is enabled.");
+            SiGui.AddTooltip(Strings.Modules_OptionalModuleBase_EnabledSwitch_Tooltip);
             ImGui.SameLine();
-            SiGui.Text("Enabled");
-            SiGui.AddTooltip("Whether or not the module is enabled.");
+            SiGui.Text(Strings.Modules_OptionalModuleBase_EnabledSwitch);
+            SiGui.AddTooltip(Strings.Modules_OptionalModuleBase_EnabledSwitch_Tooltip);
             ImGui.Dummy(Spacing.SectionSpacing);
 
             if (enabled)

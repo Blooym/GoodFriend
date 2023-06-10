@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using GoodFriend.Client;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using Newtonsoft.Json;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -127,7 +128,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (this.State is ModuleState.Error)
             {
-                SiGui.TextWrappedColoured(Colours.Error, "This module has encountered an error while running and was disabled. Please check the logs for more information.");
+                SiGui.TextWrappedColoured(Colours.Error, Strings.Modules_ModuleBase_CantDisplayError);
                 return;
             }
 
@@ -137,7 +138,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             }
             catch (Exception e)
             {
-                SiGui.TextColoured(Colours.Error, $"Failed to draw module {this.GetType().FullName}: {e}");
+                SiGui.TextColoured(Colours.Error, string.Format(Strings.Modules_ModuleBase_FailedDraw, this.GetType().FullName, e));
             }
         }
 
@@ -275,14 +276,8 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     /// </summary>
     internal enum ModuleTag
     {
-        /// <summary>
-        ///     A module that provides information to the user.
-        /// </summary>
         Information,
-
-        /// <summary>
-        ///     A module that facilitates notifications to the user.
-        /// </summary>
+        Connectivity,
         Notifications,
     }
 }

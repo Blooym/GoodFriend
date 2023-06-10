@@ -1,5 +1,6 @@
 using System;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
@@ -34,7 +35,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         {
             if (restartRequired)
             {
-                SiGui.TextWrappedColoured(Colours.Warning, "One or more changes may require a plugin restart to take effect.");
+                SiGui.TextWrappedColoured(Colours.Warning, Strings.UI_MainWindow_SettingsScreen_RestartNeeded);
                 ImGui.Dummy(Spacing.ReadableSpacing);
             }
 
@@ -53,7 +54,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         private static void DrawAPISettings()
         {
             var apiUrl = Services.PluginConfiguration.ApiConfig.ApiBaseUrl.ToString();
-            if (SiGui.InputText("API URL", ref apiUrl, 250, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
                 try
                 {
@@ -67,11 +68,11 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                 }
                 catch (UriFormatException)
                 {
-                    ToastHelper.ShowErrorToast("Please enter a valid URL.");
+                    ToastHelper.ShowErrorToast(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid);
                     SoundEffectHelper.PlaySound(SoundEffect.Se11);
                 }
             }
-            SiGui.TextDisabledWrapped("This is the URL that the plugin will communicate with for API requests. Most users will not need to change this.");
+            SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
         }
 
         private enum SettingsOption

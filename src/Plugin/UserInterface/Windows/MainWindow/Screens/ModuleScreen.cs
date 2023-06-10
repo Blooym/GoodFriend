@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Colors;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem.Modules;
 using GoodFriend.Plugin.ModuleSystem.Modules.Required;
 using ImGuiNET;
@@ -53,23 +54,23 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                 switch (module.State)
                 {
                     case ModuleState.Enabled:
-                        var enabledText = "Enabled";
+                        var enabledText = Strings.UI_MainWindow_ModuleScreen_Enabled;
                         SiGui.TextColoured(Colours.Success, enabledText);
                         break;
                     case ModuleState.Loading:
-                        var loadingText = "Loading";
+                        var loadingText = Strings.UI_MainWindow_ModuleScreen_Loading;
                         SiGui.TextColoured(Colours.Warning, loadingText);
                         break;
                     case ModuleState.Disabled:
-                        var disabledText = "Disabled";
+                        var disabledText = Strings.UI_MainWindow_ModuleScreen_Disabled;
                         SiGui.TextColoured(ImGuiColors.DalamudGrey, disabledText);
                         break;
                     case ModuleState.Unloading:
-                        var unloadingText = "Unloading";
+                        var unloadingText = Strings.UI_MainWindow_ModuleScreen_Unloading;
                         SiGui.TextColoured(Colours.Warning, unloadingText);
                         break;
                     case ModuleState.Error:
-                        var errorText = "Error";
+                        var errorText = Strings.UI_MainWindow_ModuleScreen_Error;
                         SiGui.TextColoured(Colours.Error, errorText);
                         break;
                 }
@@ -83,8 +84,8 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         {
             if (CurrentModule == null)
             {
-                ImGui.SetCursorPos(new Vector2((ImGui.GetContentRegionAvail().X / 2) - (ImGui.CalcTextSize("Select a module to view its settings.").X / 2), (ImGui.GetContentRegionAvail().Y / 2) - (ImGui.CalcTextSize("Select a module to view its settings.").Y / 2)));
-                SiGui.TextDisabledWrapped("Select a module to view its settings.");
+                ImGui.SetCursorPos(new Vector2((ImGui.GetContentRegionAvail().X / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).X / 2), (ImGui.GetContentRegionAvail().Y / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).Y / 2)));
+                SiGui.TextDisabledWrapped(Strings.UI_MainWindow_ModuleScreen_SelectToView);
                 return;
             }
 

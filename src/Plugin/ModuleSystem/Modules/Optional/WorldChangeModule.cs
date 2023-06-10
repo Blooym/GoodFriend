@@ -5,6 +5,7 @@ using Dalamud.Utility;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
@@ -34,10 +35,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private bool firstWorldUpdate = true;
 
         /// <inheritdoc />
-        public override string Name => "Friend World Change";
+        public override string Name => Strings.Modules_WorldChangeModule_Title;
 
         /// <inheritdoc />
-        public override string? Description => "Automatically send and recieve notifications when friends change worlds.";
+        public override string? Description => Strings.Modules_WorldChangeModule_Description;
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
@@ -64,24 +65,24 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            SiGui.Heading("Filtering Options");
+            SiGui.Heading(Strings.Modules_WorldChangeModule_UI_FilteringOptions);
 
             var onlyShowCurrentWorld = this.Config.OnlyShowCurrentWorld;
-            if (SiGui.Checkbox("Only show for current world", "When enabled, you will only be notified when a friend changes to your current world.", ref onlyShowCurrentWorld))
+            if (SiGui.Checkbox(Strings.Modules_WorldChangeModule_UI_OnlyCurrentWorld, Strings.Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description, ref onlyShowCurrentWorld))
             {
                 this.Config.OnlyShowCurrentWorld = onlyShowCurrentWorld;
                 this.Config.Save();
             }
             ImGui.Dummy(Spacing.SectionSpacing);
 
-            SiGui.Heading("Message Options");
+            SiGui.Heading(Strings.Modules_WorldChangeModule_UI_MessageOptions);
             var changeMessage = this.Config.ChangeMessage;
-            if (SiGui.InputText("World change message", ref changeMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_WorldChangeMessage, ref changeMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
             {
                 switch (!WorldChangeModuleConfig.ValidateMessage(changeMessage))
                 {
                     case true:
-                        NotificationUtil.ShowErrorToast("Invalid world change message, please check your syntax.");
+                        NotificationUtil.ShowErrorToast(Strings.Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid);
                         break;
                     case false:
                         this.Config.ChangeMessage = changeMessage;
@@ -89,7 +90,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                         break;
                 }
             }
-            SiGui.AddTooltip("Your message must contain {0} for the player's name and {1} for the world name.");
+            SiGui.AddTooltip(Strings.Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip);
         }
 
         /// <summary>

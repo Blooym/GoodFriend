@@ -6,3 +6,4 @@
 
 # IDE
 .idea/
+*.DotSettings*

@@ -6,6 +6,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.UserInterface.Components;
 using GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
 using ImGuiNET;
@@ -75,11 +76,11 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
 
             ButtonRowComponent.DrawRow(new Dictionary<(FontAwesomeIcon, Vector4?, string), Action>
             {
-                { (FontAwesomeIcon.Home, null, "Modules"), () => this.CurrentScreen = MainWindowScreen.Modules },
-                { (FontAwesomeIcon.Cog, null, "Settings"), () => this.CurrentScreen = MainWindowScreen.Settings },
-                { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, "Donate (Opens in browser)"), () => Util.OpenLink(Constants.Link.Donate) },
+                { (FontAwesomeIcon.Home, null, Strings.UI_MainWindow_Button_Modules), () => this.CurrentScreen = MainWindowScreen.Modules },
+                { (FontAwesomeIcon.Cog, null, Strings.UI_MainWindow_Button_Settings), () => this.CurrentScreen = MainWindowScreen.Settings },
+                { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, Strings.UI_MainWindow_Button_Donate), () => Util.OpenLink(Constants.Link.Donate) },
                 #if DEBUG
-                { (FontAwesomeIcon.Bug, null, "Debug"), () => this.CurrentScreen = MainWindowScreen.Debug },
+                { (FontAwesomeIcon.Bug, null, Strings.UI_MainWindow_Button_Debug), () => this.CurrentScreen = MainWindowScreen.Debug },
                 #endif
             });
         }

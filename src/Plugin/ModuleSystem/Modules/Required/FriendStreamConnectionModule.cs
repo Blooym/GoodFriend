@@ -2,6 +2,7 @@ using System;
 using GoodFriend.Client;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -31,10 +32,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         private uint HeartbeatsRecieved { get; set; }
 
         /// <inheritdoc />
-        public override string Name => "Friend Stream Connection";
+        public override string Name => Strings.Modules_FriendStreamConnectionModule_Name;
 
         /// <inheritdoc />
-        public override ModuleTag Tag => ModuleTag.Information;
+        public override ModuleTag Tag => ModuleTag.Connectivity;
 
         /// <inheritdoc />
         public override uint LoadPriority { get; } = 1;
@@ -72,37 +73,37 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            SiGui.TextWrapped("Connection Status:");
+            SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
             switch (ApiClient.PlayerStreamConnectionState)
             {
                 case EventStreamConnectionState.Connected:
-                    SiGui.TextColoured(Colours.Success, "Connected");
-                    SiGui.TextWrapped("You are currently recieving events from other friends and are fully connected to the player event stream.");
+                    SiGui.TextColoured(Colours.Success, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connected);
+                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connected_Description);
                     break;
                 case EventStreamConnectionState.Connecting:
-                    SiGui.TextColoured(Colours.Warning, "Connecting...");
-                    SiGui.TextWrapped("Attempting to connect you to the player event stream. Please wait...");
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting);
+                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting_Description);
                     break;
                 case EventStreamConnectionState.Disconnected:
-                    SiGui.TextColoured(Colours.Error, "Disconnected");
-                    SiGui.TextWrapped("You are not currently recieving events from other friends and are not connected to the player event stream.");
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected);
+                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected_Description);
                     break;
                 case EventStreamConnectionState.Disconnecting:
-                    SiGui.TextColoured(Colours.Warning, "Disconnecting...");
-                    SiGui.TextWrapped("Attempting to disconnect you from the player event stream. Please wait...");
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting);
+                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting_Description);
                     break;
                 case EventStreamConnectionState.Exception:
-                    SiGui.TextColoured(Colours.Error, "Error");
-                    SiGui.TextWrapped("Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down, check /xllog for more information.");
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Exception);
+                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Exception_Description);
                     break;
             }
             ImGui.Dummy(Spacing.SectionSpacing);
-            SiGui.Heading("Stream Information");
-            SiGui.TextWrapped($"Events Recieved: {this.EventsRecieved}");
-            SiGui.TextWrapped($"Last Event: {this.LasEventTime:HH:mm:ss}");
-            SiGui.TextWrapped($"Heartbeats Recieved: {this.HeartbeatsRecieved}");
-            SiGui.TextWrapped($"Last Heartbeat: {this.LastHeartbeatTime:HH:mm:ss}");
+            SiGui.Heading(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics);
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsRecieved));
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LasEventTime:HH:mm:ss}"));
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsRecieved));
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat, $"{this.LastHeartbeatTime:HH:mm:ss}"));
         }
 
         /// <summary>

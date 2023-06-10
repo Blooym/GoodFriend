@@ -1,6 +1,7 @@
 #if DEBUG
 using System;
 using Dalamud.Memory;
+using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Sirensong;
@@ -26,7 +27,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 
         /// <summary>
         ///     Draws the debug option list.
-        /// </summary> 
+        /// </summary>
         public static void DrawDebugList()
         {
             foreach (var setting in Enum.GetValues<DebugOption>())
@@ -56,8 +57,8 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         /// </summary>
         private static unsafe void DrawApiDebug()
         {
-            SiGui.Heading("Detected Friends");
-            SiGui.TextWrapped("Click on a friend to copy their content id hash and salt");
+            SiGui.Heading(Strings.UI_MainWindow_DebugScreen_DetectedFriends);
+            SiGui.TextWrapped(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Usage);
             ImGui.Dummy(Spacing.SectionSpacing);
 
             if (ImGui.BeginChild("DebugFriendList"))
@@ -70,7 +71,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                         var salt = CryptoUtil.GenerateSalt();
                         var hash = CryptoUtil.HashValue(f.ContentId, salt);
                         ImGui.SetClipboardText($"Friend: {fName} Hash: {hash} | Salt: {salt}");
-                        ChatHelper.Print($"Copied {fName}'s data to clipboard", (ushort)ChatUiColourKey.LightPurple1);
+                        ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, fName), (ushort)ChatUiColourKey.LightPurple1);
                     }
                 }
             }
