@@ -201,9 +201,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             Logger.Debug($"Recieved login state update from {friendName}, checking if it should be displayed.");
 
             // Check if the friend is in the same free company.
-            if (this.Config.HideSameFC && friendFcTag != localPlayer.CompanyTag.TextValue)
+            if (this.Config.HideSameFC && friendFcTag == localPlayer.CompanyTag.TextValue)
             {
-                Logger.Debug($"Ignoring login state update from {friendName} due to being in the same free company.");
+                Logger.Debug($"Ignoring login state update from {friendName} due to being in the same free company ({friendFcTag} == {localPlayer.CompanyTag.TextValue}).");
                 return;
             }
 
