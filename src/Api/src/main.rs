@@ -8,7 +8,7 @@ mod config;
 mod types;
 
 use api::responses::player_event::EventStreamPlayerStateUpdateResponse;
-use config::Config;
+use config::base::{get_config_cached_prime_cache, Config};
 use dotenv::dotenv;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
@@ -42,7 +42,7 @@ fn rocket() -> Rocket<Build> {
             process::exit(1);
         }
     };
-    config::get_config_cached_prime_cache();
+    get_config_cached_prime_cache();
 
     rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(50000).0)

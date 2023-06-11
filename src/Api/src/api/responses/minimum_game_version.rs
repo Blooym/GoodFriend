@@ -1,6 +1,5 @@
-use rocket::serde::{Deserialize, Serialize};
-
 use crate::types::game_version::GameVersion;
+use rocket::serde::{Deserialize, Serialize};
 
 /// Metadata about the current state of the API.
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -7,7 +7,7 @@ use validator::{Validate, ValidationError};
 /// The current message of the day for the API.
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Validate)]
 #[serde(crate = "rocket::serde")]
-pub struct ApiAbout {
+pub struct ApiAboutConfig {
     pub identifier: String,
     pub banner_url: String,
     pub motd: Motd,
@@ -35,7 +35,7 @@ fn validate_custom_urls(urls: &HashMap<String, String>) -> Result<(), Validation
     Ok(())
 }
 
-impl Default for ApiAbout {
+impl Default for ApiAboutConfig {
     fn default() -> Self {
         Self {
             identifier: String::from("GoodFriend"),

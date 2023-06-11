@@ -1,8 +1,9 @@
-use crate::types::{api_about::ApiAbout, game_version::GameVersion};
 use cached::proc_macro::cached;
 use rocket::serde::{Deserialize, Serialize};
-use std::{collections::HashMap, env, fs, path::Path};
+use std::{env, fs, path::Path};
 use validator::{Validate, ValidationErrors};
+
+use super::{about::ApiAboutConfig, security::SecurityConfig};
 
 /// Gets the currently cached config.
 #[cached(time = 300)]
@@ -11,21 +12,22 @@ pub fn get_config_cached() -> Config {
 }
 
 /// Defines the applications configuration.
-#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Validate, Default)]
+#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Validate)]
 #[serde(crate = "rocket::serde")]
 pub struct Config {
     version: u8,
-    pub about: ApiAbout,
-    pub blocked_user_agents: HashMap<String, UserAgentBlockMode>,
-    pub minimum_game_version: GameVersion,
+    pub about: ApiAboutConfig,
+    pub security: SecurityConfig,
 }
 
-/// Defines the user agent block mode.
-#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq)]
-#[serde(crate = "rocket::serde")]
-pub enum UserAgentBlockMode {
-    ExactMatch,
-    PartialMatch,
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            version: 1,
+            about: ApiAboutConfig::default(),
+            security: SecurityConfig::default(),
+        }
+    }
 }
 
 impl Config {
@@ -66,12 +68,30 @@ impl Config {
             return Ok(config);
         }
 
-        let config_toml = fs::read_to_string(config_file_path).unwrap_or_default();
-        let config: Self = toml::from_str(&config_toml).unwrap_or_default();
+        // Do migrations here.
+        Self::migrate_v0_to_v1(&config_file_path);
 
+        let config_toml = fs::read_to_string(&config_file_path).unwrap_or_default();
+        let config: Self = toml::from_str(&config_toml).unwrap_or_default();
         match config.validate() {
             Ok(_) => Ok(config),
             Err(e) => Err(e),
         }
+    }
+
+    /// Migrates the config from version 0 to version 1.
+    fn migrate_v0_to_v1(config_file_path: &str) {
+        let mut config_toml = fs::read_to_string(config_file_path).unwrap_or_default();
+
+        if !config_toml.contains("version = 0") {
+            return;
+        }
+
+        config_toml = config_toml
+            .replace("version = 0", "version = 1")
+            .replace("[minimum_game_version]", "[security.minimum_game_version]")
+            .replace("[blocked_user_agents]", "[security.blocked_user_agents]");
+
+        fs::write(config_file_path, config_toml).unwrap_or_default();
     }
 }

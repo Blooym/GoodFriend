@@ -1,4 +1,4 @@
-use crate::{config::get_config_cached, types::game_version::GameVersion};
+use crate::{config::base::get_config_cached, types::game_version::GameVersion};
 use rocket::{
     http::Status,
     request::{FromRequest, Outcome},
@@ -29,7 +29,7 @@ impl<'r> FromRequest<'r> for MinimumGameVersionGuard {
             Ok(version) => version,
             Err(_) => return Outcome::Failure((Status::BadRequest, GameVersionError::Invalid)),
         };
-        if get_config_cached().minimum_game_version > sent_version {
+        if get_config_cached().security.minimum_game_version > sent_version {
             return Outcome::Failure((Status::Forbidden, GameVersionError::Outdated));
         }
 

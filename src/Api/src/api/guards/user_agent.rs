@@ -1,4 +1,7 @@
-use crate::config::{get_config_cached, UserAgentBlockMode};
+// This should probably be handled by a proxy not the application itself.
+// Might remove this in the future.
+
+use crate::config::{base::get_config_cached, security::UserAgentBlockMode};
 use rocket::{
     http::Status,
     request::{FromRequest, Outcome},
@@ -21,7 +24,7 @@ impl<'r> FromRequest<'r> for UserAgentGuard {
             return Outcome::Failure((Status::BadRequest, BannedAgentError::AgentMissing));
         }
 
-        let blocklist = get_config_cached().blocked_user_agents;
+        let blocklist = get_config_cached().security.blocked_user_agents;
         for (agent, mode) in blocklist {
             match mode {
                 UserAgentBlockMode::ExactMatch => {
