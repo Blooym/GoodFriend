@@ -18,25 +18,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Modules_LoginStateModule_Name" xml:space="preserve">
-    <value>Friend Login &amp; Logout</value>
+    <value>Connexion et déconnexion des amis</value>
   </data>
   <data name="Modules_LoginStateModule_Description" xml:space="preserve">
-    <value>Automatically send and recieve notifications when friends log in or out of their characters.</value>
+    <value>Recevoir et envoyer une notification lors de la connexion ou déconnexion de vos amis.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Filtering Options</value>
+    <value>Options de filtrage</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideSameCompany" xml:space="preserve">
-    <value>Ignore same free company</value>
+    <value>Ignorer la même Compagnie Libre</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideSameCompany_Description" xml:space="preserve">
-    <value>Ignores events from friends in the same free company as you.</value>
+    <value>Ignore les événements des amis de la même compagnie libre que vous.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffHomeworld" xml:space="preserve">
-    <value>Ignore different homeworld</value>
+    <value>Ignorer les mondes d'origine différents</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffHomeworld_Description" xml:space="preserve">
-    <value>Ignores events from friends that aren't from your homeworld.</value>
+    <value>Ignorer les évènements des amis n'appartenant pas à votre monde d'origine.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffTerritory" xml:space="preserve">
     <value>Ignore different territory</value>
@@ -87,7 +87,7 @@
     <value>Whether or not the module is enabled.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Filtering Options</value>
+    <value>Options de filtrage</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
     <value>Only show current world</value>
@@ -111,22 +111,22 @@
     <value>Friend Stream Connection</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus" xml:space="preserve">
-    <value>Connection status:</value>
+    <value>Statut de la connexion:</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Connecté</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
-    <value>Connecting...</value>
+    <value>Connexion en cours...</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
     <value>Déconnecté</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
-    <value>Disconnecting...</value>
+    <value>Déconnexion...</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
-    <value>Error</value>
+    <value>Erreur</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
     <value>You are currently recieving events from other friends and are fully connected to the player event stream.</value>
@@ -177,25 +177,25 @@
     <value>There are currently {0} players online</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
-    <value>Message of the Day</value>
+    <value>Message du jour</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
-    <value>No message of the day has been set.</value>
+    <value>Aucun message du jour n'a été configuré.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
     <value>Show MOTD on login</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
-    <value>Custom Links</value>
+    <value>Liens personnalisés</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Unset" xml:space="preserve">
-    <value>No custom links have been set.</value>
+    <value>Aucun lien personnalisé n'a été configuré.</value>
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
     <value>The last metadata update failed, currently using cached data.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
-    <value>[Disable messages on login]</value>
+    <value>[Désactiver les messages lors de la connexion]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
     <value>This module has encountered an error while running and was disabled. Please check the logs for more information.</value>
@@ -204,7 +204,7 @@
     <value>Failed to draw module {0}: {1}</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends" xml:space="preserve">
-    <value>Detected Friends</value>
+    <value>Amis détectés</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Usage" xml:space="preserve">
     <value>Click on a friend to copy their content id hash and salt</value>
@@ -216,7 +216,7 @@
     <value>Activé</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Loading" xml:space="preserve">
-    <value>Loading</value>
+    <value>Chargement en cours</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Disabled" xml:space="preserve">
     <value>Désactivé</value>
@@ -225,7 +225,7 @@
     <value>Unloading</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Erreur</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_SelectToView" xml:space="preserve">
     <value>Select a module to view its settings.</value>
@@ -237,7 +237,7 @@
     <value>URL de l'API</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid" xml:space="preserve">
-    <value>Please enter a valid URL.</value>
+    <value>Saisissez une adresse URL valide.</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_Setting_APIURL_Description" xml:space="preserve">
     <value>This is the URL that the plugin will communicate with for API requests. Most users will not need to change this.</value>
@@ -249,13 +249,13 @@
     <value>Paramètres</value>
   </data>
   <data name="UI_MainWindow_Button_Donate" xml:space="preserve">
-    <value>Donate (Opens in browser)</value>
+    <value>Faire un don (s'ouvre dans le navigateur)</value>
   </data>
   <data name="UI_MainWindow_Button_Debug" xml:space="preserve">
-    <value>Debug</value>
+    <value>Débogage</value>
   </data>
   <data name="Modules_WorldChangeModule_Title" xml:space="preserve">
-    <value>Friend World Change</value>
+    <value>Changement de Monde d'Amis</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
     <value>Automatically send and recieve notifications when friends change worlds.</value>
