@@ -1,4 +1,4 @@
-version = 0
+version = 1
 
 [about]
 identifier = "Example Server"
@@ -11,9 +11,9 @@ ignore = true
 [about.custom_urls]
 "Example" = "https://example.com"
 
-[blocked_user_agents]
+[security.blocked_user_agents]
 
-[minimum_game_version]
+[security.minimum_game_version]
 year = "2023"
 month = "05"
 day = "31"
