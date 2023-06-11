@@ -39,9 +39,7 @@ impl Default for ApiAboutConfig {
     fn default() -> Self {
         Self {
             identifier: String::from("GoodFriend"),
-            banner_url: String::from(
-                "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/api-banner.png",
-            ),
+            banner_url: String::from("https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/src/Api/static/banner.png"),
             motd: Motd::default(),
             custom_urls: HashMap::default(),
         }
