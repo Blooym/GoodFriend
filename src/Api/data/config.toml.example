@@ -1,0 +1,21 @@
+version = 0
+
+[about]
+identifier = "Example Server"
+banner_url = "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/api-banner.png"
+
+[about.motd]
+message = ""
+ignore = true
+
+[about.custom_urls]
+"Example" = "https://example.com"
+
+[blocked_user_agents]
+
+[minimum_game_version]
+year = "2023"
+month = "05"
+day = "31"
+major = "0000"
+minor = "0000"

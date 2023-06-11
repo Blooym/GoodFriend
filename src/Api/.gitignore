@@ -2,7 +2,7 @@
 *.env
 
 # Data
-data/
+data/config.toml
 
 # Builds
 target/
