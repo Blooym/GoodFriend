@@ -56,6 +56,4 @@ If you wish to host your own instance, please read the README in the [API Direct
 
 ## Translation & Localization
 
-*GoodFriend currently has no implementation localizations after a recent rewrite, but will be added back in the very near future.*
-
 If you wish to contribute localizations to this project, please do so over on the project [Crowdin](https://crwd.in/goodfriend). If the language you wish to translate is not available, please create an issue and it will be added.
