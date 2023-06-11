@@ -7,9 +7,10 @@
 A Dalamud plugin & associated web-API that provides improved in-game social functionality 
 
 [![Latest Version](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Version)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
-[![Downloads](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Downloads)](https://github.com/BitsOfAByte/GoodFriend)
+[![Plugin Downloads](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
+[![Connected Users](https://img.shields.io/endpoint?url=https://gf-clients.blooym.workers.dev/&label=Connected%20Users)](https://github.com/BitsOfAByte/GoodFriend)
 [![Crowdin Localization](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
-[![Licence](https://img.shields.io/github/license/BitsOfAByte/Wholist?color=blue "Licence")](https://github.com/BitsOfAByte/Wholist/blob/main/LICENSE)
+[![Licence](https://img.shields.io/github/license/BitsOfAByte/Wholist?color=blue&label=Licence)](https://github.com/BitsOfAByte/Wholist/blob/main/LICENSE)
 
 **[Issues](https://github.com/BitsOfAByte/GoodFriend/issues) · [Pull Requests](https://github.com/BitsOfAByte/GoodFriend/pulls) · [Releases](https://github.com/BitsOfAByte/GoodFriend/releases/latest)**
 
