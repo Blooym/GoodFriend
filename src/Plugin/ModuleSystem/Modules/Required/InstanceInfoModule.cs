@@ -27,7 +27,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <summary>
         ///     The interval at which to update the metadata.
         /// </summary>
-        private static readonly TimeSpan MetadataUpdateInterval = TimeSpan.FromMinutes(2);
+        private static readonly TimeSpan MetadataUpdateInterval = TimeSpan.FromMinutes(3);
 
         /// <summary>
         ///     The timer used to update the metadata.
@@ -198,6 +198,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
                 var request = ApiClient.GetMetadata();
                 this.metadata = request.Item1;
                 this.lastMetadataUpdateFailed = false;
+                Logger.Debug($"Successfully updated metadata: {this.metadata.Value}");
             }
             catch (Exception e)
             {
