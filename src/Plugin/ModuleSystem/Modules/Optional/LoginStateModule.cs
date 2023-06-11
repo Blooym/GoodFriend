@@ -267,7 +267,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                         TerritoryId = this.currentTerritoryId,
                         WorldId = this.currentWorldId
                     });
-                }).Start();
+                });
 
         /// <summary>
         ///     Called when the player logs out, sends a logout event.
@@ -291,7 +291,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
                     });
 
                     this.ClearStoredValues();
-                }).Start();
+                });
 
         /// <summary>
         ///     Called when the framework updates, updates stored data that can change during gameplay.
