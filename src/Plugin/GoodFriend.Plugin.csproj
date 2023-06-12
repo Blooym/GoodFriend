@@ -3,11 +3,11 @@
   <!-- Project Information -->
   <PropertyGroup>
     <Title>GoodFriend.Plugin</Title>
-    <Authors>BitsOfAByte</Authors>
+    <Authors>Blooym</Authors>
     <AssemblyName>GoodFriend</AssemblyName>
     <Description>A Dalamud plugin for syncing various player events with others.</Description>
     <Version>2.0.3.0</Version>
-    <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
   
   <!-- Build Configuration -->

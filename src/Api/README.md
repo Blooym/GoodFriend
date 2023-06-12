@@ -12,7 +12,7 @@ You can also provide environment variables that are supported by [Rocket](https:
 
 #### Docker
 
-Running with docker is the easiest way to get started with the API. You can run the latest image from the GitHub Container Registry [image](https://github.com/BitsOfAByte/GoodFriend/pkgs/container/goodfriend) by running `docker run -d -p 8000:8000 -v /path/to/data:/app/data ghcr.io/bitsofabyte/goodfriend:latest`. This will start the API on port 8000 and mount the `/path/to/data` directory to the `/app/data` directory inside of the container. 
+Running with docker is the easiest way to get started with the API. You can run the latest image from the GitHub Container Registry [image](https://github.com/Blooym/GoodFriend/pkgs/container/goodfriend) by running `docker run -d -p 8000:8000 -v /path/to/data:/app/data ghcr.io/blooym/goodfriend:latest`. This will start the API on port 8000 and mount the `/path/to/data` directory to the `/app/data` directory inside of the container. 
 
 #### From Source
 

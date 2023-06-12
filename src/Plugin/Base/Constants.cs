@@ -62,12 +62,12 @@ namespace GoodFriend.Plugin.Base
             /// <summary>
             ///     The URL to the donation page.
             /// </summary>
-            public const string Donate = "https://bitsofabyte.dev/donate?utm_source=GoodFriend";
+            public const string Donate = "https://blooym.dev/donate?utm_source=GoodFriend";
 
             /// <summary>
             ///     The URL to sponsor the project.
             /// </summary>
-            public const string Sponsors = "https://bitsofabyte.dev/sponsor?utm_source=GoodFriend";
+            public const string Sponsors = "https://blooym.dev/sponsor?utm_source=GoodFriend";
         }
 
         /// <summary>

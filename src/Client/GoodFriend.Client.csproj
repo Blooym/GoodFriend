@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Title>GoodFriend.Client</Title>
     <AssemblyName>GoodFriend.Client</AssemblyName>
-    <Authors>BitsOfAByte</Authors>
+    <Authors>Blooym</Authors>
     <Description>A client for interacting with any compatiable GoodFriend API.</Description>
     <Version>2.0.3.0</Version>
-    <PackageProjectUrl>https://github.com/BitsOfAByte/GoodFriend</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
   
   <!-- Build Configuration -->

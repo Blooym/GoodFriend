@@ -2,7 +2,7 @@ version = 1
 
 [about]
 identifier = "Example Server"
-banner_url = "https://raw.githubusercontent.com/BitsOfAByte/GoodFriend/main/.assets/api-banner.png"
+banner_url = "https://raw.githubusercontent.com/Blooym/GoodFriend/main/.assets/api-banner.png"
 
 [about.motd]
 message = ""

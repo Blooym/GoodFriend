@@ -6,13 +6,13 @@
 
 A Dalamud plugin & associated web-API that provides improved in-game social functionality 
 
-[![Latest Version](https://img.shields.io/github/v/release/BitsOfAByte/GoodFriend?color=blue&label=Version)](https://github.com/BitsOfAByte/GoodFriend/releases/latest)
-[![Plugin Downloads](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/BitsOfAByte/GoodFriend)
-[![Connected Users](https://img.shields.io/endpoint?url=https://gf-clients.blooym.workers.dev/&label=Connected%20Users)](https://github.com/BitsOfAByte/GoodFriend)
+[![Latest Version](https://img.shields.io/github/v/release/Blooym/GoodFriend?color=blue&label=Version)](https://github.com/Blooym/GoodFriend/releases/latest)
+[![Plugin Downloads](https://img.shields.io/endpoint?url=https://vz32sgcoal.execute-api.us-east-1.amazonaws.com/GoodFriend&label=Plugin%20Downloads)](https://github.com/Blooym/GoodFriend)
+[![Connected Users](https://img.shields.io/endpoint?url=https://gf-clients.blooym.workers.dev/&label=Connected%20Users)](https://github.com/Blooym/GoodFriend)
 [![Crowdin Localization](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
-[![Licence](https://img.shields.io/github/license/BitsOfAByte/Wholist?color=blue&label=Licence)](https://github.com/BitsOfAByte/Wholist/blob/main/LICENSE)
+[![Licence](https://img.shields.io/github/license/Blooym/Wholist?color=blue&label=Licence)](https://github.com/Blooym/Wholist/blob/main/LICENSE)
 
-**[Issues](https://github.com/BitsOfAByte/GoodFriend/issues) · [Pull Requests](https://github.com/BitsOfAByte/GoodFriend/pulls) · [Releases](https://github.com/BitsOfAByte/GoodFriend/releases/latest)**
+**[Issues](https://github.com/Blooym/GoodFriend/issues) · [Pull Requests](https://github.com/Blooym/GoodFriend/pulls) · [Releases](https://github.com/Blooym/GoodFriend/releases/latest)**
 
 </div>
 
@@ -50,7 +50,7 @@ The plugin is available to install from the official Dalamud Plugin Repository, 
 
 ## Selfhosting & 3rd-party Instances
 
-The web API has been designed to be easy to self-host and is available as a pre-built docker image on GitHub Container Registry [here](https://github.com/BitsOfAByte/GoodFriend/pkgs/container/goodfriend). No support is provided for self-hosted instances, but if you run into any issues with the API itself please open an issue and I will try to help as best I can.
+The web API has been designed to be easy to self-host and is available as a pre-built docker image on GitHub Container Registry [here](https://github.com/Blooym/GoodFriend/pkgs/container/goodfriend). No support is provided for self-hosted instances, but if you run into any issues with the API itself please open an issue and I will try to help as best I can.
 
 If you wish to host your own instance, please read the README in the [API Directory](./src/Api/README.md).
 
