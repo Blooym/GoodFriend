@@ -137,7 +137,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             var friend = friendData.Value;
             var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name);
             var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
-            if (world == null)
+            if (world is null)
             {
                 Logger.Warning($"Could not perform lookup to find world name for world id {stateData.WorldId}.");
                 return;
@@ -154,7 +154,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private void OnFrameworkUpdate(Framework framework)
         {
             // Don't run if not logged in.
-            if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
+            if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
             {
                 return;
             }

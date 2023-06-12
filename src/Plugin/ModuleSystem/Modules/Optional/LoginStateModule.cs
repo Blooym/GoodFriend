@@ -247,7 +247,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private void OnLogin(object? sender, EventArgs e) =>
                 Task.Run(() =>
                 {
-                    while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
+                    while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
                     {
                         Thread.Sleep(100);
                     }
@@ -300,7 +300,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         private void OnFrameworkUpdate(Framework framework)
         {
             // Don't run when not logged in.
-            if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer == null)
+            if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
             {
                 return;
             }

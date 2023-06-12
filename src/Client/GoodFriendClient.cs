@@ -379,7 +379,7 @@ namespace GoodFriend.Client
                     message = HttpUtility.UrlDecode(message);
 
                     // If the message was a heartbeat, alert listeners and continue.
-                    if (message == null || message.Trim() == ":")
+                    if (message is null || message.Trim() == ":")
                     {
                         this.OnPlayerStreamHeartbeat?.Invoke(this);
                         continue;
