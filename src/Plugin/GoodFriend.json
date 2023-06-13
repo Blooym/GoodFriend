@@ -3,7 +3,7 @@
   "Name": "GoodFriend",
   "InternalName": "GoodFriend",
   "Punchline": "Improvements to the in-game friend system! Send & receive login and logout notifications with friends and more!",
-  "Description": "A plugin to make improvements to the in-game friend system. Includes a client to communicate with the GoodFriend API to send & receive notifications with your friends.\n\nFeatures:\n- Private in design, no identifying information is ever sent about you over the network.\n- Send & recieve notifications when your friends login and logout*.\n- Get notified when your friends use the world visit system.\n- Lots of filtering options for various events.\n\n * Requires friends to also have GoodFriend installed.",
+  "Description": "A plugin to make improvements to the in-game friend system. Includes a client to communicate with the GoodFriend API to send & receive notifications with your friends.\n\nFeatures:\n- Private in design, no identifying information is ever sent about you over the network.\n- Send & receive notifications when your friends login and logout*.\n- Get notified when your friends use the world visit system.\n- Lots of filtering options for various events.\n\n * Requires friends to also have GoodFriend installed.",
   "RepoUrl": "https://github.com/Blooym/GoodFriend",
   "Tags": [
     "Friend",

@@ -4,7 +4,6 @@ using Dalamud.Interface.Colors;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem.Modules;
-using GoodFriend.Plugin.ModuleSystem.Modules.Required;
 using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -29,7 +28,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             {
                 if (lastTag != module.Tag)
                 {
-                    if (lastTag != null)
+                    if (lastTag is not null)
                     {
                         ImGui.Dummy(Spacing.SidebarSectionSpacing);
                     }
@@ -44,35 +43,6 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                 if (ImGui.Selectable(module.Name, CurrentModule == module))
                 {
                     CurrentModule = module;
-                }
-
-                if (module.GetType().BaseType == typeof(RequiredModuleBase))
-                {
-                    continue;
-                }
-
-                switch (module.State)
-                {
-                    case ModuleState.Enabled:
-                        var enabledText = Strings.UI_MainWindow_ModuleScreen_Enabled;
-                        SiGui.TextColoured(Colours.Success, enabledText);
-                        break;
-                    case ModuleState.Loading:
-                        var loadingText = Strings.UI_MainWindow_ModuleScreen_Loading;
-                        SiGui.TextColoured(Colours.Warning, loadingText);
-                        break;
-                    case ModuleState.Disabled:
-                        var disabledText = Strings.UI_MainWindow_ModuleScreen_Disabled;
-                        SiGui.TextColoured(ImGuiColors.DalamudGrey, disabledText);
-                        break;
-                    case ModuleState.Unloading:
-                        var unloadingText = Strings.UI_MainWindow_ModuleScreen_Unloading;
-                        SiGui.TextColoured(Colours.Warning, unloadingText);
-                        break;
-                    case ModuleState.Error:
-                        var errorText = Strings.UI_MainWindow_ModuleScreen_Error;
-                        SiGui.TextColoured(Colours.Error, errorText);
-                        break;
                 }
             }
         }
@@ -89,7 +59,34 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                 return;
             }
 
-            SiGui.Heading(CurrentModule.Name);
+            SiGui.TextDisabledWrapped(CurrentModule.Name);
+            ImGui.SameLine();
+            switch (CurrentModule.State)
+            {
+                case ModuleState.Enabled:
+                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Enabled).X);
+                    SiGui.TextColoured(Colours.Success, Strings.UI_MainWindow_ModuleScreen_Enabled);
+                    break;
+                case ModuleState.Loading:
+                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Loading).X);
+                    SiGui.TextColoured(Colours.Warning, Strings.UI_MainWindow_ModuleScreen_Loading);
+                    break;
+                case ModuleState.Disabled:
+                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Disabled).X);
+                    SiGui.TextColoured(ImGuiColors.DalamudGrey, Strings.UI_MainWindow_ModuleScreen_Disabled);
+                    break;
+                case ModuleState.Unloading:
+                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Unloading).X);
+                    SiGui.TextColoured(Colours.Warning, Strings.UI_MainWindow_ModuleScreen_Unloading);
+                    break;
+                case ModuleState.Error:
+                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Error).X);
+                    SiGui.TextColoured(Colours.Error, Strings.UI_MainWindow_ModuleScreen_Error);
+                    break;
+            }
+            ImGui.Separator();
+            ImGui.Dummy(Spacing.HeaderSpacing);
+
             if (!string.IsNullOrEmpty(CurrentModule.Description))
             {
                 SiGui.TextWrapped(CurrentModule.Description);

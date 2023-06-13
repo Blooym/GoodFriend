@@ -15,10 +15,10 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
+namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
     /// <inheritdoc />
-    internal sealed class LoginStateModule : OptionalModuleBase
+    internal sealed class LoginStateModule : ModuleBase
     {
         /// <summary>
         ///     The current world ID.
@@ -54,8 +54,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
 
-        /// <inheritdoc />
-        protected override LoginStateModuleConfig Config { get; } = ModuleConfigBase.Load<LoginStateModuleConfig>();
+        /// <summary>
+        ///     The configuration for this module.
+        /// </summary>
+        private LoginStateModuleConfig Config { get; } = ModuleConfigBase.Load<LoginStateModuleConfig>();
 
         /// <inheritdoc />
         protected override void EnableAction()
@@ -65,7 +67,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
 
-            if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer != null)
+            if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer is not null)
             {
                 this.SetStoredValues();
             }
@@ -85,6 +87,16 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override void DrawModule()
         {
+            // Event settings
+            SiGui.Heading(Strings.Modules_LoginStateModule_UI_EventSettings);
+            var receiveEvents = this.Config.ReceiveEvents;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_EventSettings_ReceieveEvents, Strings.Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description, ref receiveEvents))
+            {
+                this.Config.ReceiveEvents = receiveEvents;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
             // Filtering
             SiGui.Heading(Strings.Modules_LoginStateModule_UI_FilteringOptions);
             var hideSameFc = this.Config.HideSameFC;
@@ -163,16 +175,22 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         }
 
         /// <summary>
-        ///     Called when a player state update is recieved.
+        ///     Called when a player state update is received.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="rawEvent"></param>
         private unsafe void HandlePlayerStreamMessage(object? sender, PlayerEventStreamUpdate rawEvent)
         {
+            // Ignore the event if recieving events is disabled.
+            if (!this.Config.ReceiveEvents)
+            {
+                return;
+            }
+
             // Check if the update is a login/logout.
             if (!rawEvent.StateUpdateType.LoginStateChange.HasValue)
             {
-                Logger.Verbose("Recieved player state update that is not a login/logout.");
+                Logger.Verbose("Received player state update that is not a login/logout.");
                 return;
             }
 
@@ -198,7 +216,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             var friendFcTag = MemoryHelper.ReadSeStringNullTerminated((nint)friend.FCTag).TextValue;
             var stateData = rawEvent.StateUpdateType.LoginStateChange.Value;
 
-            Logger.Debug($"Recieved login state update from {friendName}, checking if it should be displayed.");
+            Logger.Debug($"Received login state update from {friendName}, checking if it should be displayed.");
 
             // Check if the friend is in the same free company.
             if (this.Config.HideSameFC && friendFcTag == localPlayer.CompanyTag.TextValue)
@@ -306,8 +324,8 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
             }
 
             // Update current world.
-            var currentWorld = DalamudInjections.ClientState.LocalPlayer.CurrentWorld;
-            if (currentWorld != null && currentWorld.Id != 0 && currentWorld.Id != this.currentWorldId)
+            var currentWorld = DalamudInjections.ClientState.LocalPlayer?.CurrentWorld;
+            if (currentWorld is not null && currentWorld.Id != 0 && currentWorld.Id != this.currentWorldId)
             {
                 this.currentWorldId = currentWorld.Id;
             }
@@ -350,7 +368,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
     }
 
     /// <inheritdoc />
-    internal sealed class LoginStateModuleConfig : OptionalModuleConfigBase
+    internal sealed class LoginStateModuleConfig : ModuleConfigBase
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }
@@ -358,8 +376,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override string Identifier { get; set; } = "LoginStateModule";
 
-        /// <inheritdoc />
-        public override bool Enabled { get; set; } = true;
+        /// <summary>
+        ///     Whether or not to receive login state events.
+        /// </summary>
+        public bool ReceiveEvents { get; set; } = true;
 
         /// <summary>
         ///     Whether or not to hide notifications for the same free company.

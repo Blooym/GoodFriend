@@ -530,5 +530,41 @@ namespace GoodFriend.Plugin.Localization {
                 return ResourceManager.GetString("Modules_WorldChangeModule_Description", resourceCulture);
             }
         }
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings {
+            get {
+                return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents {
+            get {
+                return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings_ReceieveEvents", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description {
+            get {
+                return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings {
+            get {
+                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents {
+            get {
+                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description {
+            get {
+                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
+            }
+        }
     }
 }

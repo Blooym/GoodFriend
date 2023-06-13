@@ -134,23 +134,13 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
             try
             {
-                this.DrawBase();
+                this.DrawModule();
             }
             catch (Exception e)
             {
                 SiGui.TextColoured(Colours.Error, string.Format(Strings.Modules_ModuleBase_FailedDraw, this.GetType().FullName, e));
             }
         }
-
-        /// <summary>
-        ///     Called after the <see cref="Draw" /> method has finished drawing.
-        /// </summary>
-        /// <remarks>
-        ///     By default this will directly call <see cref="DrawModule" />
-        ///     This method should be used by any upper abstract classes to pre-draw their contents before the module itself.
-        ///     However, the module can choose to override this method to ignore that behaviour.
-        /// </remarks>
-        protected virtual void DrawBase() => this.DrawModule();
 
         /// <summary>
         ///     Called after the <see cref="DrawBase" /> method has finished drawing.

@@ -15,9 +15,9 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
+namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class WorldChangeModule : OptionalModuleBase
+    internal sealed class WorldChangeModule : ModuleBase
     {
         /// <summary>
         ///     World lumina sheet for discovering the real name of a world.
@@ -43,8 +43,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
 
-        /// <inheritdoc />
-        protected override WorldChangeModuleConfig Config { get; } = ModuleConfigBase.Load<WorldChangeModuleConfig>();
+        /// <summary>
+        ///     The configuration for this module.
+        /// </summary>
+        private WorldChangeModuleConfig Config { get; } = ModuleConfigBase.Load<WorldChangeModuleConfig>();
 
         /// <inheritdoc />
         protected override void EnableAction()
@@ -65,8 +67,17 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            SiGui.Heading(Strings.Modules_WorldChangeModule_UI_FilteringOptions);
+            SiGui.Heading(Strings.Modules_WorldChangeModule_UI_EventSettings);
+            var receiveEvents = this.Config.ReceiveEvents;
+            if (SiGui.Checkbox(Strings.Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents, Strings.Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description, ref receiveEvents))
+            {
+                this.Config.ReceiveEvents = receiveEvents;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
+            // Filtering options
+            SiGui.Heading(Strings.Modules_WorldChangeModule_UI_FilteringOptions);
             var onlyShowCurrentWorld = this.Config.OnlyShowCurrentWorld;
             if (SiGui.Checkbox(Strings.Modules_WorldChangeModule_UI_OnlyCurrentWorld, Strings.Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description, ref onlyShowCurrentWorld))
             {
@@ -105,12 +116,19 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         }
 
         /// <summary>
-        ///     Called when a player event is recieved.
+        ///     Called when a player event is received.
         /// </summary>
         /// <param name="_"></param>
         /// <param name="rawEvent"></param>
         private unsafe void OnPlayerStreamMessage(object? _, PlayerEventStreamUpdate rawEvent)
         {
+            // Ignore the event if recieving events is disabled.
+            if (!this.Config.ReceiveEvents)
+            {
+                return;
+            }
+
+            // Ignore the event if it is not a world change.
             if (!rawEvent.StateUpdateType.WorldChange.HasValue)
             {
                 Logger.Verbose("Ignoring player event as it is not a world change.");
@@ -190,7 +208,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
     /// <summary>
     ///     Configuration for the world change module.
     /// </summary>
-    internal sealed class WorldChangeModuleConfig : OptionalModuleConfigBase
+    internal sealed class WorldChangeModuleConfig : ModuleConfigBase
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }
@@ -198,8 +216,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Optional
         /// <inheritdoc />
         protected override string Identifier { get; set; } = "WorldChangeModule";
 
-        /// <inheritdoc />
-        public override bool Enabled { get; set; }
+        /// <summary>
+        ///     Whether to receive world change events from other players.
+        /// </summary>
+        public bool ReceiveEvents { get; set; }
 
         /// <summary>
         ///     Whether to only show when a player travels to the current world.

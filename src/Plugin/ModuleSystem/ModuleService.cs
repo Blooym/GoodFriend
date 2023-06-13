@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.ModuleSystem.Modules;
-using GoodFriend.Plugin.ModuleSystem.Modules.Optional;
-using GoodFriend.Plugin.ModuleSystem.Modules.Required;
 
 namespace GoodFriend.Plugin.ModuleSystem
 {
@@ -21,22 +19,11 @@ namespace GoodFriend.Plugin.ModuleSystem
         public ModuleService()
         {
             // Load required modules first and then by load priority.
-            var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ThenByDescending(x => x is RequiredModuleBase).ToList();
+            var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ToList();
             foreach (var module in modules)
             {
                 Logger.Information($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
-
-                // If the module is optional, check its configuration
-                if (module is OptionalModuleBase optionalModule && optionalModule.Enabled)
-                {
-                    module.Enable();
-                    continue;
-                }
-                else if (module is not OptionalModuleBase)
-                {
-                    module.Enable();
-                    continue;
-                }
+                module.Enable();
             }
             this.loadedModules = modules;
         }

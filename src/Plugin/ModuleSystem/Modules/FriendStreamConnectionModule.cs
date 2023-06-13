@@ -7,29 +7,29 @@ using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
+namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class FriendStreamConnectionModule : RequiredModuleBase
+    internal sealed class FriendStreamConnectionModule : ModuleBase
     {
         /// <summary>
-        ///     The last time a heartbeat was recieved from the player event stream.
+        ///     The last time a heartbeat was received from the player event stream.
         /// </summary>
         private DateTime LastHeartbeatTime { get; set; } = DateTime.MinValue;
 
         /// <summary>
-        ///     The last time an event was recieved from the player event stream.
+        ///     The last time an event was received from the player event stream.
         /// </summary>
         private DateTime LasEventTime { get; set; } = DateTime.MinValue;
 
         /// <summary>
-        ///     The number of events recieved from the player event stream.
+        ///     The number of events received from the player event stream.
         /// </summary>
-        private uint EventsRecieved { get; set; }
+        private uint EventsReceived { get; set; }
 
         /// <summary>
-        ///     The number of heartbeats recieved from the player event stream.
+        ///     The number of heartbeats received from the player event stream.
         /// </summary>
-        private uint HeartbeatsRecieved { get; set; }
+        private uint HeartbeatsReceived { get; set; }
 
         /// <inheritdoc />
         public override string Name => Strings.Modules_FriendStreamConnectionModule_Name;
@@ -100,9 +100,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
             }
             ImGui.Dummy(Spacing.SectionSpacing);
             SiGui.Heading(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics);
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsRecieved));
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsReceived));
             SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LasEventTime:HH:mm:ss}"));
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsRecieved));
+            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsReceived));
             SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat, $"{this.LastHeartbeatTime:HH:mm:ss}"));
         }
 
@@ -134,13 +134,13 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
 
         /// <summary>
         ///     Handles a heartbeat from the player event stream.
-        /// </summary>  
+        /// </summary>
         /// <param name="sender"></param>
         private void OnPlayerStreamHeartbeat(object? sender)
         {
-            Logger.Verbose("Heartbeat recieved from event stream.");
+            Logger.Verbose("Heartbeat received from event stream.");
             this.LastHeartbeatTime = DateTime.Now;
-            this.HeartbeatsRecieved++;
+            this.HeartbeatsReceived++;
         }
 
         /// <summary>
@@ -150,9 +150,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <param name="e"></param>
         private void OnPlayerStreamEvent(object? sender, PlayerEventStreamUpdate e)
         {
-            Logger.Verbose($"Event recieved from player event stream.");
+            Logger.Verbose($"Event received from player event stream.");
             this.LasEventTime = DateTime.Now;
-            this.EventsRecieved++;
+            this.EventsReceived++;
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnPlayerStreamException(object? sender, Exception e) => Logger.Error($"Exception recieved from event stream: {e}");
+        private void OnPlayerStreamException(object? sender, Exception e) => Logger.Error($"Exception received from event stream: {e}");
 
         /// <summary>
         ///     If the player event stream is connected or connecting.

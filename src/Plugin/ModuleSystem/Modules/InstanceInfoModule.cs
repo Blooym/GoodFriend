@@ -15,9 +15,9 @@ using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
-namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
+namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class InstanceInfoModule : RequiredModuleBase, IDisposable
+    internal sealed class InstanceInfoModule : ModuleBase, IDisposable
     {
         /// <summary>
         ///     The command ID for the MOTD unsubscribe command.
@@ -25,19 +25,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         private const uint MotdCommandId = 1001;
 
         /// <summary>
-        ///     The interval at which to update the metadata.
-        /// </summary>
-        private static readonly TimeSpan MetadataUpdateInterval = TimeSpan.FromMinutes(3);
-
-        /// <summary>
-        ///     The timer used to update the metadata.
-        /// </summary>
-        private Timer? updateMetadataTimer;
-
-        /// <summary>
         ///     The last time the metadata was updated.
         /// </summary>
         private MetadataResponse? metadata;
+
+        /// <summary>
+        ///     The last time a metadata update was attempted.
+        /// </summary>
+        private DateTime lastMetadataUpdateAttempt = DateTime.MinValue;
 
         /// <summary>
         ///     Whether or not the last metadata update failed.
@@ -66,10 +61,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            this.updateMetadataTimer = new Timer(MetadataUpdateInterval);
-            this.updateMetadataTimer.Elapsed += this.UpdateMetadataTimerOnElapsed;
-            this.updateMetadataTimer.Start();
-
             DalamudInjections.ClientState.Login += this.OnLogin;
 
             Task.Run(this.UpdateMetadataSafely);
@@ -91,10 +82,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            this.updateMetadataTimer!.Stop();
-            this.updateMetadataTimer!.Dispose();
-            this.updateMetadataTimer = null;
-
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.PluginInterface.RemoveChatLinkHandler(MotdCommandId);
             this.unsubMotdLinkPayload = null;
@@ -106,6 +93,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         /// <inheritdoc />
         protected override void DrawModule()
         {
+            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(20))
+            {
+                Task.Run(this.UpdateMetadataSafely);
+            }
+
             if (!this.metadata.HasValue)
             {
                 SiGui.TextWrappedColoured(this.lastMetadataUpdateFailed ? Colours.Error : Colours.Informational, this.lastMetadataUpdateFailed ? Strings.Modules_InstanceInfoModule_MetadataFetch_Failed : Strings.Modules_InstanceInfoModule_MetadataFetch_Fetching);
@@ -195,6 +187,8 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         {
             try
             {
+                Logger.Debug("Updating metadata...");
+                this.lastMetadataUpdateAttempt = DateTime.Now;
                 var request = ApiClient.GetMetadata();
                 this.metadata = request.Item1;
                 this.lastMetadataUpdateFailed = false;
@@ -239,7 +233,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules.Required
         private void UpdateMetadataTimerOnElapsed(object? sender, ElapsedEventArgs e) => this.UpdateMetadataSafely();
 
         /// <inheritdoc />
-        private sealed class InstanceInfoModuleConfig : RequiredModuleConfigBase
+        private sealed class InstanceInfoModuleConfig : ModuleConfigBase
         {
             /// <inheritdoc />
             public override uint Version { get; protected set; }
