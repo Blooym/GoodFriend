@@ -1,7 +1,7 @@
 use super::{
     guards::{
         cid_hash_duplicate_guard::CidHashDuplicateGuard,
-        minimum_game_version::MinimumGameVersionGuard, user_agent::UserAgentGuard,
+        minimum_game_version::MinimumGameVersionGuard,
     },
     responses::player_event::{EventStreamPlayerStateUpdateResponse, PlayerStateUpdateType},
 };
@@ -15,7 +15,7 @@ use rocket::{tokio::sync::broadcast::Sender, Route};
 
 /// Returns all routes for the update api.
 pub fn routes() -> Vec<Route> {
-    routes![loginstate, world]
+    routes![put_loginstate, put_world]
 }
 
 /// A request to send an update of the players current logged in state.
@@ -32,9 +32,8 @@ pub struct UpdatePlayerLoginStateRequest {
 
 /// Sends a login state change to the server-sent player event stream.
 #[put("/loginstate?<update..>")]
-async fn loginstate(
+async fn put_loginstate(
     _version_guard: MinimumGameVersionGuard,
-    _agent_guard: UserAgentGuard,
     _spam_guard: CidHashDuplicateGuard,
     update: UpdatePlayerLoginStateRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
@@ -64,9 +63,8 @@ pub struct UpdatePlayerWorldRequest {
 
 /// Sends a world change to the server-sent player event stream.
 #[put("/world?<update..>")]
-async fn world(
+async fn put_world(
     _version_guard: MinimumGameVersionGuard,
-    _agent_guard: UserAgentGuard,
     _spam_guard: CidHashDuplicateGuard,
     update: UpdatePlayerWorldRequest,
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,

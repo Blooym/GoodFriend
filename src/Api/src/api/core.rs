@@ -1,4 +1,3 @@
-use super::guards::user_agent::UserAgentGuard;
 use super::responses::metadata::MetadataResponse;
 use super::responses::minimum_game_version::MinimumGameVersionResponse;
 use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
@@ -10,13 +9,12 @@ use rocket::Route;
 use rocket::State;
 
 pub fn routes() -> Vec<Route> {
-    routes![metadata, minversion, health]
+    routes![get_metadata, get_minversion, get_health]
 }
 
 /// Gets metadata about the current status of the API.
 #[get("/metadata")]
-pub async fn metadata(
-    _agent_guard: UserAgentGuard,
+pub async fn get_metadata(
     queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
 ) -> Json<MetadataResponse> {
     let config = get_config_cached();
@@ -28,7 +26,7 @@ pub async fn metadata(
 
 /// Gets the minimum game version required to use the API.
 #[get("/minversion")]
-pub async fn minversion(_agent_guard: UserAgentGuard) -> Json<MinimumGameVersionResponse> {
+pub async fn get_minversion() -> Json<MinimumGameVersionResponse> {
     Json(MinimumGameVersionResponse {
         version_string: get_config_cached()
             .security
@@ -38,7 +36,8 @@ pub async fn minversion(_agent_guard: UserAgentGuard) -> Json<MinimumGameVersion
     })
 }
 
+/// Health check endpoint
 #[get("/health")]
-pub async fn health() -> Status {
+pub async fn get_health() -> Status {
     Status::Ok
 }
