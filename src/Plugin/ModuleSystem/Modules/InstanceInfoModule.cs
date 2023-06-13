@@ -208,6 +208,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <param name="e"></param>
         private void OnLogin(object? sender, EventArgs? e)
         {
+            Task.Run(this.UpdateMetadataSafely);
             if (!this.Config.ShowMotdOnLogin || !this.metadata.HasValue || this.metadata.Value.About.Motd.Ignore)
             {
                 return;
