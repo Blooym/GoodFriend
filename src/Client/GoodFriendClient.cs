@@ -257,7 +257,7 @@ namespace GoodFriend.Client
             {
                 { UpdatePlayerLoginStateRequest.PutData.ContentIdParam, requestData.ContentIdHash },
                 { UpdatePlayerLoginStateRequest.PutData.ContentIDSaltParam, requestData.ContentIdSalt },
-                { UpdatePlayerLoginStateRequest.PutData.DatacenterIdParam, requestData.WorldId },
+                { UpdatePlayerLoginStateRequest.PutData.DatacenterIdParam, requestData.DatacenterId },
                 { UpdatePlayerLoginStateRequest.PutData.WorldIdParam, requestData.WorldId },
                 { UpdatePlayerLoginStateRequest.PutData.TerritoryIdParam, requestData.TerritoryId },
                 { UpdatePlayerLoginStateRequest.PutData.LoggedInParam, requestData.LoggedIn },
