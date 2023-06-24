@@ -21,7 +21,7 @@
     <value>Friend Login &amp; Logout</value>
   </data>
   <data name="Modules_LoginStateModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends log in or out of their characters.</value>
+    <value>Automatically send and recieve notifications when friends log in or out of their characters.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_FilteringOptions" xml:space="preserve">
     <value>Filtering Options</value>
@@ -147,13 +147,13 @@
     <value>Connection Statistics</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
-    <value>Events received: {0}</value>
+    <value>Events recieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Last event: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
-    <value>Heartbeats received: {0}</value>
+    <value>Heartbeats recieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Last heartbeat: {0}</value>
@@ -258,6 +258,6 @@
     <value>Friend World Change</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds.</value>
+    <value>Automatically send and recieve notifications when friends change worlds.</value>
   </data>
 </root>

@@ -78,15 +78,6 @@
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
     <value>Your message must contain {0} for the player's name.</value>
   </data>
-  <data name="Modules_OptionalModuleBase_Enabled" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch_Tooltip" xml:space="preserve">
-    <value>Whether or not the module is enabled.</value>
-  </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
     <value>Filtering Options</value>
   </data>

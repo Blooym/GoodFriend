@@ -18,25 +18,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Modules_LoginStateModule_Name" xml:space="preserve">
-    <value>Friend Login &amp; Logout</value>
+    <value>好友登录 &amp; 退出</value>
   </data>
   <data name="Modules_LoginStateModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends log in or out of their characters.</value>
+    <value>当好友登录或退出他们的角色时，自动发送和接收通知。</value>
   </data>
   <data name="Modules_LoginStateModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Filtering Options</value>
+    <value>过滤选项</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideSameCompany" xml:space="preserve">
-    <value>Ignore same free company</value>
+    <value>忽略同一部队</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideSameCompany_Description" xml:space="preserve">
-    <value>Ignores events from friends in the same free company as you.</value>
+    <value>忽略和你同一个部队的好友事件</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffHomeworld" xml:space="preserve">
-    <value>Ignore different homeworld</value>
+    <value>忽略不同的初始服务器</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffHomeworld_Description" xml:space="preserve">
-    <value>Ignores events from friends that aren't from your homeworld.</value>
+    <value>忽略和你不是同一个初始服务器好友的事件</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffTerritory" xml:space="preserve">
     <value>Ignore different territory</value>
@@ -87,7 +87,7 @@
     <value>Whether or not the module is enabled.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Filtering Options</value>
+    <value>过滤选项</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
     <value>Only show current world</value>
@@ -147,13 +147,13 @@
     <value>Connection Statistics</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
-    <value>Events received: {0}</value>
+    <value>Events recieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Last event: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
-    <value>Heartbeats received: {0}</value>
+    <value>Heartbeats recieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Last heartbeat: {0}</value>
@@ -258,6 +258,6 @@
     <value>Friend World Change</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds.</value>
+    <value>Automatically send and recieve notifications when friends change worlds.</value>
   </data>
 </root>
