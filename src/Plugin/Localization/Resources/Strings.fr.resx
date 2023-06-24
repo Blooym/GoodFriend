@@ -45,70 +45,61 @@
     <value>Ignore events from friends that logged outside of your current territory.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffWorld" xml:space="preserve">
-    <value>Ignore different world</value>
+    <value>Ignorer les mondes d'origine différents</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffWorld_Description" xml:space="preserve">
-    <value>Ignore events from friends that logged outside of your current world.</value>
+    <value>Ignorer les événements de vos amis qui se sont connectés en dehors de votre monde actuel.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>ignore different datacenter</value>
+    <value>ignorer le datacenter différent</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Hides events from friends that logged outside of your current datacenter.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_MessageOptions" xml:space="preserve">
-    <value>Message Options</value>
+    <value>Options des messages</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LoginMessage" xml:space="preserve">
-    <value>Login message</value>
+    <value>Message de connexion</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LoginMessage_Tooltip" xml:space="preserve">
-    <value>Your message must contain {0} for the player's name.</value>
+    <value>Votre message doit contenir {0} pour le nom du joueur.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LoginMessage_Invalid" xml:space="preserve">
-    <value>Invalid login message, please check your syntax.</value>
+    <value>Message de connexion invalide, veuillez vérifier votre syntaxe.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LogoutMessage" xml:space="preserve">
     <value>Message de déconnexion</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Invalid" xml:space="preserve">
-    <value>Invalid logout message, please check your syntax.</value>
+    <value>Message de déconnexion invalide, veuillez vérifier votre syntaxe.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
-    <value>Your message must contain {0} for the player's name.</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_Enabled" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch_Tooltip" xml:space="preserve">
-    <value>Whether or not the module is enabled.</value>
+    <value>Votre message doit contenir {0} pour le nom du joueur.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
     <value>Options de filtrage</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
-    <value>Only show current world</value>
+    <value>Afficher uniquement le monde actuel</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description" xml:space="preserve">
-    <value>When enabled, you will only be notified when a friend changes to your current world.</value>
+    <value>Lorsque cette option est activée, vous ne serez notifié que si un ami change vers votre monde actuel.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_MessageOptions" xml:space="preserve">
-    <value>Message Options</value>
+    <value>Options des messages</value>
   </data>
   <data name="Modules_LoginStateModule_UI_WorldChangeMessage" xml:space="preserve">
-    <value>World Change Message</value>
+    <value>Message du changement de monde</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid" xml:space="preserve">
-    <value>Invalid world change message, please check your syntax.</value>
+    <value>Message de changement de monde invalide. Veuillez vérifier votre syntaxe.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip" xml:space="preserve">
-    <value>Your message must contain {0} for the player's name and {1} for the world name.</value>
+    <value>Votre message doit contenir {0} pour le nom du joueur et {1} pour le nom du monde.</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_Name" xml:space="preserve">
-    <value>Friend Stream Connection</value>
+    <value>Connexion au flux d'amis</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatus" xml:space="preserve">
     <value>Statut de la connexion:</value>
@@ -144,37 +135,37 @@
     <value>Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down. You will automatically be reconnected when possible. For more information check /xllog.</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
-    <value>Connection Statistics</value>
+    <value>Statistiques de connexion</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
-    <value>Events received: {0}</value>
+    <value>Événements reçus: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
-    <value>Last event: {0}</value>
+    <value>Dernier événement : {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
-    <value>Heartbeats received: {0}</value>
+    <value>Battements de cœur reçus : {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
-    <value>Last heartbeat: {0}</value>
+    <value>Dernier battement de cœur : {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
-    <value>About Instance</value>
+    <value>À propos de l'instance</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
-    <value>You have already disabled messages of the day.</value>
+    <value>Vous avez déjà désactivé les messages du jour.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
-    <value>You will no longer see messages of the day when you log in. You can re-enable them in the Instance Info settings.</value>
+    <value>Vous ne verrez plus les messages du jour à la connexion. Vous pouvez les réactiver dans les paramètres d'instances.</value>
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
-    <value>Failed to fetch metadata, will try again later.</value>
+    <value>Impossible de récupérer les métadonnées, réessayez plus tard.</value>
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Fetching" xml:space="preserve">
-    <value>Fetching metadata...</value>
+    <value>Récupération des métadonnées...</value>
   </data>
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
-    <value>There are currently {0} players online</value>
+    <value>Il y a actuellement {0} joueurs en ligne</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
     <value>Message du jour</value>
@@ -183,7 +174,7 @@
     <value>Aucun message du jour n'a été configuré.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>Show MOTD on login</value>
+    <value>Afficher le MOTD à la connexion</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Liens personnalisés</value>
@@ -210,7 +201,7 @@
     <value>Click on a friend to copy their content id hash and salt</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Copied" xml:space="preserve">
-    <value>Copied {0}'s data to clipboard</value>
+    <value>Copie les données {0} dans le presse-papiers</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Enabled" xml:space="preserve">
     <value>Activé</value>
@@ -222,7 +213,7 @@
     <value>Désactivé</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Unloading" xml:space="preserve">
-    <value>Unloading</value>
+    <value>Déchargement</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_Error" xml:space="preserve">
     <value>Erreur</value>
@@ -240,7 +231,7 @@
     <value>Saisissez une adresse URL valide.</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_Setting_APIURL_Description" xml:space="preserve">
-    <value>This is the URL that the plugin will communicate with for API requests. Most users will not need to change this.</value>
+    <value>C'est l'URL avec laquelle le plugin communiquera pour les requêtes de l'API. La plupart des utilisateurs n'auront pas besoin de la changer.</value>
   </data>
   <data name="UI_MainWindow_Button_Modules" xml:space="preserve">
     <value>Modules</value>
@@ -258,6 +249,24 @@
     <value>Changement de Monde d'Amis</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds.</value>
+    <value>Automatically send and receieve notifications when friends change worlds.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
   </data>
 </root>
