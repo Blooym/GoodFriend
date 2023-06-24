@@ -165,24 +165,6 @@ namespace GoodFriend.Plugin.Localization {
             }
         }
         
-        internal static string Modules_OptionalModuleBase_Enabled {
-            get {
-                return ResourceManager.GetString("Modules_OptionalModuleBase_Enabled", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_OptionalModuleBase_EnabledSwitch {
-            get {
-                return ResourceManager.GetString("Modules_OptionalModuleBase_EnabledSwitch", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_OptionalModuleBase_EnabledSwitch_Tooltip {
-            get {
-                return ResourceManager.GetString("Modules_OptionalModuleBase_EnabledSwitch_Tooltip", resourceCulture);
-            }
-        }
-        
         internal static string Modules_WorldChangeModule_UI_FilteringOptions {
             get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_FilteringOptions", resourceCulture);
