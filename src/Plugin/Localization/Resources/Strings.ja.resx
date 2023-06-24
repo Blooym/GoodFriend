@@ -77,15 +77,6 @@
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
     <value>Your message must contain {0} for the player's name.</value>
   </data>
-  <data name="Modules_OptionalModuleBase_Enabled" xml:space="preserve">
-    <value>有効</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch" xml:space="preserve">
-    <value>有効</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch_Tooltip" xml:space="preserve">
-    <value>Whether or not the module is enabled.</value>
-  </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
     <value>Filtering Options</value>
   </data>
@@ -259,5 +250,23 @@
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
     <value>Automatically send and receieve notifications when friends change worlds.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
   </data>
 </root>
