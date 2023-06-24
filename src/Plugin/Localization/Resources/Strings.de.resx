@@ -153,7 +153,7 @@
     <value>Letztes Ereignis: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
-    <value>Heartbeats recieved: {0}</value>
+    <value>Heartbeats receieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Last heartbeat: {0}</value>

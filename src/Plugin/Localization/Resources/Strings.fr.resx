@@ -258,6 +258,6 @@
     <value>Changement de Monde d'Amis</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and recieve notifications when friends change worlds.</value>
+    <value>Automatically send and receieve notifications when friends change worlds.</value>
   </data>
 </root>

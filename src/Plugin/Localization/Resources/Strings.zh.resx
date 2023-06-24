@@ -147,13 +147,13 @@
     <value>Connection Statistics</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
-    <value>Events recieved: {0}</value>
+    <value>Events receieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Last event: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
-    <value>Heartbeats recieved: {0}</value>
+    <value>Heartbeats receieved: {0}</value>
   </data>
   <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Last heartbeat: {0}</value>
@@ -258,6 +258,6 @@
     <value>Friend World Change</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and recieve notifications when friends change worlds.</value>
+    <value>Automatically send and receieve notifications when friends change worlds.</value>
   </data>
 </root>
