@@ -1,5 +1,6 @@
 using Dalamud.Plugin;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Utility;
 using Sirensong;
 
 namespace GoodFriend.Plugin
@@ -20,6 +21,8 @@ namespace GoodFriend.Plugin
             SirenCore.Initialize(pluginInterface, this.Name);
             pluginInterface.Create<DalamudInjections>();
             Services.Initialize();
+
+            Logger.Information(CryptoUtil.GetSignatureBytes().Length.ToString());
         }
 
         /// <summary>

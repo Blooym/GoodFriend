@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     "net7.0-windows7.0": {
+      "Dalamud.ContextMenu": {
+        "type": "Direct",
+        "requested": "[1.2.3, )",
+        "resolved": "1.2.3",
+        "contentHash": "ydemplF7DNcA/LLeongDVzWUD/JV0Fw3EwA2+P0jYq3Le2ZYSt4U8qyJq4FyoChqt0lFG8BxYCAzfeWp4Jmnqw=="
+      },
       "DalamudPackager": {
         "type": "Direct",
         "requested": "[2.1.11, )",

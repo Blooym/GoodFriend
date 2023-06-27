@@ -74,6 +74,7 @@
     <ProjectReference Include="../Client/GoodFriend.Client.csproj" />
     <ProjectReference Include="../Sirensong/Sirensong/Sirensong.csproj" />
     <PackageReference Include="DalamudPackager" Version="2.1.11" />
+    <PackageReference Include="Dalamud.ContextMenu" Version="1.2.3" />
   </ItemGroup>
 
   <!-- Dalamud Paths -->

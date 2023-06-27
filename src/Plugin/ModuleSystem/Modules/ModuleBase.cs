@@ -66,12 +66,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             try
             {
-                Logger.Information($"Began loading module {this.GetType().FullName}...");
+                Logger.Debug($"Began loading module {this.GetType().FullName}...");
                 this.State = ModuleState.Loading;
 
                 this.EnableAction();
                 this.State = ModuleState.Enabled;
-                Logger.Information($"Loaded module {this.GetType().FullName}.");
+                Logger.Debug($"Loaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
@@ -108,11 +108,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             try
             {
                 this.State = ModuleState.Unloading;
-                Logger.Information($"Unloading module {this.GetType().FullName}...");
+                Logger.Debug($"Unloading module {this.GetType().FullName}...");
 
                 this.DisableAction();
                 this.State = ModuleState.Disabled;
-                Logger.Information($"Unloaded module {this.GetType().FullName}.");
+                Logger.Debug($"Unloaded module {this.GetType().FullName}.");
             }
             catch (Exception e)
             {
@@ -170,40 +170,58 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <remarks>
         ///     Changing this identifier will lead to the module being unable to load its previous configuration.
         ///     You should migrate the configuration to the new identifier if this is changed.
-        ///     Consider using <see cref="Rename" /> for this.
+        ///     Consider using <see cref="Rename_Experimental" /> for this.
         /// </remarks>
         protected abstract string Identifier { get; set; }
+
+        /// <summary>
+        ///     Creates the module directory if it does not exist.
+        /// </summary>
+        private static void EnsureModuleDirectory()
+        {
+            if (!Directory.Exists(Constants.Directory.ModuleConfig))
+            {
+                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
+            }
+        }
+
+        /// <summary>
+        ///     Called when the configuration is loaded, can be used to run things like renames.
+        /// </summary>
+        protected virtual void OnConfigLoaded() { }
 
         /// <summary>
         ///     Saves the given module configuration to disk.
         /// </summary>
         public void Save()
         {
-            if (!Directory.Exists(Constants.Directory.ModuleConfig))
-            {
-                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
-            }
+            EnsureModuleDirectory();
             var configJson = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json"), configJson);
         }
 
         /// <summary>
-        ///     Renames the module configuration file from the old identifier to the new identifier.
+        ///     Renames the module configuration file from current identifier to the new identifier.
         /// </summary>
-        /// <param name="oldIdentifier">The old identifier.</param>
         /// <param name="newIdentifier">The new identifier.</param>
-        public static void Rename(string oldIdentifier, string newIdentifier)
+        /// <remarks>
+        ///     This is a potentially dangerous action and should be used carefully.
+        /// </remarks>
+        public void Rename_Experimental(string newIdentifier)
         {
-            if (!Directory.Exists(Constants.Directory.ModuleConfig))
-            {
-                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
-            }
-            var oldConfigPath = Path.Combine(Constants.Directory.ModuleConfig, $"{oldIdentifier}.json");
+            EnsureModuleDirectory();
+
+            Logger.Debug($"Running rename from {this.Identifier} -> {newIdentifier}");
+
+            var oldConfigPath = Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json");
             var newConfigPath = Path.Combine(Constants.Directory.ModuleConfig, $"{newIdentifier}.json");
             if (File.Exists(oldConfigPath))
             {
-                File.Move(oldConfigPath, newConfigPath);
+                File.Move(oldConfigPath, newConfigPath, true);
             }
+
+            this.Identifier = newIdentifier;
+            this.Save();
         }
 
         /// <summary>
@@ -213,20 +231,22 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <returns>A module configuration either from disk or new if not found.</returns>
         public static T Load<T>() where T : ModuleConfigBase, new()
         {
-            if (!Directory.Exists(Constants.Directory.ModuleConfig))
-            {
-                Directory.CreateDirectory(Constants.Directory.ModuleConfig);
-            }
+            EnsureModuleDirectory();
 
-            var configPath = Path.Combine(Constants.Directory.ModuleConfig, $"{new T().Identifier}.json");
-
+            var newConfig = new T();
+            var configPath = Path.Combine(Constants.Directory.ModuleConfig, $"{newConfig.Identifier}.json");
             if (!File.Exists(configPath))
             {
-                return new T();
+                Logger.Debug($"Configuration for {newConfig.Identifier} does not exist, creating a new one.");
+                newConfig.OnConfigLoaded();
+                return newConfig;
             }
 
             var configJson = File.ReadAllText(configPath);
-            return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            var loadedConfig = JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            loadedConfig.OnConfigLoaded();
+            Logger.Debug($"Loaded configuration {loadedConfig.Identifier}");
+            return loadedConfig;
         }
     }
 
@@ -269,5 +289,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         Information,
         Connectivity,
         Notifications,
+        Experimental,
     }
 }

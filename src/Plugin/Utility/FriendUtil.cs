@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using Sirensong;
 using Sirensong.Cache;
@@ -21,12 +22,18 @@ namespace GoodFriend.Plugin.Utility
         {
             foreach (var friend in FriendListCache.List)
             {
-                if (CryptoUtil.HashValue(friend.ContentId, contentIdSalt) == contentIdHash)
+                if (CryptoUtil.HashWithSalt(friend.ContentId, contentIdSalt) == contentIdHash)
                 {
                     return friend;
                 }
             }
             return null;
         }
+
+        /// <summary>
+        ///     Gets all of the players friends.
+        /// </summary>
+        /// <returns>The players friends, cached or fresh depending on the scenario.</remarkS>
+        public static IList<InfoProxyCommonList.CharacterData> GetAllFriends() => FriendListCache.List;
     }
 }

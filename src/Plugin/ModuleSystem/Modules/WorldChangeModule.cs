@@ -194,7 +194,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.Id;
 
                 var salt = CryptoUtil.GenerateSalt();
-                var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
+                var hash = CryptoUtil.HashWithSalt(DalamudInjections.ClientState.LocalContentId, salt);
                 ApiClient.SendWorldChangeAsync(new UpdatePlayerWorldRequest.PutData()
                 {
                     ContentIdHash = hash,

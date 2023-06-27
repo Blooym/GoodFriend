@@ -187,7 +187,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             try
             {
-                Logger.Debug("Updating metadata...");
+                Logger.Debug("Requesting fresh metadata...");
                 this.lastMetadataUpdateAttempt = DateTime.Now;
                 var request = ApiClient.GetMetadata();
                 this.metadata = request.Item1;
@@ -214,7 +214,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 return;
             }
 
-            Logger.Information($"Displaying message of the day: {this.metadata.Value.About.Motd.Message}");
+            Logger.Information($"Message of the day: {this.metadata.Value.About.Motd.Message}");
             ChatHelper.Print(new SeStringBuilder()
                         .AddText(this.metadata.Value.About.Motd.Message)
                         .AddText(" - ")
@@ -246,6 +246,15 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ///     Whether or not to show the MOTD on login.
             /// </summary>
             public bool ShowMotdOnLogin { get; set; } = true;
+
+            /// <inheritdoc />
+            protected override void OnConfigLoaded()
+            {
+                if (this.Identifier != "InstanceInfoModule")
+                {
+                    this.Rename_Experimental("InstanceInfoModule");
+                }
+            }
         }
     }
 }

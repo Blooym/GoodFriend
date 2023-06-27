@@ -25,12 +25,12 @@ namespace GoodFriend.Plugin.Base
         {
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
+            WindowingService = new WindowingService();
             GoodFriendApiClient = new GoodFriendClient(new GoodfriendClientOptions()
             {
                 BaseAddress = new(PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
             }, Framework.Instance()->GameVersion.Base);
             ModuleService = new ModuleService();
-            WindowingService = new WindowingService();
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace GoodFriend.Plugin.Base
         internal static void Dispose()
         {
             LocalizationService.Dispose();
-            WindowingService.Dispose();
             ModuleService.Dispose();
+            WindowingService.Dispose();
             GoodFriendApiClient.Dispose();
         }
     }

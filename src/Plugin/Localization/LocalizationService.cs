@@ -39,7 +39,7 @@ namespace GoodFriend.Plugin.Localization
         {
             try
             {
-                Logger.Information($"Setting up localization for {language}");
+                Logger.Debug($"Setting up localization for {language}");
                 Strings.Culture = new CultureInfo(language);
             }
             catch (Exception e)

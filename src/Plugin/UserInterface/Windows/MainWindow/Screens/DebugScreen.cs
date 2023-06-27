@@ -69,7 +69,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                     if (ImGui.Selectable(fName.ToString()))
                     {
                         var salt = CryptoUtil.GenerateSalt();
-                        var hash = CryptoUtil.HashValue(f.ContentId, salt);
+                        var hash = CryptoUtil.HashWithSalt(f.ContentId, salt);
                         ImGui.SetClipboardText($"Friend: {fName} Hash: {hash} | Salt: {salt}");
                         ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, fName), (ushort)ChatUiColourKey.LightPurple1);
                     }

@@ -275,7 +275,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     Logger.Debug("Sending login event.");
 
                     var salt = CryptoUtil.GenerateSalt();
-                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+                    var hash = CryptoUtil.HashWithSalt(this.currentContentId, salt);
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
                         ContentIdHash = hash,
@@ -296,7 +296,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             Task.Run(() =>
                 {
                     var salt = CryptoUtil.GenerateSalt();
-                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+                    var hash = CryptoUtil.HashWithSalt(this.currentContentId, salt);
                     Logger.Debug("Sending logout event.");
                     ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
                     {
@@ -349,7 +349,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             this.currentTerritoryId = DalamudInjections.ClientState.TerritoryType;
             this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.GameData!.RowId;
 
-            Logger.Debug($"Set stored values: CID: {this.currentContentId}, HW: {this.currentHomeworldId}, DC: {this.currentDatacenterId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
+            Logger.Debug($"Set stored values: CID: XXX, HW: {this.currentHomeworldId}, DC: {this.currentDatacenterId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
         }
 
         /// <summary>

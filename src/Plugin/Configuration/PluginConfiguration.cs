@@ -62,6 +62,7 @@ namespace GoodFriend.Plugin.Configuration
             {
                 Logger.Information($"Updating API Base URL from {config.ApiConfig.ApiBaseUrl} to {ApiConfiguration.DefaultApiBaseUrl}");
                 config.ApiConfig.ApiBaseUrl = ApiConfiguration.DefaultApiBaseUrl;
+                config.Save();
             }
 
             return config;

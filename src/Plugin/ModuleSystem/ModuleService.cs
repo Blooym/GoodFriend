@@ -22,7 +22,7 @@ namespace GoodFriend.Plugin.ModuleSystem
             var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ToList();
             foreach (var module in modules)
             {
-                Logger.Information($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
+                Logger.Debug($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
                 module.Enable();
             }
             this.loadedModules = modules;
@@ -53,7 +53,7 @@ namespace GoodFriend.Plugin.ModuleSystem
                         continue;
                     }
 
-                    Logger.Information($"Creating instance of module {module.FullName}.");
+                    Logger.Debug($"Creating instance of module {module.FullName}.");
                     var ctor = module.GetConstructor(Type.EmptyTypes) ?? throw new InvalidOperationException($"The module {module.FullName} does not have a parameterless constructor.");
                     var instance = (ModuleBase)ctor.Invoke(null);
                     modules.Add(instance);

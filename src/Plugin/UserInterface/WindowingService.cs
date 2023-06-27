@@ -56,5 +56,17 @@ namespace GoodFriend.Plugin.UserInterface
 
             this.disposedValue = true;
         }
+
+        /// <summary>
+        ///     Adds a window to the windowing system.
+        /// </summary>
+        /// <param name="window">The window to add.</param>
+        public void AddToWindowSystem(Window window) => this.windowSystem.AddWindow(window);
+
+        /// <summary>
+        ///     Removes a window from the windowing system.
+        /// </summary>
+        /// <param name="window">The window to remove.</param>
+        public void RemoveFromWindowSystem(Window window) => this.windowSystem.RemoveWindow(window);
     }
 }
