@@ -9,7 +9,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class FriendStreamConnectionModule : ModuleBase
+    internal sealed class PlayerStreamConnectionModule : ModuleBase
     {
         /// <summary>
         ///     The last time a heartbeat was received from the player event stream.
@@ -32,7 +32,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private uint HeartbeatsReceived { get; set; }
 
         /// <inheritdoc />
-        public override string Name => Strings.Modules_FriendStreamConnectionModule_Name;
+        public override string Name => Strings.Modules_PlayerStreamConnectionModule_Name;
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Connectivity;
@@ -73,37 +73,37 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus);
+            SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
             switch (ApiClient.PlayerStreamConnectionState)
             {
                 case EventStreamConnectionState.Connected:
-                    SiGui.TextColoured(Colours.Success, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connected);
-                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connected_Description);
+                    SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
+                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description);
                     break;
                 case EventStreamConnectionState.Connecting:
-                    SiGui.TextColoured(Colours.Warning, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting);
-                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting_Description);
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting);
+                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description);
                     break;
                 case EventStreamConnectionState.Disconnected:
-                    SiGui.TextColoured(Colours.Error, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected);
-                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected_Description);
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected);
+                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description);
                     break;
                 case EventStreamConnectionState.Disconnecting:
-                    SiGui.TextColoured(Colours.Warning, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting);
-                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting_Description);
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting);
+                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description);
                     break;
                 case EventStreamConnectionState.Exception:
-                    SiGui.TextColoured(Colours.Error, Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Exception);
-                    SiGui.TextWrapped(Strings.Modules_FriendStreamConnectionModule_ConnectionStatus_Exception_Description);
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception);
+                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description);
                     break;
             }
             ImGui.Dummy(Spacing.SectionSpacing);
-            SiGui.Heading(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics);
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsReceived));
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LasEventTime:HH:mm:ss}"));
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsReceived));
-            SiGui.TextWrapped(string.Format(Strings.Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat, $"{this.LastHeartbeatTime:HH:mm:ss}"));
+            SiGui.Heading(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics);
+            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsReceived));
+            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LasEventTime:HH:mm:ss}"));
+            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsReceived));
+            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat, $"{this.LastHeartbeatTime:HH:mm:ss}"));
         }
 
         /// <summary>
