@@ -11,11 +11,6 @@ namespace GoodFriend.Plugin.Utility
     internal static class CryptoUtil
     {
         /// <summary>
-        ///     The recommended length for a salt value.
-        /// </summary>
-        private const uint RECOMMENDED_SALT_LENGTH = 32;
-
-        /// <summary>
         ///     Gets signature bytes for the current assembly.
         /// </summary>
         /// <remarks>
@@ -24,24 +19,24 @@ namespace GoodFriend.Plugin.Utility
         ///    build.
         /// </remarks>
         /// <returns>The signature bytes in release builds, otherwise an empty array to for development builds.</returns>
-        private static byte[] GetSignatureBytes() =>
+        public static byte[] GetSignatureBytes() =>
 #if RELEASE
             Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
 #else
-            Array.Empty<byte>();
+            Array.Empty<byte>(); // Easier debugging across dev builds.
 #endif
-
 
         /// <summary>
         ///     Generates a random salt of the given length.
         /// </summary>
         /// <param name="length">The length of the salt to generate.</param>
         /// <returns>The generated salt.</returns>
-        public static string GenerateSalt(uint length = RECOMMENDED_SALT_LENGTH)
+        public static string GenerateSalt(uint length = 32)
         {
             using var seed = RandomNumberGenerator.Create();
             var bytes = new byte[length];
             seed.GetBytes(bytes);
+            seed.GetBytes(GetSignatureBytes());
             return Convert.ToHexString(bytes);
         }
 
@@ -51,6 +46,6 @@ namespace GoodFriend.Plugin.Utility
         /// <param name="value">The value to hash.</param>
         /// <param name="salt">The salt to use.</param>
         /// <returns>The hashed value.</returns>
-        public static string HashValue(object value, string salt) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{value}{salt}{GetSignatureBytes()}")));
+        public static string HashValue(object value, string salt) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{value}{salt}")));
     }
 }
