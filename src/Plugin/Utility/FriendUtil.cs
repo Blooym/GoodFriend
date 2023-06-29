@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using Sirensong;
 using Sirensong.Cache;
@@ -10,6 +11,12 @@ namespace GoodFriend.Plugin.Utility
         ///     The friend list cache.
         /// </summary>
         private static readonly FriendListCache FriendListCache = SirenCore.GetOrCreateService<FriendListCache>();
+
+        /// <summary>
+        ///     Get the friends list, either cached or uncached depending on if it is currently available.
+        /// </summary>
+        /// <returns>The players current friends or empty if not cached & unavailable.</returns>
+        public static ICollection<InfoProxyCommonList.CharacterData> GetFriendsList() => FriendListCache.List;
 
         /// <summary>
         ///     Gets a friend by their content ID hash and the salt used to hash it.

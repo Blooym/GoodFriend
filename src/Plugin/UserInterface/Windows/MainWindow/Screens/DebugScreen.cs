@@ -4,8 +4,6 @@ using Dalamud.Memory;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
-using Sirensong;
-using Sirensong.Cache;
 using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
@@ -19,11 +17,6 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         ///     The current debug option.
         /// </summary>
         private static DebugOption currentOption = DebugOption.Friends;
-
-        /// <summary>
-        ///     The friend list cache.
-        /// </summary>
-        private static FriendListCache FriendCache { get; } = SirenCore.GetOrCreateService<FriendListCache>();
 
         /// <summary>
         ///     Draws the debug option list.
@@ -63,7 +56,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 
             if (ImGui.BeginChild("DebugFriendList"))
             {
-                foreach (var f in FriendCache.List)
+                foreach (var f in FriendUtil.GetFriendsList())
                 {
                     var fName = MemoryHelper.ReadSeStringNullTerminated((nint)f.Name);
                     if (ImGui.Selectable(fName.ToString()))
