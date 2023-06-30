@@ -19,7 +19,7 @@ namespace GoodFriend.Plugin.Utility
         ///    build.
         /// </remarks>
         /// <returns>The signature bytes in release builds, otherwise an empty array to for development builds.</returns>
-        public static byte[] GetSignatureBytes() =>
+        private static byte[] GetSignatureBytes() =>
 #if RELEASE
             Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
 #else
