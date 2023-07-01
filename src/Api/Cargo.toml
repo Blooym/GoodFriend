@@ -8,6 +8,6 @@ dotenv = "0.15.0"
 rocket = { version = "=0.5.0-rc.3", features = ["json", "tls", "mtls"] }
 rust-embed = "6.6.1"
 cached = "0.44.0"
-toml = "0.7.4"
+toml = "0.7.5"
 validator = { version = "0.16", features = ["derive"] }
 url = "2.4.0"
