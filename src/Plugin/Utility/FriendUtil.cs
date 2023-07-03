@@ -13,6 +13,12 @@ namespace GoodFriend.Plugin.Utility
         private static readonly FriendListCache FriendListCache = SirenCore.GetOrCreateService<FriendListCache>();
 
         /// <summary>
+        ///     Get the friends list, either cached or uncached depending on if it is currently available.
+        /// </summary>
+        /// <returns>The players current friends or empty if not cached & unavailable.</returns>
+        public static ICollection<InfoProxyCommonList.CharacterData> GetFriendsList() => FriendListCache.List;
+
+        /// <summary>
         ///     Gets a friend by their content ID hash and the salt used to hash it.
         /// </summary>
         /// <param name="contentIdHash">The content ID hash to search for.</param>

@@ -77,15 +77,6 @@
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
     <value>Votre message doit contenir {0} pour le nom du joueur.</value>
   </data>
-  <data name="Modules_OptionalModuleBase_Enabled" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="Modules_OptionalModuleBase_EnabledSwitch_Tooltip" xml:space="preserve">
-    <value>Si le module est activé ou non.</value>
-  </data>
   <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
     <value>Options de filtrage</value>
   </data>
@@ -107,55 +98,55 @@
   <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip" xml:space="preserve">
     <value>Votre message doit contenir {0} pour le nom du joueur et {1} pour le nom du monde.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_Name" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_Name" xml:space="preserve">
     <value>Connexion au flux d'amis</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
     <value>Statut de la connexion:</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Connecté</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
     <value>Connexion en cours...</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
     <value>Déconnecté</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
     <value>Déconnexion...</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Erreur</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
     <value>You are currently recieving events from other friends and are fully connected to the player event stream.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
     <value>Attempting to connect you to the player event stream, please wait.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
     <value>You are not currently recieving events from other friends and are not connected to the player event stream.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
     <value>Disconnecting you from the player event stream, please wait.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
     <value>Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down. You will automatically be reconnected when possible. For more information check /xllog.</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Statistiques de connexion</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
     <value>Événements reçus: {0}</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Dernier événement : {0}</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
     <value>Battements de cœur reçus : {0}</value>
   </data>
-  <data name="Modules_FriendStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Dernier battement de cœur : {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
@@ -259,5 +250,23 @@
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
     <value>Automatically send and receieve notifications when friends change worlds.</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
+    <value>Event Settings</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
+    <value>Receive Events</value>
+  </data>
+  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
+    <value>Whether or not to receive events from other friends.</value>
   </data>
 </root>

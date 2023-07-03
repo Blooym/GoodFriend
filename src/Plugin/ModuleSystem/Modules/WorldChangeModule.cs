@@ -14,6 +14,7 @@ using Sirensong.Cache;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
+using Sirensong.Utility;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
@@ -236,6 +237,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         /// <param name="message">The message to validate.</param>
         /// <returns>Whether or not the message is valid.</returns>
-        public static bool ValidateMessage(string message) => ValidatorUtil.TestFormatString(message, 2, true);
+        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 2, true);
     }
 }

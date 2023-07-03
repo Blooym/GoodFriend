@@ -24,7 +24,7 @@ namespace GoodFriend.Plugin.Utility
 #if RELEASE
             Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
 #else
-            Array.Empty<byte>();
+            Array.Empty<byte>(); // Easier debugging across dev builds.
 #endif
 
         /// <summary>
