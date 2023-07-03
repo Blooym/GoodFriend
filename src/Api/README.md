@@ -1,4 +1,4 @@
-# GoodFriend API
+# API
 
 ## Selfhosting
 
