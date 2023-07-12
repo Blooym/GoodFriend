@@ -2,7 +2,7 @@
 #    USER
 # ----------
 FROM alpine:latest as user
-RUN adduser -u 1000 -s /bin/false -D user
+RUN adduser -s /bin/false -D user
 
 # -----------
 #    BUILD   
