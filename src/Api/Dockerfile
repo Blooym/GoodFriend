@@ -1,3 +1,9 @@
+# ----------
+#    USER
+# ----------
+FROM alpine:latest as user
+RUN adduser -u 1000 -s /bin/false -D user
+
 # -----------
 #    BUILD   
 # -----------
@@ -15,21 +21,30 @@ RUN mkdir src \
     && cargo build ${RUSTC_CACHE_FLAGS} \
     && rm src/lib.rs
 
-# Build api binary.
-COPY . .
+# Copy source and static files.
+COPY static ./static
+COPY src ./src
+
+# Build the API binary.
 ARG RUSTC_APP_FLAGS=--release --bin
 RUN cargo build ${RUSTC_APP_FLAGS}
+
 
 # -----------
 #   RUNTIME  
 # -----------
-FROM gcr.io/distroless/static-debian11:nonroot as runtime
+FROM scratch as runtime
 WORKDIR /app
+
+# Import and switch to non-root user.
+COPY --from=user /etc/passwd /etc/passwd
+COPY --from=user /bin/false /bin/false
+USER user
 
 # Bind to all interfaces.
 ENV ROCKET_ADDRESS=0.0.0.0 
 
-# Grab api binary from build.
+# Grab API binary from build.
 COPY --from=build /build/target/release/goodfriend-api .
 
 # Run the api.
