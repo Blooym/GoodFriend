@@ -1,7 +1,10 @@
 [package]
 name = "goodfriend-api"
-version = "2.0.5"
+version = "2.0.6"
 edition = "2021"
+authors = ["Blooym"]
+license = "AGPL-3.0-only"
+repository = "https://github.com/Blooym/GoodFriend"
 
 [dependencies]
 dotenv = "0.15.0"
@@ -11,3 +14,7 @@ cached = "0.44.0"
 toml = "0.7.5"
 validator = { version = "0.16", features = ["derive"] }
 url = "2.4.0"
+
+[profile.release]
+strip = true
+codegen-units = 1
