@@ -39,10 +39,10 @@
     <value>Ignorer les évènements des amis n'appartenant pas à votre monde d'origine.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffTerritory" xml:space="preserve">
-    <value>Ignore different territory</value>
+    <value>Ignorer mondes différents</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffTerritory_Description" xml:space="preserve">
-    <value>Ignore events from friends that logged outside of your current territory.</value>
+    <value>Ignorer les événements des amis qui sont connectés en dehors de votre monde.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffWorld" xml:space="preserve">
     <value>Ignorer les mondes d'origine différents</value>
@@ -54,7 +54,7 @@
     <value>ignorer le datacenter différent</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
-    <value>Hides events from friends that logged outside of your current datacenter.</value>
+    <value>Masque les événements des amis qui se sont connecté en dehors de votre centre de données actuel.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_MessageOptions" xml:space="preserve">
     <value>Options des messages</value>
@@ -120,19 +120,19 @@
     <value>Erreur</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently recieving events from other friends and are fully connected to the player event stream.</value>
+    <value>Vous recevez des événements d'autres amis et êtes entièrement connecté au flux d'événements du joueur.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
-    <value>Attempting to connect you to the player event stream, please wait.</value>
+    <value>Tentative de connexion au flux d'événements du joueur, veuillez patienter.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently recieving events from other friends and are not connected to the player event stream.</value>
+    <value>Vous ne recevez pas d'événements d'autres amis et n'êtes pas connecté au flux d'événements du joueur.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
-    <value>Disconnecting you from the player event stream, please wait.</value>
+    <value>Déconnexion du flux d'événements du joueur, veuillez patienter.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
-    <value>Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down. You will automatically be reconnected when possible. For more information check /xllog.</value>
+    <value>Un problème s'est produit lors de la tentative de connexion au flux d'événements du joueur ! Il peut s'agir d'un problème de réseau ou d'une panne de l'API. Vous serez automatiquement reconnecté dès que possible. Pour plus d'informations, consultez /xllog.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Statistiques de connexion</value>
@@ -183,22 +183,22 @@
     <value>Aucun lien personnalisé n'a été configuré.</value>
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
-    <value>The last metadata update failed, currently using cached data.</value>
+    <value>La dernière mise à jour des métadonnées a échoué, utilisation des données en cache.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
     <value>[Désactiver les messages lors de la connexion]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
-    <value>This module has encountered an error while running and was disabled. Please check the logs for more information.</value>
+    <value>Ce module a rencontré une erreur lors de son exécution et a été désactivé. Veuillez consulter les journaux pour plus d'informations.</value>
   </data>
   <data name="Modules_ModuleBase_FailedDraw" xml:space="preserve">
-    <value>Failed to draw module {0}: {1}</value>
+    <value>Échec de l'extraction du module {0} : {1}</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends" xml:space="preserve">
     <value>Amis détectés</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Usage" xml:space="preserve">
-    <value>Click on a friend to copy their content id hash and salt</value>
+    <value>Cliquez sur un ami pour copier le hachage et le sel de son identifiant</value>
   </data>
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Copied" xml:space="preserve">
     <value>Copie les données {0} dans le presse-papiers</value>
@@ -219,10 +219,10 @@
     <value>Erreur</value>
   </data>
   <data name="UI_MainWindow_ModuleScreen_SelectToView" xml:space="preserve">
-    <value>Select a module to view its settings.</value>
+    <value>Sélectionnez un module pour afficher ses paramètres.</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_RestartNeeded" xml:space="preserve">
-    <value>One or more changes may require a plugin restart to take effect.</value>
+    <value>Un ou plusieurs changements peuvent nécessiter un redémarrage du plugin pour être pris en compte.</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_Setting_APIURL" xml:space="preserve">
     <value>URL de l'API</value>
@@ -252,21 +252,21 @@
     <value>Automatically send and receieve notifications when friends change worlds.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
-    <value>Event Settings</value>
+    <value>Paramètres d'événement</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
-    <value>Receive Events</value>
+    <value>Réception d'événements</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
-    <value>Whether or not to receive events from other friends.</value>
+    <value>Recevoir ou non des événements d'autres amis.</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
-    <value>Event Settings</value>
+    <value>Paramètres d'événement</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
-    <value>Receive Events</value>
+    <value>Réception d'événements</value>
   </data>
   <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
-    <value>Whether or not to receive events from other friends.</value>
+    <value>Recevoir ou non des événements d'autres amis.</value>
   </data>
 </root>
