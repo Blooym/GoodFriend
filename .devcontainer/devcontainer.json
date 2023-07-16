@@ -3,10 +3,6 @@
 	"updateRemoteUserUID": true,
 	"containerUser": "dev",
 	"remoteUser": "dev",
-	"workspaceMount": "",
-	"runArgs": [
-		"--volume=${localWorkspaceFolder}:/workspaces/${localWorkspaceFolderBasename}:Z"
-	],
 	"postAttachCommand": "cd ./src/Api && cargo build && cd ../Plugin && dotnet build",
 	"customizations": {
 		"vscode": {

@@ -405,7 +405,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Whether or not to hide notifications from users in different data centers.
         /// </summary>
-        public bool HideDifferentDatacenter { get; set; }
+        public bool HideDifferentDatacenter { get; set; } = true;
 
         /// <summary>
         ///     The message to display when a friend logs in.
