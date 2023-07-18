@@ -51,7 +51,7 @@
     <value>Events von Freunden ignorieren, welche außerhalb deiner Welt angemeldet sind.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>Ignoriere anderes Datenzentrum</value>
+    <value>Ignore different datacenter</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Events von Freunden, die außerhalb deines Datenzentrums angemeldet sind, verstecken.</value>
