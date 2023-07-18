@@ -29,19 +29,19 @@ namespace GoodFriend.Client.Responses
     }
 
     /// <summary>
-    ///     Represents the type of state update recieved.
+    ///     Represents the type of state update received.
     /// </summary>
     [Serializable]
     public record struct StateUpdateType
     {
         /// <summary>
-        ///     Represents the data recieved relating to a login state change.
+        ///     Represents the data received relating to a login state change.
         /// </summary>
         [JsonPropertyName("LoginStateChange")]
         public LoginStateChangeData? LoginStateChange { get; set; }
 
         /// <summary>
-        ///     Represents the data recieved relating to a world change.
+        ///     Represents the data received relating to a world change.
         /// </summary>
         [JsonPropertyName("WorldChange")]
         public WorldChangeData? WorldChange { get; set; }

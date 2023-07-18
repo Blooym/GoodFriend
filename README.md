@@ -34,7 +34,7 @@ This plugin was initially created as a way to get around the limitations of the 
 
 ### Drawbacks
 
-Due to the nature of the implementation only users with the plugin installed can send and recieve events with the API as the plugin is responsible for handling the actual event sending & recieving. This means that if you have the plugin installed but your friend does not, you will not recieve any events from them and vice-versa. Unfortunately, the only way to get around this is to ask your friends that you want to recieve events from to install the plugin.
+Due to the nature of the implementation only users with the plugin installed can send and receive events with the API as the plugin is responsible for handling the actual event sending & recieving. This means that if you have the plugin installed but your friend does not, you will not receive any events from them and vice-versa. Unfortunately, the only way to get around this is to ask your friends that you want to receive events from to install the plugin.
 
 ### Features
 

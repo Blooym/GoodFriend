@@ -52,7 +52,7 @@ namespace GoodFriend.Client
         public delegate void DelegatePlayerStateUpdate(object? sender, PlayerEventStreamUpdate update);
 
         /// <summary>
-        ///     The event for when a player state update is recieved and is not a heartbeat.
+        ///     The event for when a player state update is received and is not a heartbeat.
         /// </summary>
         public event DelegatePlayerStateUpdate? OnPlayerStreamMessage;
 
@@ -64,7 +64,7 @@ namespace GoodFriend.Client
         public delegate void DelegatePlayerStreamError(object? sender, Exception exception);
 
         /// <summary>
-        ///     The event for when an exception relating to the player event stream connection is recieved.
+        ///     The event for when an exception relating to the player event stream connection is received.
         /// </summary>
         /// <remarks>
         ///     Automatic reconnection is handled by the client and does not need to be implemented
@@ -90,7 +90,7 @@ namespace GoodFriend.Client
         public delegate void DelegatePlayerStreamHeartbeat(object? sender);
 
         /// <summary>
-        ///     The event for when a heartbeat is recieved from the player event stream.
+        ///     The event for when a heartbeat is received from the player event stream.
         /// </summary>
         public event DelegatePlayerStreamHeartbeat? OnPlayerStreamHeartbeat;
 
