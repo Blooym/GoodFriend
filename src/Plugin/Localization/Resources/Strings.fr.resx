@@ -51,7 +51,7 @@
     <value>Ignorer les événements de vos amis qui se sont connectés en dehors de votre monde actuel.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>ignorer le datacenter différent</value>
+    <value>Ignore different datacenter</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Masque les événements des amis qui se sont connecté en dehors de votre centre de données actuel.</value>
