@@ -174,7 +174,7 @@
     <value>No message of the day has been set.</value>
   </data>
   <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>Show MOTD on login</value>
+    <value>Mostrar el mensaje del día al iniciar sesión</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Custom Links</value>
