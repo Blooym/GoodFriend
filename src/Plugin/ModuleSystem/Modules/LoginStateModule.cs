@@ -182,7 +182,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <param name="rawEvent"></param>
         private unsafe void HandlePlayerStreamMessage(object? sender, PlayerEventStreamUpdate rawEvent)
         {
-            // Ignore the event if recieving events is disabled.
+            // Ignore the event if receiving events is disabled.
             if (!this.Config.ReceiveEvents)
             {
                 return;

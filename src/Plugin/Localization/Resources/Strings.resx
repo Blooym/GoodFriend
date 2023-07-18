@@ -52,7 +52,7 @@
     <value>Ignore events from friends that logged outside of your current world.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>ignore different datacenter</value>
+    <value>Ignore different datacenter</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Hides events from friends that logged outside of your current datacenter.</value>
@@ -121,13 +121,13 @@
     <value>Error</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently recieving events from other friends and are fully connected to the player event stream.</value>
+    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
     <value>Attempting to connect you to the player event stream, please wait.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently recieving events from other friends and are not connected to the player event stream.</value>
+    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
     <value>Disconnecting you from the player event stream, please wait.</value>
