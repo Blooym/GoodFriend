@@ -51,7 +51,7 @@
     <value>Ignorer les événements de vos amis qui se sont connectés en dehors de votre monde actuel.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>ignorer le datacenter différent</value>
+    <value>Ignore different datacenter</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Masque les événements des amis qui se sont connecté en dehors de votre centre de données actuel.</value>
@@ -120,13 +120,13 @@
     <value>Erreur</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>Vous recevez des événements d'autres amis et êtes entièrement connecté au flux d'événements du joueur.</value>
+    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
     <value>Tentative de connexion au flux d'événements du joueur, veuillez patienter.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>Vous ne recevez pas d'événements d'autres amis et n'êtes pas connecté au flux d'événements du joueur.</value>
+    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
     <value>Déconnexion du flux d'événements du joueur, veuillez patienter.</value>
