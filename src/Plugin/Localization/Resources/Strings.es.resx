@@ -51,7 +51,7 @@
     <value>Ignorar eventos de amigos que inicien o cierren sesión en mundos diferentes al tuyo.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>Ignorar datacenter diferente</value>
+    <value>Ignore different datacenter</value>
   </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Ignorar eventos de amigos que inicien o cierren sesión en un datacenter diferente al tuyo.</value>
@@ -99,7 +99,7 @@
     <value>Tu mensaje debe contener {0} para el nombre del jugador y {1} para el nombre del mundo.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_Name" xml:space="preserve">
-    <value>Conexión de Player Stream</value>
+    <value>Conexión al flujo de eventos de jugadores</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
     <value>Estado de Conexión:</value>
@@ -120,19 +120,19 @@
     <value>Error</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
+    <value>Actualmente estás completamente conectad@ al flujo de eventos de jugadores y recibiendo eventos de otros amigos.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
-    <value>Intentando conectarte al player event stream, por favor espere.</value>
+    <value>Intentando conectarte al flujo de eventos de jugadores, por favor espere.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
+    <value>Actualmente no estás ni conectad@ al flujo de eventos de jugadores ni recibiendo eventos de otros amigos.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
-    <value>Desconectándote del player event stream, por favor espere.</value>
+    <value>Desconectándote del flujo de eventos de jugadores, por favor espere.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
-    <value>¡Algo falló al intentar conectar con el player event stream! Puede deberse a un problema de red o la API puede estar caída. Se conectará automáticamente cuando sea posible. Para obtener más información, compruebe /xllog.</value>
+    <value>¡Algo falló al intentar conectar con el flujo de eventos de jugadores! Puede deberse a un problema de red o la API puede estar caída. Se conectará automáticamente cuando sea posible. Para obtener más información, compruebe /xllog.</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Estado de Conexión</value>
