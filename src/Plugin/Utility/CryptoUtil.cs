@@ -36,7 +36,6 @@ namespace GoodFriend.Plugin.Utility
             using var seed = RandomNumberGenerator.Create();
             var bytes = new byte[length];
             seed.GetBytes(bytes);
-            seed.GetBytes(GetSignatureBytes());
             return Convert.ToHexString(bytes);
         }
 
@@ -46,6 +45,6 @@ namespace GoodFriend.Plugin.Utility
         /// <param name="value">The value to hash.</param>
         /// <param name="salt">The salt to use.</param>
         /// <returns>The hashed value.</returns>
-        public static string HashValue(object value, string salt) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{value}{salt}")));
+        public static string HashValue(object value, string salt) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{value}{salt}{GetSignatureBytes()}")));
     }
 }
