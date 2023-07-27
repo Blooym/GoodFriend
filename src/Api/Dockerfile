@@ -49,7 +49,7 @@ ENV ROCKET_PORT=8000
 EXPOSE 8000
 
 # Grab API binary from build.
-COPY --from=build /build/target/release/goodfriend-api .
+COPY --from=build /build/target/release/goodfriend-api /app/bin
 
 # Run the api.
-CMD ["./goodfriend-api"]
+ENTRYPOINT ["/app/bin/goodfriend-api"]
