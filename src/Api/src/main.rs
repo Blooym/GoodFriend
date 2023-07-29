@@ -8,7 +8,8 @@ mod config;
 mod types;
 
 use api::responses::player_event::EventStreamPlayerStateUpdateResponse;
-use config::base::{get_config_cached_prime_cache, Config};
+use api::{core, events, index, update};
+use config::{get_config_cached_prime_cache, Config};
 use dotenv::dotenv;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
@@ -36,20 +37,17 @@ fn rocket() -> Rocket<Build> {
                 process::exit(1);
             }
         },
-        false => {
-            eprintln!("Error: No configuration file was detected - please create in the data directory and restart the API.");
-            eprintln!("See the documentation for more information.");
-            process::exit(1);
-        }
+        false => Config::default(),
     };
     get_config_cached_prime_cache();
 
+    // Start the API.
     rocket::build()
         .manage(channel::<EventStreamPlayerStateUpdateResponse>(50000).0)
-        .mount("/", api::static_content::routes())
-        .mount([BASE_PATH, "/"].concat(), api::core::routes())
-        .mount([BASE_PATH, "/update"].concat(), api::update::routes())
-        .mount([BASE_PATH, "/events"].concat(), api::events::routes())
+        .mount("/", index::routes())
+        .mount([BASE_PATH, "/"].concat(), core::routes())
+        .mount([BASE_PATH, "/update"].concat(), update::routes())
+        .mount([BASE_PATH, "/events"].concat(), events::routes())
         .attach(
             Shield::default()
                 .enable(shield::XssFilter::Enable)

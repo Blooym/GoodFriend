@@ -115,21 +115,15 @@ namespace GoodFriend.Client
         public GoodfriendClientOptions Options { get; private set; }
 
         /// <summary>
-        ///     The saved game version.
-        /// </summary>
-        private string GameVersion { get; }
-
-        /// <summary>
         ///     Creates a new instance of the client.
         /// </summary>
         /// <param name="baseUri">The base uri of the api</param>
         /// <param name="gameVersion">The current ffxivgame.ver value</param>
-        public GoodFriendClient(GoodfriendClientOptions options, string gameVersion)
+        public GoodFriendClient(GoodfriendClientOptions options)
         {
             this.Options = options;
-            this.GameVersion = gameVersion;
             this.httpClientHandler = CreateHttpClientHandler();
-            this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress, gameVersion);
+            this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress);
             this.playerStreamReconnectTimer = new Timer(options.ReconnectInterval);
             this.playerStreamReconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
             this.OnPlayerStreamException += this.HandlePlayerStreamException;
@@ -178,13 +172,12 @@ namespace GoodFriend.Client
         /// <param name="baseUri"></param>
         /// <param name="gameVersion"></param>
         /// <returns></returns>
-        private static HttpClient CreateHttpClient(HttpClientHandler handler, Uri baseUri, string gameVersion) => new(handler)
+        private static HttpClient CreateHttpClient(HttpClientHandler handler, Uri baseUri) => new(handler)
         {
             BaseAddress = baseUri,
             DefaultRequestHeaders =
             {
                 { "User-Agent", UserAgent },
-                { "X-Game-Version", gameVersion },
             },
             Timeout = TimeSpan.FromSeconds(10),
         };
@@ -281,8 +274,6 @@ namespace GoodFriend.Client
             return new HttpRequestMessage(HttpMethod.Put, UpdatePlayerWorldRequest.EndpointUrl + queryParams);
         }
 
-        private static HttpRequestMessage BuildMinimumVersionRequest() => new(HttpMethod.Get, MinimumGameVersionRequest.EndpointUrl);
-
         /// <summary>
         ///     Builds a new metadata request.
         /// </summary>
@@ -331,22 +322,6 @@ namespace GoodFriend.Client
             var request = BuildMetadataRequest();
             var response = await this.httpClient.SendAsync(request);
             return (await response.Content.ReadFromJsonAsync<MetadataResponse>(), response);
-        }
-
-        /// <inheritdoc />
-        public (MinimumGameVersionResponse, HttpResponseMessage) GetMinimumVersion()
-        {
-            var request = BuildMinimumVersionRequest();
-            var response = this.httpClient.Send(request);
-            return (response.Content.ReadFromJsonAsync<MinimumGameVersionResponse>().Result, response);
-        }
-
-        /// <inheritdoc />
-        public async Task<(MinimumGameVersionResponse, HttpResponseMessage)> GetMinimumVersionAsync()
-        {
-            var request = BuildMinimumVersionRequest();
-            var response = await this.httpClient.SendAsync(request);
-            return (await response.Content.ReadFromJsonAsync<MinimumGameVersionResponse>(), response);
         }
 
         /// <inheritdoc />
@@ -452,7 +427,7 @@ namespace GoodFriend.Client
                 }
 
                 this.httpClient.Dispose();
-                this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress, this.GameVersion);
+                this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress);
 
                 if (wasConnected)
                 {

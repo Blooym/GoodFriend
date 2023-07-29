@@ -1,4 +1,3 @@
-use super::guards::minimum_game_version::MinimumGameVersionGuard;
 use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
 use rocket::response::stream::{Event, EventStream};
 use rocket::tokio::select;
@@ -12,7 +11,6 @@ pub fn routes() -> Vec<rocket::Route> {
 /// The server-sent player event stream that will relay player state updates to clients.
 #[get("/players")]
 pub async fn get_player_events(
-    _version_guard: MinimumGameVersionGuard,
     player_event_queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
     mut end: Shutdown,
 ) -> EventStream![] {

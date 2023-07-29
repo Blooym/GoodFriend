@@ -1,4 +1,3 @@
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using GoodFriend.Client;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
@@ -28,7 +27,7 @@ namespace GoodFriend.Plugin.Base
             GoodFriendApiClient = new GoodFriendClient(new GoodfriendClientOptions()
             {
                 BaseAddress = new(PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
-            }, Framework.Instance()->GameVersion.Base);
+            });
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }

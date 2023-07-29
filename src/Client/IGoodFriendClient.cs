@@ -51,15 +51,6 @@ namespace GoodFriend.Client
         Task<(MetadataResponse, HttpResponseMessage)> GetMetadataAsync();
 
         /// <summary>
-        ///     Gets the minimum allowed game version from the API.
-        /// </summary>
-        /// <returns>A <see cref="MinimumGameVersionResponse" /> instance.</returns>
-        (MinimumGameVersionResponse, HttpResponseMessage) GetMinimumVersion();
-
-        /// <inheritdoc cref="GetMinimumVersion" />
-        Task<(MinimumGameVersionResponse, HttpResponseMessage)> GetMinimumVersionAsync();
-
-        /// <summary>
         ///     Starts listening to the player event stream.
         /// </summary>
         void ConnectToPlayerEventStream();

@@ -1,7 +1,6 @@
 use super::responses::metadata::MetadataResponse;
-use super::responses::minimum_game_version::MinimumGameVersionResponse;
 use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
-use crate::config::base::get_config_cached;
+use crate::config::get_config_cached;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::tokio::sync::broadcast::Sender;
@@ -9,7 +8,7 @@ use rocket::Route;
 use rocket::State;
 
 pub fn routes() -> Vec<Route> {
-    routes![get_metadata, get_minversion, get_health]
+    routes![get_metadata, get_health]
 }
 
 /// Gets metadata about the current status of the API.
@@ -21,18 +20,6 @@ pub async fn get_metadata(
     Json(MetadataResponse {
         connected_clients: queue.receiver_count(),
         about: config.about,
-    })
-}
-
-/// Gets the minimum game version required to use the API.
-#[get("/minversion")]
-pub async fn get_minversion() -> Json<MinimumGameVersionResponse> {
-    Json(MinimumGameVersionResponse {
-        version_string: get_config_cached()
-            .security
-            .minimum_game_version
-            .to_string(),
-        version: get_config_cached().security.minimum_game_version,
     })
 }
 
