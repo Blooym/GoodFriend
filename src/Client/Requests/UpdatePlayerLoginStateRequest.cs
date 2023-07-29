@@ -14,9 +14,6 @@ namespace GoodFriend.Client.Requests
 
         public readonly record struct PutData
         {
-            private const uint ContentIdHashMinLength = GlobalRequestData.ContentIdHashMinLength;
-            private const uint ContentIdSaltMinLength = GlobalRequestData.ContentIdSaltMinLength;
-
             /// <summary>
             ///     The content id query parameter name.
             /// </summary>
@@ -60,7 +57,7 @@ namespace GoodFriend.Client.Requests
             {
                 get => this.contentIdHashBackingField; init
                 {
-                    if (value.Length < ContentIdHashMinLength)
+                    if (value.Length < GlobalRequestData.ContentIdHashMinLength)
                     {
                         throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
                     }
@@ -80,7 +77,7 @@ namespace GoodFriend.Client.Requests
             {
                 get => this.contentIdSaltBackingField; init
                 {
-                    if (value.Length < ContentIdSaltMinLength)
+                    if (value.Length < GlobalRequestData.ContentIdSaltMinLength)
                     {
                         throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
                     }

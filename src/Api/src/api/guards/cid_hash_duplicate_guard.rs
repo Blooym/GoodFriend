@@ -17,7 +17,7 @@ static SEEN_CONTENT_ID_HASHES: Mutex<Vec<String>> = Mutex::new(Vec::new());
 /// Used to prevent spamming of the same event and improves privacy by removing the ability track the same
 /// hash across multiple events.
 ///
-/// Note: This guard will not fail a request if the Content ID hash is missing.
+/// Note: This guard will fail if the `content_id_hash` query parameter is missing.
 pub struct CidHashDuplicateGuard;
 
 #[rocket::async_trait]
