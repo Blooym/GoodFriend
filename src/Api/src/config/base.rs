@@ -78,19 +78,4 @@ impl Config {
             Err(e) => Err(e),
         }
     }
-
-    /// Migrates the config from version 0 to version 1.
-    fn migrate_v0_to_v1(config_file_path: &str) {
-        let mut config_toml = fs::read_to_string(config_file_path).unwrap_or_default();
-
-        if !config_toml.contains("version = 0") {
-            return;
-        }
-
-        config_toml = config_toml
-            .replace("version = 0", "version = 1")
-            .replace("[minimum_game_version]", "[security.minimum_game_version]");
-
-        fs::write(config_file_path, config_toml).unwrap_or_default();
-    }
 }
