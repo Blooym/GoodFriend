@@ -89,8 +89,7 @@ impl Config {
 
         config_toml = config_toml
             .replace("version = 0", "version = 1")
-            .replace("[minimum_game_version]", "[security.minimum_game_version]")
-            .replace("[blocked_user_agents]", "[security.blocked_user_agents]");
+            .replace("[minimum_game_version]", "[security.minimum_game_version]");
 
         fs::write(config_file_path, config_toml).unwrap_or_default();
     }

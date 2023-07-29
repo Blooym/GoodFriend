@@ -54,7 +54,7 @@ impl<'r> FromRequest<'r> for CidHashDuplicateGuard {
     }
 }
 
-/// The error that can occur when checking the user agent.
+/// The error that can occur when checking for duplicate content id hashes.
 #[derive(Debug)]
 pub enum UpdateSpamGuardError {
     ContentIdDuplicate,

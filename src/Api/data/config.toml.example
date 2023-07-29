@@ -11,8 +11,6 @@ ignore = true
 [about.custom_urls]
 "Example" = "https://example.com"
 
-[security.blocked_user_agents]
-
 [security.minimum_game_version]
 year = "2023"
 month = "05"
