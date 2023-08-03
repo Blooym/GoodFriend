@@ -3,11 +3,11 @@ namespace GoodFriend.Client.Requests
     /// <summary>
     ///     Represents a request for a stream of player events.
     /// </summary>
-    internal static class PlayerEventsRequest
+    public static class PlayerEventsRequest
     {
         /// <summary>
-        /// The endpoint url with a proceeding slash.
+        /// The endpoint url without a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "api/events/players";
+        internal const string EndpointUrl = "api/playerevents/stream";
     }
 }

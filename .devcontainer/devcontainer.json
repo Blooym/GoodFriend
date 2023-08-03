@@ -12,7 +12,8 @@
 				"kreativ-software.csharpextensions",
 				"fernandoescolar.vscode-solution-explorer",
 				"rust-lang.rust-analyzer",
-				"tamasfe.even-better-toml"
+				"tamasfe.even-better-toml",
+				"serayuzgur.crates"
 			]
 		}
 	}

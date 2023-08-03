@@ -19,27 +19,37 @@ namespace GoodFriend.Client
         /// <summary>
         ///     The current connection state of the client to player event stream.
         /// </summary>
-        EventStreamConnectionState PlayerStreamConnectionState { get; }
+        EventStreamConnectionState PlayerEventStreamConnectionState { get; }
 
         /// <summary>
         ///     Sends the players login state to the API.
         /// </summary>
         /// <param name="requestData">The data to send.</param>
         /// <returns>A <see cref="RestResponse" /> instance.</returns>
-        HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PutData requestData);
+        HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PostData requestData);
 
         /// <inheritdoc cref="SendLogin(UpdatePlayerLoginStateRequest)" />
-        Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PutData requestData);
+        Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PostData requestData);
 
         /// <summary>
         ///     Sends the players world change to the API.
         /// </summary>
         /// <param name="requestData">The data to send.</param>
         /// <returns>A <see cref="RestResponse" /> instance.</returns>
-        HttpResponseMessage SendWorldChange(UpdatePlayerWorldRequest.PutData requestData);
+        HttpResponseMessage SendWorldChange(UpdatePlayerCurrentWorldRequest.PostData requestData);
 
         /// <inheritdoc cref="SendWorldChange(UpdatePlayerWorldRequest.PutData) />
-        Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerWorldRequest.PutData requestData);
+        Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerCurrentWorldRequest.PostData requestData);
+
+        /// <summary>
+        ///     Sends an announcement to the API.
+        /// </summary>
+        /// <param name="requestData">The data to send.</param>
+        /// <returns>A <see cref="RestResponse" /> instance.</returns>
+        HttpResponseMessage SendAnnouncement(AnnouncementRequest.PostData requestData);
+
+        /// <inheritdoc cref="SendAnnouncement(AnnouncementRequest.PostData)" />
+        Task<HttpResponseMessage> SendAnnouncementAsync(AnnouncementRequest.PostData requestData);
 
         /// <summary>
         ///     Gets metadata from the API.
@@ -49,6 +59,15 @@ namespace GoodFriend.Client
 
         /// <inheritdoc cref="GetMetadata" />
         Task<(MetadataResponse, HttpResponseMessage)> GetMetadataAsync();
+
+        /// <summary>
+        ///     Gets the features the API supports.
+        /// </summary>
+        /// <returns>A <see cref="FeaturesResponse" /> instance.</returns>
+        (FeaturesResponse, HttpResponseMessage) GetFeatures();
+
+        /// <inheritdoc cref="GetFeatures" />
+        Task<(FeaturesResponse, HttpResponseMessage)> GetFeaturesAsync();
 
         /// <summary>
         ///     Starts listening to the player event stream.
@@ -61,9 +80,13 @@ namespace GoodFriend.Client
         void DisconnectFromPlayerEventStream();
 
         /// <summary>
-        ///     Updates the options used to configure the client.
+        ///    Starts listening to the announcements stream.
         /// </summary>
-        /// <param name="options">The new options.</param>
-        void UpdateOptions(GoodfriendClientOptions options);
+        void ConnectToAnnouncementsStream();
+
+        /// <summary>
+        ///     Stops listening to the announcements stream.
+        /// </summary>
+        void DisconnectFromAnnouncementsStream();
     }
 }

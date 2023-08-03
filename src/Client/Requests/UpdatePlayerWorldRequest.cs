@@ -5,30 +5,19 @@ namespace GoodFriend.Client.Requests
     /// <summary>
     ///     Represents a request to update the players world.
     /// </summary>
-    public static class UpdatePlayerWorldRequest
+    public static class UpdatePlayerCurrentWorldRequest
     {
         /// <summary>
-        ///     The endpoint url with a proceeding slash.
+        ///     The endpoint url without a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "api/update/world";
+        internal const string EndpointUrl = "api/playerevents/currentworld";
 
-        public readonly record struct PutData
+        public readonly record struct PostData
         {
-
             /// <summary>
-            ///     The content id query parameter name.
+            ///     The name of the header to send the ContentIdHash in.
             /// </summary>
-            internal const string ContentIdParam = "content_id_hash";
-
-            /// <summary>
-            ///     The content id salt query parameter name.
-            /// </summary>
-            internal const string ContentIdSaltParam = "content_id_salt";
-
-            /// <summary>
-            ///     The world id query parameter name.
-            /// </summary>
-            internal const string WorldIdParam = "world_id";
+            internal const string ContentIdHashHeader = "X-Content-Id-Hash";
 
             private readonly string contentIdHashBackingField;
 

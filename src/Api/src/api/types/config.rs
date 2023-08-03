@@ -1,15 +1,9 @@
 use cached::proc_macro::cached;
 use rocket::serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::{env, fs, path::Path};
-use validator::{Validate, ValidationErrors};
-
-use super::{about::ApiAboutConfig, security::SecurityConfig};
-
-/// Gets the currently cached config.
-#[cached(time = 300)]
-pub fn get_config_cached() -> Config {
-    Config::get().unwrap_or_default()
-}
+use url::Url;
+use validator::{Validate, ValidationError, ValidationErrors};
 
 /// Defines the applications configuration.
 #[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Validate)]
@@ -17,7 +11,7 @@ pub fn get_config_cached() -> Config {
 pub struct Config {
     version: u8,
     pub about: ApiAboutConfig,
-    pub security: SecurityConfig,
+    pub authentication: ApiAuthenticationConfig,
 }
 
 impl Default for Config {
@@ -25,9 +19,15 @@ impl Default for Config {
         Self {
             version: 1,
             about: ApiAboutConfig::default(),
-            security: SecurityConfig::default(),
+            authentication: ApiAuthenticationConfig::default(),
         }
     }
+}
+
+/// Gets the currently cached config or caches the current config if expired.
+#[cached(time = 120)]
+pub fn get_config_cached() -> Config {
+    Config::get().unwrap_or_default()
 }
 
 impl Config {
@@ -68,9 +68,6 @@ impl Config {
             return Ok(config);
         }
 
-        // Do migrations here.
-        Self::migrate_v0_to_v1(&config_file_path);
-
         let config_toml = fs::read_to_string(&config_file_path).unwrap_or_default();
         let config: Self = toml::from_str(&config_toml).unwrap_or_default();
         match config.validate() {
@@ -78,4 +75,51 @@ impl Config {
             Err(e) => Err(e),
         }
     }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Validate)]
+#[serde(crate = "rocket::serde")]
+pub struct ApiAboutConfig {
+    pub identifier: String,
+    pub banner_url: String,
+    pub motd: String,
+    #[validate(custom = "validate_custom_urls")]
+    pub custom_urls: HashMap<String, String>,
+}
+
+/// Validates the custom urls, key is url name, value is url.
+fn validate_custom_urls(urls: &HashMap<String, String>) -> Result<(), ValidationError> {
+    if urls.is_empty() {
+        return Ok(());
+    }
+
+    for url in urls.values() {
+        match Url::parse(url) {
+            Ok(_) => (),
+            Err(_) => {
+                return Err(ValidationError::new(
+                    "Came across a URL that could not be parsed when validating custom urls.",
+                ));
+            }
+        }
+    }
+
+    Ok(())
+}
+
+impl Default for ApiAboutConfig {
+    fn default() -> Self {
+        Self {
+            identifier: String::from("GoodFriend"),
+            banner_url: String::from("https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"),
+            custom_urls: HashMap::default(),
+            motd: String::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Validate, Default)]
+#[serde(crate = "rocket::serde")]
+pub struct ApiAuthenticationConfig {
+    pub tokens: Vec<String>,
 }

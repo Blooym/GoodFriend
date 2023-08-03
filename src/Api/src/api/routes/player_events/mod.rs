@@ -1,4 +1,8 @@
-use crate::types::content_id::{ContentIdHash, ContentIdSalt};
+mod stream;
+mod update_loginstate;
+mod update_world;
+
+use crate::api::types::content_id::{ContentIdHash, ContentIdSalt};
 use rocket::serde::{Deserialize, Serialize};
 
 /// Represents a player state update that is sent to clients.
@@ -26,4 +30,12 @@ pub enum PlayerStateUpdateType {
     WorldChange {
         world_id: u32,
     },
+}
+
+pub fn routes() -> Vec<rocket::Route> {
+    routes![
+        update_loginstate::post_loginstate,
+        update_world::post_world,
+        stream::get_stream
+    ]
 }

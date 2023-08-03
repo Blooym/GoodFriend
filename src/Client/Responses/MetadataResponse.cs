@@ -11,10 +11,10 @@ namespace GoodFriend.Client.Responses
     public readonly record struct MetadataResponse
     {
         /// <summary>
-        ///     The current number of connected clients.
+        ///     The connections to the API.
         /// </summary>
-        [JsonPropertyName("connected_clients")]
-        public readonly uint ConnectedClients { get; init; }
+        [JsonPropertyName("connections")]
+        public readonly Connections Connections { get; init; }
 
         /// <summary>
         ///     The about section of the API.
@@ -39,13 +39,13 @@ namespace GoodFriend.Client.Responses
         ///     The URL to the banner of the API.
         /// </summary>
         [JsonPropertyName("banner_url")]
-        public readonly Uri BannerUrl { get; init; }
+        public readonly Uri? BannerUrl { get; init; }
 
         /// <summary>
         ///     The message of the day.
         /// </summary>
         [JsonPropertyName("motd")]
-        public readonly Motd Motd { get; init; }
+        public readonly string Motd { get; init; }
 
         /// <summary>
         ///     Custom URLs.
@@ -54,22 +54,13 @@ namespace GoodFriend.Client.Responses
         public readonly Dictionary<string, Uri> CustomUrls { get; init; }
     }
 
-    /// <summary>
-    ///     Represents a message of the day.
-    /// </summary>
     [Serializable]
-    public readonly record struct Motd
+    public readonly record struct Connections
     {
-        /// <summary>
-        ///     The message content of the "message of the day".
-        /// </summary>
-        [JsonPropertyName("message")]
-        public readonly string Message { get; init; }
+        [JsonPropertyName("player_events")]
+        public readonly uint PlayerEvents { get; init; }
 
-        /// <summary>
-        ///     Whether or not the API wants the client to ignore this message.
-        /// </summary>
-        [JsonPropertyName("ignore")]
-        public readonly bool Ignore { get; init; }
+        [JsonPropertyName("announcements")]
+        public readonly uint Announcements { get; init; }
     }
 }

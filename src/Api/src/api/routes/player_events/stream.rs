@@ -1,16 +1,12 @@
-use super::responses::player_event::EventStreamPlayerStateUpdateResponse;
+use super::EventStreamPlayerStateUpdateResponse;
 use rocket::response::stream::{Event, EventStream};
 use rocket::tokio::select;
 use rocket::tokio::sync::broadcast::{error::RecvError, Sender};
 use rocket::{Shutdown, State};
 
-pub fn routes() -> Vec<rocket::Route> {
-    routes![get_player_events]
-}
-
 /// The server-sent player event stream that will relay player state updates to clients.
-#[get("/players")]
-pub async fn get_player_events(
+#[get("/stream")]
+pub async fn get_stream(
     player_event_queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
     mut end: Shutdown,
 ) -> EventStream![] {

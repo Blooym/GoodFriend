@@ -8,36 +8,16 @@ namespace GoodFriend.Client.Requests
     public static class UpdatePlayerLoginStateRequest
     {
         /// <summary>
-        ///     The endpoint url with a proceeding slash.
+        ///     The endpoint url without a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "api/update/loginstate";
+        internal const string EndpointUrl = "api/playerevents/loginstate";
 
-        public readonly record struct PutData
+        public readonly record struct PostData
         {
             /// <summary>
-            ///     The content id query parameter name.
+            ///     The name of the header to send the ContentIdHash in.
             /// </summary>
-            internal const string ContentIdParam = "content_id_hash";
-
-            /// <summary>
-            ///     The content id salt query parameter name.
-            /// </summary>
-            internal const string ContentIDSaltParam = "content_id_salt";
-
-            /// <summary>
-            ///     The datacenter id query parameter name.
-            /// </summary>
-            internal const string DatacenterIdParam = "datacenter_id";
-
-            /// <summary>
-            ///     The world id query parameter name.
-            /// </summary>
-            internal const string WorldIdParam = "world_id";
-
-            /// <summary>
-            ///     The territory id query parameter name.
-            /// </summary>
-            internal const string TerritoryIdParam = "territory_id";
+            internal const string ContentIdHashHeader = "X-Content-Id-Hash";
 
             /// <summary>
             ///     The "is logged in" query parameter name.

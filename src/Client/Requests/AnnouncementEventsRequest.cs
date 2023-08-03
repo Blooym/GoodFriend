@@ -1,13 +1,13 @@
 namespace GoodFriend.Client.Requests
 {
     /// <summary>
-    ///     Represents a request for metadata.
+    ///     Represents a request for a stream of announcements.
     /// </summary>
-    public static class MetadataRequest
+    public static class AnnouncementEventsRequest
     {
         /// <summary>
         ///     The endpoint url without a proceeding slash.
         /// </summary>
-        internal const string EndpointUrl = "api/metadata";
+        internal const string EndpointUrl = "api/announcements/stream";
     }
 }
