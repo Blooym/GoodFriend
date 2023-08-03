@@ -25,6 +25,10 @@ namespace GoodFriend.Plugin
         /// <summary>
         ///     Disposes of the plugin.
         /// </summary>
-        public void Dispose() => Services.Dispose();
+        public void Dispose()
+        {
+            Services.Dispose();
+            SirenCore.Dispose();
+        }
     }
 }

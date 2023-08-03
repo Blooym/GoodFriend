@@ -277,7 +277,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
+                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PostData()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -299,7 +299,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     Logger.Debug("Sending logout event.");
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
+                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PostData()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,

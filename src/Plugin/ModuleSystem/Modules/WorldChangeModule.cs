@@ -196,7 +196,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                 var salt = CryptoUtil.GenerateSalt();
                 var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
-                ApiClient.SendWorldChangeAsync(new UpdatePlayerWorldRequest.PutData()
+                ApiClient.SendWorldChangeAsync(new UpdatePlayerCurrentWorldRequest.PostData()
                 {
                     ContentIdHash = hash,
                     ContentIdSalt = salt,

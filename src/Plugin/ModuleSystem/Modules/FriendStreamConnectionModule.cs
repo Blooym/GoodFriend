@@ -75,7 +75,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
-            switch (ApiClient.PlayerStreamConnectionState)
+            switch (ApiClient.PlayerEventStreamConnectionState)
             {
                 case EventStreamConnectionState.Connected:
                     SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
@@ -166,12 +166,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     If the player event stream is connected or connecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamConnected() => ApiClient.PlayerStreamConnectionState is EventStreamConnectionState.Connected or EventStreamConnectionState.Connecting;
+        private static bool IsPlayerStreamConnected() => ApiClient.PlayerEventStreamConnectionState is EventStreamConnectionState.Connected or EventStreamConnectionState.Connecting;
 
         /// <summary>
         ///     If the player event stream is disconnected or disconnecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamDisconnected() => ApiClient.PlayerStreamConnectionState is EventStreamConnectionState.Disconnected or EventStreamConnectionState.Disconnecting;
+        private static bool IsPlayerStreamDisconnected() => ApiClient.PlayerEventStreamConnectionState is EventStreamConnectionState.Disconnected or EventStreamConnectionState.Disconnecting;
     }
 }

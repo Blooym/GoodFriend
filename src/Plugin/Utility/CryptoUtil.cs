@@ -2,14 +2,11 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-#if RELEASE
-using System.Reflection;
-#endif
-
 namespace GoodFriend.Plugin.Utility
 {
     internal static class CryptoUtil
     {
+#if !DEBUG
         /// <summary>
         ///     Gets signature bytes for the current assembly.
         /// </summary>
@@ -18,12 +15,9 @@ namespace GoodFriend.Plugin.Utility
         ///    read the hashed values unless this value is reverse engineered - although it will still change on every
         ///    build.
         /// </remarks>
-        /// <returns>The signature bytes in release builds, otherwise an empty array to for development builds.</returns>
-        private static byte[] GetSignatureBytes() =>
-#if RELEASE
-            Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray();
-#else
-            Array.Empty<byte>(); // Easier debugging across dev builds.
+        /// <returns>The signature bytes.</returns>
+        // to hex string
+        private static string GetSignatureBytes() => Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString();
 #endif
 
         /// <summary>
@@ -45,6 +39,15 @@ namespace GoodFriend.Plugin.Utility
         /// <param name="value">The value to hash.</param>
         /// <param name="salt">The salt to use.</param>
         /// <returns>The hashed value.</returns>
-        public static string HashValue(object value, string salt) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{value}{salt}{GetSignatureBytes()}")));
+        public static string HashValue(object value, string salt)
+        {
+#if DEBUG
+            var toHash = $"{value}{salt}";
+#else
+            var toHash = $"{value}{salt}{GetSignatureBytes()}";
+#endif
+            var outcome = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(toHash)));
+            return outcome;
+        }
     }
 }

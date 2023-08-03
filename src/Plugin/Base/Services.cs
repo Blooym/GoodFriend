@@ -28,6 +28,7 @@ namespace GoodFriend.Plugin.Base
             {
                 BaseAddress = new(PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
             });
+            GoodFriendApiClient.SendAnnouncement(new());
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }
