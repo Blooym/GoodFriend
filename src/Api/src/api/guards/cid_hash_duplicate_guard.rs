@@ -39,11 +39,12 @@ impl<'r> FromRequest<'r> for CidHashDuplicateGuard {
             hashes.remove(0);
         }
 
-        let content_id = req
+        match req
             .headers()
             .get_one(CONTENT_ID_HASH_HEADER)
-            .map(|s| s.to_string());
-        match content_id.ok_or(()) {
+            .map(|s| s.to_string())
+            .ok_or(())
+        {
             Ok(content_id) => {
                 {
                     if content_id.is_empty() {

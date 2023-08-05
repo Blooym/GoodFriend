@@ -54,7 +54,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.OnPlayerStreamMessage += this.OnPlayerStreamMessage;
+            ApiClient.PlayerEventStream.OnStreamMessage += this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.OnPlayerStreamMessage -= this.OnPlayerStreamMessage;
+            ApiClient.PlayerEventStream.OnStreamMessage -= this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -196,7 +196,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                 var salt = CryptoUtil.GenerateSalt();
                 var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
-                ApiClient.SendWorldChangeAsync(new UpdatePlayerCurrentWorldRequest.PostData()
+                ApiClient.SendWorldChangeAsync(new UpdatePlayerCurrentWorldRequest.HttpPost()
                 {
                     ContentIdHash = hash,
                     ContentIdSalt = salt,

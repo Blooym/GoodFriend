@@ -3,7 +3,7 @@ version = 1
 [about]
 identifier = "Example Server"
 banner_url = "https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"
-motd = "Hello! This is an example message of the day!"
+description = "Hello! This is an example Description!"
 
 [about.custom_urls]
 "Example" = "https://example.com"

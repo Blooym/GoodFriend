@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GoodFriend.Client.Http;
 using GoodFriend.Client.Requests;
 using GoodFriend.Client.Responses;
 
@@ -17,39 +18,44 @@ namespace GoodFriend.Client
         GoodfriendClientOptions Options { get; }
 
         /// <summary>
-        ///     The current connection state of the client to player event stream.
+        ///     The announcement stream.
         /// </summary>
-        EventStreamConnectionState PlayerEventStreamConnectionState { get; }
+        SSEClient<AnnouncementStreamUpdate> AnnouncementStream { get; }
+
+        /// <summary>
+        ///     The player event stream.
+        /// </summary>
+        SSEClient<PlayerEventStreamUpdate> PlayerEventStream { get; }
 
         /// <summary>
         ///     Sends the players login state to the API.
         /// </summary>
         /// <param name="requestData">The data to send.</param>
         /// <returns>A <see cref="RestResponse" /> instance.</returns>
-        HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.PostData requestData);
+        HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.HttpPost requestData);
 
         /// <inheritdoc cref="SendLogin(UpdatePlayerLoginStateRequest)" />
-        Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.PostData requestData);
+        Task<HttpResponseMessage> SendLoginStateAsync(UpdatePlayerLoginStateRequest.HttpPost requestData);
 
         /// <summary>
         ///     Sends the players world change to the API.
         /// </summary>
         /// <param name="requestData">The data to send.</param>
         /// <returns>A <see cref="RestResponse" /> instance.</returns>
-        HttpResponseMessage SendWorldChange(UpdatePlayerCurrentWorldRequest.PostData requestData);
+        HttpResponseMessage SendWorldChange(UpdatePlayerCurrentWorldRequest.HttpPost requestData);
 
         /// <inheritdoc cref="SendWorldChange(UpdatePlayerWorldRequest.PutData) />
-        Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerCurrentWorldRequest.PostData requestData);
+        Task<HttpResponseMessage> SendWorldChangeAsync(UpdatePlayerCurrentWorldRequest.HttpPost requestData);
 
         /// <summary>
         ///     Sends an announcement to the API.
         /// </summary>
         /// <param name="requestData">The data to send.</param>
         /// <returns>A <see cref="RestResponse" /> instance.</returns>
-        HttpResponseMessage SendAnnouncement(AnnouncementRequest.PostData requestData);
+        HttpResponseMessage SendAnnouncement(AnnouncementRequest.HttpPost requestData);
 
-        /// <inheritdoc cref="SendAnnouncement(AnnouncementRequest.PostData)" />
-        Task<HttpResponseMessage> SendAnnouncementAsync(AnnouncementRequest.PostData requestData);
+        /// <inheritdoc cref="SendAnnouncement(AnnouncementRequest.HttpPost)" />
+        Task<HttpResponseMessage> SendAnnouncementAsync(AnnouncementRequest.HttpPost requestData);
 
         /// <summary>
         ///     Gets metadata from the API.
@@ -68,25 +74,5 @@ namespace GoodFriend.Client
 
         /// <inheritdoc cref="GetFeatures" />
         Task<(FeaturesResponse, HttpResponseMessage)> GetFeaturesAsync();
-
-        /// <summary>
-        ///     Starts listening to the player event stream.
-        /// </summary>
-        void ConnectToPlayerEventStream();
-
-        /// <summary>
-        ///     Stops listening to the player event stream.
-        /// </summary>
-        void DisconnectFromPlayerEventStream();
-
-        /// <summary>
-        ///    Starts listening to the announcements stream.
-        /// </summary>
-        void ConnectToAnnouncementsStream();
-
-        /// <summary>
-        ///     Stops listening to the announcements stream.
-        /// </summary>
-        void DisconnectFromAnnouncementsStream();
     }
 }

@@ -152,12 +152,6 @@
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
     <value>Über die Instanz</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
-    <value>Du hast Nachrichten des Tages bereits deaktiviert.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
-    <value>Wenn du dich anmeldest, wirst du keine Nachrichten des Tages mehr angezeigt bekommen. Dies kannst du in den Instanz-Info-Einstellungen wieder aktivieren.</value>
-  </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Fehler beim Abrufen der Metadaten, versuche es später erneut.</value>
   </data>
@@ -167,14 +161,11 @@
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>Derzeit sind {0} Spieler online</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Title" xml:space="preserve">
     <value>Nachricht des Tages</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Unset" xml:space="preserve">
     <value>Es wurde keine Nachricht des Tages festgelegt.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>MOTD beim Login anzeigen</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Benutzerdefinierte Links</value>
@@ -184,9 +175,6 @@
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
     <value>Die letzte Metadatenaktualisierung ist fehlgeschlagen, derzeit werden zwischengespeicherte Daten verwendet.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
-    <value>[Nachrichten bei Anmeldung deaktivieren]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
     <value>Dieses Modul ist auf einen Fehler gestoßen und wurde deaktiviert. Bitte überprüfe die Logs für weitere Informationen.</value>

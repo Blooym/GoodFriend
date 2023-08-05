@@ -2,8 +2,12 @@ using System.Text.Json;
 
 namespace GoodFriend.Client.Json
 {
+    /// <summary>
+    ///     A naming policy that converts names to snake_case.
+    /// </summary>
     internal sealed class SnakeCaseNamingPolicy : JsonNamingPolicy
     {
+        /// <inheritdoc />
         public override string ConvertName(string name)
         {
             var result = string.Empty;
@@ -14,7 +18,6 @@ namespace GoodFriend.Client.Json
                 {
                     result += '_';
                 }
-
                 result += char.ToLower(c);
                 previous = c;
             }

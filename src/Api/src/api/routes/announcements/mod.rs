@@ -9,9 +9,8 @@ use uuid::Uuid;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 enum AnnouncementKind {
-    Information,
+    Informational,
     Maintenance,
-    Update,
     Critical,
 }
 

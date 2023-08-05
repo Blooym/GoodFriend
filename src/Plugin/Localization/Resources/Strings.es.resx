@@ -152,12 +152,6 @@
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
     <value>Información de instancia</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
-    <value>Los mensajes del día ya fueron desactivados anteriormente.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
-    <value>Ya no se verán mensajes del día al iniciar sesión. Se pueden reactivar en la configuración de información de instancia.</value>
-  </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Error al obtener metadatos, se intentará de nuevo más tarde.</value>
   </data>
@@ -167,14 +161,11 @@
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>Actualmente hay {0} jugadores en línea</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Title" xml:space="preserve">
     <value>Mensaje del día</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Unset" xml:space="preserve">
     <value>No se ha establecido ningún mensaje del día.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>Mostrar el mensaje del día al iniciar sesión</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Enlaces personalizados</value>
@@ -184,9 +175,6 @@
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
     <value>La última actualización de metadatos falló. Actualmente se están usando datos en caché.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
-    <value>[Desactivar mensajes al iniciar sesión]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
     <value>Este módulo ha encontrado un error mientras se ejecutaba y fue desactivado. Por favor, compruebe los registros para obtener más información.</value>

@@ -5,6 +5,7 @@ namespace GoodFriend.Client.Requests
     /// </summary>
     public static class GlobalRequestData
     {
+        public const string AuthenticationTokenHeader = "X-Auth-Token";
         public const uint ContentIdHashMinLength = 64;
         public const uint ContentIdSaltMinLength = 32;
     }

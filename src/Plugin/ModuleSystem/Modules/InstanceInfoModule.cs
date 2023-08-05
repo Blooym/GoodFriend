@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
 using GoodFriend.Client.Responses;
@@ -41,7 +40,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public override uint DisplayWeight { get; } = 1;
 
         /// <inheritdoc />
-        protected override void EnableAction() => Task.Run(this.UpdateMetadataSafely);
+        protected override void EnableAction() { }
 
         /// <inheritdoc />
         protected override void DisableAction() { }
@@ -52,7 +51,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(20))
+            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(60))
             {
                 Task.Run(this.UpdateMetadataSafely);
             }
@@ -88,9 +87,16 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
             if (ImGui.BeginChild("InstanceInfoChild"))
             {
-                // MOTD.
-                SiGui.Heading(Strings.Modules_InstanceInfoModule_Motd_Title);
-                SiGui.TextWrapped(string.IsNullOrWhiteSpace(metadata.About.Motd) ? Strings.Modules_InstanceInfoModule_Motd_Unset : metadata.About.Motd);
+                // Description.
+                SiGui.Heading(Strings.Modules_InstanceInfoModule_Description_Title);
+                if (string.IsNullOrWhiteSpace(metadata.About.Description))
+                {
+                    SiGui.TextDisabledWrapped(Strings.Modules_InstanceInfoModule_Description_Unset);
+                }
+                else
+                {
+                    SiGui.TextWrapped(metadata.About.Description);
+                }
                 ImGui.Dummy(Spacing.SectionSpacing);
 
                 // Links.
@@ -143,12 +149,5 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 Logger.Warning($"Failed to get metadata: {e.Message}");
             }
         }
-
-        /// <summary>
-        ///     Called when the update metadata timer elapses to update the saved metadata.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UpdateMetadataTimerOnElapsed(object? sender, ElapsedEventArgs e) => this.UpdateMetadataSafely();
     }
 }

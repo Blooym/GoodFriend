@@ -1,29 +1,9 @@
 using System;
 using System.Text.Json.Serialization;
+using GoodFriend.Client.Responses.Enums;
 
 namespace GoodFriend.Client.Responses
 {
-    /// <summary>
-    ///     The kind of announcement being made.
-    /// </summary>
-    public enum AnnouncementKind
-    {
-        Information,
-        Maintenance,
-        Update,
-        Critical,
-    }
-
-    /// <summary>
-    ///     The cause/reason for the announcement.
-    /// </summary>
-    public enum AnnouncementCause
-    {
-        Manual,
-        Automatic,
-        Scheduled,
-    }
-
     /// <summary>
     ///     Represents a response from the announcement stream.
     /// </summary>
@@ -40,6 +20,6 @@ namespace GoodFriend.Client.Responses
         public AnnouncementKind Kind { get; set; }
 
         [JsonPropertyName("cause"), JsonConverter(typeof(JsonStringEnumConverter))]
-        public AnnouncementKind Cause { get; set; }
+        public AnnouncementCause Cause { get; set; }
     }
 }

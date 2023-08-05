@@ -1,5 +1,5 @@
 using System;
-using GoodFriend.Client;
+using GoodFriend.Client.Http;
 using GoodFriend.Client.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
@@ -9,7 +9,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class PlayerStreamConnectionModule : ModuleBase
+    internal sealed class StreamPlayerEventsModule : ModuleBase
     {
         /// <summary>
         ///     The last time a heartbeat was received from the player event stream.
@@ -45,14 +45,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
             {
-                ApiClient.ConnectToPlayerEventStream();
+                ApiClient.PlayerEventStream.Connect();
             }
 
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.OnPlayerStreamHeartbeat += this.OnPlayerStreamHeartbeat;
-            ApiClient.OnPlayerStreamMessage += this.OnPlayerStreamEvent;
-            ApiClient.OnPlayerStreamException += this.OnPlayerStreamException;
+            ApiClient.PlayerEventStream.OnStreamHeartbeat += this.OnPlayerStreamHeartbeat;
+            ApiClient.PlayerEventStream.OnStreamMessage += this.OnPlayerStreamEvent;
+            ApiClient.PlayerEventStream.OnStreamException += this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -60,14 +60,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                ApiClient.DisconnectFromPlayerEventStream();
+                ApiClient.PlayerEventStream.Connect();
             }
 
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.OnPlayerStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
-            ApiClient.OnPlayerStreamMessage -= this.OnPlayerStreamEvent;
-            ApiClient.OnPlayerStreamException -= this.OnPlayerStreamException;
+            ApiClient.PlayerEventStream.OnStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
+            ApiClient.PlayerEventStream.OnStreamMessage -= this.OnPlayerStreamEvent;
+            ApiClient.PlayerEventStream.OnStreamException -= this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -75,27 +75,22 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
-            switch (ApiClient.PlayerEventStreamConnectionState)
+            switch (ApiClient.PlayerEventStream.ConnectionState)
             {
-                case EventStreamConnectionState.Connected:
+                case SSEConnectionState.Connected:
                     SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
-                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description);
                     break;
-                case EventStreamConnectionState.Connecting:
+                case SSEConnectionState.Connecting:
                     SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting);
-                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description);
                     break;
-                case EventStreamConnectionState.Disconnected:
+                case SSEConnectionState.Disconnected:
                     SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected);
-                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description);
                     break;
-                case EventStreamConnectionState.Disconnecting:
+                case SSEConnectionState.Disconnecting:
                     SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting);
-                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description);
                     break;
-                case EventStreamConnectionState.Exception:
+                case SSEConnectionState.Exception:
                     SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception);
-                    SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description);
                     break;
             }
             ImGui.Dummy(Spacing.SectionSpacing);
@@ -115,7 +110,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamDisconnected())
             {
-                ApiClient.ConnectToPlayerEventStream();
+                ApiClient.PlayerEventStream.Connect();
             }
         }
 
@@ -128,7 +123,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                ApiClient.DisconnectFromPlayerEventStream();
+                ApiClient.PlayerEventStream.Disconnect();
             }
         }
 
@@ -166,12 +161,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     If the player event stream is connected or connecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamConnected() => ApiClient.PlayerEventStreamConnectionState is EventStreamConnectionState.Connected or EventStreamConnectionState.Connecting;
+        private static bool IsPlayerStreamConnected() => ApiClient.PlayerEventStream.ConnectionState is SSEConnectionState.Connected or SSEConnectionState.Connecting;
 
         /// <summary>
         ///     If the player event stream is disconnected or disconnecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamDisconnected() => ApiClient.PlayerEventStreamConnectionState is EventStreamConnectionState.Disconnected or EventStreamConnectionState.Disconnecting;
+        private static bool IsPlayerStreamDisconnected() => ApiClient.PlayerEventStream.ConnectionState is SSEConnectionState.Disconnected or SSEConnectionState.Disconnecting;
     }
 }

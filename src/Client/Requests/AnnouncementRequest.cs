@@ -1,3 +1,7 @@
+using System;
+using System.Text.Json.Serialization;
+using GoodFriend.Client.Responses.Enums;
+
 namespace GoodFriend.Client.Requests
 {
     /// <summary>
@@ -10,6 +14,31 @@ namespace GoodFriend.Client.Requests
         /// </summary>
         internal const string EndpointUrl = "api/announcements/send";
 
-        public readonly record struct PostData { }
+        [Serializable]
+        public readonly record struct HttpPost
+        {
+            /// <summary>
+            ///     The authentication token to use with the request.
+            /// </summary>
+            [JsonIgnore]
+            public string AuthenticationToken { get; init; }
+
+            /// <summary>
+            ///     The message to send.
+            /// </summary>
+            public required string Message { get; init; }
+
+            /// <summary>
+            ///     The kind of announcement to send.
+            /// </summary>
+            [JsonConverter(typeof(JsonStringEnumConverter))]
+            public required AnnouncementKind Kind { get; init; }
+
+            /// <summary>
+            ///     The cause of the announcement.
+            /// </summary>
+            [JsonConverter(typeof(JsonStringEnumConverter))]
+            public required AnnouncementCause Cause { get; init; }
+        }
     }
 }

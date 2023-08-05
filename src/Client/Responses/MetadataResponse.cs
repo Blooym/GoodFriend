@@ -42,10 +42,10 @@ namespace GoodFriend.Client.Responses
         public readonly Uri? BannerUrl { get; init; }
 
         /// <summary>
-        ///     The message of the day.
+        ///     The description of the API.
         /// </summary>
-        [JsonPropertyName("motd")]
-        public readonly string Motd { get; init; }
+        [JsonPropertyName("description")]
+        public readonly string Description { get; init; }
 
         /// <summary>
         ///     Custom URLs.

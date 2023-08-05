@@ -23,17 +23,17 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         protected static GoodFriendClient ApiClient => Services.GoodFriendApiClient;
 
         /// <summary>
-        ///     A user-friendly name for this module.
+        ///     a name for this module.
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        ///     A user-friendly optional description for this module.
+        ///     An optional description for this module.
         /// </summary>
         public virtual string? Description { get; }
 
         /// <summary>
-        ///     The tag for this module to help categorize it.
+        ///     The category tag for this module.
         /// </summary>
         public abstract ModuleTag Tag { get; }
 
@@ -55,13 +55,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Enables the module.
         /// </summary>
-        /// <returns>True if the module was enabled successfully, otherwise false.</returns>
         protected abstract void EnableAction();
 
         /// <summary>
         ///     Enables the module.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if the module is already enabled or is in an error state.</exception>
         public void Enable()
         {
             try
@@ -91,7 +89,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Disables the module.
         /// </summary>
-        /// <returns>True if the module was disabled successfully, otherwise false.</returns>
         protected abstract void DisableAction();
 
         /// <summary>
@@ -148,10 +145,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <remarks>
         ///     This method should be used by the module itself to draw its contents.
         /// </remarks>
-        protected virtual void DrawModule()
-        {
-
-        }
+        protected virtual void DrawModule() => SiGui.TextDisabledWrapped("This module does not have any additional content to display.");
     }
 
     /// <summary>
@@ -226,7 +220,15 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             }
 
             var configJson = File.ReadAllText(configPath);
-            return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            }
+            catch (JsonSerializationException e)
+            {
+                Logger.Error($"Failed to deserialize module configuration {typeof(T).FullName}: {e}");
+                return new T();
+            }
         }
     }
 
@@ -267,7 +269,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     internal enum ModuleTag
     {
         Information,
-        Connectivity,
         Notifications,
+        Connectivity,
     }
 }

@@ -82,7 +82,7 @@ impl Config {
 pub struct ApiAboutConfig {
     pub identifier: String,
     pub banner_url: String,
-    pub motd: String,
+    pub description: String,
     #[validate(custom = "validate_custom_urls")]
     pub custom_urls: HashMap<String, String>,
 }
@@ -113,7 +113,7 @@ impl Default for ApiAboutConfig {
             identifier: String::from("GoodFriend"),
             banner_url: String::from("https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"),
             custom_urls: HashMap::default(),
-            motd: String::default(),
+            description: String::default(),
         }
     }
 }

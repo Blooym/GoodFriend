@@ -414,22 +414,6 @@ namespace GoodFriend.Plugin.Localization
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_AlreadyDisabled
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_AlreadyDisabled", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_Disabled
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Disabled", resourceCulture);
-            }
-        }
-
         internal static string Modules_InstanceInfoModule_MetadataFetch_Failed
         {
             get
@@ -454,27 +438,19 @@ namespace GoodFriend.Plugin.Localization
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_Title
+        internal static string Modules_InstanceInfoModule_Description_Title
         {
             get
             {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Title", resourceCulture);
+                return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Title", resourceCulture);
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_Unset
+        internal static string Modules_InstanceInfoModule_Description_Unset
         {
             get
             {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Unset", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_OnLogin
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_OnLogin", resourceCulture);
+                return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Unset", resourceCulture);
             }
         }
 
@@ -499,14 +475,6 @@ namespace GoodFriend.Plugin.Localization
             get
             {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_MetadataFetch_LastFailed", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_DisableChatPrompt
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_DisableChatPrompt", resourceCulture);
             }
         }
 

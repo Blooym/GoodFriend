@@ -63,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            ApiClient.OnPlayerStreamMessage += this.HandlePlayerStreamMessage;
+            ApiClient.PlayerEventStream.OnStreamMessage += this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -77,7 +77,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            ApiClient.OnPlayerStreamMessage -= this.HandlePlayerStreamMessage;
+            ApiClient.PlayerEventStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -277,7 +277,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PostData()
+                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.HttpPost()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -299,7 +299,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     Logger.Debug("Sending logout event.");
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PostData()
+                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.HttpPost()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,

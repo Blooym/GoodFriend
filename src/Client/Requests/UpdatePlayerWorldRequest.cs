@@ -12,7 +12,8 @@ namespace GoodFriend.Client.Requests
         /// </summary>
         internal const string EndpointUrl = "api/playerevents/currentworld";
 
-        public readonly record struct PostData
+        [Serializable]
+        public readonly record struct HttpPost
         {
             /// <summary>
             ///     The name of the header to send the ContentIdHash in.
