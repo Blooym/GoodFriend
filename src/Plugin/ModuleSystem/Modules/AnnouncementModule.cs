@@ -274,16 +274,16 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 return;
             }
 
-            // Check that the target is valid for the current mode
+            // Check that the target is valid for the current mod
             var isTesting = DalamudInjections.PluginInterface.IsTesting;
             var isDev = DalamudInjections.PluginInterface.IsDev;
             switch (announcement.Target)
             {
-                case CustomAnnouncementTargets.GoodFriendTesting when !isTesting:
-                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when not in testing");
+                case CustomAnnouncementTargets.GoodFriendTesting when !isTesting && !isDev:
+                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when not in testing/dev mode");
                     return;
-                case CustomAnnouncementTargets.GoodFriendRelease when isTesting:
-                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when in testing");
+                case CustomAnnouncementTargets.GoodFriendRelease when isTesting || isDev:
+                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when in testing/dev mode");
                     return;
                 case CustomAnnouncementTargets.GoodFriendDev when !isDev:
                     Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when not in dev mode");
