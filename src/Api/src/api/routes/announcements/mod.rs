@@ -40,6 +40,10 @@ pub struct Announcement {
 
     /// The reason for this announcement being made.
     cause: AnnouncementCause,
+
+    /// An optional target field that allows for clients to filter announcements.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub target: Option<String>,
 }
 
 pub fn routes() -> Vec<rocket::Route> {

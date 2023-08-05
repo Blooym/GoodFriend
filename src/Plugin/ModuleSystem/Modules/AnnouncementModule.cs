@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using GoodFriend.Client.Http;
 using GoodFriend.Client.Responses;
@@ -44,6 +46,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private string sendAnnouncementText = string.Empty;
 
         /// <summary>
+        ///     The target to send the announcement to.
+        /// </summary>
+        private string sendAnnouncementTarget = CustomAnnouncementTargets.GoodFriendDev;
+
+        /// <summary>
         ///     The kind of announcement to send.
         /// </summary>
         private AnnouncementKind sendAnnouncementKind = AnnouncementKind.Informational;
@@ -83,7 +90,15 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            // Stream status
+            DrawAnnouncementStreamState();
+            ImGui.Dummy(Spacing.SectionSpacing);
+            this.DrawReceiveOptions();
+            ImGui.Dummy(Spacing.SectionSpacing);
+            this.DrawSendAnnouncement();
+        }
+
+        private static void DrawAnnouncementStreamState()
+        {
             SiGui.Heading("Announcement Stream");
             SiGui.Text("Connection State:");
             ImGui.SameLine();
@@ -105,9 +120,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     SiGui.TextColoured(Colours.Error, "Error");
                     break;
             }
-            ImGui.Dummy(Spacing.SectionSpacing);
+        }
 
-            // Options
+        private void DrawReceiveOptions()
+        {
             SiGui.Heading("Announcement Receive Options");
             foreach (var kind in Enum.GetValues<AnnouncementKind>())
             {
@@ -124,9 +140,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     }
                 }
             }
+        }
 
-            // Send announcement
-            ImGui.Dummy(Spacing.SectionSpacing);
+        private void DrawSendAnnouncement()
+        {
             SiGui.Heading("Send Announcement");
             if (!this.CanSendAnnouncements)
             {
@@ -153,6 +170,23 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     }
                     ImGui.EndCombo();
                 }
+
+                if (ImGui.BeginCombo("Target", this.sendAnnouncementTarget == string.Empty ? "Everyone" : this.sendAnnouncementTarget))
+                {
+                    if (ImGui.Selectable("Everyone", this.sendAnnouncementTarget == string.Empty))
+                    {
+                        this.sendAnnouncementTarget = string.Empty;
+                    }
+                    foreach (var target in CustomAnnouncementTargets.All)
+                    {
+                        if (ImGui.Selectable(target, target == this.sendAnnouncementTarget))
+                        {
+                            this.sendAnnouncementTarget = target;
+                        }
+                    }
+                    ImGui.EndCombo();
+                }
+
                 SiGui.InputTextMultiline("Message", ref this.sendAnnouncementText, 430, new(0, 100));
                 ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.LeftShift) || string.IsNullOrWhiteSpace(this.sendAnnouncementText));
                 if (ImGui.Button("Send"))
@@ -211,10 +245,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                         Kind = this.sendAnnouncementKind,
                         Message = this.sendAnnouncementText,
                         Cause = AnnouncementCause.Manual,
+                        Target = string.IsNullOrWhiteSpace(this.sendAnnouncementTarget) ? null : this.sendAnnouncementTarget,
                     });
                     if (outcome.IsSuccessStatusCode)
                     {
-                        Logger.Information($"Announcement sent - Content: {this.sendAnnouncementText} - Kind: {this.sendAnnouncementKind} - Response: {outcome.ReasonPhrase}");
+                        Logger.Information($"Announcement sent\nTarget:${this.sendAnnouncementTarget}\nMessage: {this.sendAnnouncementText}\nKind: {this.sendAnnouncementKind}\nResult: {outcome.ReasonPhrase}");
                         ChatHelper.Print("Announcement sucessfully sent.");
                     }
                     else
@@ -232,17 +267,37 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <param name="rawEvent"></param>
         private void OnAnnouncementStreamMessage(object? _, AnnouncementStreamUpdate announcement)
         {
+            Logger.Information($"Received announcement: {announcement}");
             if (string.IsNullOrWhiteSpace(announcement.Message))
             {
+                Logger.Information("Received announcement with no message, ignoring.");
                 return;
+            }
+
+            // Check that the target is valid for the current mode
+            var isTesting = DalamudInjections.PluginInterface.IsTesting;
+            var isDev = DalamudInjections.PluginInterface.IsDev;
+            switch (announcement.Target)
+            {
+                case CustomAnnouncementTargets.GoodFriendTesting when !isTesting:
+                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when not in testing");
+                    return;
+                case CustomAnnouncementTargets.GoodFriendRelease when isTesting:
+                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when in testing");
+                    return;
+                case CustomAnnouncementTargets.GoodFriendDev when !isDev:
+                    Logger.Information($"Ignoring announcement due to target '{announcement.Target}' when not in dev mode");
+                    return;
             }
 
             var shouldShow = this.Config.EnabledAnnouncements[announcement.Kind];
             if (!shouldShow)
             {
+                Logger.Information($"Received announcement of kind '{announcement.Kind}' but it is disabled, ignoring.");
                 return;
             }
 
+            // Show the message
             switch (announcement.Kind)
             {
                 case AnnouncementKind.Critical:
@@ -319,6 +374,32 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 { AnnouncementKind.Informational, true },
                 { AnnouncementKind.Maintenance, true },
             };
+        }
+
+        internal static class CustomAnnouncementTargets
+        {
+            /// <summary>
+            ///     Testing users only.
+            /// </summary>
+            public const string GoodFriendTesting = "GOODFRIEND_TESTING";
+
+            /// <summary>
+            ///     Stable release users only.
+            /// </summary>
+            public const string GoodFriendRelease = "GOODFRIEND_RELEASE";
+
+            /// <summary>
+            ///     Dev plugin users only.
+            /// </summary>
+            public const string GoodFriendDev = "GOODFRIEND_DEV";
+
+            /// <summary>
+            ///     All custom announcement targets.
+            /// </summary>
+            public static string[] All { get; } = typeof(CustomAnnouncementTargets).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.FieldType == typeof(string))
+                .Select(x => (string)x.GetRawConstantValue()!)
+                .ToArray();
         }
     }
 }

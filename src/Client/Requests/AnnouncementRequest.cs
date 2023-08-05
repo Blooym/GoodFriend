@@ -39,6 +39,11 @@ namespace GoodFriend.Client.Requests
             /// </summary>
             [JsonConverter(typeof(JsonStringEnumConverter))]
             public required AnnouncementCause Cause { get; init; }
+
+            /// <summary>
+            ///     The target of the announcement.
+            /// </summary>
+            public string? Target { get; init; }
         }
     }
 }

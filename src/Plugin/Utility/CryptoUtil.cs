@@ -1,6 +1,9 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+#if !DEBUG
+using System.Reflection;
+#endif
 
 namespace GoodFriend.Plugin.Utility
 {
