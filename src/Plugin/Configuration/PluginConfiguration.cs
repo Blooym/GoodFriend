@@ -40,6 +40,11 @@ namespace GoodFriend.Plugin.Configuration
             public Uri ApiBaseUrl { get; set; } = DefaultApiBaseUrl;
 
             /// <summary>
+            ///     The API authorization token to use with authenticated requests.
+            /// </summary>
+            public string ApiKey { get; set; } = string.Empty;
+
+            /// <summary>
             ///     Resets the BaseURL to the default.
             /// </summary>
             public void ResetApiBaseUrl() => this.ApiBaseUrl = DefaultApiBaseUrl;

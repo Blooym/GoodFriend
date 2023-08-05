@@ -74,5 +74,15 @@ namespace GoodFriend.Client
 
         /// <inheritdoc cref="GetFeatures" />
         Task<(FeaturesResponse, HttpResponseMessage)> GetFeaturesAsync();
+
+        /// <summary>
+        ///     Checks to see if the given authentication token is valid.
+        /// </summary>
+        /// <param name="token">The token to check.</param>
+        /// <returns>True if the token is valid, false otherwise.</returns>
+        (bool, HttpResponseMessage) ValidateAuthToken(string token);
+
+        /// <inheritdoc cref="ValidateAuthToken(string)" />
+        Task<(bool, HttpResponseMessage)> ValidateAuthTokenAsync(string token);
     }
 }

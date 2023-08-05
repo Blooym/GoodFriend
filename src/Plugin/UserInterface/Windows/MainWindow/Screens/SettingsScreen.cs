@@ -54,7 +54,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         private static void DrawAPISettings()
         {
             var apiUrl = Services.PluginConfiguration.ApiConfig.ApiBaseUrl.ToString();
-            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true))
             {
                 try
                 {
@@ -73,6 +73,19 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                 }
             }
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            var apiKey = Services.PluginConfiguration.ApiConfig.ApiKey;
+            if (SiGui.InputText("API Key", ref apiKey, 250, false))
+            {
+                if (apiKey != Services.PluginConfiguration.ApiConfig.ApiKey)
+                {
+                    restartRequired = true;
+                    Services.PluginConfiguration.ApiConfig.ApiKey = apiKey;
+                    Services.PluginConfiguration.Save();
+                }
+            }
+            SiGui.TextDisabledWrapped("The API key to use for requests that require authentication. Only instance administrators will need to set this.");
         }
 
         private enum SettingsOption

@@ -9,7 +9,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class StreamPlayerEventsModule : ModuleBase
+    internal sealed class PlayerEventStreamModule : ModuleBase
     {
         /// <summary>
         ///     The last time a heartbeat was received from the player event stream.

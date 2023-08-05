@@ -8,6 +8,7 @@ namespace GoodFriend.Client.Responses.Enums
         Informational,
         Maintenance,
         Critical,
+        Miscellaneous,
     }
 
     /// <summary>

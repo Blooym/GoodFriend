@@ -22,7 +22,16 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
         let config = config::get_config_cached();
         let token = req.headers().get_one("X-Auth-Token");
         if let Some(token) = token {
-            if config.authentication.tokens.contains(&token.to_string()) {
+            let token = token.to_string();
+
+            if token.trim().is_empty() {
+                return Outcome::Failure((
+                    Status::Unauthorized,
+                    AuthenticatedUserError::MissingToken,
+                ));
+            }
+
+            if config.authentication.tokens.contains(&token) {
                 Outcome::Success(AuthenticatedUserGuard {})
             } else {
                 Outcome::Failure((Status::Unauthorized, AuthenticatedUserError::InvalidToken))

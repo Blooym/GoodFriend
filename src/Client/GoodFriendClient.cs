@@ -20,6 +20,11 @@ namespace GoodFriend.Client
     public sealed class GoodFriendClient : IGoodFriendClient
     {
         /// <summary>
+        ///     The delay between reconnect attempts.
+        /// </summary>
+        private static readonly TimeSpan ReconnectDelay = TimeSpan.FromSeconds(60);
+
+        /// <summary>
         ///     The user-agent header value.
         /// </summary>
         private static readonly string UserAgent = $"GoodFriend.Client/{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -58,8 +63,8 @@ namespace GoodFriend.Client
             this.httpClientHandler = CreateHttpClientHandler();
             this.httpClient = CreateHttpClient(this.httpClientHandler, options.BaseAddress);
 
-            this.AnnouncementStream = new(CreateHttpClient(this.httpClientHandler, options.BaseAddress), AnnouncementStreamRequest.EndpointUrl, new Timer(30000));
-            this.PlayerEventStream = new(CreateHttpClient(this.httpClientHandler, options.BaseAddress), PlayerEventsRequest.EndpointUrl, new Timer(30000));
+            this.AnnouncementStream = new(CreateHttpClient(this.httpClientHandler, options.BaseAddress), AnnouncementStreamRequest.EndpointUrl, new Timer(ReconnectDelay));
+            this.PlayerEventStream = new(CreateHttpClient(this.httpClientHandler, options.BaseAddress), PlayerEventsRequest.EndpointUrl, new Timer(ReconnectDelay));
         }
 
         /// <inheritdoc />
@@ -181,6 +186,19 @@ namespace GoodFriend.Client
             };
         }
 
+        /// <summary>
+        ///     Builds a new validate authentication token request with the given <paramref name="token" />
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private static HttpRequestMessage BuildValidateAuthenticationTokenRequest(string token) => new(HttpMethod.Get, ValidateAuthRequest.EndpointUrl)
+        {
+            Headers =
+            {
+                { GlobalRequestData.AuthenticationTokenHeader, token },
+            },
+        };
+
         /// <inheritdoc />
         public HttpResponseMessage SendLoginState(UpdatePlayerLoginStateRequest.HttpPost requestData)
         {
@@ -253,6 +271,22 @@ namespace GoodFriend.Client
         {
             var request = BuildSendAnnouncementRequest(requestData);
             return this.httpClient.SendAsync(request);
+        }
+
+        /// <inheritdoc />
+        public (bool, HttpResponseMessage) ValidateAuthToken(string token)
+        {
+            var request = BuildValidateAuthenticationTokenRequest(token);
+            var response = this.httpClient.Send(request);
+            return (response.StatusCode == HttpStatusCode.OK, response);
+        }
+
+        /// <inheritdoc />
+        public async Task<(bool, HttpResponseMessage)> ValidateAuthTokenAsync(string token)
+        {
+            var request = BuildValidateAuthenticationTokenRequest(token);
+            var response = await this.httpClient.SendAsync(request);
+            return (response.StatusCode == HttpStatusCode.OK, response);
         }
     }
 

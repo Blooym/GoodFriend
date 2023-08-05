@@ -12,6 +12,7 @@ enum AnnouncementKind {
     Informational,
     Maintenance,
     Critical,
+    Miscellaneous,
 }
 
 /// The reason for this announcement being made.
