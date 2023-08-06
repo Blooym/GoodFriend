@@ -160,12 +160,6 @@ namespace GoodFriend.Client
         private static HttpRequestMessage BuildMetadataRequest() => new(HttpMethod.Get, MetadataRequest.EndpointUrl);
 
         /// <summary>
-        ///     Builds a new features request.
-        /// </summary>
-        /// <returns></returns>
-        private static HttpRequestMessage BuildFeaturesRequest() => new(HttpMethod.Get, FeaturesRequest.EndpointUrl);
-
-        /// <summary>
         ///     Builds a new send announcement request with the given <paramref name="requestData" />
         /// </summary>
         /// <param name="requestData"></param>
@@ -241,22 +235,6 @@ namespace GoodFriend.Client
             var request = BuildMetadataRequest();
             var response = await this.httpClient.SendAsync(request);
             return (await response.Content.ReadFromJsonAsync<MetadataResponse>(), response);
-        }
-
-        /// <inheritdoc />
-        public (FeaturesResponse, HttpResponseMessage) GetFeatures()
-        {
-            var request = BuildFeaturesRequest();
-            var response = this.httpClient.Send(request);
-            return (response.Content.ReadFromJsonAsync<FeaturesResponse>().Result, response);
-        }
-
-        /// <inheritdoc />
-        public async Task<(FeaturesResponse, HttpResponseMessage)> GetFeaturesAsync()
-        {
-            var request = BuildFeaturesRequest();
-            var response = await this.httpClient.SendAsync(request);
-            return (await response.Content.ReadFromJsonAsync<FeaturesResponse>(), response);
         }
 
         /// <inheritdoc />

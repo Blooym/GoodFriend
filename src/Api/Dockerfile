@@ -5,7 +5,7 @@ FROM alpine:latest as user
 RUN adduser -s /bin/false -D user
 
 # -----------
-#    BUILD   
+#    BUILD
 # -----------
 FROM rust:1-alpine as build
 WORKDIR /build
@@ -31,7 +31,7 @@ RUN cargo build ${RUSTC_APP_FLAGS}
 
 
 # -----------
-#   RUNTIME  
+#   RUNTIME
 # -----------
 FROM scratch as runtime
 WORKDIR /app
@@ -49,7 +49,7 @@ ENV ROCKET_PORT=8000
 EXPOSE 8000
 
 # Grab API binary from build.
-COPY --from=build /build/target/release/goodfriend-api /app/bin
+COPY --from=build /build/target/release/goodfriend-api /app/bin/
 
 # Run the api.
 ENTRYPOINT ["/app/bin/goodfriend-api"]

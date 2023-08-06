@@ -67,15 +67,6 @@ namespace GoodFriend.Client
         Task<(MetadataResponse, HttpResponseMessage)> GetMetadataAsync();
 
         /// <summary>
-        ///     Gets the features the API supports.
-        /// </summary>
-        /// <returns>A <see cref="FeaturesResponse" /> instance.</returns>
-        (FeaturesResponse, HttpResponseMessage) GetFeatures();
-
-        /// <inheritdoc cref="GetFeatures" />
-        Task<(FeaturesResponse, HttpResponseMessage)> GetFeaturesAsync();
-
-        /// <summary>
         ///     Checks to see if the given authentication token is valid.
         /// </summary>
         /// <param name="token">The token to check.</param>
