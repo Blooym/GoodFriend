@@ -48,6 +48,8 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             }
         }
 
+        private static bool revealSensitiveConfig;
+
         /// <summary>
         ///     Draws the general settings.
         /// </summary>
@@ -75,17 +77,26 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
             ImGui.Dummy(Spacing.ReadableSpacing);
 
-            var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
-            if (SiGui.InputText("Auth Token", ref authKey, 250, false))
+            if (ImGui.Button(revealSensitiveConfig ? "Hide Sensitive Settings" : "Show Sensitive Settings"))
             {
-                if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
-                {
-                    restartRequired = true;
-                    Services.PluginConfiguration.ApiConfig.AuthKey = authKey;
-                    Services.PluginConfiguration.Save();
-                }
+                revealSensitiveConfig = !revealSensitiveConfig;
             }
-            SiGui.TextDisabledWrapped("The authentication token to use for requests that require authentication. Only instance administrators will need to set this.");
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            if (revealSensitiveConfig)
+            {
+                var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
+                if (SiGui.InputText("Auth Token", ref authKey, 250, false))
+                {
+                    if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
+                    {
+                        restartRequired = true;
+                        Services.PluginConfiguration.ApiConfig.AuthKey = authKey;
+                        Services.PluginConfiguration.Save();
+                    }
+                }
+                SiGui.TextDisabledWrapped("The authentication token to use for requests that require authentication. Only instance administrators will need to set this.");
+            }
         }
 
         private enum SettingsOption
