@@ -1,29 +1,21 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
-using System.Timers;
-using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
-using Sirensong.Game.Enums;
-using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class InstanceInfoModule : ModuleBase, IDisposable
+    internal sealed class InstanceInfoModule : ModuleBase
     {
-        /// <summary>
-        ///     The command ID for the MOTD unsubscribe command.
-        /// </summary>
-        private const uint MotdCommandId = 1001;
-
         /// <summary>
         ///     The last time the metadata was updated.
         /// </summary>
@@ -39,11 +31,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         private bool lastMetadataUpdateFailed;
 
-        /// <summary>
-        ///     The payload used to unsubscribe from the MOTD link.
-        /// </summary>
-        private DalamudLinkPayload? unsubMotdLinkPayload;
-
         /// <inheritdoc />
         public override string Name { get; } = Strings.Modules_InstanceInfoModule_Name;
 
@@ -53,47 +40,16 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         public override uint DisplayWeight { get; } = 1;
 
-        /// <summary>
-        ///     The configuration for this module.
-        /// </summary>
-        private InstanceInfoModuleConfig Config { get; set; } = ModuleConfigBase.Load<InstanceInfoModuleConfig>();
+        /// <inheritdoc />
+        protected override void EnableAction() { }
 
         /// <inheritdoc />
-        protected override void EnableAction()
-        {
-            DalamudInjections.ClientState.Login += this.OnLogin;
-
-            Task.Run(this.UpdateMetadataSafely);
-
-            this.unsubMotdLinkPayload = DalamudInjections.PluginInterface.AddChatLinkHandler(MotdCommandId, (i, m) =>
-            {
-                if (!this.Config.ShowMotdOnLogin)
-                {
-                    ChatHelper.PrintError(Strings.Modules_InstanceInfoModule_Motd_AlreadyDisabled);
-                    return;
-                }
-
-                this.Config.ShowMotdOnLogin = false;
-                this.Config.Save();
-                ChatHelper.Print(Strings.Modules_InstanceInfoModule_Motd_Disabled);
-            });
-        }
-
-        /// <inheritdoc />
-        protected override void DisableAction()
-        {
-            DalamudInjections.ClientState.Login -= this.OnLogin;
-            DalamudInjections.PluginInterface.RemoveChatLinkHandler(MotdCommandId);
-            this.unsubMotdLinkPayload = null;
-        }
-
-        /// <inheritdoc />
-        public void Dispose() => this.Disable();
+        protected override void DisableAction() { }
 
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(20))
+            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(60))
             {
                 Task.Run(this.UpdateMetadataSafely);
             }
@@ -107,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             var metadata = this.metadata.Value;
 
             // TODO: Improve handling of STBI not loading image.
-            if (!string.IsNullOrEmpty(metadata.About.BannerUrl.ToString()))
+            if (!string.IsNullOrWhiteSpace(metadata.About.BannerUrl?.ToString()))
             {
                 SiGui.Image(metadata.About.BannerUrl.ToString(), ScalingMode.None, new(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().X / 3));
             }
@@ -123,30 +79,21 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.ParsedBlue);
-            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.ConnectedClients), new(ImGui.GetContentRegionAvail().X, 0));
+            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.Connections.PlayerEvents), new Vector2(ImGui.GetContentRegionAvail().X, 0));
             ImGui.PopStyleColor(3);
             ImGui.Dummy(Spacing.SectionSpacing);
 
             if (ImGui.BeginChild("InstanceInfoChild"))
             {
-                // MOTD.
-                SiGui.Heading(Strings.Modules_InstanceInfoModule_Motd_Title);
-                if (!metadata.About.Motd.Ignore)
+                // Description.
+                SiGui.Heading(Strings.Modules_InstanceInfoModule_Description_Title);
+                if (string.IsNullOrWhiteSpace(metadata.About.Description))
                 {
-                    SiGui.TextWrapped(metadata.About.Motd.Message);
+                    SiGui.TextDisabledWrapped(Strings.Modules_InstanceInfoModule_Description_Unset);
                 }
                 else
                 {
-                    SiGui.TextDisabledWrapped(Strings.Modules_InstanceInfoModule_Motd_Unset);
-                }
-                ImGui.Dummy(Spacing.ReadableSpacing);
-
-                // Motd toggle button.
-                var showOnLogin = this.Config.ShowMotdOnLogin;
-                if (SiGui.Checkbox(Strings.Modules_InstanceInfoModule_Motd_OnLogin, ref showOnLogin))
-                {
-                    this.Config.ShowMotdOnLogin = showOnLogin;
-                    this.Config.Save();
+                    SiGui.TextWrapped(metadata.About.Description);
                 }
                 ImGui.Dummy(Spacing.SectionSpacing);
 
@@ -189,7 +136,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             {
                 Logger.Debug("Updating metadata...");
                 this.lastMetadataUpdateAttempt = DateTime.Now;
-                var request = ApiClient.GetMetadata();
+                var request = new GetMetadataRequest().Send(HttpClient, new());
                 this.metadata = request.Item1;
                 this.lastMetadataUpdateFailed = false;
                 Logger.Debug($"Successfully updated metadata: {this.metadata.Value}");
@@ -199,53 +146,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 this.lastMetadataUpdateFailed = true;
                 Logger.Warning($"Failed to get metadata: {e.Message}");
             }
-        }
-
-        /// <summary>
-        ///     Displays the message of the day when the player logs in if enabled.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLogin(object? sender, EventArgs? e)
-        {
-            Task.Run(this.UpdateMetadataSafely);
-            if (!this.Config.ShowMotdOnLogin || !this.metadata.HasValue || this.metadata.Value.About.Motd.Ignore)
-            {
-                return;
-            }
-
-            Logger.Information($"Displaying message of the day: {this.metadata.Value.About.Motd.Message}");
-            ChatHelper.Print(new SeStringBuilder()
-                        .AddText(this.metadata.Value.About.Motd.Message)
-                        .AddText(" - ")
-                        .Add(this.unsubMotdLinkPayload!)
-                        .AddUiForeground((ushort)ChatUiColourKey.Orange)
-                        .AddText(Strings.Modules_InstanceInfoModule_Motd_DisableChatPrompt)
-                        .AddUiForegroundOff()
-                        .Add(RawPayload.LinkTerminator)
-                        .Build());
-        }
-
-        /// <summary>
-        ///     Called when the update metadata timer elapses to update the saved metadata.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void UpdateMetadataTimerOnElapsed(object? sender, ElapsedEventArgs e) => this.UpdateMetadataSafely();
-
-        /// <inheritdoc />
-        private sealed class InstanceInfoModuleConfig : ModuleConfigBase
-        {
-            /// <inheritdoc />
-            public override uint Version { get; protected set; }
-
-            /// <inheritdoc />
-            protected override string Identifier { get; set; } = "InstanceInfo";
-
-            /// <summary>
-            ///     Whether or not to show the MOTD on login.
-            /// </summary>
-            public bool ShowMotdOnLogin { get; set; } = true;
         }
     }
 }

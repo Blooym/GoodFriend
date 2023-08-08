@@ -4,12 +4,11 @@
 extern crate rocket;
 
 mod api;
-mod config;
-mod types;
 
-use api::responses::player_event::EventStreamPlayerStateUpdateResponse;
-use api::{core, events, index, update};
-use config::{get_config_cached_prime_cache, Config};
+use api::routes::AnnouncementStreamUpdate;
+use api::routes::PlayerEventStreamUpdate;
+use api::routes::{announcements_routes, core_routes, player_events_routes, static_files_routes};
+use api::types::config::{get_config_cached_prime_cache, Config};
 use dotenv::dotenv;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
@@ -20,7 +19,7 @@ use std::process;
 const BASE_PATH: &str = "/api";
 
 #[launch]
-fn rocket() -> Rocket<Build> {
+async fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     // Validate configuration before starting & prime the cache.
@@ -41,13 +40,19 @@ fn rocket() -> Rocket<Build> {
     };
     get_config_cached_prime_cache();
 
-    // Start the API.
     rocket::build()
-        .manage(channel::<EventStreamPlayerStateUpdateResponse>(50000).0)
-        .mount("/", index::routes())
-        .mount([BASE_PATH, "/"].concat(), core::routes())
-        .mount([BASE_PATH, "/update"].concat(), update::routes())
-        .mount([BASE_PATH, "/events"].concat(), events::routes())
+        .manage(channel::<PlayerEventStreamUpdate>(15000).0)
+        .manage(channel::<AnnouncementStreamUpdate>(15000).0)
+        .mount("/", static_files_routes())
+        .mount([BASE_PATH, "/"].concat(), core_routes())
+        .mount(
+            [BASE_PATH, "/playerevents"].concat(),
+            player_events_routes(),
+        )
+        .mount(
+            [BASE_PATH, "/announcements"].concat(),
+            announcements_routes(),
+        )
         .attach(
             Shield::default()
                 .enable(shield::XssFilter::Enable)

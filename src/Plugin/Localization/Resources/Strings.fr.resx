@@ -119,21 +119,6 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Erreur</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
-    <value>Tentative de connexion au flux d'événements du joueur, veuillez patienter.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
-    <value>Déconnexion du flux d'événements du joueur, veuillez patienter.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
-    <value>Un problème s'est produit lors de la tentative de connexion au flux d'événements du joueur ! Il peut s'agir d'un problème de réseau ou d'une panne de l'API. Vous serez automatiquement reconnecté dès que possible. Pour plus d'informations, consultez /xllog.</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Statistiques de connexion</value>
   </data>
@@ -152,12 +137,6 @@
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
     <value>À propos de l'instance</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
-    <value>Vous avez déjà désactivé les messages du jour.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
-    <value>Vous ne verrez plus les messages du jour à la connexion. Vous pouvez les réactiver dans les paramètres d'instances.</value>
-  </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Impossible de récupérer les métadonnées, réessayez plus tard.</value>
   </data>
@@ -167,14 +146,11 @@
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>Il y a actuellement {0} joueurs en ligne</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Title" xml:space="preserve">
     <value>Message du jour</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
+  <data name="Modules_InstanceInfoModule_Description_Unset" xml:space="preserve">
     <value>Aucun message du jour n'a été configuré.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>Afficher le MOTD à la connexion</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Liens personnalisés</value>
@@ -184,9 +160,6 @@
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
     <value>La dernière mise à jour des métadonnées a échoué, utilisation des données en cache.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
-    <value>[Désactiver les messages lors de la connexion]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
     <value>Ce module a rencontré une erreur lors de son exécution et a été désactivé. Veuillez consulter les journaux pour plus d'informations.</value>

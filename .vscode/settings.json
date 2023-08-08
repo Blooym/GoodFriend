@@ -1,7 +1,6 @@
 {
     // OmniSharp
     "omnisharp.enableRoslynAnalyzers": true,
-    "omnisharp.enableImportCompletion": true,
     "omnisharp.organizeImportsOnFormat": true,
     "omnisharp.enableAsyncCompletion": true,
     "omnisharp.analyzeOpenDocumentsOnly": false,
@@ -12,5 +11,6 @@
     // Rust
     "rust-analyzer.linkedProjects": [
         "./src/Api/Cargo.toml",
-    ]
+    ],
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
 }

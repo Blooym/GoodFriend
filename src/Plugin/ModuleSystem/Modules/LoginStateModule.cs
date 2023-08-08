@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Dalamud.Game;
 using Dalamud.Memory;
 using Dalamud.Utility;
-using GoodFriend.Client.Requests;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
@@ -63,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            ApiClient.OnPlayerStreamMessage += this.HandlePlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -77,7 +77,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            ApiClient.OnPlayerStreamMessage -= this.HandlePlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -277,7 +277,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
+                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -299,7 +299,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     Logger.Debug("Sending logout event.");
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.PutData()
+                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -308,7 +308,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                         TerritoryId = this.currentTerritoryId,
                         WorldId = this.currentWorldId
                     });
-
                     this.ClearStoredValues();
                 });
 
@@ -366,62 +365,62 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
             Logger.Debug("Cleared stored all values.");
         }
-    }
-
-    /// <inheritdoc />
-    internal sealed class LoginStateModuleConfig : ModuleConfigBase
-    {
-        /// <inheritdoc />
-        public override uint Version { get; protected set; }
 
         /// <inheritdoc />
-        protected override string Identifier { get; set; } = "LoginStateModule";
+        private sealed class LoginStateModuleConfig : ModuleConfigBase
+        {
+            /// <inheritdoc />
+            public override uint Version { get; protected set; }
 
-        /// <summary>
-        ///     Whether or not to receive login state events.
-        /// </summary>
-        public bool ReceiveEvents { get; set; } = true;
+            /// <inheritdoc />
+            protected override string Identifier { get; set; } = "LoginStateModule";
 
-        /// <summary>
-        ///     Whether or not to hide notifications for the same free company.
-        /// </summary>
-        public bool HideSameFC { get; set; } = true;
+            /// <summary>
+            ///     Whether or not to receive login state events.
+            /// </summary>
+            public bool ReceiveEvents { get; set; } = true;
 
-        /// <summary>
-        ///     Whether or not to hide notifications from users from different homeworlds.
-        /// </summary>
-        public bool HideDifferentHomeworld { get; set; }
+            /// <summary>
+            ///     Whether or not to hide notifications for the same free company.
+            /// </summary>
+            public bool HideSameFC { get; set; } = true;
 
-        /// <summary>
-        ///     Whether or not to hide notifications from users in different territories.
-        /// </summary>
-        public bool HideDifferentTerritory { get; set; }
+            /// <summary>
+            ///     Whether or not to hide notifications from users from different homeworlds.
+            /// </summary>
+            public bool HideDifferentHomeworld { get; set; }
 
-        /// <summary>
-        ///     Whether or not to hide notifications from users in different worlds.
-        /// </summary>
-        public bool HideDifferentWorld { get; set; }
+            /// <summary>
+            ///     Whether or not to hide notifications from users in different territories.
+            /// </summary>
+            public bool HideDifferentTerritory { get; set; }
 
-        /// <summary>
-        ///     Whether or not to hide notifications from users in different data centers.
-        /// </summary>
-        public bool HideDifferentDatacenter { get; set; } = true;
+            /// <summary>
+            ///     Whether or not to hide notifications from users in different worlds.
+            /// </summary>
+            public bool HideDifferentWorld { get; set; }
 
-        /// <summary>
-        ///     The message to display when a friend logs in.
-        /// </summary>
-        public string LoginMessage { get; set; } = "{0} has logged in.";
+            /// <summary>
+            ///     Whether or not to hide notifications from users in different data centers.
+            /// </summary>
+            public bool HideDifferentDatacenter { get; set; } = true;
 
-        /// <summary>
-        ///     The message to display when a friend logs out.
-        /// </summary>
-        public string LogoutMessage { get; set; } = "{0} has logged out.";
+            /// <summary>
+            ///     The message to display when a friend logs in.
+            /// </summary>
+            public string LoginMessage { get; set; } = "{0} has logged in.";
 
-        /// <summary>
-        ///     Validates a login/logout message.
-        /// </summary>
-        /// <param name="message">The message to validate.</param>
-        /// <returns>Whether or not the message is valid.</returns>
-        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 1, true);
+            /// <summary>
+            ///     The message to display when a friend logs out.
+            /// </summary>
+            public string LogoutMessage { get; set; } = "{0} has logged out.";
+
+            /// <summary>
+            ///     Validates a login/logout message.
+            /// </summary>
+            /// <param name="message">The message to validate.</param>
+            /// <returns>Whether or not the message is valid.</returns>
+            public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 1, true);
+        }
     }
 }

@@ -15,7 +15,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
 {
-    internal sealed partial class MainWindow : Window
+    internal sealed class MainWindow : Window
     {
         /// <summary>
         ///     The width of the sidebar.
@@ -40,11 +40,11 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
         /// <inheritdoc />
         public MainWindow() : base(Constants.PluginName)
         {
-            this.Size = new Vector2(680, 660);
+            this.Size = new Vector2(880, 660);
             this.SizeConstraints = new WindowSizeConstraints()
             {
-                MinimumSize = new Vector2(750, 660),
-                MaximumSize = new Vector2(950, 700)
+                MinimumSize = new Vector2(880, 660),
+                MaximumSize = new Vector2(1400, 900)
             };
             this.SizeCondition = ImGuiCond.FirstUseEver;
             this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;

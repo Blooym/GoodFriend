@@ -13,8 +13,8 @@ namespace GoodFriend.Plugin.Localization
         /// </summary>
         public LocalizationService()
         {
-            SetupLocalization(DalamudInjections.PluginInterface.UiLanguage);
-            DalamudInjections.PluginInterface.LanguageChanged += SetupLocalization;
+            this.SetupLocalization(DalamudInjections.PluginInterface.UiLanguage);
+            DalamudInjections.PluginInterface.LanguageChanged += this.SetupLocalization;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace GoodFriend.Plugin.Localization
                 return;
             }
 
-            DalamudInjections.PluginInterface.LanguageChanged -= SetupLocalization;
+            DalamudInjections.PluginInterface.LanguageChanged -= this.SetupLocalization;
             this.disposedValue = true;
         }
 
@@ -35,7 +35,7 @@ namespace GoodFriend.Plugin.Localization
         ///     Sets up localization for the given language, or uses fallbacks if not found.
         /// </summary>
         /// <param name="language">The language to use.</param>
-        private static void SetupLocalization(string language)
+        private void SetupLocalization(string language)
         {
             try
             {

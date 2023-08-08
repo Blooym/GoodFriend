@@ -326,46 +326,6 @@ namespace GoodFriend.Plugin.Localization
             }
         }
 
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description", resourceCulture);
-            }
-        }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description", resourceCulture);
-            }
-        }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description", resourceCulture);
-            }
-        }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description", resourceCulture);
-            }
-        }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description", resourceCulture);
-            }
-        }
-
         internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics
         {
             get
@@ -414,22 +374,6 @@ namespace GoodFriend.Plugin.Localization
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_AlreadyDisabled
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_AlreadyDisabled", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_Disabled
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Disabled", resourceCulture);
-            }
-        }
-
         internal static string Modules_InstanceInfoModule_MetadataFetch_Failed
         {
             get
@@ -454,27 +398,19 @@ namespace GoodFriend.Plugin.Localization
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_Title
+        internal static string Modules_InstanceInfoModule_Description_Title
         {
             get
             {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Title", resourceCulture);
+                return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Title", resourceCulture);
             }
         }
 
-        internal static string Modules_InstanceInfoModule_Motd_Unset
+        internal static string Modules_InstanceInfoModule_Description_Unset
         {
             get
             {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_Unset", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_OnLogin
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_OnLogin", resourceCulture);
+                return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Unset", resourceCulture);
             }
         }
 
@@ -499,14 +435,6 @@ namespace GoodFriend.Plugin.Localization
             get
             {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_MetadataFetch_LastFailed", resourceCulture);
-            }
-        }
-
-        internal static string Modules_InstanceInfoModule_Motd_DisableChatPrompt
-        {
-            get
-            {
-                return ResourceManager.GetString("Modules_InstanceInfoModule_Motd_DisableChatPrompt", resourceCulture);
             }
         }
 
@@ -723,6 +651,214 @@ namespace GoodFriend.Plugin.Localization
             get
             {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_Name
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_Name", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_Description
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_Description", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_Header_Stream
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_Header_Stream", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionStatus
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionStatus", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionState_Connected
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Connected", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionState_Connecting
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Connecting", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionState_Disconnected
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Disconnected", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionState_Disconnecting
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Disconnecting", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ConnectionState_Exception
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Exception", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ReceiveOptions
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ReceiveOptions", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_ReceiveOptions_ShowKind
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_ReceiveOptions_ShowKind", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Header
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Header", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Reauth
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Reauth", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuth
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_NoAuth", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Notice
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Notice", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Send
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Send", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_HoldShift
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_HoldShift", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_SendSuccess
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_SendSuccess", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_SendAnnouncement_SendError
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_SendError", resourceCulture);
+            }
+        }
+
+        internal static string Modules_AnnouncementModule_AnnouncementText
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_AnnouncementModule_AnnouncementText", resourceCulture);
+            }
+        }
+
+        internal static string Modules_ModuleBase_NoAdditionalContent
+        {
+            get
+            {
+                return ResourceManager.GetString("Modules_ModuleBase_NoAdditionalContent", resourceCulture);
+            }
+        }
+
+        internal static string UI_MainWindow_SettingsScreen_Api_HideSensitive
+        {
+            get
+            {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_HideSensitive", resourceCulture);
+            }
+        }
+
+        internal static string UI_MainWindow_SettingsScreen_Api_ShowSensitive
+        {
+            get
+            {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_ShowSensitive", resourceCulture);
+            }
+        }
+
+        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken
+        {
+            get
+            {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_AuthToken", resourceCulture);
+            }
+        }
+
+        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken_Description
+        {
+            get
+            {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_AuthToken_Description", resourceCulture);
             }
         }
     }

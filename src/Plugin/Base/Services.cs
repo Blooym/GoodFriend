@@ -1,4 +1,8 @@
-using GoodFriend.Client;
+using System.Net.Http;
+using System.Timers;
+using GoodFriend.Client.Http;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem;
@@ -15,7 +19,8 @@ namespace GoodFriend.Plugin.Base
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
         public static WindowingService WindowingService { get; private set; } = null!;
         public static ModuleService ModuleService { get; private set; } = null!;
-        public static GoodFriendClient GoodFriendApiClient { get; private set; } = null!;
+        public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
+        public static HttpClient HttpClient { get; private set; } = null!;
 
         /// <summary>
         ///     Initializes the service class.
@@ -24,10 +29,8 @@ namespace GoodFriend.Plugin.Base
         {
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
-            GoodFriendApiClient = new GoodFriendClient(new GoodfriendClientOptions()
-            {
-                BaseAddress = new(PluginConfiguration.ApiConfig.ApiBaseUrl.ToString()),
-            });
+            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl), new Timer(60000));
+            HttpClient = HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl);
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }
@@ -40,7 +43,8 @@ namespace GoodFriend.Plugin.Base
             LocalizationService.Dispose();
             WindowingService.Dispose();
             ModuleService.Dispose();
-            GoodFriendApiClient.Dispose();
+            HttpClient.Dispose();
+            PlayerEventSseStream.Dispose();
         }
     }
 }

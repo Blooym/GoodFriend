@@ -16,7 +16,7 @@ namespace GoodFriend.Plugin.Utility
         ///     Get the friends list, either cached or uncached depending on if it is currently available.
         /// </summary>
         /// <returns>The players current friends or empty if not cached & unavailable.</returns>
-        public static ICollection<InfoProxyCommonList.CharacterData> GetFriendsList() => FriendListCache.List;
+        public static IEnumerable<InfoProxyCommonList.CharacterData> GetFriendsList() => FriendListCache.List;
 
         /// <summary>
         ///     Gets a friend by their content ID hash and the salt used to hash it.

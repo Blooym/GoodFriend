@@ -7,3 +7,6 @@
 # IDE
 .idea/
 *.DotSettings*
+
+# Misc
+**/TODO.md

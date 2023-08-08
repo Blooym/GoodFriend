@@ -8,7 +8,9 @@ The API can be selfhosted by either building the binary yourself with the Rust t
 
 Before doing anything you'll need to create a `config.toml` file inside of a new directory called `data`; This directory will house any persistent files that the API needs to access or store, but for now only holds the configuration file. If you wish to specify a different location for the configuration file you can set the `CONFIG_FILE_LOCATION` to the path of your `config.toml` file. Afterwards fill out the configuration file from the example available [here](./data/config.toml.example).
 
-You can also provide environment variables that are supported by [Rocket](https://rocket.rs/v0.5-rc/guide/configuration/#environment-variables) to the API when running it to change things like the port it runs on or the TLS configuration (the binary has been compiled to support TLS).
+You can also provide environment variables that are supported by [Rocket](https://rocket.rs/v0.5-rc/guide/configuration/#environment-variables) to the API when running it to change things like the port it runs on or its logging level.
+
+You will need to run the API behind a reverse proxy such as [NGINX](https://www.nginx.com/) or [Caddy](https://caddyserver.com/) to handle TLS as the API does not support it natively.
 
 #### Docker
 

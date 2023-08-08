@@ -1,6 +1,8 @@
 using System;
 using System.IO;
-using GoodFriend.Client;
+using System.Net.Http;
+using GoodFriend.Client.Http;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using Newtonsoft.Json;
@@ -15,25 +17,33 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     internal abstract class ModuleBase
     {
         /// <summary>
-        ///     The API client instance shared between all modules.
+        ///     The PlayerEvent SSE stream.
         /// </summary>
         /// <remarks>
-        ///    This is a convenience property for <see cref="Services.GoodFriendApiClient" />.
+        ///    This is a convenience property for <see cref="Services.PlayerEventSseStream"/>.
         /// </remarks>
-        protected static GoodFriendClient ApiClient => Services.GoodFriendApiClient;
+        protected static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream => Services.PlayerEventSseStream;
 
         /// <summary>
-        ///     A user-friendly name for this module.
+        ///     The shared HttpClient.
+        /// </summary>
+        /// <remarks>
+        ///    This is a convenience property for <see cref="Services.HttpClient"/>.
+        /// </remarks>
+        protected static HttpClient HttpClient => Services.HttpClient;
+
+        /// <summary>
+        ///     a name for this module.
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        ///     A user-friendly optional description for this module.
+        ///     An optional description for this module.
         /// </summary>
         public virtual string? Description { get; }
 
         /// <summary>
-        ///     The tag for this module to help categorize it.
+        ///     The category tag for this module.
         /// </summary>
         public abstract ModuleTag Tag { get; }
 
@@ -55,13 +65,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Enables the module.
         /// </summary>
-        /// <returns>True if the module was enabled successfully, otherwise false.</returns>
         protected abstract void EnableAction();
 
         /// <summary>
         ///     Enables the module.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown if the module is already enabled or is in an error state.</exception>
         public void Enable()
         {
             try
@@ -91,7 +99,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Disables the module.
         /// </summary>
-        /// <returns>True if the module was disabled successfully, otherwise false.</returns>
         protected abstract void DisableAction();
 
         /// <summary>
@@ -148,10 +155,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <remarks>
         ///     This method should be used by the module itself to draw its contents.
         /// </remarks>
-        protected virtual void DrawModule()
-        {
-
-        }
+        protected virtual void DrawModule() => SiGui.TextDisabledWrapped(Strings.Modules_ModuleBase_NoAdditionalContent);
     }
 
     /// <summary>
@@ -226,7 +230,15 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             }
 
             var configJson = File.ReadAllText(configPath);
-            return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+            }
+            catch (JsonSerializationException e)
+            {
+                Logger.Error($"Failed to deserialize module configuration {typeof(T).FullName}: {e}");
+                return new T();
+            }
         }
     }
 
@@ -267,7 +279,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     internal enum ModuleTag
     {
         Information,
-        Connectivity,
         Notifications,
+        Connectivity,
     }
 }

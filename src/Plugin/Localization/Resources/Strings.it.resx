@@ -119,21 +119,6 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
-    <value>Attempting to connect you to the player event stream, please wait.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
-    <value>Disconnecting you from the player event stream, please wait.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
-    <value>Something went wrong when attempting to connect to the player event stream! It may be due to a network issue or the API may be down. You will automatically be reconnected when possible. For more information check /xllog.</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Connection Statistics</value>
   </data>
@@ -152,12 +137,6 @@
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
     <value>About Instance</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_AlreadyDisabled" xml:space="preserve">
-    <value>You have already disabled messages of the day.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_Disabled" xml:space="preserve">
-    <value>You will no longer see messages of the day when you log in. You can re-enable them in the Instance Info settings.</value>
-  </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Failed to fetch metadata, will try again later.</value>
   </data>
@@ -167,14 +146,11 @@
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>There are currently {0} players online</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Title" xml:space="preserve">
-    <value>Message of the Day</value>
+  <data name="Modules_InstanceInfoModule_Description_Title" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="Modules_InstanceInfoModule_Motd_Unset" xml:space="preserve">
-    <value>No message of the day has been set.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_OnLogin" xml:space="preserve">
-    <value>Show MOTD on login</value>
+  <data name="Modules_InstanceInfoModule_Description_Unset" xml:space="preserve">
+    <value>No description has been set.</value>
   </data>
   <data name="Modules_InstanceInfoModule_CustomLinks_Title" xml:space="preserve">
     <value>Custom Links</value>
@@ -184,9 +160,6 @@
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_LastFailed" xml:space="preserve">
     <value>The last metadata update failed, currently using cached data.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_Motd_DisableChatPrompt" xml:space="preserve">
-    <value>[Disable messages on login]</value>
   </data>
   <data name="Modules_ModuleBase_CantDisplayError" xml:space="preserve">
     <value>This module has encountered an error while running and was disabled. Please check the logs for more information.</value>

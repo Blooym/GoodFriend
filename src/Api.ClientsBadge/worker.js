@@ -5,21 +5,21 @@ export default {
     });
 
     const json = await response.json()
-    if (!json.connected_clients) {
+    if (!json.connections) {
       return new Response(JSON.stringify({
         schemaVersion: 1,
-        label: "connected",
+        label: "Connected",
         message: "Unknown",
         color: "red",
         cacheSeconds: 180,
       }));
     }
 
-    const connected = json.connected_clients.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const connectionsTotal = Object.values(json.connections).reduce((a, b) => a + b, 0);
     return new Response(JSON.stringify({
       schemaVersion: 1,
-      label: "connected",
-      message: connected,
+      label: "Connected",
+      message: connectionsTotal,
       color: "brightgreen",
       cacheSeconds: env.CACHE_SECONDS || 3600,
     }));

@@ -2,8 +2,8 @@ using System;
 using Dalamud.Game;
 using Dalamud.Memory;
 using Dalamud.Utility;
-using GoodFriend.Client.Requests;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
@@ -54,7 +54,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.OnPlayerStreamMessage += this.OnPlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage += this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.OnPlayerStreamMessage -= this.OnPlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage -= this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -196,7 +196,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                 var salt = CryptoUtil.GenerateSalt();
                 var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
-                ApiClient.SendWorldChangeAsync(new UpdatePlayerWorldRequest.PutData()
+                new PostPlayerWorldChangeRequest().Send(HttpClient, new()
                 {
                     ContentIdHash = hash,
                     ContentIdSalt = salt,
@@ -204,39 +204,39 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 });
             }
         }
-    }
-
-    /// <summary>
-    ///     Configuration for the world change module.
-    /// </summary>
-    internal sealed class WorldChangeModuleConfig : ModuleConfigBase
-    {
-        /// <inheritdoc />
-        public override uint Version { get; protected set; }
-
-        /// <inheritdoc />
-        protected override string Identifier { get; set; } = "WorldChangeModule";
 
         /// <summary>
-        ///     Whether to receive world change events from other players.
+        ///     Configuration for the world change module.
         /// </summary>
-        public bool ReceiveEvents { get; set; }
+        internal sealed class WorldChangeModuleConfig : ModuleConfigBase
+        {
+            /// <inheritdoc />
+            public override uint Version { get; protected set; }
 
-        /// <summary>
-        ///     Whether to only show when a player travels to the current world.
-        /// </summary>
-        public bool OnlyShowCurrentWorld { get; set; } = true;
+            /// <inheritdoc />
+            protected override string Identifier { get; set; } = "WorldChangeModule";
 
-        /// <summary>
-        ///     The message to send when a player changes worlds.
-        /// </summary>
-        public string ChangeMessage { get; set; } = "{0} moved world to {1}.";
+            /// <summary>
+            ///     Whether to receive world change events from other players.
+            /// </summary>
+            public bool ReceiveEvents { get; set; }
 
-        /// <summary>
-        ///     Validates a world change message.
-        /// </summary>
-        /// <param name="message">The message to validate.</param>
-        /// <returns>Whether or not the message is valid.</returns>
-        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 2, true);
+            /// <summary>
+            ///     Whether to only show when a player travels to the current world.
+            /// </summary>
+            public bool OnlyShowCurrentWorld { get; set; } = true;
+
+            /// <summary>
+            ///     The message to send when a player changes worlds.
+            /// </summary>
+            public string ChangeMessage { get; set; } = "{0} moved world to {1}.";
+
+            /// <summary>
+            ///     Validates a world change message.
+            /// </summary>
+            /// <param name="message">The message to validate.</param>
+            /// <returns>Whether or not the message is valid.</returns>
+            public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 2, true);
+        }
     }
 }

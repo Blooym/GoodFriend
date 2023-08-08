@@ -24,7 +24,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         public static void DrawModuleList()
         {
             ModuleTag? lastTag = null;
-            foreach (var module in Services.ModuleService.GetModules().OrderBy(x => x.Tag).OrderByDescending(x => x.DisplayWeight))
+            foreach (var module in Services.ModuleService.GetModules().OrderBy(x => x.Tag).ThenByDescending(x => x.DisplayWeight))
             {
                 if (lastTag != module.Tag)
                 {
