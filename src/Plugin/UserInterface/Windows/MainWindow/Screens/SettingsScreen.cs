@@ -77,7 +77,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
             ImGui.Dummy(Spacing.ReadableSpacing);
 
-            if (ImGui.Button(revealSensitiveConfig ? "Hide Sensitive Settings" : "Show Sensitive Settings"))
+            if (ImGui.Button(revealSensitiveConfig ? Strings.UI_MainWindow_SettingsScreen_Api_HideSensitive : Strings.UI_MainWindow_SettingsScreen_Api_ShowSensitive))
             {
                 revealSensitiveConfig = !revealSensitiveConfig;
             }
@@ -86,7 +86,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             if (revealSensitiveConfig)
             {
                 var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
-                if (SiGui.InputText("Auth Token", ref authKey, 250, false))
+                if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken, ref authKey, 250, false))
                 {
                     if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
                     {
@@ -95,7 +95,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
                         Services.PluginConfiguration.Save();
                     }
                 }
-                SiGui.TextDisabledWrapped("The authentication token to use for requests that require authentication. Only instance administrators will need to set this.");
+                SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken_Description);
             }
         }
 

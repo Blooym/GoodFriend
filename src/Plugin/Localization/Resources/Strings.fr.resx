@@ -119,21 +119,6 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Erreur</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected_Description" xml:space="preserve">
-    <value>You are currently receiving events from other friends and are fully connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting_Description" xml:space="preserve">
-    <value>Tentative de connexion au flux d'événements du joueur, veuillez patienter.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected_Description" xml:space="preserve">
-    <value>You are not currently receiving events from other friends and are not connected to the player event stream.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting_Description" xml:space="preserve">
-    <value>Déconnexion du flux d'événements du joueur, veuillez patienter.</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception_Description" xml:space="preserve">
-    <value>Un problème s'est produit lors de la tentative de connexion au flux d'événements du joueur ! Il peut s'agir d'un problème de réseau ou d'une panne de l'API. Vous serez automatiquement reconnecté dès que possible. Pour plus d'informations, consultez /xllog.</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Statistiques de connexion</value>
   </data>

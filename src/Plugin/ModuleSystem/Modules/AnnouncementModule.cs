@@ -9,6 +9,7 @@ using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Client.Http.Responses.Enums;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
@@ -54,10 +55,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private AnnouncementKind sendAnnouncementKind = AnnouncementKind.Informational;
 
         /// <inheritdoc />
-        public override string Name => "Announcements";
+        public override string Name => Strings.Modules_AnnouncementModule_Name;
 
         /// <inheritdoc />
-        public override string? Description => "Announcements allow for instance administrators to communicate important information to players in real-time. You can control what kind of announcements you receive in the settings or send your own announcements if you are an instance administrator.";
+        public override string? Description => Strings.Modules_AnnouncementModule_Description;
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Notifications;
@@ -108,36 +109,36 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
         private void DrawAnnouncementStreamState()
         {
-            SiGui.Heading("Announcement Stream");
-            SiGui.Text("Connection State:");
+            SiGui.Heading(Strings.Modules_AnnouncementModule_Header_Stream);
+            SiGui.Text(Strings.Modules_AnnouncementModule_ConnectionStatus);
             ImGui.SameLine();
             switch (this.AnnouncementSseStream.ConnectionState)
             {
                 case SseConnectionState.Connected:
-                    SiGui.TextColoured(Colours.Success, "Connected");
+                    SiGui.TextColoured(Colours.Success, Strings.Modules_AnnouncementModule_ConnectionState_Connected);
                     break;
                 case SseConnectionState.Connecting:
-                    SiGui.TextColoured(Colours.Warning, "Connecting");
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_AnnouncementModule_ConnectionState_Connecting);
                     break;
                 case SseConnectionState.Disconnected:
-                    SiGui.TextColoured(Colours.Error, "Disconnected");
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_AnnouncementModule_ConnectionState_Disconnected);
                     break;
                 case SseConnectionState.Disconnecting:
-                    SiGui.TextColoured(Colours.Warning, "Disconnecting");
+                    SiGui.TextColoured(Colours.Warning, Strings.Modules_AnnouncementModule_ConnectionState_Disconnecting);
                     break;
                 case SseConnectionState.Exception:
-                    SiGui.TextColoured(Colours.Error, "Error");
+                    SiGui.TextColoured(Colours.Error, Strings.Modules_AnnouncementModule_ConnectionState_Exception);
                     break;
             }
         }
 
         private void DrawReceiveOptions()
         {
-            SiGui.Heading("Announcement Receive Options");
+            SiGui.Heading(Strings.Modules_AnnouncementModule_ReceiveOptions);
             foreach (var kind in Enum.GetValues<AnnouncementKind>())
             {
                 var isEnabled = this.Config.EnabledAnnouncements.ContainsKey(kind) && this.Config.EnabledAnnouncements[kind];
-                if (SiGui.Checkbox($"Show '{kind}' announcements", ref isEnabled))
+                if (SiGui.Checkbox(string.Format(Strings.Modules_AnnouncementModule_ReceiveOptions_ShowKind, kind), ref isEnabled))
                 {
                     if (!this.Config.EnabledAnnouncements.ContainsKey(kind))
                     {
@@ -153,13 +154,13 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
         private void DrawSendAnnouncement()
         {
-            SiGui.Heading("Send Announcement");
+            SiGui.Heading(Strings.Modules_AnnouncementModule_SendAnnouncement_Header);
             if (!this.CanSendAnnouncements)
             {
                 var tokenSet = !string.IsNullOrWhiteSpace(Services.PluginConfiguration.ApiConfig.AuthKey);
-                SiGui.TextWrapped("You must be an instance administrator with a valid authentication token set in the plugin settings to send announcements. If you are just using this plugin regularly, you can ignore this section.");
+                SiGui.TextWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin);
                 ImGui.BeginDisabled(!tokenSet);
-                if (ImGui.Button(tokenSet ? "Re-attempt authentication" : "No authentication token set"))
+                if (ImGui.Button(tokenSet ? Strings.Modules_AnnouncementModule_SendAnnouncement_Reauth : Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuth))
                 {
                     this.ValidateAuthToken();
                 }
@@ -167,7 +168,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             }
             else
             {
-                SiGui.TextWrapped("Please note that all connected clients will receive your announcement as soon as you send it, be responsible.");
+                SiGui.TextWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_Notice);
                 if (ImGui.BeginCombo("Kind", this.sendAnnouncementKind.ToString()))
                 {
                     foreach (var kind in Enum.GetValues<AnnouncementKind>())
@@ -198,12 +199,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                 SiGui.InputTextMultiline("Message", ref this.sendAnnouncementText, 430, new(0, 100));
                 ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.LeftShift) || string.IsNullOrWhiteSpace(this.sendAnnouncementText));
-                if (ImGui.Button("Send"))
+                if (ImGui.Button(Strings.Modules_AnnouncementModule_SendAnnouncement_Send))
                 {
                     this.SendAnnouncementBackground();
                 }
                 ImGui.EndDisabled();
-                SiGui.TextDisabledWrapped("Hold shift to send announcement.");
+                SiGui.TextDisabledWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_HoldShift);
             }
         }
 
@@ -261,12 +262,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     if (outcome.IsSuccessStatusCode)
                     {
                         Logger.Information($"Announcement sent\nChannel:${this.sendAnnouncementChannel}\nMessage: {this.sendAnnouncementText}\nKind: {this.sendAnnouncementKind}\nResult: {outcome.ReasonPhrase}");
-                        ChatHelper.Print("Announcement sucessfully sent.");
+                        ChatHelper.Print(Strings.Modules_AnnouncementModule_SendAnnouncement_SendSuccess);
                     }
                     else
                     {
                         Logger.Warning($"Failed to send announcement: {outcome.ReasonPhrase}");
-                        ChatHelper.PrintError($"Failed to send announcement: {outcome.ReasonPhrase}");
+                        ChatHelper.PrintError(string.Format(Strings.Modules_AnnouncementModule_SendAnnouncement_SendError, outcome.ReasonPhrase));
                     }
                     this.sendAnnouncementText = string.Empty;
                 });
@@ -312,10 +313,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             switch (announcement.Kind)
             {
                 case AnnouncementKind.Critical:
-                    ChatHelper.PrintImportant($"Announcement: {announcement.Message}");
+                    ChatHelper.PrintImportant(string.Format(Strings.Modules_AnnouncementModule_AnnouncementText, announcement.Message));
                     break;
                 default:
-                    ChatHelper.Print($"Announcement: {announcement.Message}");
+                    ChatHelper.Print(string.Format(Strings.Modules_AnnouncementModule_AnnouncementText, announcement.Message));
                     break;
             }
         }

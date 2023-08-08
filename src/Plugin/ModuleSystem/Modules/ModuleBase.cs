@@ -155,7 +155,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <remarks>
         ///     This method should be used by the module itself to draw its contents.
         /// </remarks>
-        protected virtual void DrawModule() => SiGui.TextDisabledWrapped("This module does not have any additional content to display.");
+        protected virtual void DrawModule() => SiGui.TextDisabledWrapped(Strings.Modules_ModuleBase_NoAdditionalContent);
     }
 
     /// <summary>
