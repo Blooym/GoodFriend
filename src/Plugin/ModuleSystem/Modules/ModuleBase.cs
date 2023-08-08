@@ -20,9 +20,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     The PlayerEvent SSE stream.
         /// </summary>
         /// <remarks>
-        ///    This is a convenience property for <see cref="Services.PlayerEventSSEStream"/>.
+        ///    This is a convenience property for <see cref="Services.PlayerEventSseStream"/>.
         /// </remarks>
-        protected static SSEClient<PlayerEventStreamUpdate> PlayerEventSSEStream => Services.PlayerEventSSEStream;
+        protected static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream => Services.PlayerEventSseStream;
 
         /// <summary>
         ///     The shared HttpClient.

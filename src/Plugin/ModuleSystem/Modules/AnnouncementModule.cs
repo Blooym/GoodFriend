@@ -26,7 +26,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     The SSE stream for announcements.
         /// </summary>
-        private SSEClient<AnnouncementStreamUpdate> AnnouncementSSEStream { get; set; } = null!;
+        private SseClient<AnnouncementStreamUpdate> AnnouncementSseStream { get; set; } = null!;
 
         /// <summary>
         ///     Whether or not the client is allowed to send announcements.
@@ -65,17 +65,17 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            this.AnnouncementSSEStream = GetAnnouncementStreamRequest.CreateSSEClient(HttpClient, new Timer(60000));
+            this.AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(HttpClient, new Timer(60000));
             if (DalamudInjections.ClientState.IsLoggedIn && this.IsAnnouncementStreamDisconnected())
             {
-                this.AnnouncementSSEStream.Connect();
+                this.AnnouncementSseStream.Connect();
             }
 
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
 
-            this.AnnouncementSSEStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
-            this.AnnouncementSSEStream.OnStreamException += this.OnAnnouncementStreamException;
+            this.AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
+            this.AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
 
             this.ValidateAuthToken();
         }
@@ -85,15 +85,15 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (this.IsAnnouncementStreamConnected())
             {
-                this.AnnouncementSSEStream.Disconnect();
+                this.AnnouncementSseStream.Disconnect();
             }
-            this.AnnouncementSSEStream.Dispose();
+            this.AnnouncementSseStream.Dispose();
 
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
 
-            this.AnnouncementSSEStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
-            this.AnnouncementSSEStream.OnStreamException -= this.OnAnnouncementStreamException;
+            this.AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
+            this.AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
         }
 
         /// <inheritdoc />
@@ -111,21 +111,21 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             SiGui.Heading("Announcement Stream");
             SiGui.Text("Connection State:");
             ImGui.SameLine();
-            switch (this.AnnouncementSSEStream.ConnectionState)
+            switch (this.AnnouncementSseStream.ConnectionState)
             {
-                case SSEConnectionState.Connected:
+                case SseConnectionState.Connected:
                     SiGui.TextColoured(Colours.Success, "Connected");
                     break;
-                case SSEConnectionState.Connecting:
+                case SseConnectionState.Connecting:
                     SiGui.TextColoured(Colours.Warning, "Connecting");
                     break;
-                case SSEConnectionState.Disconnected:
+                case SseConnectionState.Disconnected:
                     SiGui.TextColoured(Colours.Error, "Disconnected");
                     break;
-                case SSEConnectionState.Disconnecting:
+                case SseConnectionState.Disconnecting:
                     SiGui.TextColoured(Colours.Warning, "Disconnecting");
                     break;
-                case SSEConnectionState.Exception:
+                case SseConnectionState.Exception:
                     SiGui.TextColoured(Colours.Error, "Error");
                     break;
             }
@@ -275,7 +275,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     Called when an announcement is received.
         /// </summary>
         /// <param name="_"></param>
-        /// <param name="rawEvent"></param>
+        /// <param name="announcement"></param>
         private void OnAnnouncementStreamMessage(object? _, AnnouncementStreamUpdate announcement)
         {
             Logger.Information($"Received announcement: {announcement}");
@@ -329,7 +329,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (this.IsAnnouncementStreamDisconnected())
             {
-                this.AnnouncementSSEStream.Connect();
+                this.AnnouncementSseStream.Connect();
             }
         }
 
@@ -342,7 +342,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (this.IsAnnouncementStreamConnected())
             {
-                this.AnnouncementSSEStream.Disconnect();
+                this.AnnouncementSseStream.Disconnect();
             }
         }
 
@@ -357,18 +357,18 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     If the announcement stream is connected or connecting.
         /// </summary>
         /// <returns></returns>
-        private bool IsAnnouncementStreamConnected() => this.AnnouncementSSEStream.ConnectionState is SSEConnectionState.Connected or SSEConnectionState.Connecting;
+        private bool IsAnnouncementStreamConnected() => this.AnnouncementSseStream.ConnectionState is SseConnectionState.Connected or SseConnectionState.Connecting;
 
         /// <summary>
         ///     If the announcement stream is disconnected or disconnecting.
         /// </summary>
         /// <returns></returns>
-        private bool IsAnnouncementStreamDisconnected() => this.AnnouncementSSEStream.ConnectionState is SSEConnectionState.Disconnected or SSEConnectionState.Disconnecting;
+        private bool IsAnnouncementStreamDisconnected() => this.AnnouncementSseStream.ConnectionState is SseConnectionState.Disconnected or SseConnectionState.Disconnecting;
 
         /// <summary>
         ///     Configuration for the world change module.
         /// </summary>
-        internal sealed class AnnouncementModuleConfig : ModuleConfigBase
+        private sealed class AnnouncementModuleConfig : ModuleConfigBase
         {
             /// <inheritdoc />
             public override uint Version { get; protected set; }
@@ -387,7 +387,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             };
         }
 
-        internal static class CustomAnnouncementChannels
+        private static class CustomAnnouncementChannels
         {
             /// <summary>
             ///     Testing users only.

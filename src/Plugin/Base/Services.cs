@@ -19,7 +19,7 @@ namespace GoodFriend.Plugin.Base
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
         public static WindowingService WindowingService { get; private set; } = null!;
         public static ModuleService ModuleService { get; private set; } = null!;
-        public static SSEClient<PlayerEventStreamUpdate> PlayerEventSSEStream { get; private set; } = null!;
+        public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
         public static HttpClient HttpClient { get; private set; } = null!;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace GoodFriend.Plugin.Base
         {
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
-            PlayerEventSSEStream = GetPlayerEventStreamRequest.CreateSSEClient(HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl), new Timer(60000));
+            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl), new Timer(60000));
             HttpClient = HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl);
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
@@ -44,7 +44,7 @@ namespace GoodFriend.Plugin.Base
             WindowingService.Dispose();
             ModuleService.Dispose();
             HttpClient.Dispose();
-            PlayerEventSSEStream.Dispose();
+            PlayerEventSseStream.Dispose();
         }
     }
 }

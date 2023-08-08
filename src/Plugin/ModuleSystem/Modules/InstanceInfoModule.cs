@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
@@ -78,7 +79,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.ParsedBlue);
-            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.Connections.PlayerEvents), new(ImGui.GetContentRegionAvail().X, 0));
+            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.Connections.PlayerEvents), new Vector2(ImGui.GetContentRegionAvail().X, 0));
             ImGui.PopStyleColor(3);
             ImGui.Dummy(Spacing.SectionSpacing);
 

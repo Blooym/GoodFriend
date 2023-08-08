@@ -54,7 +54,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            PlayerEventSSEStream.OnStreamMessage += this.OnPlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage += this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            PlayerEventSSEStream.OnStreamMessage -= this.OnPlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage -= this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />

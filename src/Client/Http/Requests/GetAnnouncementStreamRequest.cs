@@ -17,6 +17,6 @@ namespace GoodFriend.Client.Http.Requests
         /// <param name="httpClient">The HTTP client to use.</param>
         /// <param name="reconnectTimer">The timer to use for reconnecting, if any.</param>
         /// <returns>A new SSE client for the announcement stream.</returns>
-        public static SSEClient<AnnouncementStreamUpdate> CreateSSEClient(HttpClient httpClient, Timer? reconnectTimer) => new(httpClient, EndpointUrl, reconnectTimer);
+        public static SseClient<AnnouncementStreamUpdate> CreateSSEClient(HttpClient httpClient, Timer? reconnectTimer) => new(httpClient, EndpointUrl, reconnectTimer);
     }
 }

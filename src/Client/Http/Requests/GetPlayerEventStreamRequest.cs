@@ -17,7 +17,7 @@ namespace GoodFriend.Client.Http.Requests
         /// <param name="httpClient">The HTTP client to use.</param>
         /// <param name="reconnectTimer">The timer to use for reconnecting, if any.</param>
         /// <returns></returns>
-        public static SSEClient<PlayerEventStreamUpdate> CreateSSEClient(HttpClient httpClient, Timer reconnectTimer) => new(httpClient, EndpointUrl, reconnectTimer);
+        public static SseClient<PlayerEventStreamUpdate> CreateSSEClient(HttpClient httpClient, Timer reconnectTimer) => new(httpClient, EndpointUrl, reconnectTimer);
 
     }
 }

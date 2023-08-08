@@ -11,7 +11,7 @@ namespace GoodFriend.Plugin.ModuleSystem
         /// <summary>
         ///     All loaded modules.
         /// </summary>
-        private readonly ICollection<ModuleBase> loadedModules;
+        private readonly IEnumerable<ModuleBase> loadedModules;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ModuleService" /> class.
@@ -87,6 +87,6 @@ namespace GoodFriend.Plugin.ModuleSystem
         ///     Gets all loaded modules.
         /// </summary>
         /// <returns>All loaded modules.</returns>
-        public ICollection<ModuleBase> GetModules() => this.loadedModules;
+        public IEnumerable<ModuleBase> GetModules() => this.loadedModules;
     }
 }

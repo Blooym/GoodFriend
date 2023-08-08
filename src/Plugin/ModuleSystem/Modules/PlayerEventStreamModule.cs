@@ -45,14 +45,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
             {
-                PlayerEventSSEStream.Connect();
+                PlayerEventSseStream.Connect();
             }
 
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            PlayerEventSSEStream.OnStreamHeartbeat += this.OnPlayerStreamHeartbeat;
-            PlayerEventSSEStream.OnStreamMessage += this.OnPlayerStreamEvent;
-            PlayerEventSSEStream.OnStreamException += this.OnPlayerStreamException;
+            PlayerEventSseStream.OnStreamHeartbeat += this.OnPlayerStreamHeartbeat;
+            PlayerEventSseStream.OnStreamMessage += this.OnPlayerStreamEvent;
+            PlayerEventSseStream.OnStreamException += this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -60,14 +60,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                PlayerEventSSEStream.Connect();
+                PlayerEventSseStream.Connect();
             }
 
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            PlayerEventSSEStream.OnStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
-            PlayerEventSSEStream.OnStreamMessage -= this.OnPlayerStreamEvent;
-            PlayerEventSSEStream.OnStreamException -= this.OnPlayerStreamException;
+            PlayerEventSseStream.OnStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
+            PlayerEventSseStream.OnStreamMessage -= this.OnPlayerStreamEvent;
+            PlayerEventSseStream.OnStreamException -= this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -75,21 +75,21 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
-            switch (PlayerEventSSEStream.ConnectionState)
+            switch (PlayerEventSseStream.ConnectionState)
             {
-                case SSEConnectionState.Connected:
+                case SseConnectionState.Connected:
                     SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
                     break;
-                case SSEConnectionState.Connecting:
+                case SseConnectionState.Connecting:
                     SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting);
                     break;
-                case SSEConnectionState.Disconnected:
+                case SseConnectionState.Disconnected:
                     SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected);
                     break;
-                case SSEConnectionState.Disconnecting:
+                case SseConnectionState.Disconnecting:
                     SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting);
                     break;
-                case SSEConnectionState.Exception:
+                case SseConnectionState.Exception:
                     SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception);
                     break;
             }
@@ -110,7 +110,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamDisconnected())
             {
-                PlayerEventSSEStream.Connect();
+                PlayerEventSseStream.Connect();
             }
         }
 
@@ -123,7 +123,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                PlayerEventSSEStream.Disconnect();
+                PlayerEventSseStream.Disconnect();
             }
         }
 
@@ -161,12 +161,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     If the player event stream is connected or connecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamConnected() => PlayerEventSSEStream.ConnectionState is SSEConnectionState.Connected or SSEConnectionState.Connecting;
+        private static bool IsPlayerStreamConnected() => PlayerEventSseStream.ConnectionState is SseConnectionState.Connected or SseConnectionState.Connecting;
 
         /// <summary>
         ///     If the player event stream is disconnected or disconnecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamDisconnected() => PlayerEventSSEStream.ConnectionState is SSEConnectionState.Disconnected or SSEConnectionState.Disconnecting;
+        private static bool IsPlayerStreamDisconnected() => PlayerEventSseStream.ConnectionState is SseConnectionState.Disconnected or SseConnectionState.Disconnecting;
     }
 }

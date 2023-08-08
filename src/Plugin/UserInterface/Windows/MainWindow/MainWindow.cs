@@ -15,7 +15,7 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
 {
-    internal sealed partial class MainWindow : Window
+    internal sealed class MainWindow : Window
     {
         /// <summary>
         ///     The width of the sidebar.

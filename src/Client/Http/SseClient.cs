@@ -7,7 +7,7 @@ using System.Web;
 
 namespace GoodFriend.Client.Http
 {
-    public enum SSEConnectionState
+    public enum SseConnectionState
     {
         /// <summary>
         ///     The client is currently connected to the stream.
@@ -39,7 +39,7 @@ namespace GoodFriend.Client.Http
     ///     Represents a client for a server-sent event stream.
     /// </summary>
     /// <typeparam name="T">The type of data to expect from the stream.</typeparam>
-    public sealed class SSEClient<T> : IDisposable where T : struct
+    public sealed class SseClient<T> : IDisposable where T : struct
     {
         private bool disposedValue;
 
@@ -61,32 +61,32 @@ namespace GoodFriend.Client.Http
         /// <summary>
         ///     The current connection state.
         /// </summary>
-        public SSEConnectionState ConnectionState { get; private set; } = SSEConnectionState.Disconnected;
+        public SseConnectionState ConnectionState { get; private set; } = SseConnectionState.Disconnected;
 
         /// <summary>
         ///     Fires when the stream is connected.
         /// </summary>
-        public event Action<SSEClient<T>>? OnStreamConnected;
+        public event Action<SseClient<T>>? OnStreamConnected;
 
         /// <summary>
         ///     Fires when the stream is disconnected.
         /// </summary>
-        public event Action<SSEClient<T>>? OnStreamDisconnected;
+        public event Action<SseClient<T>>? OnStreamDisconnected;
 
         /// <summary>
         ///     Fires when the stream sends a heartbeat.
         /// </summary>
-        public event Action<SSEClient<T>>? OnStreamHeartbeat;
+        public event Action<SseClient<T>>? OnStreamHeartbeat;
 
         /// <summary>
         ///     Fires when the stream throws an exception.
         /// </summary>
-        public event Action<SSEClient<T>, Exception>? OnStreamException;
+        public event Action<SseClient<T>, Exception>? OnStreamException;
 
         /// <summary>
         ///     Fires when the stream sends a message.
         /// </summary>
-        public event Action<SSEClient<T>, T>? OnStreamMessage;
+        public event Action<SseClient<T>, T>? OnStreamMessage;
 
         /// <summary>
         ///     Creates a new SSE client.
@@ -94,7 +94,7 @@ namespace GoodFriend.Client.Http
         /// <param name="client">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
         /// <param name="endpoint">The endpoint to connect to.</param>
         /// <param name="reconnectTimer">The timer to use for reconnecting. This must be a unqiue timer as it will be managed once initialized.</param>
-        public SSEClient(HttpClient client, string endpoint, Timer? reconnectTimer = null)
+        public SseClient(HttpClient client, string endpoint, Timer? reconnectTimer = null)
         {
             this.httpClient = client;
             this.endpoint = endpoint;
@@ -152,7 +152,7 @@ namespace GoodFriend.Client.Http
         /// <param name="e"></param>
         private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
         {
-            if (this.ConnectionState is not SSEConnectionState.Exception)
+            if (this.ConnectionState is not SseConnectionState.Exception)
             {
                 this.reconnectTimer?.Stop();
                 return;
@@ -187,26 +187,26 @@ namespace GoodFriend.Client.Http
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(SSEClient<T>));
+                throw new ObjectDisposedException(nameof(SseClient<T>));
             }
 
-            if (this.ConnectionState is SSEConnectionState.Connecting or SSEConnectionState.Connected)
+            if (this.ConnectionState is SseConnectionState.Connecting or SseConnectionState.Connected)
             {
                 return;
             }
 
             try
             {
-                this.ConnectionState = SSEConnectionState.Connecting;
+                this.ConnectionState = SseConnectionState.Connecting;
 
                 using var stream = await this.httpClient.GetStreamAsync(this.endpoint);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 
-                this.ConnectionState = SSEConnectionState.Connected;
+                this.ConnectionState = SseConnectionState.Connected;
                 this.OnStreamConnected?.Invoke(this);
 
-                while (!reader.EndOfStream && this.ConnectionState == SSEConnectionState.Connected)
+                while (!reader.EndOfStream && this.ConnectionState == SseConnectionState.Connected)
                 {
                     var message = reader.ReadLine();
                     message = HttpUtility.UrlDecode(message);
@@ -239,15 +239,15 @@ namespace GoodFriend.Client.Http
                     }
                 }
 
-                if (reader.EndOfStream && this.ConnectionState == SSEConnectionState.Connected)
+                if (reader.EndOfStream && this.ConnectionState == SseConnectionState.Connected)
                 {
-                    this.ConnectionState = SSEConnectionState.Exception;
+                    this.ConnectionState = SseConnectionState.Exception;
                     this.OnStreamException?.Invoke(this, exception ?? new HttpRequestException("Connection to stream suddenly closed."));
                 }
             }
             catch (Exception e)
             {
-                this.ConnectionState = SSEConnectionState.Exception;
+                this.ConnectionState = SseConnectionState.Exception;
                 this.OnStreamException?.Invoke(this, e);
             }
         }
@@ -260,16 +260,16 @@ namespace GoodFriend.Client.Http
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(SSEClient<T>));
+                throw new ObjectDisposedException(nameof(SseClient<T>));
             }
 
-            if (this.ConnectionState is SSEConnectionState.Disconnecting or SSEConnectionState.Disconnected)
+            if (this.ConnectionState is SseConnectionState.Disconnecting or SseConnectionState.Disconnected)
             {
                 return;
             }
-            this.ConnectionState = SSEConnectionState.Disconnecting;
+            this.ConnectionState = SseConnectionState.Disconnecting;
 
-            this.ConnectionState = SSEConnectionState.Disconnected;
+            this.ConnectionState = SseConnectionState.Disconnected;
             this.OnStreamDisconnected?.Invoke(this);
         }
     }

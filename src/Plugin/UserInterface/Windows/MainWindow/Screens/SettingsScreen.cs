@@ -11,7 +11,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 {
     internal static class SettingsScreen
     {
-        private static SettingsOption CurrentSetting { get; set; } = SettingsOption.API;
+        private static SettingsOption CurrentSetting { get; set; } = SettingsOption.Api;
         private static bool restartRequired;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             SiGui.Heading(CurrentSetting.ToString());
             switch (CurrentSetting)
             {
-                case SettingsOption.API:
+                case SettingsOption.Api:
                     DrawAPISettings();
                     break;
             }
@@ -101,7 +101,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 
         private enum SettingsOption
         {
-            API,
+            Api,
         }
     }
 }

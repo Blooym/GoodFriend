@@ -63,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            PlayerEventSSEStream.OnStreamMessage += this.HandlePlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -77,7 +77,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            PlayerEventSSEStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
+            PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -367,7 +367,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        internal sealed class LoginStateModuleConfig : ModuleConfigBase
+        private sealed class LoginStateModuleConfig : ModuleConfigBase
         {
             /// <inheritdoc />
             public override uint Version { get; protected set; }
