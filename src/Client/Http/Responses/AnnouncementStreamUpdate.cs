@@ -37,7 +37,7 @@ namespace GoodFriend.Client.Http.Responses
         /// <summary>
         ///     The channel of the announcement.
         /// </summary>
-        [JsonPropertyName("channe;")]
+        [JsonPropertyName("channel")]
         public string? Channel { get; set; }
     }
 }
