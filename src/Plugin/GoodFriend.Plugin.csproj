@@ -9,7 +9,7 @@
     <Version>3.0.0.0</Version>
     <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
-  
+
   <!-- Build Configuration -->
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
@@ -53,7 +53,7 @@
       </AssemblyAttribute>
     </ItemGroup>
   </Target>
-  
+
     <!-- Localization -->
   <ItemGroup>
     <EmbeddedResource Update="Localization\Resources\Strings.resx">

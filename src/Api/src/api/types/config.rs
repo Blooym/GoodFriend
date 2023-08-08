@@ -92,7 +92,6 @@ fn validate_custom_urls(urls: &HashMap<String, String>) -> Result<(), Validation
     if urls.is_empty() {
         return Ok(());
     }
-
     for url in urls.values() {
         match Url::parse(url) {
             Ok(_) => (),
@@ -103,7 +102,6 @@ fn validate_custom_urls(urls: &HashMap<String, String>) -> Result<(), Validation
             }
         }
     }
-
     Ok(())
 }
 

@@ -29,7 +29,7 @@ namespace GoodFriend.Plugin.Configuration
             ///     The default API URL to use.
             /// </summary>
             [NonSerialized]
-            public static readonly Uri DefaultApiBaseUrl = new("https://aether.blooym.dev/v3/");
+            public static readonly Uri DefaultBaseUri = new("https://aether.blooym.dev/v3/");
 
             /// <summary>
             ///     The BaseURL to use when interacting with the API.
@@ -37,18 +37,14 @@ namespace GoodFriend.Plugin.Configuration
             /// <remarks>
             ///     This requires a restart to take effect.
             /// </remarks>
-            public Uri ApiBaseUrl { get; set; } = DefaultApiBaseUrl;
+            public Uri BaseUrl { get; set; } = DefaultBaseUri;
 
             /// <summary>
-            ///     The API authorization token to use with authenticated requests.
+            ///     The authentication key to use with authenticated requests.
             /// </summary>
-            public string ApiKey { get; set; } = string.Empty;
-
-            /// <summary>
-            ///     Resets the BaseURL to the default.
-            /// </summary>
-            public void ResetApiBaseUrl() => this.ApiBaseUrl = DefaultApiBaseUrl;
+            public string AuthKey { get; set; } = string.Empty;
         }
+
         /// <summary>
         ///     Saves the current configuration to disk.
         /// </summary>
@@ -63,12 +59,12 @@ namespace GoodFriend.Plugin.Configuration
             var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
 
             // Migrate api version if not up to date
-            if (config.ApiConfig.ApiBaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", StringComparison.OrdinalIgnoreCase) && !config.ApiConfig.ApiBaseUrl.AbsoluteUri.EndsWith("/v3/", StringComparison.OrdinalIgnoreCase))
+            if (config.ApiConfig.BaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", StringComparison.OrdinalIgnoreCase) && !config.ApiConfig.BaseUrl.AbsoluteUri.EndsWith("/v3/", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Information($"Updating API Base URL from {config.ApiConfig.ApiBaseUrl} to {ApiConfiguration.DefaultApiBaseUrl}");
-                config.ApiConfig.ApiBaseUrl = ApiConfiguration.DefaultApiBaseUrl;
+                Logger.Information($"Updating API Base URL from {config.ApiConfig.BaseUrl} to {ApiConfiguration.DefaultBaseUri}");
+                config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
+                config.Save();
             }
-
             return config;
         }
     }

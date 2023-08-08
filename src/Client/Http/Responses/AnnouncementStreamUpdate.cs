@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json.Serialization;
-using GoodFriend.Client.Responses.Enums;
+using GoodFriend.Client.Http.Responses.Enums;
 
-namespace GoodFriend.Client.Responses
+namespace GoodFriend.Client.Http.Responses
 {
     /// <summary>
     ///     Represents a response from the announcement stream.
@@ -12,7 +12,7 @@ namespace GoodFriend.Client.Responses
     {
         /// <summary>
         ///     The UUID of the announcement.
-        /// </summary>  
+        /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
@@ -35,9 +35,9 @@ namespace GoodFriend.Client.Responses
         public AnnouncementCause Cause { get; set; }
 
         /// <summary>
-        ///     The target for the announcement.
+        ///     The channel of the announcement.
         /// </summary>
-        [JsonPropertyName("target")]
-        public string? Target { get; set; }
+        [JsonPropertyName("channe;")]
+        public string? Channel { get; set; }
     }
 }

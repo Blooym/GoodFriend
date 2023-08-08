@@ -11,7 +11,7 @@ use rocket::serde::{Deserialize, Serialize};
 /// has the original content id locally.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
-pub struct EventStreamPlayerStateUpdateResponse {
+pub struct PlayerEventStreamUpdate {
     pub content_id_hash: ContentIdHash,
     pub content_id_salt: ContentIdSalt,
     pub state_update_type: PlayerStateUpdateType,

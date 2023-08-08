@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dalamud.Interface.Colors;
 using Dalamud.Utility;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
@@ -12,9 +13,8 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
-    internal sealed class InstanceInfoModule : ModuleBase, IDisposable
+    internal sealed class InstanceInfoModule : ModuleBase
     {
-
         /// <summary>
         ///     The last time the metadata was updated.
         /// </summary>
@@ -44,9 +44,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
         /// <inheritdoc />
         protected override void DisableAction() { }
-
-        /// <inheritdoc />
-        public void Dispose() => this.Disable();
 
         /// <inheritdoc />
         protected override void DrawModule()
@@ -138,7 +135,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             {
                 Logger.Debug("Updating metadata...");
                 this.lastMetadataUpdateAttempt = DateTime.Now;
-                var request = ApiClient.GetMetadata();
+                var request = new GetMetadataRequest().Send(HttpClient, new());
                 this.metadata = request.Item1;
                 this.lastMetadataUpdateFailed = false;
                 Logger.Debug($"Successfully updated metadata: {this.metadata.Value}");

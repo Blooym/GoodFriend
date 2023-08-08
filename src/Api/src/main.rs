@@ -5,9 +5,9 @@ extern crate rocket;
 
 mod api;
 
-use api::routes::announcements::{self, Announcement};
-use api::routes::player_events::EventStreamPlayerStateUpdateResponse;
-use api::routes::{core, player_events, static_files};
+use api::routes::AnnouncementStreamUpdate;
+use api::routes::PlayerEventStreamUpdate;
+use api::routes::{announcements_routes, core_routes, player_events_routes, static_files_routes};
 use api::types::config::{get_config_cached_prime_cache, Config};
 use dotenv::dotenv;
 use rocket::shield::{self, Shield};
@@ -41,17 +41,17 @@ async fn rocket() -> Rocket<Build> {
     get_config_cached_prime_cache();
 
     rocket::build()
-        .manage(channel::<EventStreamPlayerStateUpdateResponse>(15000).0)
-        .manage(channel::<Announcement>(15000).0)
-        .mount("/", static_files::routes())
-        .mount([BASE_PATH, "/"].concat(), core::routes())
+        .manage(channel::<PlayerEventStreamUpdate>(15000).0)
+        .manage(channel::<AnnouncementStreamUpdate>(15000).0)
+        .mount("/", static_files_routes())
+        .mount([BASE_PATH, "/"].concat(), core_routes())
         .mount(
             [BASE_PATH, "/playerevents"].concat(),
-            player_events::routes(),
+            player_events_routes(),
         )
         .mount(
             [BASE_PATH, "/announcements"].concat(),
-            announcements::routes(),
+            announcements_routes(),
         )
         .attach(
             Shield::default()

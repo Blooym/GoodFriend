@@ -1,4 +1,4 @@
-use super::Announcement;
+use super::AnnouncementStreamUpdate;
 use rocket::response::stream::{Event, EventStream};
 use rocket::tokio::select;
 use rocket::tokio::sync::broadcast::{error::RecvError, Sender};
@@ -7,7 +7,7 @@ use rocket::{Shutdown, State};
 /// Get a stream of announcements.
 #[get("/stream")]
 pub async fn get_stream(
-    announcement_queue: &State<Sender<Announcement>>,
+    announcement_queue: &State<Sender<AnnouncementStreamUpdate>>,
     mut end: Shutdown,
 ) -> EventStream![] {
     let mut rx = announcement_queue.subscribe();

@@ -1,4 +1,4 @@
-use super::{EventStreamPlayerStateUpdateResponse, PlayerStateUpdateType};
+use super::{PlayerEventStreamUpdate, PlayerStateUpdateType};
 use crate::api::guards::cid_hash_duplicate_guard::CidHashDuplicateGuard;
 use crate::api::types::content_id::{ContentIdHash, ContentIdSalt};
 use rocket::serde::json::Json;
@@ -26,9 +26,9 @@ pub struct UpdatePlayerLoginStateRequest {
 pub async fn post_loginstate(
     _spam_guard: CidHashDuplicateGuard,
     update: Json<UpdatePlayerLoginStateRequest>,
-    queue: &State<Sender<EventStreamPlayerStateUpdateResponse>>,
+    queue: &State<Sender<PlayerEventStreamUpdate>>,
 ) -> status::Accepted<()> {
-    let _ = queue.send(EventStreamPlayerStateUpdateResponse {
+    let _ = queue.send(PlayerEventStreamUpdate {
         content_id_hash: update.content_id_hash.clone(),
         content_id_salt: update.content_id_salt.clone(),
         state_update_type: PlayerStateUpdateType::LoginStateChange {

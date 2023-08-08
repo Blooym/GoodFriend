@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace GoodFriend.Client.Responses
+namespace GoodFriend.Client.Http.Responses
 {
     /// <summary>
-    ///     Represents a response from the player event stream.
+    ///     Represents the response data for a player event stream update.
     /// </summary>
     [Serializable]
     public record struct PlayerEventStreamUpdate
@@ -29,7 +29,7 @@ namespace GoodFriend.Client.Responses
     }
 
     /// <summary>
-    ///     Represents the type of state update received.
+    ///     Represents the state update type of a player event stream update.
     /// </summary>
     [Serializable]
     public record struct StateUpdateType
@@ -48,26 +48,37 @@ namespace GoodFriend.Client.Responses
     }
 
     /// <summary>
-    ///     Data for the LoginStateChange event.
+    ///     Represents the data received relating to a login state change.
     /// </summary>
     [Serializable]
     public record struct LoginStateChangeData
     {
+        /// <summary>
+        ///     The ID of the datacenter for the event.
+        /// </summary>
         [JsonPropertyName("datacenter_id")]
         public uint DatacenterId { get; set; }
 
+        /// <summary>
+        ///     The ID of the world for the event.
+        /// </summary>
         [JsonPropertyName("world_id")]
         public uint WorldId { get; set; }
 
+        /// <summary>
+        ///     The ID of the territory for the event.
+        /// </summary>
         [JsonPropertyName("territory_id")]
         public ushort TerritoryId { get; set; }
 
-        [JsonPropertyName("logged_in")]
+        /// <summary>
+        ///     Whether the event is a login or logout.
+        /// </summary>
         public bool LoggedIn { get; set; }
     }
 
     /// <summary>
-    ///     Data for the WorldChange event.
+    ///     Represents the data received relating to a world change.
     /// </summary>
     [Serializable]
     public record struct WorldChangeData

@@ -53,16 +53,16 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
         /// </summary>
         private static void DrawAPISettings()
         {
-            var apiUrl = Services.PluginConfiguration.ApiConfig.ApiBaseUrl.ToString();
+            var apiUrl = Services.PluginConfiguration.ApiConfig.BaseUrl.ToString();
             if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true))
             {
                 try
                 {
                     var uri = new Uri(apiUrl);
-                    if (uri != Services.PluginConfiguration.ApiConfig.ApiBaseUrl)
+                    if (uri != Services.PluginConfiguration.ApiConfig.BaseUrl)
                     {
                         restartRequired = true;
-                        Services.PluginConfiguration.ApiConfig.ApiBaseUrl = uri;
+                        Services.PluginConfiguration.ApiConfig.BaseUrl = uri;
                         Services.PluginConfiguration.Save();
                     }
                 }
@@ -75,17 +75,17 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
             ImGui.Dummy(Spacing.ReadableSpacing);
 
-            var apiKey = Services.PluginConfiguration.ApiConfig.ApiKey;
-            if (SiGui.InputText("API Key", ref apiKey, 250, false))
+            var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
+            if (SiGui.InputText("Auth Token", ref authKey, 250, false))
             {
-                if (apiKey != Services.PluginConfiguration.ApiConfig.ApiKey)
+                if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
                 {
                     restartRequired = true;
-                    Services.PluginConfiguration.ApiConfig.ApiKey = apiKey;
+                    Services.PluginConfiguration.ApiConfig.AuthKey = authKey;
                     Services.PluginConfiguration.Save();
                 }
             }
-            SiGui.TextDisabledWrapped("The API key to use for requests that require authentication. Only instance administrators will need to set this.");
+            SiGui.TextDisabledWrapped("The authentication token to use for requests that require authentication. Only instance administrators will need to set this.");
         }
 
         private enum SettingsOption

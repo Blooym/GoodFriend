@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Dalamud.Game;
 using Dalamud.Memory;
 using Dalamud.Utility;
-using GoodFriend.Client.Requests;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
@@ -63,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            ApiClient.PlayerEventStream.OnStreamMessage += this.HandlePlayerStreamMessage;
+            PlayerEventSSEStream.OnStreamMessage += this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -77,7 +77,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            ApiClient.PlayerEventStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
+            PlayerEventSSEStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -277,7 +277,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.HttpPost()
+                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -299,7 +299,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(this.currentContentId, salt);
                     Logger.Debug("Sending logout event.");
-                    ApiClient.SendLoginState(new UpdatePlayerLoginStateRequest.HttpPost()
+                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
                     {
                         ContentIdHash = hash,
                         ContentIdSalt = salt,
@@ -308,7 +308,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                         TerritoryId = this.currentTerritoryId,
                         WorldId = this.currentWorldId
                     });
-
                     this.ClearStoredValues();
                 });
 

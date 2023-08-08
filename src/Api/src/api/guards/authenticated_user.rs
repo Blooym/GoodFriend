@@ -5,8 +5,11 @@ use rocket::{
     Request,
 };
 
-/// A guard that checks if the user is authenticated with a valid token.
-pub struct AuthenticatedUserGuard {}
+/// A guard that checks if a user is authenticated.
+pub struct AuthenticatedUserGuard {
+    /// The token used to authenticate the user.
+    pub token_used: String,
+}
 
 /// An error that can occur when checking if a user is authenticated.
 #[derive(Debug)]
@@ -32,7 +35,9 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
             }
 
             if config.authentication.tokens.contains(&token) {
-                Outcome::Success(AuthenticatedUserGuard {})
+                Outcome::Success(AuthenticatedUserGuard {
+                    token_used: token.to_string(),
+                })
             } else {
                 Outcome::Failure((Status::Unauthorized, AuthenticatedUserError::InvalidToken))
             }

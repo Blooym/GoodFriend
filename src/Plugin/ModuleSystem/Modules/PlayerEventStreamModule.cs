@@ -1,6 +1,6 @@
 using System;
 using GoodFriend.Client.Http;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
@@ -45,14 +45,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
             {
-                ApiClient.PlayerEventStream.Connect();
+                PlayerEventSSEStream.Connect();
             }
 
             DalamudInjections.ClientState.Login += this.OnLogin;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.PlayerEventStream.OnStreamHeartbeat += this.OnPlayerStreamHeartbeat;
-            ApiClient.PlayerEventStream.OnStreamMessage += this.OnPlayerStreamEvent;
-            ApiClient.PlayerEventStream.OnStreamException += this.OnPlayerStreamException;
+            PlayerEventSSEStream.OnStreamHeartbeat += this.OnPlayerStreamHeartbeat;
+            PlayerEventSSEStream.OnStreamMessage += this.OnPlayerStreamEvent;
+            PlayerEventSSEStream.OnStreamException += this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -60,14 +60,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                ApiClient.PlayerEventStream.Connect();
+                PlayerEventSSEStream.Connect();
             }
 
             DalamudInjections.ClientState.Login -= this.OnLogin;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.PlayerEventStream.OnStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
-            ApiClient.PlayerEventStream.OnStreamMessage -= this.OnPlayerStreamEvent;
-            ApiClient.PlayerEventStream.OnStreamException -= this.OnPlayerStreamException;
+            PlayerEventSSEStream.OnStreamHeartbeat -= this.OnPlayerStreamHeartbeat;
+            PlayerEventSSEStream.OnStreamMessage -= this.OnPlayerStreamEvent;
+            PlayerEventSSEStream.OnStreamException -= this.OnPlayerStreamException;
         }
 
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
             ImGui.SameLine();
-            switch (ApiClient.PlayerEventStream.ConnectionState)
+            switch (PlayerEventSSEStream.ConnectionState)
             {
                 case SSEConnectionState.Connected:
                     SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
@@ -110,7 +110,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamDisconnected())
             {
-                ApiClient.PlayerEventStream.Connect();
+                PlayerEventSSEStream.Connect();
             }
         }
 
@@ -123,7 +123,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             if (IsPlayerStreamConnected())
             {
-                ApiClient.PlayerEventStream.Disconnect();
+                PlayerEventSSEStream.Disconnect();
             }
         }
 
@@ -161,12 +161,12 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     If the player event stream is connected or connecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamConnected() => ApiClient.PlayerEventStream.ConnectionState is SSEConnectionState.Connected or SSEConnectionState.Connecting;
+        private static bool IsPlayerStreamConnected() => PlayerEventSSEStream.ConnectionState is SSEConnectionState.Connected or SSEConnectionState.Connecting;
 
         /// <summary>
         ///     If the player event stream is disconnected or disconnecting.
         /// </summary>
         /// <returns></returns>
-        private static bool IsPlayerStreamDisconnected() => ApiClient.PlayerEventStream.ConnectionState is SSEConnectionState.Disconnected or SSEConnectionState.Disconnecting;
+        private static bool IsPlayerStreamDisconnected() => PlayerEventSSEStream.ConnectionState is SSEConnectionState.Disconnected or SSEConnectionState.Disconnecting;
     }
 }

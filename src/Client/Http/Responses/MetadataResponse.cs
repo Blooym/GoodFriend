@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GoodFriend.Client.Responses
+namespace GoodFriend.Client.Http.Responses
 {
     /// <summary>
     ///     Represents response from the metadata endpoint.
@@ -54,6 +54,9 @@ namespace GoodFriend.Client.Responses
         public readonly Dictionary<string, Uri> CustomUrls { get; init; }
     }
 
+    /// <summary>
+    ///     Represents the connection counts to different api server-sent event streams.
+    /// </summary>
     [Serializable]
     public readonly record struct Connections
     {

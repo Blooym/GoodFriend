@@ -1,6 +1,8 @@
 using System;
 using System.IO;
-using GoodFriend.Client;
+using System.Net.Http;
+using GoodFriend.Client.Http;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using Newtonsoft.Json;
@@ -15,12 +17,20 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     internal abstract class ModuleBase
     {
         /// <summary>
-        ///     The API client instance shared between all modules.
+        ///     The PlayerEvent SSE stream.
         /// </summary>
         /// <remarks>
-        ///    This is a convenience property for <see cref="Services.GoodFriendApiClient" />.
+        ///    This is a convenience property for <see cref="Services.PlayerEventSSEStream"/>.
         /// </remarks>
-        protected static GoodFriendClient ApiClient => Services.GoodFriendApiClient;
+        protected static SSEClient<PlayerEventStreamUpdate> PlayerEventSSEStream => Services.PlayerEventSSEStream;
+
+        /// <summary>
+        ///     The shared HttpClient.
+        /// </summary>
+        /// <remarks>
+        ///    This is a convenience property for <see cref="Services.HttpClient"/>.
+        /// </remarks>
+        protected static HttpClient HttpClient => Services.HttpClient;
 
         /// <summary>
         ///     a name for this module.

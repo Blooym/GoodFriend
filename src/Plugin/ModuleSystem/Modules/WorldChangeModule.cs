@@ -2,8 +2,8 @@ using System;
 using Dalamud.Game;
 using Dalamud.Memory;
 using Dalamud.Utility;
-using GoodFriend.Client.Requests;
-using GoodFriend.Client.Responses;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
@@ -54,7 +54,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
-            ApiClient.PlayerEventStream.OnStreamMessage += this.OnPlayerStreamMessage;
+            PlayerEventSSEStream.OnStreamMessage += this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;
-            ApiClient.PlayerEventStream.OnStreamMessage -= this.OnPlayerStreamMessage;
+            PlayerEventSSEStream.OnStreamMessage -= this.OnPlayerStreamMessage;
         }
 
         /// <inheritdoc />
@@ -196,7 +196,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 
                 var salt = CryptoUtil.GenerateSalt();
                 var hash = CryptoUtil.HashValue(DalamudInjections.ClientState.LocalContentId, salt);
-                ApiClient.SendWorldChangeAsync(new UpdatePlayerCurrentWorldRequest.HttpPost()
+                new PostPlayerWorldChangeRequest().Send(HttpClient, new()
                 {
                     ContentIdHash = hash,
                     ContentIdSalt = salt,

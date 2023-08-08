@@ -1,11 +1,9 @@
-namespace GoodFriend.Client.Requests
+namespace GoodFriend.Client.Http.Requests
 {
-    /// <summary>
-    ///     Represents data that is used across multiple requests.
-    /// </summary>
-    public static class GlobalRequestData
+    public static class RequestConstants
     {
         public const string AuthenticationTokenHeader = "X-Auth-Token";
+        public const string ContentIdHashHeader = "X-Content-Id-Hash";
         public const uint ContentIdHashMinLength = 64;
         public const uint ContentIdSaltMinLength = 32;
     }

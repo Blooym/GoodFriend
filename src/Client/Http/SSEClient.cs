@@ -39,7 +39,7 @@ namespace GoodFriend.Client.Http
     ///     Represents a client for a server-sent event stream.
     /// </summary>
     /// <typeparam name="T">The type of data to expect from the stream.</typeparam>
-    public sealed class SSEClient<T> : IDisposable
+    public sealed class SSEClient<T> : IDisposable where T : struct
     {
         private bool disposedValue;
 
@@ -91,9 +91,9 @@ namespace GoodFriend.Client.Http
         /// <summary>
         ///     Creates a new SSE client.
         /// </summary>
-        /// <param name="client">The HTTP client to use for requests. This must be a unique client as it will be managed by the client once initialized.</param>
+        /// <param name="client">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
         /// <param name="endpoint">The endpoint to connect to.</param>
-        /// <param name="reconnectTimer">The timer to use for reconnecting. This must be a unqiue timer as it will be managed by the client once initialized.</param>
+        /// <param name="reconnectTimer">The timer to use for reconnecting. This must be a unqiue timer as it will be managed once initialized.</param>
         public SSEClient(HttpClient client, string endpoint, Timer? reconnectTimer = null)
         {
             this.httpClient = client;
@@ -226,10 +226,7 @@ namespace GoodFriend.Client.Http
                     try
                     {
                         var data = JsonSerializer.Deserialize<T>(message, new JsonSerializerOptions() { IncludeFields = true, WriteIndented = true });
-                        if (data is not null)
-                        {
-                            this.OnStreamMessage?.Invoke(this, data);
-                        }
+                        this.OnStreamMessage?.Invoke(this, data);
                     }
                     catch (JsonException)
                     {
