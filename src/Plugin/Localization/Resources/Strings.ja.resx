@@ -242,4 +242,82 @@
   <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
     <value>Whether or not to receive events from other friends.</value>
   </data>
+  <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
+    <value>Announcements</value>
+  </data>
+  <data name="Modules_AnnouncementModule_Description" xml:space="preserve">
+    <value>Announcements allow for instance administrators to communicate important information to players in real-time. You can control what kind of announcements you receive in the settings or send your own announcements if you are an instance administrator.</value>
+  </data>
+  <data name="Modules_AnnouncementModule_Header_Stream" xml:space="preserve">
+    <value>Announcement Stream</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionStatus" xml:space="preserve">
+    <value>Connection State:</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Connected" xml:space="preserve">
+    <value>接続済み</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Connecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Disconnected" xml:space="preserve">
+    <value>切断</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Disconnecting" xml:space="preserve">
+    <value>Disconnecting</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Exception" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ReceiveOptions" xml:space="preserve">
+    <value>Announcement Receive Options</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ReceiveOptions_ShowKind" xml:space="preserve">
+    <value>Show '{0}' announcements</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_Header" xml:space="preserve">
+    <value>Send Announcement</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin" xml:space="preserve">
+    <value>You must be an instance administrator with a valid authentication token set in the plugin settings to send announcements. If you are just using this plugin regularly, you can ignore this section.</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_Reauth" xml:space="preserve">
+    <value>Re-attempt authentication</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_NoAuth" xml:space="preserve">
+    <value>No authentication token set</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_Notice" xml:space="preserve">
+    <value>Please note that all connected clients will receive your announcement as soon as you send it, be responsible.</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_HoldShift" xml:space="preserve">
+    <value>Hold shift to send announcement.</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_SendSuccess" xml:space="preserve">
+    <value>Announcement sucessfully sent.</value>
+  </data>
+  <data name="Modules_AnnouncementModule_SendAnnouncement_SendError" xml:space="preserve">
+    <value>Failed to send announcement: {0}</value>
+  </data>
+  <data name="Modules_AnnouncementModule_AnnouncementText" xml:space="preserve">
+    <value>Announcement: {0}</value>
+  </data>
+  <data name="Modules_ModuleBase_NoAdditionalContent" xml:space="preserve">
+    <value>This module does not have configuration options or content to display.</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Api_HideSensitive" xml:space="preserve">
+    <value>Hide Sensitive Settings</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Api_ShowSensitive" xml:space="preserve">
+    <value>Show Sensitive Settings</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Api_AuthToken" xml:space="preserve">
+    <value>Auth Token</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Api_AuthToken_Description" xml:space="preserve">
+    <value>The authentication token to use for requests that require authentication. Only instance administrators will need to set this.</value>
+  </data>
 </root>
