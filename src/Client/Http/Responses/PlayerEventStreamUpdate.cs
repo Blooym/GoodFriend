@@ -74,6 +74,7 @@ namespace GoodFriend.Client.Http.Responses
         /// <summary>
         ///     Whether the event is a login or logout.
         /// </summary>
+        [JsonPropertyName("logged_in")]
         public bool LoggedIn { get; set; }
     }
 
