@@ -17,7 +17,7 @@ namespace GoodFriend.Plugin.Base
     {
         private static LocalizationService LocalizationService { get; set; } = null!;
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
-        public static WindowingService WindowingService { get; private set; } = null!;
+        private static WindowingService WindowingService { get; set; } = null!;
         public static ModuleService ModuleService { get; private set; } = null!;
         public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
         public static HttpClient HttpClient { get; private set; } = null!;
@@ -25,7 +25,7 @@ namespace GoodFriend.Plugin.Base
         /// <summary>
         ///     Initializes the service class.
         /// </summary>
-        internal static unsafe void Initialize()
+        internal static void Initialize()
         {
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
