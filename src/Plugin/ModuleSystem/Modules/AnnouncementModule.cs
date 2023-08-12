@@ -148,6 +148,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     {
                         this.Config.EnabledAnnouncements[kind] = isEnabled;
                     }
+                    this.Config.Save();
                 }
             }
         }
