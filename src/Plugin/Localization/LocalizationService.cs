@@ -17,9 +17,7 @@ namespace GoodFriend.Plugin.Localization
             DalamudInjections.PluginInterface.LanguageChanged += this.SetupLocalization;
         }
 
-        /// <summary>
-        ///     Disposes of the <see cref="LocalizationService" />
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (this.disposedValue)

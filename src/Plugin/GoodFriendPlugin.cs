@@ -22,9 +22,7 @@ namespace GoodFriend.Plugin
             Services.Initialize();
         }
 
-        /// <summary>
-        ///     Disposes of the plugin.
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             Services.Dispose();

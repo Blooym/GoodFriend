@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./.assets/icon.png" alt="GoodFriend Logo" width="15%">
+<img src="./assets/icons/icon.png" alt="GoodFriend Logo" width="15%">
   
 ### GoodFriend
 

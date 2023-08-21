@@ -13,8 +13,7 @@
 				"fernandoescolar.vscode-solution-explorer",
 				"rust-lang.rust-analyzer",
 				"tamasfe.even-better-toml",
-				"serayuzgur.crates",
-				"EditorConfig.EditorConfig"
+				"serayuzgur.crates"
 			]
 		}
 	}

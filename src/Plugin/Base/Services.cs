@@ -1,5 +1,7 @@
+using System.Net;
 using System.Net.Http;
 using System.Timers;
+using Dalamud.Networking.Http;
 using GoodFriend.Client.Http;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
@@ -15,9 +17,11 @@ namespace GoodFriend.Plugin.Base
     /// </summary>
     internal static class Services
     {
+        private static WindowingService WindowingService { get; set; } = null!;
+        private static HappyEyeballsCallback HappyEyeballsCallback { get; set; } = null!;
+
         private static LocalizationService LocalizationService { get; set; } = null!;
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
-        private static WindowingService WindowingService { get; set; } = null!;
         public static ModuleService ModuleService { get; private set; } = null!;
         public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
         public static HttpClient HttpClient { get; private set; } = null!;
@@ -27,17 +31,16 @@ namespace GoodFriend.Plugin.Base
         /// </summary>
         internal static void Initialize()
         {
+            HappyEyeballsCallback = new HappyEyeballsCallback();
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
-            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl), new Timer(60000));
-            HttpClient = HttpClientUtil.CreateHttpClient(PluginConfiguration.ApiConfig.BaseUrl);
+            HttpClient = CreateHttpClient(HappyEyeballsCallback);
+            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(60000));
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }
 
-        /// <summary>
-        ///     Disposes of the service class.
-        /// </summary>
+        /// <inheritdoc />
         internal static void Dispose()
         {
             LocalizationService.Dispose();
@@ -45,6 +48,28 @@ namespace GoodFriend.Plugin.Base
             ModuleService.Dispose();
             HttpClient.Dispose();
             PlayerEventSseStream.Dispose();
+            HappyEyeballsCallback.Dispose();
         }
+
+        /// <summary>
+        ///     Creates a new <see cref="HttpClient" /> with the given <see cref="HappyEyeballsCallback" />.
+        /// </summary>
+        /// <param name="happyEyeballsCallback"></param>
+        /// <returns></returns>
+        private static HttpClient CreateHttpClient(HappyEyeballsCallback happyEyeballsCallback) => new(new SocketsHttpHandler
+        {
+            AutomaticDecompression = DecompressionMethods.All,
+            ConnectCallback = happyEyeballsCallback.ConnectCallback,
+        })
+        {
+            BaseAddress = PluginConfiguration.ApiConfig.BaseUrl,
+            Timeout = System.TimeSpan.FromSeconds(20),
+            DefaultRequestHeaders =
+                {
+                    { "User-Agent", HttpConstants.UserAgent },
+                },
+            DefaultRequestVersion = HttpVersion.Version20,
+            DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower,
+        };
     }
 }

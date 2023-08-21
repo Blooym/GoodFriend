@@ -40,9 +40,7 @@ namespace GoodFriend.Plugin.UserInterface
             DalamudInjections.PluginInterface.UiBuilder.OpenConfigUi += this.ConfigWindow.Toggle;
         }
 
-        /// <summary>
-        ///     Disposes of the window manager.
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (this.disposedValue)
