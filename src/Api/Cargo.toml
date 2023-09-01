@@ -13,7 +13,7 @@ rust-embed = "6.8.1"
 cached = "0.44.0"
 toml = "0.7.6"
 validator = { version = "0.16", features = ["derive"] }
-url = "2.4.0"
+url = "2.4.1"
 uuid = { version = "1.4.1", features = ["v4", "serde"] }
 
 [profile.release]
