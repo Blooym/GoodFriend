@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Dalamud.Game;
 using Dalamud.Memory;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
@@ -315,7 +315,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     Called when the framework updates, updates stored data that can change during gameplay.
         /// </summary>
         /// <param name="framework"></param>
-        private void OnFrameworkUpdate(Framework framework)
+        private void OnFrameworkUpdate(IFramework framework)
         {
             // Don't run when not logged in.
             if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
