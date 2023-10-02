@@ -10,7 +10,7 @@ repository = "https://github.com/Blooym/GoodFriend"
 dotenv = "0.15.0"
 rocket = { version = "=0.5.0-rc.3", features = ["json"] }
 rust-embed = "8.0.0"
-cached = "0.45.0"
+cached = "0.46.0"
 toml = "0.8.1"
 validator = { version = "0.16", features = ["derive"] }
 url = "2.4.1"
