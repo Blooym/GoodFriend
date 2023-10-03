@@ -106,7 +106,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLogin(object? sender, EventArgs e)
+        private void OnLogin()
         {
             if (IsPlayerStreamDisconnected())
             {
@@ -119,7 +119,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLogout(object? sender, EventArgs e)
+        private void OnLogout()
         {
             if (IsPlayerStreamConnected())
             {

@@ -1,4 +1,3 @@
-using System;
 using Dalamud.Memory;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
@@ -110,7 +109,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLogout(object? sender, EventArgs e)
+        private void OnLogout()
         {
             this.currentWorldId = 0;
             this.firstWorldUpdate = true;
