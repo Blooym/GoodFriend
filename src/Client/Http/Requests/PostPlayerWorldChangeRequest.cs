@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GoodFriend.Client.Json;
@@ -69,21 +70,17 @@ namespace GoodFriend.Client.Http.Requests
         /// </summary>
         /// <param name="requestData"></param>
         /// <returns></returns>
-        private static HttpRequestMessage BuildMessage(RequestData requestData)
+        private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
         {
-            var jsonBody = JsonSerializer.Serialize(requestData, new JsonSerializerOptions
+            Content = JsonContent.Create(requestData, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
             {
                 PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
-            });
-            return new HttpRequestMessage(HttpMethod.Post, EndpointUrl)
+            }),
+            Headers =
             {
-                Content = new StringContent(jsonBody, Encoding.UTF8, "application/json"),
-                Headers =
-                {
-                    { RequestConstants.ContentIdHashHeader, requestData.ContentIdHash },
-                },
-            };
-        }
+                { RequestConstants.ContentIdHashHeader, requestData.ContentIdHash },
+            },
+        };
 
         /// <inheritdoc />
         public HttpResponseMessage Send(HttpClient httpClient, RequestData requestData)

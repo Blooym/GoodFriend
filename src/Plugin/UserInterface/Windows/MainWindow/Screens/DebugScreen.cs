@@ -56,7 +56,7 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
 
             if (ImGui.BeginChild("DebugFriendList"))
             {
-                foreach (var f in FriendUtil.GetFriendsList())
+                foreach (var f in FriendHelper.FriendList)
                 {
                     var fName = MemoryHelper.ReadSeStringNullTerminated((nint)f.Name);
                     if (ImGui.Selectable(fName.ToString()))
