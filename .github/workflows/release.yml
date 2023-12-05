@@ -33,7 +33,7 @@ jobs:
         run: echo "tag=$(echo ${{ github.ref }} | sed 's/refs\/tags\///' | sed 's/v//')" >> $GITHUB_ENV
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
