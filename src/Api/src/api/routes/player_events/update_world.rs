@@ -32,5 +32,5 @@ pub async fn post_world(
             world_id: update.world_id,
         },
     });
-    status::Accepted(Some(()))
+    status::Accepted(())
 }

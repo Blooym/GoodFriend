@@ -38,5 +38,5 @@ pub async fn post_loginstate(
             territory_id: update.territory_id,
         },
     });
-    status::Accepted(Some(()))
+    status::Accepted(())
 }

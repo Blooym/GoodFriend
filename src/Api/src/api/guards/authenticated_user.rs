@@ -28,7 +28,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
             let token = token.to_string();
 
             if token.trim().is_empty() {
-                return Outcome::Failure((
+                return Outcome::Error((
                     Status::Unauthorized,
                     AuthenticatedUserError::MissingToken,
                 ));
@@ -39,10 +39,10 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
                     token_used: token.to_string(),
                 })
             } else {
-                Outcome::Failure((Status::Unauthorized, AuthenticatedUserError::InvalidToken))
+                Outcome::Error((Status::Unauthorized, AuthenticatedUserError::InvalidToken))
             }
         } else {
-            Outcome::Failure((Status::Unauthorized, AuthenticatedUserError::MissingToken))
+            Outcome::Error((Status::Unauthorized, AuthenticatedUserError::MissingToken))
         }
     }
 }

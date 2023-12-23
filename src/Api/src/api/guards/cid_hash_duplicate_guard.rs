@@ -48,14 +48,14 @@ impl<'r> FromRequest<'r> for CidHashDuplicateGuard {
             Ok(content_id) => {
                 {
                     if content_id.is_empty() {
-                        return Outcome::Failure((
+                        return Outcome::Error((
                             Status::BadRequest,
                             UpdateSpamGuardError::ContentIdMissing,
                         ));
                     }
 
                     if hashes.contains(&content_id) {
-                        return Outcome::Failure((
+                        return Outcome::Error((
                             Status::BadRequest,
                             UpdateSpamGuardError::ContentIdDuplicate,
                         ));
@@ -65,7 +65,7 @@ impl<'r> FromRequest<'r> for CidHashDuplicateGuard {
                 Outcome::Success(CidHashDuplicateGuard)
             }
             Err(_) => {
-                Outcome::Failure((Status::BadRequest, UpdateSpamGuardError::ContentIdMissing))
+                Outcome::Error((Status::BadRequest, UpdateSpamGuardError::ContentIdMissing))
             }
         }
     }
