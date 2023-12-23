@@ -64,9 +64,7 @@ impl<'r> FromRequest<'r> for CidHashDuplicateGuard {
                 }
                 Outcome::Success(CidHashDuplicateGuard)
             }
-            Err(_) => {
-                Outcome::Error((Status::BadRequest, UpdateSpamGuardError::ContentIdMissing))
-            }
+            Err(_) => Outcome::Error((Status::BadRequest, UpdateSpamGuardError::ContentIdMissing)),
         }
     }
 }
