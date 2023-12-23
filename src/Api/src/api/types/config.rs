@@ -45,7 +45,7 @@ impl Config {
 
     /// Creates a config file at the path where the environment points to.
     pub fn save(&self) {
-        let config_toml = toml::to_string(&self).unwrap_or(String::default());
+        let config_toml = toml::to_string(&self).unwrap_or_default();
         let config_file_path = Self::get_config_file_path();
 
         let path = Path::new(&config_file_path);
