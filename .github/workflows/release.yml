@@ -43,7 +43,7 @@ jobs:
           unzip /tmp/dalamud.zip -d ${{ env.DALAMUD_HOME }}
 
       - name: Cache Nuget Packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
