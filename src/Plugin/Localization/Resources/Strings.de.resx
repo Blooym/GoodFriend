@@ -132,7 +132,7 @@
     <value>Heartbeats receieved: {0}</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
-    <value>Last heartbeat: {0}</value>
+    <value>Letzter Herzschlag: {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
     <value>Über die Instanz</value>
