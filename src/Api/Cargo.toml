@@ -11,7 +11,7 @@ dotenv = "0.15.0"
 rocket = { version = "0.5.0", features = ["json"] }
 rust-embed = "8.2.0"
 cached = "0.48.1"
-toml = "0.8.8"
+toml = "0.8.9"
 validator = { version = "0.16.1", features = ["derive"] }
 url = "2.5.0"
 uuid = { version = "1.7.0", features = ["v4", "serde"] }
