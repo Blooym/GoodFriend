@@ -9,7 +9,7 @@ use api::routes::AnnouncementStreamUpdate;
 use api::routes::PlayerEventStreamUpdate;
 use api::routes::{announcements_routes, core_routes, player_events_routes, static_files_routes};
 use api::types::config::{get_config_cached_prime_cache, Config};
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use rocket::shield::{self, Shield};
 use rocket::tokio::sync::broadcast::channel;
 use rocket::{Build, Rocket};
