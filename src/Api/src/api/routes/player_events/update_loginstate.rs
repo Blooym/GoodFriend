@@ -23,7 +23,7 @@ pub struct UpdatePlayerLoginStateRequest {
 
 /// Sends a login state change to the server-sent player event stream.
 #[post("/loginstate", data = "<update>", format = "json")]
-pub async fn post_loginstate(
+pub fn post_loginstate(
     _spam_guard: CidHashDuplicateGuard,
     update: Json<UpdatePlayerLoginStateRequest>,
     queue: &State<Sender<PlayerEventStreamUpdate>>,

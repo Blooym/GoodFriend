@@ -6,7 +6,7 @@ use rocket::{Shutdown, State};
 
 /// The server-sent player event stream that will relay player state updates to clients.
 #[get("/stream")]
-pub async fn get_stream(
+pub fn get_stream(
     player_event_queue: &State<Sender<PlayerEventStreamUpdate>>,
     mut end: Shutdown,
 ) -> EventStream![] {

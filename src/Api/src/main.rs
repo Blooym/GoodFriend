@@ -19,24 +19,25 @@ use std::process;
 const BASE_PATH: &str = "/api";
 
 #[launch]
-async fn rocket() -> Rocket<Build> {
+fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     // Validate configuration before starting & prime the cache.
-    match Config::exists() {
-        true => match Config::get() {
+    if Config::exists() {
+        match Config::get() {
             Ok(config) => config,
             Err(e) => {
                 eprintln!("Error: Invalid configuration file - please fix the errors and restart the API.");
-                for (field, errors) in e.field_errors().iter() {
+                for (field, errors) in &e.field_errors() {
                     for error in errors.iter() {
-                        eprintln!("{}: {}", field, error);
+                        eprintln!("{field}: {error}");
                     }
                 }
                 process::exit(1);
             }
-        },
-        false => Config::default(),
+        }
+    } else {
+        Config::default()
     };
     get_config_cached_prime_cache();
 

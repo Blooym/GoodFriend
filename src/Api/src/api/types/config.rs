@@ -71,7 +71,7 @@ impl Config {
         let config_toml = fs::read_to_string(&config_file_path).unwrap_or_default();
         let config: Self = toml::from_str(&config_toml).unwrap_or_default();
         match config.validate() {
-            Ok(_) => Ok(config),
+            Ok(()) => Ok(config),
             Err(e) => Err(e),
         }
     }
