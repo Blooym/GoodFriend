@@ -59,9 +59,10 @@ namespace GoodFriend.Plugin.Configuration
             var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
 
             // Migrate api version if not up to date
-            if (config.ApiConfig.BaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", StringComparison.OrdinalIgnoreCase) && !config.ApiConfig.BaseUrl.AbsoluteUri.EndsWith("/v3/", StringComparison.OrdinalIgnoreCase))
+            var apiBaseUrl = config.ApiConfig.BaseUrl.AbsoluteUri;
+            if (apiBaseUrl == ApiConfiguration.DefaultBaseUri.AbsoluteUri && !apiBaseUrl.EndsWith("/v3/", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Information($"Updating API Base URL from {config.ApiConfig.BaseUrl} to {ApiConfiguration.DefaultBaseUri}");
+                Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
                 config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
                 config.Save();
             }
