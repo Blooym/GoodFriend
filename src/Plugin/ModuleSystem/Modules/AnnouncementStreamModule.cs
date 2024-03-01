@@ -19,7 +19,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     The last time an event was received from the player event stream.
         /// </summary>
-        private DateTime LasEventTime { get; set; } = DateTime.MinValue;
+        private DateTime LastEventTime { get; set; } = DateTime.MinValue;
 
         /// <summary>
         ///     The number of events received from the player event stream.
@@ -96,7 +96,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.Dummy(Spacing.SectionSpacing);
             SiGui.Heading(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics);
             SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal, this.EventsReceived));
-            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LasEventTime:HH:mm:ss}"));
+            SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent, $"{this.LastEventTime:HH:mm:ss}"));
             SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal, this.HeartbeatsReceived));
             SiGui.TextWrapped(string.Format(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat, $"{this.LastHeartbeatTime:HH:mm:ss}"));
         }
@@ -146,7 +146,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private void OnAnnouncementStreamEvent(object? sender, AnnouncementStreamUpdate e)
         {
             Logger.Verbose($"Event received from player event stream.");
-            this.LasEventTime = DateTime.Now;
+            this.LastEventTime = DateTime.Now;
             this.EventsReceived++;
         }
 
