@@ -1,5 +1,3 @@
-#![forbid(unsafe_code)]
-
 #[macro_use]
 extern crate rocket;
 
@@ -77,7 +75,7 @@ async fn main() -> Result<()> {
     )?;
 
     watcher.watch(
-        &config_file_path
+        config_file_path
             .parent()
             .context("Cannot get parent directory of config file")?,
         notify::RecursiveMode::Recursive,

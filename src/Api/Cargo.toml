@@ -23,3 +23,10 @@ anyhow = { version = "1.0.80", features = ["backtrace"] }
 [profile.release]
 strip = true
 codegen-units = 1
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+blocks_in_conditions = "allow"
+clone_on_ref_ptr = "warn"

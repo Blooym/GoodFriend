@@ -66,7 +66,7 @@ impl Config {
             return Ok(config);
         }
 
-        let config: Self = toml::from_str(&fs::read_to_string(&path)?)?;
+        let config: Self = toml::from_str(&fs::read_to_string(path)?)?;
         Ok(config)
     }
 
