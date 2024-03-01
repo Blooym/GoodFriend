@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Numerics;
-using Dalamud.Interface.Colors;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem.Modules;
@@ -60,31 +59,6 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens
             }
 
             SiGui.TextDisabledWrapped(CurrentModule.Name);
-            ImGui.SameLine();
-            switch (CurrentModule.State)
-            {
-                case ModuleState.Enabled:
-                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Enabled).X);
-                    SiGui.TextColoured(Colours.Success, Strings.UI_MainWindow_ModuleScreen_Enabled);
-                    break;
-                case ModuleState.Loading:
-                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Loading).X);
-                    SiGui.TextColoured(Colours.Warning, Strings.UI_MainWindow_ModuleScreen_Loading);
-                    break;
-                case ModuleState.Disabled:
-                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Disabled).X);
-                    SiGui.TextColoured(ImGuiColors.DalamudGrey, Strings.UI_MainWindow_ModuleScreen_Disabled);
-                    break;
-                case ModuleState.Unloading:
-                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Unloading).X);
-                    SiGui.TextColoured(Colours.Warning, Strings.UI_MainWindow_ModuleScreen_Unloading);
-                    break;
-                case ModuleState.Error:
-                    ImGui.SetCursorPosX(ImGui.GetContentRegionMax().X - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_Error).X);
-                    SiGui.TextColoured(Colours.Error, Strings.UI_MainWindow_ModuleScreen_Error);
-                    break;
-            }
-            ImGui.Separator();
             ImGui.Dummy(Spacing.HeaderSpacing);
 
             if (!string.IsNullOrEmpty(CurrentModule.Description))

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Timers;
@@ -24,6 +25,7 @@ namespace GoodFriend.Plugin.Base
         public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
         public static ModuleService ModuleService { get; private set; } = null!;
         public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
+        public static SseClient<AnnouncementStreamUpdate> AnnouncementSseStream { get; private set; } = null!;
         public static HttpClient HttpClient { get; private set; } = null!;
 
         /// <summary>
@@ -35,7 +37,8 @@ namespace GoodFriend.Plugin.Base
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
             HttpClient = CreateHttpClient(HappyEyeballsCallback);
-            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(60000));
+            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(TimeSpan.FromSeconds(30)));
+            AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(TimeSpan.FromSeconds(30)));
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }
@@ -48,6 +51,7 @@ namespace GoodFriend.Plugin.Base
             ModuleService.Dispose();
             HttpClient.Dispose();
             PlayerEventSseStream.Dispose();
+            AnnouncementSseStream.Dispose();
             HappyEyeballsCallback.Dispose();
         }
 
@@ -63,7 +67,7 @@ namespace GoodFriend.Plugin.Base
         })
         {
             BaseAddress = PluginConfiguration.ApiConfig.BaseUrl,
-            Timeout = System.TimeSpan.FromSeconds(20),
+            Timeout = TimeSpan.FromSeconds(20),
             DefaultRequestHeaders =
                 {
                     { "User-Agent", HttpConstants.UserAgent },

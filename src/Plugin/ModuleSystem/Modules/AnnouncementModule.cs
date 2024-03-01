@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Timers;
-using GoodFriend.Client.Http;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Client.Http.Responses.Enums;
@@ -23,11 +21,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     The configuration for this module.
         /// </summary>
         private AnnouncementModuleConfig Config { get; set; } = ModuleConfigBase.Load<AnnouncementModuleConfig>();
-
-        /// <summary>
-        ///     The SSE stream for announcements.
-        /// </summary>
-        private SseClient<AnnouncementStreamUpdate> AnnouncementSseStream { get; set; } = null!;
 
         /// <summary>
         ///     Whether or not the client is allowed to send announcements.
@@ -66,72 +59,25 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <inheritdoc />
         protected override void EnableAction()
         {
-            this.AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(HttpClient, new Timer(60000));
-            if (DalamudInjections.ClientState.IsLoggedIn && this.IsAnnouncementStreamDisconnected())
-            {
-                this.AnnouncementSseStream.Connect();
-            }
-
-            DalamudInjections.ClientState.Login += this.OnLogin;
-            DalamudInjections.ClientState.Logout += this.OnLogout;
-
-            this.AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
-            this.AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
-
+            AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
+            AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
             this.ValidateAuthToken();
         }
 
         /// <inheritdoc />
         protected override void DisableAction()
         {
-            if (this.IsAnnouncementStreamConnected())
-            {
-                this.AnnouncementSseStream.Disconnect();
-            }
-            this.AnnouncementSseStream.Dispose();
-
-            DalamudInjections.ClientState.Login -= this.OnLogin;
-            DalamudInjections.ClientState.Logout -= this.OnLogout;
-
-            this.AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
-            this.AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
+            AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
+            AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
         }
 
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            this.DrawAnnouncementStreamState();
-            ImGui.Dummy(Spacing.SectionSpacing);
             this.DrawReceiveOptions();
             ImGui.Dummy(Spacing.SectionSpacing);
             this.DrawSendAnnouncement();
         }
-
-        private void DrawAnnouncementStreamState()
-        {
-            SiGui.Heading(Strings.Modules_AnnouncementModule_Header_Stream);
-            SiGui.Text(Strings.Modules_AnnouncementModule_ConnectionStatus);
-            ImGui.SameLine();
-            switch (this.AnnouncementSseStream.ConnectionState)
-            {
-                case SseConnectionState.Connected:
-                    SiGui.TextColoured(Colours.Success, Strings.Modules_AnnouncementModule_ConnectionState_Connected);
-                    break;
-                case SseConnectionState.Connecting:
-                    SiGui.TextColoured(Colours.Warning, Strings.Modules_AnnouncementModule_ConnectionState_Connecting);
-                    break;
-                case SseConnectionState.Disconnected:
-                    SiGui.TextColoured(Colours.Error, Strings.Modules_AnnouncementModule_ConnectionState_Disconnected);
-                    break;
-                case SseConnectionState.Disconnecting:
-                    SiGui.TextColoured(Colours.Warning, Strings.Modules_AnnouncementModule_ConnectionState_Disconnecting);
-                    break;
-                case SseConnectionState.Exception:
-                    SiGui.TextColoured(Colours.Error, Strings.Modules_AnnouncementModule_ConnectionState_Exception);
-                    break;
-            }
-        }
-
         private void DrawReceiveOptions()
         {
             SiGui.Heading(Strings.Modules_AnnouncementModule_ReceiveOptions);
@@ -323,49 +269,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <summary>
-        ///     Attempts to connect to relevant event streams when the player logs in.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLogin()
-        {
-            if (this.IsAnnouncementStreamDisconnected())
-            {
-                this.AnnouncementSseStream.Connect();
-            }
-        }
-
-        /// <summary>
-        ///     Attempts to disconnect from relevant event streams when the player logs out.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnLogout()
-        {
-            if (this.IsAnnouncementStreamConnected())
-            {
-                this.AnnouncementSseStream.Disconnect();
-            }
-        }
-
-        /// <summary>
         ///     Handles an exception from the announcement stream.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAnnouncementStreamException(object? sender, Exception e) => Logger.Error($"Exception received from announcement stream: {e}");
-
-        /// <summary>
-        ///     If the announcement stream is connected or connecting.
-        /// </summary>
-        /// <returns></returns>
-        private bool IsAnnouncementStreamConnected() => this.AnnouncementSseStream.ConnectionState is SseConnectionState.Connected or SseConnectionState.Connecting;
-
-        /// <summary>
-        ///     If the announcement stream is disconnected or disconnecting.
-        /// </summary>
-        /// <returns></returns>
-        private bool IsAnnouncementStreamDisconnected() => this.AnnouncementSseStream.ConnectionState is SseConnectionState.Disconnected or SseConnectionState.Disconnecting;
 
         /// <summary>
         ///     Configuration for the world change module.
