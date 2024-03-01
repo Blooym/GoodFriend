@@ -1,8 +1,10 @@
 use rocket::{
     http::Status,
     request::{FromRequest, Outcome},
+    tokio::sync::RwLock,
     Request,
 };
+use std::sync::Arc;
 
 use crate::config::Config;
 
@@ -24,7 +26,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
     type Error = AuthenticatedUserError;
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let config = req.rocket().state::<Config>().unwrap();
+        let config = req.rocket().state::<Arc<RwLock<Config>>>().unwrap();
 
         let token = req.headers().get_one("X-Auth-Token");
         if let Some(token) = token {
@@ -37,7 +39,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
                 ));
             }
 
-            if config.authentication.tokens.contains(&token) {
+            if config.read().await.authentication.tokens.contains(&token) {
                 Outcome::Success(AuthenticatedUserGuard {
                     token_used: token.to_string(),
                 })
