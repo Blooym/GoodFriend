@@ -1,9 +1,10 @@
-use crate::api::types::config;
 use rocket::{
     http::Status,
     request::{FromRequest, Outcome},
     Request,
 };
+
+use crate::config::Config;
 
 /// A guard that checks if a user is authenticated.
 pub struct AuthenticatedUserGuard {
@@ -21,8 +22,10 @@ pub enum AuthenticatedUserError {
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
     type Error = AuthenticatedUserError;
+
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let config = config::get_config_cached();
+        let config = req.rocket().state::<Config>().unwrap();
+
         let token = req.headers().get_one("X-Auth-Token");
         if let Some(token) = token {
             let token = token.to_string();

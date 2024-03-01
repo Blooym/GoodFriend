@@ -7,7 +7,8 @@ use std::{borrow::Cow, ffi::OsStr, path::PathBuf};
 pub async fn get_static_file(file: PathBuf) -> Option<(ContentType, Cow<'static, [u8]>)> {
     let filename = file.display().to_string();
     let asset = Asset::get(&filename)?;
-    let content_type: ContentType = file
+
+    let content_type = file
         .extension()
         .and_then(OsStr::to_str)
         .and_then(ContentType::from_extension)

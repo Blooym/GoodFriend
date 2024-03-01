@@ -1,9 +1,10 @@
-use cached::proc_macro::cached;
+use anyhow::{Context, Result};
 use rocket::serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::{env, fs, path::Path};
+use std::path::PathBuf;
+use std::{env, fs};
 use url::Url;
-use validator::{Validate, ValidationError, ValidationErrors};
+use validator::{Validate, ValidationError};
 
 /// Defines the applications configuration.
 #[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Validate)]
@@ -24,56 +25,63 @@ impl Default for Config {
     }
 }
 
-/// Gets the currently cached config or caches the current config if expired.
-#[cached(time = 120)]
-pub fn get_config_cached() -> Config {
-    Config::get().unwrap_or_default()
-}
+/// The environment variable for the GoodFriend data directory.
+const DATA_DIRECTORY_ENV: &str = "GOODFRIEND_DATA_DIRECTORY";
+
+/// The default data directory name. At runtime this will be appended to the executable working directory.
+const DATA_DIRECTORY_DEFAULT_NAME: &str = "data";
+
+/// The name of the configuration file.
+const CONFIG_FILE_NAME: &str = "config.toml";
 
 impl Config {
-    /// Gets the config file path from the environment.
-    fn get_config_file_path() -> String {
-        const ENV_CONFIG_FILE_LOCATION: &str = "CONFIG_FILE_LOCATION";
-        const DEFAULT_CONFIG_FILE_LOCATION: &str = "./data/config.toml";
-        env::var(ENV_CONFIG_FILE_LOCATION).unwrap_or(String::from(DEFAULT_CONFIG_FILE_LOCATION))
+    /// Get the path to the data directory..
+    fn get_data_directory_path() -> Result<PathBuf> {
+        Ok(PathBuf::from(
+            env::var(DATA_DIRECTORY_ENV).unwrap_or(
+                env::current_dir()?
+                    .join(DATA_DIRECTORY_DEFAULT_NAME)
+                    .to_str()
+                    .context("Failed to convert path to str")?
+                    .to_string(),
+            ),
+        ))
+    }
+
+    /// Get the path to the configuration file from the environment.
+    pub fn get_config_file_path() -> Result<PathBuf> {
+        Ok(Self::get_data_directory_path()?.join(CONFIG_FILE_NAME))
     }
 
     /// Checks if the config file exists.
-    pub fn exists() -> bool {
-        fs::metadata(Self::get_config_file_path()).is_ok()
-    }
-
-    /// Creates a config file at the path where the environment points to.
-    pub fn save(&self) {
-        let config_toml = toml::to_string(&self).unwrap_or_default();
-        let config_file_path = Self::get_config_file_path();
-
-        let path = Path::new(&config_file_path);
-        if let Some(parent) = path.parent() {
-            if !parent.exists() {
-                fs::create_dir_all(parent).unwrap_or_default();
-            }
-        }
-
-        fs::write(config_file_path, config_toml).unwrap_or_default();
+    pub fn exists(path: &PathBuf) -> bool {
+        fs::metadata(path).is_ok()
     }
 
     /// Gets the config file from where the environment points to and parses it.
-    pub fn get() -> Result<Self, ValidationErrors> {
-        let config_file_path = Self::get_config_file_path();
-
-        if !Path::new(&config_file_path).exists() {
+    pub fn get_or_create_from_path(path: &PathBuf) -> Result<Self> {
+        if !Self::exists(path) {
             let config = Self::default();
-            config.save();
+            config.save_to_path(path)?;
             return Ok(config);
         }
 
-        let config_toml = fs::read_to_string(&config_file_path).unwrap_or_default();
-        let config: Self = toml::from_str(&config_toml).unwrap_or_default();
-        match config.validate() {
-            Ok(()) => Ok(config),
-            Err(e) => Err(e),
+        let config: Self = toml::from_str(&fs::read_to_string(&path)?)?;
+        Ok(config)
+    }
+
+    /// Creates a config file at the path where the environment points to.
+    pub fn save_to_path(&self, path: &PathBuf) -> Result<()> {
+        let config_toml = toml::to_string(&self)?;
+
+        if let Some(parent) = path.parent() {
+            if !parent.exists() {
+                fs::create_dir_all(parent)?;
+            }
         }
+        fs::write(path, config_toml)?;
+
+        Ok(())
     }
 }
 
