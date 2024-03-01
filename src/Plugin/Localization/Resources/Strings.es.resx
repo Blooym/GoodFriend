@@ -102,7 +102,7 @@
     <value>Conexión al flujo de eventos de jugadores</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
-    <value>Estado de Conexión:</value>
+    <value>Connection State:</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Conectad@</value>
