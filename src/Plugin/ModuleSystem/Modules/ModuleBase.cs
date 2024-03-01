@@ -28,7 +28,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         ///     The Announcement SSE stream.
         /// </summary>
         /// <remarks>
-        ///    This is a convenience property for <see cref="Services.PlayerEventSseStream"/>.
+        ///    This is a convenience property for <see cref="Services.AnnouncementSseStream"/>.
         /// </remarks>
         protected static SseClient<AnnouncementStreamUpdate> AnnouncementSseStream => Services.AnnouncementSseStream;
 
