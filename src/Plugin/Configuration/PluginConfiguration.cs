@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Dalamud.Configuration;
 using GoodFriend.Plugin.Base;
 
@@ -60,7 +61,7 @@ namespace GoodFriend.Plugin.Configuration
 
             // Migrate api version if not up to date
             var apiBaseUrl = config.ApiConfig.BaseUrl.AbsoluteUri;
-            if (apiBaseUrl == ApiConfiguration.DefaultBaseUri.AbsoluteUri && !apiBaseUrl.EndsWith("/v3/", StringComparison.OrdinalIgnoreCase))
+            if (apiBaseUrl.StartsWith("https://aether.blooym.dev", true, CultureInfo.InvariantCulture) && !apiBaseUrl.Contains("/v3/", StringComparison.InvariantCultureIgnoreCase))
             {
                 Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
                 config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
