@@ -32,7 +32,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private uint HeartbeatsReceived { get; set; }
 
         /// <inheritdoc />
-        public override string Name => "Announcement Stream Connection";
+        public override string Name => "Announcements Connection";
 
         /// <inheritdoc />
         public override ModuleTag Tag => ModuleTag.Connectivity;
@@ -41,7 +41,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public override uint LoadPriority { get; } = 1;
 
         /// <inheritdoc />
-        protected override void EnableAction()
+        protected override void OnEnable()
         {
             if (DalamudInjections.ClientState.IsLoggedIn && IsAnnouncementStreamDisconnected())
             {
@@ -56,7 +56,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        protected override void DisableAction()
+        protected override void OnDisable()
         {
             if (IsAnnouncementStreamConnected())
             {

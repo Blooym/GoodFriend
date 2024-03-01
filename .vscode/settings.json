@@ -13,5 +13,6 @@
     "rust-analyzer.linkedProjects": [
         "./src/Api/Cargo.toml",
     ],
+    // Dotnet
     "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
 }

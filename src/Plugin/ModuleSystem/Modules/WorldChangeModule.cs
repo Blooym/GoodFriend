@@ -49,7 +49,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private WorldChangeModuleConfig Config { get; } = ModuleConfigBase.Load<WorldChangeModuleConfig>();
 
         /// <inheritdoc />
-        protected override void EnableAction()
+        protected override void OnEnable()
         {
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -57,7 +57,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        protected override void DisableAction()
+        protected override void OnDisable()
         {
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
             DalamudInjections.ClientState.Logout -= this.OnLogout;

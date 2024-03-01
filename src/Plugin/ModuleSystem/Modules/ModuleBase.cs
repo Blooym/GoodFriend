@@ -73,7 +73,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Enables the module.
         /// </summary>
-        protected abstract void EnableAction();
+        protected abstract void OnEnable();
 
         /// <summary>
         ///     Enables the module.
@@ -85,7 +85,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 Logger.Information($"Began loading module {this.GetType().FullName}...");
                 this.State = ModuleState.Loading;
 
-                this.EnableAction();
+                this.OnEnable();
                 this.State = ModuleState.Enabled;
                 Logger.Information($"Loaded module {this.GetType().FullName}.");
             }
@@ -95,7 +95,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 Logger.Error($"Failed to load module {this.GetType().FullName}: {e}");
                 try
                 {
-                    this.DisableAction();
+                    this.OnDisable();
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +107,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Disables the module.
         /// </summary>
-        protected abstract void DisableAction();
+        protected abstract void OnDisable();
 
         /// <summary>
         ///     Disables the module.
@@ -125,7 +125,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 this.State = ModuleState.Unloading;
                 Logger.Information($"Unloading module {this.GetType().FullName}...");
 
-                this.DisableAction();
+                this.OnDisable();
                 this.State = ModuleState.Disabled;
                 Logger.Information($"Unloaded module {this.GetType().FullName}.");
             }

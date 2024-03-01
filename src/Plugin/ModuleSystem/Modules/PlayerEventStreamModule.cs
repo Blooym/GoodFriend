@@ -41,7 +41,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public override uint LoadPriority { get; } = 1;
 
         /// <inheritdoc />
-        protected override void EnableAction()
+        protected override void OnEnable()
         {
             if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
             {
@@ -56,7 +56,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        protected override void DisableAction()
+        protected override void OnDisable()
         {
             if (IsPlayerStreamConnected())
             {

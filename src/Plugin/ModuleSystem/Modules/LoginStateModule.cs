@@ -60,7 +60,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         private LoginStateModuleConfig Config { get; } = ModuleConfigBase.Load<LoginStateModuleConfig>();
 
         /// <inheritdoc />
-        protected override void EnableAction()
+        protected override void OnEnable()
         {
             PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
@@ -74,7 +74,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        protected override void DisableAction()
+        protected override void OnDisable()
         {
             PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
             DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;

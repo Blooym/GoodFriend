@@ -57,7 +57,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public override ModuleTag Tag => ModuleTag.Notifications;
 
         /// <inheritdoc />
-        protected override void EnableAction()
+        protected override void OnEnable()
         {
             AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
             AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
@@ -65,7 +65,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         }
 
         /// <inheritdoc />
-        protected override void DisableAction()
+        protected override void OnDisable()
         {
             AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
             AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;

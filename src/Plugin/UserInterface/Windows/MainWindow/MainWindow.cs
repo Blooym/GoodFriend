@@ -48,6 +48,17 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
             };
             this.SizeCondition = ImGuiCond.FirstUseEver;
             this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
+
+#if DEBUG
+            this.TitleBarButtons = new()
+            {
+                new() {
+                    Icon = FontAwesomeIcon.Bug,
+                    ShowTooltip = () => SiGui.Heading(Strings.UI_MainWindow_Button_Debug),
+                    Click = (mouseButton) => this.CurrentScreen = MainWindowScreen.Debug,
+                },
+            };
+#endif
         }
 
         /// <inheritdoc />
@@ -79,9 +90,6 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
                 { (FontAwesomeIcon.Home, null, Strings.UI_MainWindow_Button_Modules), () => this.CurrentScreen = MainWindowScreen.Modules },
                 { (FontAwesomeIcon.Cog, null, Strings.UI_MainWindow_Button_Settings), () => this.CurrentScreen = MainWindowScreen.Settings },
                 { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, Strings.UI_MainWindow_Button_Donate), () => Util.OpenLink(Constants.Link.Donate) },
-                #if DEBUG
-                { (FontAwesomeIcon.Bug, null, Strings.UI_MainWindow_Button_Debug), () => this.CurrentScreen = MainWindowScreen.Debug },
-                #endif
             });
         }
 

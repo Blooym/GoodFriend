@@ -17,14 +17,19 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     internal sealed class InstanceInfoModule : ModuleBase
     {
         /// <summary>
-        ///     The last time the metadata was updated.
+        ///     The interval to update metadata at.
         /// </summary>
-        private MetadataResponse? metadata;
+        private static readonly TimeSpan MetadataRefreshInterval = TimeSpan.FromMinutes(5);
 
         /// <summary>
         ///     The last time a metadata update was attempted.
         /// </summary>
         private DateTime lastMetadataUpdateAttempt = DateTime.MinValue;
+
+        /// <summary>
+        ///     The cached metadata value.
+        /// </summary>
+        private MetadataResponse? cachedMetadata;
 
         /// <summary>
         ///     Whether or not the last metadata update failed.
@@ -41,26 +46,26 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         public override uint DisplayWeight { get; } = 1;
 
         /// <inheritdoc />
-        protected override void EnableAction() { }
+        protected override void OnEnable() { }
 
         /// <inheritdoc />
-        protected override void DisableAction() { }
+        protected override void OnDisable() { }
 
         /// <inheritdoc />
         protected override void DrawModule()
         {
-            if (DateTime.Now - this.lastMetadataUpdateAttempt > TimeSpan.FromSeconds(60))
+            if (DateTime.Now - this.lastMetadataUpdateAttempt > MetadataRefreshInterval)
             {
                 Task.Run(this.UpdateMetadataSafely);
             }
 
-            if (!this.metadata.HasValue)
+            if (!this.cachedMetadata.HasValue)
             {
                 SiGui.TextWrappedColoured(this.lastMetadataUpdateFailed ? Colours.Error : Colours.Informational, this.lastMetadataUpdateFailed ? Strings.Modules_InstanceInfoModule_MetadataFetch_Failed : Strings.Modules_InstanceInfoModule_MetadataFetch_Fetching);
                 return;
             }
 
-            var metadata = this.metadata.Value;
+            var metadata = this.cachedMetadata.Value;
 
             // TODO: Improve handling of STBI not loading image.
             if (!string.IsNullOrWhiteSpace(metadata.About.BannerUrl?.ToString()))
@@ -79,7 +84,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.ParsedBlue);
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImGuiColors.ParsedBlue);
-            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, metadata.Connections.PlayerEvents), new Vector2(ImGui.GetContentRegionAvail().X, 0));
+            ImGui.Button(string.Format(Strings.Modules_InstanceInfoModule_ConnectedClients_Count, Math.Max(metadata.Connections.PlayerEvents, metadata.Connections.Announcements)), new Vector2(ImGui.GetContentRegionAvail().X, 0));
             ImGui.PopStyleColor(3);
             ImGui.Dummy(Spacing.SectionSpacing);
 
@@ -137,9 +142,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 Logger.Debug("Updating metadata...");
                 this.lastMetadataUpdateAttempt = DateTime.Now;
                 var request = new GetMetadataRequest().Send(HttpClient, new());
-                this.metadata = request.Item1;
+                this.cachedMetadata = request.Item1;
                 this.lastMetadataUpdateFailed = false;
-                Logger.Debug($"Successfully updated metadata: {this.metadata.Value}");
+                Logger.Debug($"Successfully updated metadata: {this.cachedMetadata.Value}");
             }
             catch (Exception e)
             {
