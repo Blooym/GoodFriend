@@ -102,7 +102,7 @@
     <value>Connexion au flux d'amis</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
-    <value>Statut de la connexion:</value>
+    <value>Connection State:</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Connecté</value>
