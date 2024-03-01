@@ -102,7 +102,7 @@
     <value>Freund-Streamverbindung</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
-    <value>Verbindungsstatus:</value>
+    <value>Connection State:</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Verbunden</value>
