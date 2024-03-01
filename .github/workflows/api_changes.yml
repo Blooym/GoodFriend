@@ -34,18 +34,15 @@ jobs:
           submodules: recursive
 
       - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: hecrj/setup-rust-action@v2
         with:
-            toolchain: stable
-            components: rustfmt, clippy
+          toolchain: stable
+          components: rustfmt, clippy
             
       - name: Setup Rust cache
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: "./src/Api/"
-
-      - name: Build Project
-        run: cargo build --all
 
       - name: Run Tests
         run: cargo test --all
