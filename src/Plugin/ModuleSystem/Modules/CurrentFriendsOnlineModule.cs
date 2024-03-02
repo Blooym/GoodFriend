@@ -56,12 +56,14 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             ImGui.BeginDisabled(!friendCountOnlineEnabled);
+            ImGui.Indent();
             var namesOnLogin = this.Config.AddFriendNamesToOnlineCount;
             if (SiGui.Checkbox("Also show online friend names", "Add the names of all online friends to the count message.", ref namesOnLogin))
             {
                 this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
                 this.Config.Save();
             }
+            ImGui.Unindent();
             ImGui.EndDisabled();
         }
 

@@ -1,11 +1,11 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using GoodFriend.Client.Http;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
-using Newtonsoft.Json;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
@@ -195,7 +195,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             {
                 Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
-            var configJson = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var configJson = JsonSerializer.Serialize(this);
             File.WriteAllText(Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json"), configJson);
         }
 
@@ -240,9 +240,9 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             var configJson = File.ReadAllText(configPath);
             try
             {
-                return JsonConvert.DeserializeObject<T>(configJson) ?? new T();
+                return JsonSerializer.Deserialize<T>(configJson) ?? new T();
             }
-            catch (JsonSerializationException e)
+            catch (JsonException e)
             {
                 Logger.Error($"Failed to deserialize module configuration {typeof(T).FullName}: {e}");
                 return new T();
