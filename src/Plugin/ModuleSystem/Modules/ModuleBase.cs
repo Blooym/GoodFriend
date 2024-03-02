@@ -195,7 +195,10 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             {
                 Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
-            var configJson = JsonSerializer.Serialize(this);
+            var configJson = JsonSerializer.Serialize((object)this, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+            });
             File.WriteAllText(Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json"), configJson);
         }
 
