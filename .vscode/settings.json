@@ -1,18 +1,30 @@
 {
     // OmniSharp
-    "omnisharp.enableRoslynAnalyzers": true,
     "omnisharp.organizeImportsOnFormat": true,
     "omnisharp.enableAsyncCompletion": true,
-    "omnisharp.analyzeOpenDocumentsOnly": false,
-    "omnisharp.enableImportCompletion": true,
     "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.autoStart": true,
+    "omnisharp.useModernNet": true,
     // C#
     "csharp.format.enable": true,
-    "csharp.referencesCodeLens.enabled": true,
+    "csharp.inlayHints.enableInlayHintsForTypes": true,
+    "csharp.inlayHints.enableInlayHintsForImplicitObjectCreation": true,
+    "csharp.inlayHints.enableInlayHintsForImplicitVariableTypes": true,
+    "csharp.inlayHints.enableInlayHintsForLambdaParameterTypes": true,
+    "csharp.semanticHighlighting.enabled": true,
+    "csharpextensions.includeNamespaces": true,
+    // Dotnet
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+    "dotnet.codeLens.enableReferencesCodeLens": true,
+    "dotnet.completion.showNameCompletionSuggestions": true,
+    "dotnet.defaultSolution": "./src/GoodFriend.sln",
+    "dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
+    "dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
+    "dotnet.inlayHints.enableInlayHintsForParameters": true,
+    "dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
+    "dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
     // Rust
     "rust-analyzer.linkedProjects": [
-        "./src/Api/Cargo.toml",
+        "./src/Api/Cargo.toml"
     ],
-    // Dotnet
-    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
 }

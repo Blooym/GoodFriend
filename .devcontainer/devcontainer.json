@@ -1,20 +1,19 @@
 {
-	"dockerFile": "Dockerfile",
-	"updateRemoteUserUID": true,
-	"containerUser": "dev",
-	"remoteUser": "dev",
-	"postAttachCommand": "cd ./src/Api && cargo build && cd ../Plugin && dotnet build",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-dotnettools.csharp@1.26.0",
-				"tintoy.msbuild-project-tools",
-				"kreativ-software.csharpextensions",
-				"fernandoescolar.vscode-solution-explorer",
-				"rust-lang.rust-analyzer",
-				"tamasfe.even-better-toml",
-				"serayuzgur.crates"
-			]
-		}
-	}
+    "dockerFile": "Dockerfile",
+    "updateRemoteUserUID": true,
+    "containerUser": "dev",
+    "remoteUser": "dev",
+    "postAttachCommand": "cd ./src/Api && cargo build && cd ../Plugin && dotnet build",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csharp",
+                "tintoy.msbuild-project-tools",
+                "kreativ-software.csharpextensions",
+                "fernandoescolar.vscode-solution-explorer",
+                "rust-lang.rust-analyzer",
+                "serayuzgur.crates"
+            ]
+        }
+    }
 }
