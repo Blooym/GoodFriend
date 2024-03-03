@@ -91,6 +91,10 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
                 { (FontAwesomeIcon.Cog, null, Strings.UI_MainWindow_Button_Settings), () => this.CurrentScreen = MainWindowScreen.Settings },
                 { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, Strings.UI_MainWindow_Button_Donate), () => Util.OpenLink(Constants.Link.Donate) },
             });
+
+            var versionData = $"Version: {Constants.Build.Version} • Commit: {Constants.Build.GitCommitHash} • Branch: {Constants.Build.GitBranch} • Date: {Constants.Build.GitCommitDate}";
+            ImGui.SetCursorPosX(ImGui.GetWindowSize().X - ImGui.CalcTextSize(versionData).X - ImGui.GetStyle().WindowPadding.X);
+            SiGui.TextDisabled(versionData);
         }
 
         /// <summary>

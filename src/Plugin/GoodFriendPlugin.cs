@@ -1,4 +1,3 @@
-using System.Reflection.Metadata;
 using Dalamud.Plugin;
 using GoodFriend.Plugin.Base;
 using Sirensong;
