@@ -5,11 +5,12 @@ use rocket::{
     tokio::sync::RwLock,
     Request,
 };
+use sha3::{Digest, Sha3_256};
 use std::sync::Arc;
 
 /// An authenticated user that has been validated from checking a request's authentication token.
 pub struct AuthenticatedUser {
-    pub token: String,
+    pub token_hash: String,
 }
 
 #[derive(Debug)]
@@ -49,8 +50,13 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
 
         // Token must not be an empty string.
         if authentication_token.is_empty() {
-            return Outcome::Error((Status::Unauthorized, AuthenticationError::MissingAuthToken));
+            return Outcome::Error((Status::Unauthorized, AuthenticationError::InvalidAuthToken));
         }
+
+        // Hash the provided token for comparing it.
+        let mut hasher: sha3::digest::core_api::CoreWrapper<sha3::Sha3_256Core> = Sha3_256::new();
+        hasher.update(authentication_token);
+        let authentication_token = hex::encode(hasher.finalize());
 
         // Check if the token is in the configuration.
         if !config
@@ -58,11 +64,11 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
             .authentication_tokens
             .contains(&authentication_token)
         {
-            return Outcome::Error((Status::Unauthorized, AuthenticationError::InvalidAuthToken));
+            return Outcome::Error((Status::Forbidden, AuthenticationError::InvalidAuthToken));
         }
 
         return Outcome::Success(AuthenticatedUser {
-            token: authentication_token,
+            token_hash: authentication_token,
         });
     }
 }

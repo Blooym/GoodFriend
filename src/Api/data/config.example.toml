@@ -11,6 +11,8 @@ description = "Hello, This is an example description!"
 [security]
 # Authentication tokens are used when calling authenticated endpoints for things like performing administrative tasks.
 # They should never be included in clients except for as configuration options for administrators.
+# 
+# Authentication tokens must be stored as Sha3-256 hashes and not raw values.
 authentication_tokens = ["MySuperSecretToken"]
 
 # If uncommented the API will switch to an allowlist of clients that are allowed to endpoints
