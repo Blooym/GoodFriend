@@ -13,10 +13,10 @@ description = "Hello, This is an example description!"
 # They should never be included in clients except for as configuration options for administrators.
 authentication_tokens = ["MySuperSecretToken"]
 
-# If uncommented the API will only allow clients that send an allowed X-Client-Key to access endpoints
+# If uncommented the API will switch to an allowlist of clients that are allowed to endpoints
 # (This does not include static files or any endpoints that requires an authentication token).
 #
-# Please keep in mind that malicious clients can extract a key from a client easily, so they should only be used
-# for revoking clients when, for example, wanting to force users to update. 
+# The allowlist works by checking the X-Client-Key header against the list of keys below.
+# Please keep in mind that malicious clients can extract a key from a client easily.
 # 
 # allowed_client_keys = []
