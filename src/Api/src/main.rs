@@ -60,12 +60,12 @@ struct GoodFriendArguments {
     pub api_base_route: String,
 
     #[arg(
-        long = "enable-api-metrics",
+        long = "api-enable-metrics",
         env = "GOODFRIEND_API_ENABLE_METRICS",
         default_value_t = false
     )]
-    /// Host Prometheus metric data at the '/metrics' route.
-    pub enable_metrics: bool,
+    /// Enable collection of Prometheus metric data and expose it at '/metrics'.
+    pub enable_api_metrics: bool,
 }
 
 #[rocket::main]
@@ -136,7 +136,7 @@ async fn main() -> Result<()> {
         );
 
     // TODO: find a better way to do this.
-    if args.enable_metrics {
+    if args.enable_api_metrics {
         let prometheus = PrometheusMetrics::new();
 
         // Register custom metrics.
