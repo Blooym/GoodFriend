@@ -1,3 +1,4 @@
+use crate::config::Config;
 use rocket::{
     http::Status,
     request::{FromRequest, Outcome},
@@ -6,48 +7,62 @@ use rocket::{
 };
 use std::sync::Arc;
 
-use crate::config::Config;
-
-/// A guard that checks if a user is authenticated.
-pub struct AuthenticatedUserGuard {
-    /// The token used to authenticate the user.
-    pub token_used: String,
+/// An authenticated user that has been validated from checking a request's authentication token.
+pub struct AuthenticatedUser {
+    pub token: String,
 }
 
-/// An error that can occur when checking if a user is authenticated.
 #[derive(Debug)]
-pub enum AuthenticatedUserError {
-    InvalidToken,
-    MissingToken,
+pub enum AuthenticationError {
+    /// No authentication token header was sent.
+    MissingAuthToken,
+    /// The authentication token obtained from the header was not valid.
+    InvalidAuthToken,
+    /// Something went wrong when trying to read the configuration.
+    ConfigurationStateFailure,
 }
+
+const AUTH_TOKEN_HEADER: &str = "X-Auth-Token";
 
 #[rocket::async_trait]
-impl<'r> FromRequest<'r> for AuthenticatedUserGuard {
-    type Error = AuthenticatedUserError;
+impl<'r> FromRequest<'r> for AuthenticatedUser {
+    type Error = AuthenticationError;
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let config = req.rocket().state::<Arc<RwLock<Config>>>().unwrap();
+        // Read the configuration or return an error if unable to.
+        let Some(config) = req.rocket().state::<Arc<RwLock<Config>>>() else {
+            return Outcome::Error((
+                Status::InternalServerError,
+                AuthenticationError::ConfigurationStateFailure,
+            ));
+        };
+        let config = config.read().await;
 
-        let token = req.headers().get_one("X-Auth-Token");
-        if let Some(token) = token {
-            let token = token.to_string();
+        // Get the authentication token from the headers.
+        let Some(authentication_token) = req
+            .headers()
+            .get_one(AUTH_TOKEN_HEADER)
+            .map(|s| s.trim().to_owned())
+        else {
+            return Outcome::Error((Status::Unauthorized, AuthenticationError::MissingAuthToken));
+        };
 
-            if token.trim().is_empty() {
-                return Outcome::Error((
-                    Status::Unauthorized,
-                    AuthenticatedUserError::MissingToken,
-                ));
-            }
-
-            if config.read().await.authentication.tokens.contains(&token) {
-                Outcome::Success(AuthenticatedUserGuard {
-                    token_used: token.to_string(),
-                })
-            } else {
-                Outcome::Error((Status::Unauthorized, AuthenticatedUserError::InvalidToken))
-            }
-        } else {
-            Outcome::Error((Status::Unauthorized, AuthenticatedUserError::MissingToken))
+        // Token must not be an empty string.
+        if authentication_token.is_empty() {
+            return Outcome::Error((Status::Unauthorized, AuthenticationError::MissingAuthToken));
         }
+
+        // Check if the token is in the configuration.
+        if !config
+            .security
+            .authentication_tokens
+            .contains(&authentication_token)
+        {
+            return Outcome::Error((Status::Unauthorized, AuthenticationError::InvalidAuthToken));
+        }
+
+        return Outcome::Success(AuthenticatedUser {
+            token: authentication_token,
+        });
     }
 }

@@ -7,7 +7,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents response from the metadata endpoint.
     /// </summary>
-    [Serializable]
     public readonly record struct MetadataResponse
     {
         /// <summary>
@@ -26,7 +25,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the about section of metadata.
     /// </summary>
-    [Serializable]
     public readonly record struct About
     {
         /// <summary>
@@ -36,16 +34,16 @@ namespace GoodFriend.Client.Http.Responses
         public readonly string Identifier { get; init; }
 
         /// <summary>
-        ///     The URL to the banner of the API.
-        /// </summary>
-        [JsonPropertyName("banner_url")]
-        public readonly Uri? BannerUrl { get; init; }
-
-        /// <summary>
         ///     The description of the API.
         /// </summary>
         [JsonPropertyName("description")]
         public readonly string Description { get; init; }
+
+        /// <summary>
+        ///     The URL to the banner of the API.
+        /// </summary>
+        [JsonPropertyName("banner_url")]
+        public readonly Uri? BannerUrl { get; init; }
 
         /// <summary>
         ///     Custom URLs.
@@ -57,7 +55,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the connection counts to different api server-sent event streams.
     /// </summary>
-    [Serializable]
     public readonly record struct Connections
     {
         [JsonPropertyName("player_events")]

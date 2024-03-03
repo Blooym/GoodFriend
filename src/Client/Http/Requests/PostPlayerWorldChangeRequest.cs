@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Json;
 
 namespace GoodFriend.Client.Http.Requests
@@ -11,11 +12,15 @@ namespace GoodFriend.Client.Http.Requests
     /// <summary>
     ///     Represents the request data for sending a player world change.
     /// </summary>
-    public class PostPlayerWorldChangeRequest : IGoodFriendRequestHandler<PostPlayerWorldChangeRequest.RequestData, HttpResponseMessage>
+    public class PostPlayerWorldChangeRequest : IHttpRequestHandler<PostPlayerWorldChangeRequest.RequestData, HttpResponseMessage>
     {
         private const string EndpointUrl = "api/playerevents/currentworld";
 
-        [Serializable]
+        private readonly struct RequestBody
+        {
+            public required uint WorldId { get; init; }
+        }
+
         public readonly record struct RequestData
         {
             private readonly string contentIdHashBackingField;
@@ -31,7 +36,7 @@ namespace GoodFriend.Client.Http.Requests
             {
                 get => this.contentIdHashBackingField; init
                 {
-                    if (value.Length < RequestConstants.ContentIdHashMinLength)
+                    if (value.Length < GlobalRequestData.Validation.ContentIdHashMinLength)
                     {
                         throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
                     }
@@ -51,7 +56,7 @@ namespace GoodFriend.Client.Http.Requests
             {
                 get => this.contentIdSaltBackingField; init
                 {
-                    if (value.Length < RequestConstants.ContentIdSaltMinLength)
+                    if (value.Length < GlobalRequestData.Validation.ContentIdSaltMinLength)
                     {
                         throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
                     }
@@ -72,13 +77,17 @@ namespace GoodFriend.Client.Http.Requests
         /// <returns></returns>
         private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
         {
-            Content = JsonContent.Create(requestData, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
+            Content = JsonContent.Create(new RequestBody()
+            {
+                WorldId = requestData.WorldId,
+            }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
             {
                 PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
             }),
             Headers =
             {
-                { RequestConstants.ContentIdHashHeader, requestData.ContentIdHash },
+                { GlobalRequestData.Headers.ContentIdHash, requestData.ContentIdHash },
+                { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt }
             },
         };
 

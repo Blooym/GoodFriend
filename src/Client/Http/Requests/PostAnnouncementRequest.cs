@@ -1,20 +1,19 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using GoodFriend.Client.Http.Responses.Enums;
+using GoodFriend.Client.Http.Interfaces;
+using GoodFriend.Client.Http.Enums;
 using GoodFriend.Client.Json;
 
 namespace GoodFriend.Client.Http.Requests
 {
-    public class PostAnnouncementRequest : IGoodFriendRequestHandler<PostAnnouncementRequest.RequestData, HttpResponseMessage>
+    public class PostAnnouncementRequest : IHttpRequestHandler<PostAnnouncementRequest.RequestData, HttpResponseMessage>
     {
         private const string EndpointUrl = "api/announcements/send";
 
-        [Serializable]
         public readonly record struct RequestData
         {
             /// <summary>
@@ -54,7 +53,7 @@ namespace GoodFriend.Client.Http.Requests
             }),
             Headers =
             {
-                { RequestConstants.AuthenticationTokenHeader, requestData.AuthenticationToken },
+                { GlobalRequestData.Headers.AuthenticationToken, requestData.AuthenticationToken },
             },
         };
 

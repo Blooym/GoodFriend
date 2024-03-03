@@ -1,20 +1,18 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Http.Responses;
 
 namespace GoodFriend.Client.Http.Requests
 {
-    public class GetMetadataRequest : IGoodFriendRequestHandler<GetMetadataRequest.RequestData, (MetadataResponse, HttpResponseMessage)>
+    public class GetMetadataRequest : IHttpRequestHandler<GetMetadataRequest.RequestData, (MetadataResponse, HttpResponseMessage)>
     {
         private const string EndpointUrl = "api/metadata";
 
-        /// <summary>
-        ///     Represents the request data for the metadata request.
-        /// </summary>
         public readonly record struct RequestData
         {
-            public static RequestData None { get; }
+            public static RequestData Empty { get; }
         }
 
         /// <summary>

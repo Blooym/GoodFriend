@@ -1,14 +1,15 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using GoodFriend.Client.Http.Interfaces;
 
 namespace GoodFriend.Client.Http.Requests
 {
     /// <summary>
     ///     Request to validate an authentication token.
     /// </summary>
-    public class PostValidateAuthRequest : IGoodFriendRequestHandler<PostValidateAuthRequest.RequestData, (bool, HttpResponseMessage)>
+    public class PostValidateAuthRequest : IHttpRequestHandler<PostValidateAuthRequest.RequestData, (bool, HttpResponseMessage)>
     {
-        private const string EndpointUrl = "api/validateauth";
+        private const string EndpointUrl = "api/auth/validate";
 
         public readonly record struct RequestData
         {
@@ -24,7 +25,7 @@ namespace GoodFriend.Client.Http.Requests
         {
             Headers =
             {
-                { RequestConstants.AuthenticationTokenHeader, requestData.AuthenticationToken },
+                { GlobalRequestData.Headers.AuthenticationToken, requestData.AuthenticationToken },
             },
         };
 

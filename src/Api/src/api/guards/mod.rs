@@ -1,2 +1,3 @@
 pub mod authenticated_user;
-pub mod cid_hash_duplicate_guard;
+pub mod client_key;
+pub mod content_id;

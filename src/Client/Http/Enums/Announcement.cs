@@ -1,4 +1,4 @@
-namespace GoodFriend.Client.Http.Responses.Enums
+namespace GoodFriend.Client.Http.Enums
 {
     /// <summary>
     ///     The kind of announcement being made.

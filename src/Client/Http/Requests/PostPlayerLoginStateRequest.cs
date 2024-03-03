@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Json;
 
 namespace GoodFriend.Client.Http.Requests
@@ -11,32 +12,34 @@ namespace GoodFriend.Client.Http.Requests
     /// <summary>
     ///     Represents the request data for sending a player login state.
     /// </summary>
-    public class PostPlayerLoginStateRequest : IGoodFriendRequestHandler<PostPlayerLoginStateRequest.RequestData, HttpResponseMessage>
+    public class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayerLoginStateRequest.RequestData, HttpResponseMessage>
     {
         private const string EndpointUrl = "api/playerevents/loginstate";
 
-        [Serializable]
+        private readonly struct RequestBody
+        {
+            public required uint DatacenterId { get; init; }
+            public required uint WorldId { get; init; }
+            public required ushort TerritoryId { get; init; }
+            public required bool LoggedIn { get; init; }
+        }
+
         public readonly record struct RequestData
         {
-            /// <summary>
-            ///     The "is logged in" query parameter name.
-            /// </summary>
-            internal const string LoggedInParam = "logged_in";
-
             private readonly string contentIdHashBackingField;
 
             /// <summary>
-            ///     The string of a hashed player ContentId.
+            ///     The hash of the player's ContentId.
             /// </summary>
             /// <remarks>
-            ///     - The given string must be at least 64 characters in length. <br/>
-            ///     - You cannot use the same hash across requests and must generate a new one each time. <br/>
+            ///     - This value must be at least 64 characters in length. <br/>
+            ///     - This value must be unique across every request.
             /// </remarks>
             public required string ContentIdHash
             {
                 get => this.contentIdHashBackingField; init
                 {
-                    if (value.Length < RequestConstants.ContentIdHashMinLength)
+                    if (value.Length < GlobalRequestData.Validation.ContentIdHashMinLength)
                     {
                         throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
                     }
@@ -47,16 +50,16 @@ namespace GoodFriend.Client.Http.Requests
             private readonly string contentIdSaltBackingField;
 
             /// <summary>
-            ///     The salt used to hash the player's ContentId.
+            ///     The salt used when hashing the player's ContentId.
             /// </summary>
             /// <remarks>
-            ///     The given string must be at least 32 characters in length.
+            ///     - This value must be at least 32 characters in length.
             /// </remarks>
             public required string ContentIdSalt
             {
                 get => this.contentIdSaltBackingField; init
                 {
-                    if (value.Length < RequestConstants.ContentIdSaltMinLength)
+                    if (value.Length < GlobalRequestData.Validation.ContentIdSaltMinLength)
                     {
                         throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
                     }
@@ -65,17 +68,17 @@ namespace GoodFriend.Client.Http.Requests
             }
 
             /// <summary>
-            ///     The player's current DatacenterID
+            ///     The Id of the player's current datacenter.
             /// </summary>
             public required uint DatacenterId { get; init; }
 
             /// <summary>
-            ///     The player's current WorldId.
+            ///     The Id player's current World.
             /// </summary>
             public required uint WorldId { get; init; }
 
             /// <summary>
-            ///     The player's current TerritoryId.
+            ///     The Id of the player's current Territory.
             /// </summary>
             public required ushort TerritoryId { get; init; }
 
@@ -92,13 +95,20 @@ namespace GoodFriend.Client.Http.Requests
         /// <returns></returns>
         private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
         {
-            Content = JsonContent.Create(requestData, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
+            Content = JsonContent.Create(new RequestBody()
+            {
+                DatacenterId = requestData.DatacenterId,
+                LoggedIn = requestData.LoggedIn,
+                TerritoryId = requestData.TerritoryId,
+                WorldId = requestData.WorldId
+            }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
             {
                 PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
             }),
             Headers =
             {
-                { RequestConstants.ContentIdHashHeader, requestData.ContentIdHash },
+                { GlobalRequestData.Headers.ContentIdHash, requestData.ContentIdHash },
+                { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt },
             },
         };
 
@@ -115,5 +125,7 @@ namespace GoodFriend.Client.Http.Requests
             var message = BuildMessage(requestData);
             return httpClient.SendAsync(message);
         }
+
+
     }
 }

@@ -67,10 +67,11 @@ namespace GoodFriend.Plugin.Base
         })
         {
             BaseAddress = PluginConfiguration.ApiConfig.BaseUrl,
-            Timeout = TimeSpan.FromSeconds(20),
+            Timeout = TimeSpan.FromSeconds(15),
             DefaultRequestHeaders =
                 {
                     { "User-Agent", HttpConstants.UserAgent },
+                    { GlobalRequestData.Headers.ClientKey, Constants.Build.ClientKey ?? "GOODFRIEND_FALLBACK_KEY" }
                 },
             DefaultRequestVersion = HttpVersion.Version20,
             DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower,

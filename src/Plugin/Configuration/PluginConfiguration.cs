@@ -8,7 +8,6 @@ namespace GoodFriend.Plugin.Configuration
     /// <summary>
     ///     Provides access to and determines the Plugin configuration.
     /// </summary>
-    [Serializable]
     internal sealed class PluginConfiguration : IPluginConfiguration
     {
         /// <summary>

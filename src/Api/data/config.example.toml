@@ -1,0 +1,22 @@
+version = 1
+
+[about]
+identifier = "My GoodFriend Server"
+banner_url = "https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"
+description = "Hello, This is an example description!"
+
+[about.custom_urls]
+"Example" = "https://example.com"
+
+[security]
+# Authentication tokens are used when calling authenticated endpoints for things like performing administrative tasks.
+# They should never be included in clients except for as configuration options for administrators.
+authentication_tokens = ["MySuperSecretToken"]
+
+# If uncommented the API will only allow clients that send an allowed X-Client-Key to access endpoints
+# (This does not include static files or any endpoints that requires an authentication token).
+#
+# Please keep in mind that malicious clients can extract a key from a client easily, so they should only be used
+# for revoking clients when, for example, wanting to force users to update. 
+# 
+# allowed_client_keys = []

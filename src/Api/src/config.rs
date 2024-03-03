@@ -1,18 +1,33 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 use rocket::serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fs;
 use std::path::PathBuf;
-use std::{env, fs};
 use url::Url;
-use validator::{Validate, ValidationError};
 
 /// Defines the applications configuration.
-#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Validate)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
 pub struct Config {
     version: u8,
     pub about: ApiAboutConfig,
-    pub authentication: ApiAuthenticationConfig,
+    pub security: ApiSecurityConfig,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct ApiAboutConfig {
+    pub identifier: String,
+    pub description: String,
+    pub banner_url: Url,
+    pub custom_urls: HashMap<String, Url>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(crate = "rocket::serde")]
+pub struct ApiSecurityConfig {
+    pub authentication_tokens: Vec<String>,
+    pub allowed_client_keys: Option<Vec<String>>,
 }
 
 impl Default for Config {
@@ -20,39 +35,23 @@ impl Default for Config {
         Self {
             version: 1,
             about: ApiAboutConfig::default(),
-            authentication: ApiAuthenticationConfig::default(),
+            security: ApiSecurityConfig::default(),
         }
     }
 }
 
-/// The environment variable for the GoodFriend data directory.
-const DATA_DIRECTORY_ENV: &str = "GOODFRIEND_DATA_DIRECTORY";
-
-/// The default data directory name. At runtime this will be appended to the executable working directory.
-const DATA_DIRECTORY_DEFAULT_NAME: &str = "data";
-
-/// The name of the configuration file.
-const CONFIG_FILE_NAME: &str = "config.toml";
+impl Default for ApiAboutConfig {
+    fn default() -> Self {
+        Self {
+            identifier: String::from("GoodFriend"),
+            banner_url: Url::parse("https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png").expect("Default banner URL parse error"),
+            custom_urls: HashMap::default(),
+            description: String::default(),
+        }
+    }
+}
 
 impl Config {
-    /// Get the path to the data directory..
-    fn get_data_directory_path() -> Result<PathBuf> {
-        Ok(PathBuf::from(
-            env::var(DATA_DIRECTORY_ENV).unwrap_or(
-                env::current_dir()?
-                    .join(DATA_DIRECTORY_DEFAULT_NAME)
-                    .to_str()
-                    .context("Failed to convert path to str")?
-                    .to_string(),
-            ),
-        ))
-    }
-
-    /// Get the path to the configuration file from the environment.
-    pub fn get_config_file_path() -> Result<PathBuf> {
-        Ok(Self::get_data_directory_path()?.join(CONFIG_FILE_NAME))
-    }
-
     /// Checks if the config file exists.
     pub fn exists(path: &PathBuf) -> bool {
         fs::metadata(path).is_ok()
@@ -83,49 +82,4 @@ impl Config {
 
         Ok(())
     }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Validate)]
-#[serde(crate = "rocket::serde")]
-pub struct ApiAboutConfig {
-    pub identifier: String,
-    pub banner_url: String,
-    pub description: String,
-    #[validate(custom = "validate_custom_urls")]
-    pub custom_urls: HashMap<String, String>,
-}
-
-/// Validates the custom urls, key is url name, value is url.
-fn validate_custom_urls(urls: &HashMap<String, String>) -> Result<(), ValidationError> {
-    if urls.is_empty() {
-        return Ok(());
-    }
-    for url in urls.values() {
-        match Url::parse(url) {
-            Ok(_) => (),
-            Err(_) => {
-                return Err(ValidationError::new(
-                    "Came across a URL that could not be parsed when validating custom urls.",
-                ));
-            }
-        }
-    }
-    Ok(())
-}
-
-impl Default for ApiAboutConfig {
-    fn default() -> Self {
-        Self {
-            identifier: String::from("GoodFriend"),
-            banner_url: String::from("https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"),
-            custom_urls: HashMap::default(),
-            description: String::default(),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Validate, Default)]
-#[serde(crate = "rocket::serde")]
-pub struct ApiAuthenticationConfig {
-    pub tokens: Vec<String>,
 }

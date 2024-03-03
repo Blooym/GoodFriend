@@ -52,6 +52,12 @@ namespace GoodFriend.Plugin.Base
             ///     The build configuration that was used to compile the plugin.
             /// </summary>
             public static readonly string BuildConfiguration = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ?? "Unknown";
+
+            /// <summary>
+            ///     The client key used for this plugin.
+            /// </summary>
+            public static readonly string? ClientKey = Assembly.GetExecutingAssembly().GetCustomAttribute<ClientKeyAttribute>()?.Value;
+
         }
 
         /// <summary>
@@ -119,6 +125,16 @@ namespace GoodFriend.Plugin.Base
     internal sealed class GitCommitMessageAttribute : Attribute
     {
         public GitCommitMessageAttribute(string value) => this.Value = value;
+        public string Value { get; set; }
+    }
+
+    /// <summary>
+    ///     The client key used for this plugin.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Assembly)]
+    internal sealed class ClientKeyAttribute : Attribute
+    {
+        public ClientKeyAttribute(string value) => this.Value = value;
         public string Value { get; set; }
     }
 }

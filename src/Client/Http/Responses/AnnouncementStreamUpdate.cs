@@ -1,13 +1,11 @@
-using System;
 using System.Text.Json.Serialization;
-using GoodFriend.Client.Http.Responses.Enums;
+using GoodFriend.Client.Http.Enums;
 
 namespace GoodFriend.Client.Http.Responses
 {
     /// <summary>
     ///     Represents a response from the announcement stream.
     /// </summary>
-    [Serializable]
     public record struct AnnouncementStreamUpdate
     {
         /// <summary>

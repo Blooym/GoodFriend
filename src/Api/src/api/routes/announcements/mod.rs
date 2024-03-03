@@ -2,10 +2,15 @@ mod send;
 mod stream;
 
 use crate::api::routes::announcements::{send::post_announcement, stream::get_stream};
+use rocket::serde::uuid::Uuid;
 use rocket::serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
-/// The kind of announcement that is being made.
+pub fn routes() -> Vec<rocket::Route> {
+    routes![get_stream, post_announcement]
+}
+pub use stream::CONNECTED_ANNOUNCEMENTS_CLIENTS;
+
+/// The type of announcement that is being made.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 enum AnnouncementKind {
@@ -15,7 +20,7 @@ enum AnnouncementKind {
     Miscellaneous,
 }
 
-/// The reason for this announcement being made.
+/// The cause/trigger for the announcement.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 enum AnnouncementCause {
@@ -24,10 +29,10 @@ enum AnnouncementCause {
     Scheduled,
 }
 
-/// An announcement that is being made.
+// Represents an announcement sent to other clients.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
-pub struct AnnouncementStreamUpdate {
+pub struct AnnouncementMessage {
     /// The unique identifier of this announcement.
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<Uuid>,
@@ -44,8 +49,4 @@ pub struct AnnouncementStreamUpdate {
     /// An optional channel field that allows for clients to filter announcements.
     #[serde(skip_serializing_if = "Option::is_none")]
     channel: Option<String>,
-}
-
-pub fn routes() -> Vec<rocket::Route> {
-    routes![get_stream, post_announcement]
 }

@@ -2,7 +2,6 @@ mod stream;
 mod update_loginstate;
 mod update_world;
 
-use crate::api::types::content_id::{ContentIdHash, ContentIdSalt};
 use rocket::serde::{Deserialize, Serialize};
 
 /// Represents a player state update that is sent to clients.
@@ -12,8 +11,8 @@ use rocket::serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct PlayerEventStreamUpdate {
-    pub content_id_hash: ContentIdHash,
-    pub content_id_salt: ContentIdSalt,
+    pub content_id_hash: String,
+    pub content_id_salt: String,
     pub state_update_type: PlayerStateUpdateType,
 }
 
@@ -39,3 +38,4 @@ pub fn routes() -> Vec<rocket::Route> {
         stream::get_stream
     ]
 }
+pub use self::stream::CONNECTED_PLAYER_EVENTS_CLIENTS;

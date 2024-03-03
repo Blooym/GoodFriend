@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
-using GoodFriend.Client.Http.Responses.Enums;
+using GoodFriend.Client.Http.Enums;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
@@ -60,16 +60,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         protected override void OnEnable()
         {
             AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
-            AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
-            this.ValidateAuthToken();
+            this.RunValidateAuthTokenTask();
         }
 
         /// <inheritdoc />
-        protected override void OnDisable()
-        {
-            AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
-            AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
-        }
+        protected override void OnDisable() => AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
 
         /// <inheritdoc />
         protected override void DrawModule()
@@ -109,7 +104,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 ImGui.BeginDisabled(!tokenSet);
                 if (ImGui.Button(tokenSet ? Strings.Modules_AnnouncementModule_SendAnnouncement_Reauth : Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuth))
                 {
-                    this.ValidateAuthToken();
+                    this.RunValidateAuthTokenTask();
                 }
                 ImGui.EndDisabled();
             }
@@ -148,7 +143,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.LeftShift) || string.IsNullOrWhiteSpace(this.sendAnnouncementText));
                 if (ImGui.Button(Strings.Modules_AnnouncementModule_SendAnnouncement_Send))
                 {
-                    this.SendAnnouncementBackground();
+                    this.RunSendAnnouncementTask();
                 }
                 ImGui.EndDisabled();
                 SiGui.TextDisabledWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_HoldShift);
@@ -158,44 +153,45 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// <summary>
         ///     Validates the authentication token with the API to ensure it is valid.
         /// </summary>
-        private void ValidateAuthToken()
-        {
-            if (this.IsValidationInProgress)
-            {
-                return;
-            }
-            this.IsValidationInProgress = true;
+        private void RunValidateAuthTokenTask()
+            => Task.Run(() =>
+                {
+                    if (this.IsValidationInProgress)
+                    {
+                        return;
+                    }
+                    this.IsValidationInProgress = true;
 
-            try
-            {
-                if (string.IsNullOrWhiteSpace(Services.PluginConfiguration.ApiConfig.AuthKey))
-                {
-                    this.CanSendAnnouncements = false;
-                    Logger.Information("Authentication token is not set so cannot validate.");
-                    return;
-                }
-                var validateRequest = new PostValidateAuthRequest().Send(HttpClient, new()
-                {
-                    AuthenticationToken = Services.PluginConfiguration.ApiConfig.AuthKey
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(Services.PluginConfiguration.ApiConfig.AuthKey))
+                        {
+                            this.CanSendAnnouncements = false;
+                            Logger.Information("Authentication token is not set so cannot validate.");
+                            return;
+                        }
+                        var validateRequest = new PostValidateAuthRequest().Send(HttpClient, new()
+                        {
+                            AuthenticationToken = Services.PluginConfiguration.ApiConfig.AuthKey
+                        });
+                        this.CanSendAnnouncements = validateRequest.Item1;
+                        Logger.Information($"Authentication token validation check returned: {validateRequest.Item2.StatusCode} - {validateRequest.Item2.ReasonPhrase}");
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Warning($"Failed to validate authentication token: {e}");
+                        this.CanSendAnnouncements = false;
+                    }
+                    finally
+                    {
+                        this.IsValidationInProgress = false;
+                    }
                 });
-                this.CanSendAnnouncements = validateRequest.Item1;
-                Logger.Information($"Authentication token validation check returned: {validateRequest.Item2.StatusCode} - {validateRequest.Item2.ReasonPhrase}");
-            }
-            catch (Exception e)
-            {
-                Logger.Warning($"Failed to validate authentication token: {e}");
-                this.CanSendAnnouncements = false;
-            }
-            finally
-            {
-                this.IsValidationInProgress = false;
-            }
-        }
 
         /// <summary>
         ///     Sends an announcement on another thread.
         /// </summary>
-        private void SendAnnouncementBackground()
+        private void RunSendAnnouncementTask()
             => Task.Run(() =>
                 {
                     var outcome = new PostAnnouncementRequest().Send(HttpClient, new()
@@ -267,13 +263,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                     break;
             }
         }
-
-        /// <summary>
-        ///     Handles an exception from the announcement stream.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnAnnouncementStreamException(object? sender, Exception e) => Logger.Error($"Exception received from announcement stream: {e}");
 
         /// <summary>
         ///     Configuration for the world change module.

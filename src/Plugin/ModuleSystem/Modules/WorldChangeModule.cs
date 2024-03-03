@@ -157,7 +157,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
             if (world is null)
             {
-                Logger.Warning($"Could not perform lookup to find world name for world id {stateData.WorldId}.");
+                Logger.Warning($"Could not find world name for world id {stateData.WorldId}.");
                 return;
             }
 

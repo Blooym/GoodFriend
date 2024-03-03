@@ -1,25 +1,34 @@
-use super::AnnouncementStreamUpdate;
-use crate::api::guards::authenticated_user::AuthenticatedUserGuard;
+use super::AnnouncementMessage;
+use crate::api::guards::authenticated_user::AuthenticatedUser;
 use rocket::http::Status;
 use rocket::serde::json::Json;
+use rocket::serde::uuid::Uuid;
 use rocket::tokio::sync::broadcast::Sender;
 use rocket::State;
-use uuid::Uuid;
 
-/// Send an announcement to the announcement stream
+/// Send an announcement to the announcement stream.
 #[post("/send", data = "<announcement>", format = "json")]
 pub async fn post_announcement(
-    _authenticated_user: AuthenticatedUserGuard,
-    announcement: Json<AnnouncementStreamUpdate>,
-    queue: &State<Sender<AnnouncementStreamUpdate>>,
+    _user: AuthenticatedUser,
+    announcement: Json<AnnouncementMessage>,
+    announcements_stream: &State<Sender<AnnouncementMessage>>,
 ) -> Status {
     let mut announcement = announcement.into_inner();
+
+    // Add an ID to the announcement if one was not provided by the sender.
     if announcement.id.is_none() {
         announcement.id = Some(Uuid::new_v4());
     }
+
+    // Ensure there is content for this message.
     if announcement.message.trim().is_empty() {
         return Status::BadRequest;
     }
-    let _ = queue.send(announcement);
+
+    // Send the message to all clients connected to the announcements stream.
+    if announcements_stream.send(announcement).is_err() {
+        return Status::InternalServerError;
+    };
+
     Status::Ok
 }

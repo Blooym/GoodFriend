@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json.Serialization;
 
 namespace GoodFriend.Client.Http.Responses
@@ -6,7 +5,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the response data for a player event stream update.
     /// </summary>
-    [Serializable]
     public record struct PlayerEventStreamUpdate
     {
         /// <summary>
@@ -31,7 +29,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the state update type of a player event stream update.
     /// </summary>
-    [Serializable]
     public record struct StateUpdateType
     {
         /// <summary>
@@ -50,7 +47,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the data received relating to a login state change.
     /// </summary>
-    [Serializable]
     public record struct LoginStateChangeData
     {
         /// <summary>
@@ -81,7 +77,6 @@ namespace GoodFriend.Client.Http.Responses
     /// <summary>
     ///     Represents the data received relating to a world change.
     /// </summary>
-    [Serializable]
     public record struct WorldChangeData
     {
         /// <summary>
