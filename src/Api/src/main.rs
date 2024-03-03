@@ -102,8 +102,7 @@ async fn main() -> Result<()> {
         notify::Config::default(),
     )?;
     watcher.watch(
-        &args
-            .config_file
+        args.config_file
             .parent()
             .context("Cannot get parent directory of config file")?,
         notify::RecursiveMode::Recursive,
