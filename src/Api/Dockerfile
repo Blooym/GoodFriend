@@ -45,7 +45,7 @@ USER user
 # Bind to all interfaces to allow access from outside the container.
 ENV ROCKET_ADDRESS=0.0.0.0 
 ENV ROCKET_PORT=8000
-ENV GOODFRIEND_DATA_DIRECTORY=/app/data
+ENV GOODFRIEND_CONFIG==/app/data/config.toml
 EXPOSE 8000
 
 # Grab API binary from build.
