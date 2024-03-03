@@ -7,7 +7,7 @@ license = "AGPL-3.0-only"
 repository = "https://github.com/Blooym/GoodFriend"
 
 [features]
-default = ["http2"]
+default = ["http2", "tls"]
 http2 = ["rocket/http2"]
 tls = ["rocket/tls"]
 
