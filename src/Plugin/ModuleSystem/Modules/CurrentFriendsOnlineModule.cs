@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Interface;
+using Dalamud.Interface.Components;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Plugin.Base;
@@ -17,11 +19,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
 {
     internal sealed class CurrentFriendsOnlineModule : ModuleBase
     {
-        /// <summary>
-        ///     The amount of time to delay the task for showing how many friends are online after logging in.
-        /// </summary>
-        private static readonly TimeSpan DelayAfterLogin = TimeSpan.FromSeconds(5);
-
         /// <summary>
         ///     The configuration for this module.
         /// </summary>
@@ -48,7 +45,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             SiGui.Heading("Upon Login");
 
             var friendCountOnlineEnabled = this.Config.ShowOnlineFriendCountOnLogin;
-            if (SiGui.Checkbox("Show online friend count in chat", "Sends a message in chat showing how many friends are online upon you logging in.", ref friendCountOnlineEnabled))
+            if (SiGui.Checkbox("Show online friend count in chat", "Sends a message in chat showing how many friends are online upon you logging in. Please note that this may not always display friends currently on other worlds.", ref friendCountOnlineEnabled))
             {
                 this.Config.ShowOnlineFriendCountOnLogin = friendCountOnlineEnabled;
                 this.Config.Save();
@@ -63,6 +60,22 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
                 this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
+            SiGui.Text("Login Delay");
+            if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds, false))
+            {
+                this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
+                this.Config.Save();
+            }
+            ImGui.SameLine();
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.ArrowsSpin))
+            {
+                this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
+                this.Config.Save();
+            }
+            SiGui.TextDisabledWrapped("The amount of seconds to wait after logging in to display the message. If online friends are being not shown on login try increasing this value.");
             ImGui.Unindent();
             ImGui.EndDisabled();
         }
@@ -78,7 +91,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             Task.Run(async () =>
             {
                 // Wait for the delay after login.
-                await Task.Delay(DelayAfterLogin);
+                await Task.Delay(this.Config.OnlineFriendShowDelay);
 
                 // Don't show a message if the player has no friends added.
                 if (FriendHelper.FriendList.Length is 0)
@@ -93,13 +106,13 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
                 if (onlineFriendCount is 0)
                 {
-                    ChatHelper.Print("There are currently no friends online.");
+                    ChatHelper.Print("You have have no friends online.");
                 }
                 else
                 {
                     if (!this.Config.AddFriendNamesToOnlineCount)
                     {
-                        ChatHelper.Print($"There are currently {onlineFriendCount} friends online.");
+                        ChatHelper.Print($"You have currently {onlineFriendCount} friends online.");
                         return;
                     }
 
@@ -147,6 +160,18 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ///     Whether or not to add the names of each online friend to messages that show the number of online friends.
             /// </summary>
             public bool AddFriendNamesToOnlineCount { get; set; }
+
+            /// <summary>
+            ///     The delay period before showing the "friends online" message when logging in.
+            /// </summary>
+            /// <remarks>
+            ///     One delay may not work for everyone as network conditions differ. This value has been set to a reasonable
+            ///     default that one may wish to change later.
+            ///  </remarks>
+            public TimeSpan OnlineFriendShowDelay { get; set; } = TimeSpan.FromSeconds(OnlineFriendShowDelayDefaultSeconds);
+            public const int OnlineFriendShowDelayDefaultSeconds = 8;
+            public const int OnlineFriendShowDelayMinSeconds = 8;
+            public const int OnlineFriendShowDelayMaxSeconds = 30;
         }
     }
 }
