@@ -45,7 +45,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             SiGui.Heading("Upon Login");
 
             var friendCountOnlineEnabled = this.Config.ShowOnlineFriendCountOnLogin;
-            if (SiGui.Checkbox("Show online friend count in chat", "Sends a message in chat showing how many friends are online upon you logging in. Please note that this may not always display friends currently on other worlds.", ref friendCountOnlineEnabled))
+            if (SiGui.Checkbox("Send online friend count chat message", "Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.", ref friendCountOnlineEnabled))
             {
                 this.Config.ShowOnlineFriendCountOnLogin = friendCountOnlineEnabled;
                 this.Config.Save();
@@ -55,7 +55,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.BeginDisabled(!friendCountOnlineEnabled);
             ImGui.Indent();
             var namesOnLogin = this.Config.AddFriendNamesToOnlineCount;
-            if (SiGui.Checkbox("Also show online friend names", "Add the names of all online friends to the count message.", ref namesOnLogin))
+            if (SiGui.Checkbox("Include friend names", "Adds a list of the names of your online friends to the count message.", ref namesOnLogin))
             {
                 this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
                 this.Config.Save();
@@ -63,7 +63,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             ImGui.Dummy(Spacing.ReadableSpacing);
 
             var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
-            SiGui.Text("Login Delay");
+            SiGui.Text("Delay");
             if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds, false))
             {
                 this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
@@ -75,7 +75,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
                 this.Config.Save();
             }
-            SiGui.TextDisabledWrapped("The amount of seconds to wait after logging in to display the message. If online friends are being not shown on login try increasing this value.");
+            SiGui.TextDisabledWrapped("The amount of seconds to wait after logging in to display the message. If online friends are not correctly shown on login then increase this value.");
             ImGui.Unindent();
             ImGui.EndDisabled();
         }
