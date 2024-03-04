@@ -26,10 +26,9 @@ jobs:
     strategy:
         matrix:
           dotnet: [7.0.x]
-          dalamud_version: ["latest", "stg/latest"]
+          dalamud_version: ["release", "stg"]
     env:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
-        DALAMUD_HOME: "/tmp/dalamud"
     steps:
       - name: GitHub Checkout
         uses: actions/checkout@v4
@@ -45,10 +44,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Download Dalamud
-        run: |
-          wget https://goatcorp.github.io/dalamud-distrib/${{ matrix.dalamud_version }}.zip -O /tmp/dalamud.zip
-          unzip /tmp/dalamud.zip -d ${{ env.DALAMUD_HOME }}
+      - uses: Blooym/setup-dalamud@v1
+        with:
+          branch: ${{ matrix.dalamud_version }} 
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
