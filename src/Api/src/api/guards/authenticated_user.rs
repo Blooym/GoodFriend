@@ -54,7 +54,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
         }
 
         // Hash the provided token for comparing it.
-        let mut hasher: sha3::digest::core_api::CoreWrapper<sha3::Sha3_256Core> = Sha3_256::new();
+        let mut hasher = Sha3_256::new();
         hasher.update(authentication_token);
         let authentication_token = hex::encode(hasher.finalize());
 

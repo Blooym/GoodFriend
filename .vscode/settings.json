@@ -27,4 +27,5 @@
     "rust-analyzer.linkedProjects": [
         "./src/Api/Cargo.toml"
     ],
+    "rust-analyzer.highlightRelated.exitPoints.enable": true
 }
