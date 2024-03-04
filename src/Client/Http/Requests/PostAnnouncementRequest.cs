@@ -4,8 +4,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Http.Enums;
+using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Json;
 
 namespace GoodFriend.Client.Http.Requests
