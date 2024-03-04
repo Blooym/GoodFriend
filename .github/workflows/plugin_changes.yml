@@ -25,8 +25,8 @@ jobs:
           working-directory: ./src/Plugin/
     strategy:
         matrix:
-          dotnet: [7.0.x]
-          dalamud_version: ["release", "stg"]
+          dotnet-version: [7.0.x]
+          dalamud-branch: ["release", "stg"]
     env:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
@@ -43,15 +43,16 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-
-      - uses: Blooym/setup-dalamud@v1
-        with:
-          branch: ${{ matrix.dalamud_version }} 
-
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-            dotnet-version: ${{ matrix.dotnet }}
+            dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Setup Dalamud
+        uses: Blooym/setup-dalamud@v1
+        with:
+          branch: ${{ matrix.dalamud-branch }}
         
       - name: Restore Nuget Packages
         run: dotnet restore
