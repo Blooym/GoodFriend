@@ -60,7 +60,7 @@ impl<'r> FromRequest<'r> for ClientKey {
             return Outcome::Error((Status::Unauthorized, ClientKeyGuardError::MissingKey));
         };
         if key.is_empty() {
-            return Outcome::Error((Status::Forbidden, ClientKeyGuardError::InvalidKey));
+            return Outcome::Error((Status::Unauthorized, ClientKeyGuardError::MissingKey));
         }
 
         // Check if this key is in the configuration.

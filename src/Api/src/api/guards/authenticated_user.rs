@@ -50,7 +50,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
 
         // Token must not be an empty string.
         if authentication_token.is_empty() {
-            return Outcome::Error((Status::Unauthorized, AuthenticationError::InvalidAuthToken));
+            return Outcome::Error((Status::Unauthorized, AuthenticationError::MissingAuthToken));
         }
 
         // Hash the provided token for comparing it.

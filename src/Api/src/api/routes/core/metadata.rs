@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use crate::api::guards::client_key::ClientKey;
 use crate::api::routes::announcements::AnnouncementMessage;
 use crate::api::routes::player_events::PlayerEventStreamUpdate;
@@ -9,6 +7,7 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::tokio::sync::broadcast::Sender;
 use rocket::tokio::sync::RwLock;
 use rocket::State;
+use std::sync::Arc;
 
 /// The response to a metadata request.
 #[derive(Debug, Serialize, Deserialize)]

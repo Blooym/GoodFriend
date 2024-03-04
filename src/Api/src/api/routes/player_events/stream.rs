@@ -18,7 +18,7 @@ pub static CONNECTED_PLAYER_EVENTS_CLIENTS: Lazy<IntGauge> = Lazy::new(|| {
 
 /// The server-sent player event stream that will relay player state updates to clients.
 #[get("/stream")]
-pub fn get_stream(
+pub async fn get_stream(
     _build_guard: ClientKey,
     player_event_queue: &State<Sender<PlayerEventStreamUpdate>>,
     mut end: Shutdown,

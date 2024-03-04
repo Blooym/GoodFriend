@@ -17,7 +17,7 @@ pub struct UpdatePlayerWorldRequest {
 
 /// Sends a world change to the server-sent player event stream.
 #[post("/currentworld", data = "<update>", format = "json")]
-pub fn post_world(
+pub async fn post_world(
     _build_guard: ClientKey,
     content_id: UniqueContentId,
     update: Json<UpdatePlayerWorldRequest>,
