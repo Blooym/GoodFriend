@@ -112,7 +112,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 {
                     if (!this.Config.AddFriendNamesToOnlineCount)
                     {
-                        ChatHelper.Print($"You have currently {onlineFriendCount} friends online.");
+                        ChatHelper.Print($"There are currently {onlineFriendCount} friends online.");
                         return;
                     }
 
