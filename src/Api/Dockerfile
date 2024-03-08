@@ -2,7 +2,8 @@
 #    USER
 # ----------
 FROM alpine:latest as user
-RUN adduser -s /bin/false -D user
+RUN adduser -S -s /bin/false -D goodfriend
+RUN mkdir /data
 
 # -----------
 #    BUILD
@@ -13,7 +14,7 @@ WORKDIR /build
 # Install essential build tools.
 RUN apk add --no-cache --update build-base
 
-# Pre-cache cargo dependency builds.
+# Pre-cache cargo dependencies.
 COPY ["Cargo.toml", "Cargo.lock", "./"]
 ARG RUSTC_CACHE_FLAGS=--release --lib
 RUN mkdir src \
@@ -39,8 +40,8 @@ WORKDIR /app
 # Import and switch to non-root user.
 COPY --from=user /etc/passwd /etc/passwd
 COPY --from=user /bin/false /bin/false
-USER user
-
+COPY --chown=goodfriend --from=user /data data
+USER goodfriend
 
 # Bind to all interfaces to allow access from outside the container.
 ENV ROCKET_ADDRESS=0.0.0.0 
