@@ -1,7 +1,10 @@
 export default {
   async fetch(request, env, ctx) {
     const response = await fetch(env.METADATA_URL, {
-      headers: { "User-Agent": env.USER_AGENT },
+      headers: { 
+        "User-Agent": env.USER_AGENT,
+        "X-Client-Key": env.CLIENT_KEY,
+      },
     });
 
     const json = await response.json()
