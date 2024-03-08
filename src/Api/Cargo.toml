@@ -1,6 +1,6 @@
 [package]
 name = "goodfriend-api"
-version = "3.2.1"
+version = "3.2.2"
 edition = "2021"
 authors = ["Blooym"]
 license = "AGPL-3.0-only"
@@ -21,7 +21,7 @@ notify = { version = "6.1.1", default-features = false, features = [
     "macos_fsevent",
 ] }
 anyhow = { version = "1.0.80", features = ["backtrace"] }
-clap = { version = "4.5.1", features = ["derive", "env"] }
+clap = { version = "4.5.2", features = ["derive", "env"] }
 uuid = { version = "1.7.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
 rust-embed = "8.3.0"
