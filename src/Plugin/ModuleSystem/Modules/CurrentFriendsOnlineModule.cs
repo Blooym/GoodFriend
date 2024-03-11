@@ -106,7 +106,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
                 if (onlineFriendCount is 0)
                 {
-                    ChatHelper.Print("You have have no friends online.");
+                    ChatHelper.Print("You have no friends online.");
                 }
                 else
                 {
