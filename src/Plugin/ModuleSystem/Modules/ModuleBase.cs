@@ -171,6 +171,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
     /// </summary>
     internal abstract class ModuleConfigBase
     {
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+        {
+            WriteIndented = true,
+        };
+
         /// <summary>
         ///     The version of the module configuration.
         /// </summary>
@@ -195,10 +200,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             {
                 Directory.CreateDirectory(Constants.Directory.ModuleConfig);
             }
-            var configJson = JsonSerializer.Serialize((object)this, new JsonSerializerOptions()
-            {
-                WriteIndented = true,
-            });
+            var configJson = JsonSerializer.Serialize((object)this, JsonSerializerOptions);
             File.WriteAllText(Path.Combine(Constants.Directory.ModuleConfig, $"{this.Identifier}.json"), configJson);
         }
 

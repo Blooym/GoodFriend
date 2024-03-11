@@ -81,11 +81,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 var isEnabled = this.Config.EnabledAnnouncements.ContainsKey(kind) && this.Config.EnabledAnnouncements[kind];
                 if (SiGui.Checkbox(string.Format(Strings.Modules_AnnouncementModule_ReceiveOptions_ShowKind, kind), ref isEnabled))
                 {
-                    if (!this.Config.EnabledAnnouncements.ContainsKey(kind))
-                    {
-                        this.Config.EnabledAnnouncements.Add(kind, isEnabled);
-                    }
-                    else
+                    if (!this.Config.EnabledAnnouncements.TryAdd(kind, isEnabled))
                     {
                         this.Config.EnabledAnnouncements[kind] = isEnabled;
                     }
