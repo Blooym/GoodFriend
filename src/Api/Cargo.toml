@@ -1,6 +1,6 @@
 [package]
 name = "goodfriend-api"
-version = "3.2.3"
+version = "3.2.4"
 edition = "2021"
 authors = ["Blooym"]
 license = "AGPL-3.0-only"
@@ -20,12 +20,12 @@ notify = { version = "6.1.1", default-features = false, features = [
     "macos_kqueue",
     "macos_fsevent",
 ] }
-anyhow = { version = "1.0.80", features = ["backtrace"] }
-clap = { version = "4.5.2", features = ["derive", "env"] }
-uuid = { version = "1.7.0", features = ["v4", "serde"] }
+anyhow = { version = "1.0.81", features = ["backtrace"] }
+clap = { version = "4.5.3", features = ["derive", "env"] }
+uuid = { version = "1.8.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
 rust-embed = "8.3.0"
-toml = "0.8.10"
+toml = "0.8.12"
 url = { version = "2.5.0", features = ["serde"] }
 rocket_prometheus = "0.10.0"
 once_cell = "1.19.0"
