@@ -41,7 +41,7 @@ namespace GoodFriend.Plugin.ModuleSystem
         ///     Loads all modules and initializes them.
         /// </summary>
         /// <returns></returns>
-        private static ICollection<ModuleBase> LoadModules()
+        private static List<ModuleBase> LoadModules()
         {
             var modules = new List<ModuleBase>();
             foreach (var module in typeof(ModuleService).Assembly.GetTypes())
