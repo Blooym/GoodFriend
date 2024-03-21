@@ -3,14 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{734E158F-0D17-421C-AF25-59FC09F4CAC5}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Plugin", "Plugin\GoodFriend.Plugin.csproj", "{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Plugin", "Plugin\GoodFriend.Plugin.csproj", "{E94D045A-7428-4A4C-88A1-B0415ECA6224}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Client", "Client\GoodFriend.Client.csproj", "{5F612FDE-2133-4145-823C-444E3DA85475}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Client", "Client\GoodFriend.Client.csproj", "{E475CA3B-446F-4DF6-A99A-466D805134AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E94D045A-7428-4A4C-88A1-B0415ECA6224}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{E94D045A-7428-4A4C-88A1-B0415ECA6224}.Debug|Any CPU.Build.0 = Debug|x64
-		{E94D045A-7428-4A4C-88A1-B0415ECA6224}.Release|Any CPU.ActiveCfg = Release|x64
-		{E94D045A-7428-4A4C-88A1-B0415ECA6224}.Release|Any CPU.Build.0 = Release|x64
-		{5F612FDE-2133-4145-823C-444E3DA85475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F612FDE-2133-4145-823C-444E3DA85475}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F612FDE-2133-4145-823C-444E3DA85475}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F612FDE-2133-4145-823C-444E3DA85475}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E94D045A-7428-4A4C-88A1-B0415ECA6224} = {734E158F-0D17-421C-AF25-59FC09F4CAC5}
-		{5F612FDE-2133-4145-823C-444E3DA85475} = {734E158F-0D17-421C-AF25-59FC09F4CAC5}
+		{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E475CA3B-446F-4DF6-A99A-466D805134AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E475CA3B-446F-4DF6-A99A-466D805134AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E475CA3B-446F-4DF6-A99A-466D805134AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E475CA3B-446F-4DF6-A99A-466D805134AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
