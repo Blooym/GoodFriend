@@ -41,6 +41,8 @@ namespace GoodFriend.Client.Http
     /// <typeparam name="T">The type of data to expect from the stream.</typeparam>
     public sealed class SseClient<T> : IDisposable where T : struct
     {
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new() { IncludeFields = true, WriteIndented = true };
+
         private bool disposedValue;
 
         /// <summary>
@@ -185,10 +187,7 @@ namespace GoodFriend.Client.Http
         /// <exception cref="ObjectDisposedException"></exception>
         public async void Connect()
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SseClient<T>));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SseClient<T>));
 
             if (this.ConnectionState is SseConnectionState.Connecting or SseConnectionState.Connected)
             {
@@ -225,7 +224,7 @@ namespace GoodFriend.Client.Http
 
                     try
                     {
-                        var data = JsonSerializer.Deserialize<T>(message, new JsonSerializerOptions() { IncludeFields = true, WriteIndented = true });
+                        var data = JsonSerializer.Deserialize<T>(message, JsonSerializerOptions);
                         this.OnStreamMessage?.Invoke(this, data);
                     }
                     catch (JsonException)
@@ -258,10 +257,7 @@ namespace GoodFriend.Client.Http
         /// <exception cref="ObjectDisposedException"></exception>
         public void Disconnect()
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SseClient<T>));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SseClient<T>));
 
             if (this.ConnectionState is SseConnectionState.Disconnecting or SseConnectionState.Disconnected)
             {
