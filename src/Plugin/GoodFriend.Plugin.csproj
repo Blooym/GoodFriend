@@ -8,7 +8,7 @@
     <Authors>Blooym</Authors>
     <AssemblyName>GoodFriend</AssemblyName>
     <Description>Major improvements to the in-game friend system, like getting login and logout notifications for your friends, and much more.</Description>
-    <Version>3.2.4.0</Version>
+    <Version>3.2.4.1</Version>
     <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
 
@@ -21,16 +21,16 @@
 
   <!-- Custom Runtime Variables -->
   <Target Name="SetCustomVars" BeforeTargets="BeforeBuild">
-    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitHash" />
     </Exec>
-    <Exec Command="git show -s --format=%ci HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+    <Exec Command="git show -s --format=%ci HEAD" ConsoleToMSBuild="true" IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="BuildTime" />
     </Exec>
-    <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+    <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="GitBranch" />
     </Exec>
-    <Exec Command="git log -1 --pretty=%B" ConsoleToMSBuild="true" IgnoreExitCode="true">
+    <Exec Command="git log -1 --pretty=%B" ConsoleToMSBuild="true" IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="LastCommitMessage" />
     </Exec>
 
