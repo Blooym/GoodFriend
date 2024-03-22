@@ -29,26 +29,6 @@ namespace GoodFriend.Plugin.Base
             public static readonly string VersionInformational = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown";
 
             /// <summary>
-            ///     The last commit hash when the plugin was compiled.
-            /// </summary>
-            public static readonly string GitCommitHash = Assembly.GetExecutingAssembly().GetCustomAttribute<GitHashAttribute>()?.Value ?? "Unknown";
-
-            /// <summary>
-            ///     The last commit message when the plugin was compiled.
-            /// </summary>
-            public static readonly string GitCommitMessage = Assembly.GetExecutingAssembly().GetCustomAttribute<GitCommitMessageAttribute>()?.Value ?? "Unknown";
-
-            /// <summary>
-            ///     The date of the last commit when the plugin was compiled.
-            /// </summary>
-            public static readonly DateTime GitCommitDate = DateTime.TryParse(Assembly.GetExecutingAssembly().GetCustomAttribute<GitCommitDateAttribute>()?.Value, out var date) ? date : DateTime.MinValue;
-
-            /// <summary>
-            ///     The branch that was active when the plugin was compiled.
-            /// </summary>
-            public static readonly string GitBranch = Assembly.GetExecutingAssembly().GetCustomAttribute<GitBranchAttribute>()?.Value ?? "Unknown";
-
-            /// <summary>
             ///     The build configuration that was used to compile the plugin.
             /// </summary>
             public static readonly string BuildConfiguration = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ?? "Unknown";
@@ -86,46 +66,6 @@ namespace GoodFriend.Plugin.Base
             /// </summary>
             public static readonly string ModuleConfig = @$"{DalamudInjections.PluginInterface.ConfigDirectory}\ModuleConfig\";
         }
-    }
-
-    /// <summary>
-    ///     The Git commit hash of the build.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class GitHashAttribute : Attribute
-    {
-        public GitHashAttribute(string value) => this.Value = value;
-        public string Value { get; set; }
-    }
-
-    /// <summary>
-    ///     The Git commit date of the build.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class GitCommitDateAttribute : Attribute
-    {
-        public GitCommitDateAttribute(string value) => this.Value = value;
-        public string Value { get; set; }
-    }
-
-    /// <summary>
-    ///     The Git branch of the build.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class GitBranchAttribute : Attribute
-    {
-        public GitBranchAttribute(string value) => this.Value = value;
-        public string Value { get; set; }
-    }
-
-    /// <summary>
-    ///     The Git commit message of the build.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class GitCommitMessageAttribute : Attribute
-    {
-        public GitCommitMessageAttribute(string value) => this.Value = value;
-        public string Value { get; set; }
     }
 
     /// <summary>

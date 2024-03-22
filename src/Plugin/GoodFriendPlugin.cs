@@ -22,7 +22,6 @@ namespace GoodFriend.Plugin
             pluginInterface.Create<DalamudInjections>();
             Services.Initialize();
 
-            Logger.Information($"Started GoodFriend {Constants.Build.VersionInformational} ({Constants.Build.GitCommitHash}, {Constants.Build.GitBranch}");
             if (string.IsNullOrEmpty(Constants.Build.ClientKey))
             {
                 Logger.Warning("No client key has been set for this build, this is likely to cause issues when connecting to instances that require them.");
