@@ -1,5 +1,4 @@
 using System.Net.Http;
-using System.Timers;
 using GoodFriend.Client.Http.Responses;
 
 namespace GoodFriend.Client.Http.Requests
@@ -14,9 +13,9 @@ namespace GoodFriend.Client.Http.Requests
         /// <summary>
         ///     Creates a new SSE client for the announcement stream using its endpoint URL.
         /// </summary>
-        /// <param name="httpClient">The HTTP client to use.</param>
-        /// <param name="reconnectTimer">The timer to use for reconnecting, if any.</param>
+        /// <param name="httpClient">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
+        /// <param name="settings">The settings for this client.</param>
         /// <returns>A new SSE client for the announcement stream.</returns>
-        public static SseClient<AnnouncementStreamUpdate> CreateSSEClient(HttpClient httpClient, Timer? reconnectTimer) => new(httpClient, EndpointUrl, reconnectTimer);
+        public static SseClient<AnnouncementStreamUpdate> CreateSSEClient(HttpClient httpClient, SSEClientSettings settings) => new(httpClient, EndpointUrl, settings);
     }
 }

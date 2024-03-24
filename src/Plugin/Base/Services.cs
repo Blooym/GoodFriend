@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Timers;
 using Dalamud.Networking.Http;
 using GoodFriend.Client.Http;
 using GoodFriend.Client.Http.Requests;
@@ -18,6 +17,10 @@ namespace GoodFriend.Plugin.Base
     /// </summary>
     internal static class Services
     {
+        private static readonly TimeSpan SSEReconnectDelayMin = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan SSEReconnectDelayMax = TimeSpan.FromMinutes(10);
+        private static readonly TimeSpan SSEReconnectDelayIncrement = TimeSpan.FromSeconds(30);
+
         private static WindowingService WindowingService { get; set; } = null!;
         private static HappyEyeballsCallback HappyEyeballsCallback { get; set; } = null!;
 
@@ -37,8 +40,18 @@ namespace GoodFriend.Plugin.Base
             PluginConfiguration = PluginConfiguration.Load();
             LocalizationService = new LocalizationService();
             HttpClient = CreateHttpClient(HappyEyeballsCallback);
-            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(TimeSpan.FromSeconds(30)));
-            AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new Timer(TimeSpan.FromSeconds(30)));
+            PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new()
+            {
+                ReconnectDelayMin = SSEReconnectDelayMin,
+                ReconnectDelayMax = SSEReconnectDelayMax,
+                ReconnectDelayIncrement = SSEReconnectDelayIncrement
+            });
+            AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new()
+            {
+                ReconnectDelayMin = SSEReconnectDelayMin,
+                ReconnectDelayMax = SSEReconnectDelayMax,
+                ReconnectDelayIncrement = SSEReconnectDelayIncrement
+            });
             ModuleService = new ModuleService();
             WindowingService = new WindowingService();
         }

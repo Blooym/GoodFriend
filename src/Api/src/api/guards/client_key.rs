@@ -11,6 +11,7 @@ use std::sync::Arc;
 ///
 /// If the `config.allowed_client_keys` configuration option has been enabled then this guard will block
 /// all requests from clients that either do not have a key contained in `allowed_client_keys` or did not send a key.
+#[allow(dead_code)]
 pub struct ClientKey(Option<String>);
 
 #[derive(Debug)]

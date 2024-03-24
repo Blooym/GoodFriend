@@ -35,6 +35,24 @@ namespace GoodFriend.Client.Http
         Exception,
     }
 
+    public readonly struct SSEClientSettings
+    {
+        /// <summary>
+        ///     The minimum amount of time to wait between reconnection attempts
+        /// </summary>
+        public TimeSpan ReconnectDelayMin { get; init; }
+
+        /// <summary>
+        ///     The maximum amount of time to wait between reconnection attempts
+        /// </summary>
+        public TimeSpan ReconnectDelayMax { get; init; }
+
+        /// <summary>
+        ///     The reconnection delay increment value, every failed attempt will add this value to the reconnect attempt interval.
+        /// </summary>
+        public TimeSpan ReconnectDelayIncrement { get; init; }
+    }
+
     /// <summary>
     ///     Represents a client for a server-sent event stream.
     /// </summary>
@@ -46,19 +64,24 @@ namespace GoodFriend.Client.Http
         private bool disposedValue;
 
         /// <summary>
-        ///     The HTTP client to use for requests.
+        ///     The HTTP client to use for requests. 
         /// </summary>
         private readonly HttpClient httpClient;
 
         /// <summary>
-        ///     The endpoint to connect to.
+        ///     The URL to connect to and receieve events from.
         /// </summary>
-        private readonly string endpoint;
+        private readonly string url;
 
         /// <summary>
         ///     The timer to use for reconnecting.
         /// </summary>
-        private readonly Timer? reconnectTimer;
+        private readonly Timer reconnectTimer;
+
+        /// <summary>
+        ///     The settings for this client.
+        /// </summary>
+        private readonly SSEClientSettings settings;
 
         /// <summary>
         ///     The current connection state.
@@ -93,22 +116,21 @@ namespace GoodFriend.Client.Http
         /// <summary>
         ///     Creates a new SSE client.
         /// </summary>
-        /// <param name="client">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
-        /// <param name="endpoint">The endpoint to connect to.</param>
-        /// <param name="reconnectTimer">The timer to use for reconnecting. This must be a unqiue timer as it will be managed once initialized.</param>
-        public SseClient(HttpClient client, string endpoint, Timer? reconnectTimer = null)
+        /// <param name="httpClient">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
+        /// <param name="url">The url to connect to.</param>
+        /// <param name="settings">The settings for this client.</param>
+        public SseClient(HttpClient httpClient, string url, SSEClientSettings settings)
         {
-            this.httpClient = client;
-            this.endpoint = endpoint;
-            this.reconnectTimer = reconnectTimer;
+            this.httpClient = httpClient;
+            this.url = url;
+            this.settings = settings;
 
-            if (this.reconnectTimer is not null)
-            {
-                this.reconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
-                this.OnStreamException += this.HandleStreamException;
-                this.OnStreamConnected += this.HandleStreamConnected;
-                this.OnStreamDisconnected += this.HandleStreamDisconnected;
-            }
+            // Reconnect handling
+            this.reconnectTimer = new(this.settings.ReconnectDelayMin);
+            this.reconnectTimer.Elapsed += this.HandleReconnectTimerElapse;
+            this.OnStreamException += this.HandleStreamException;
+            this.OnStreamConnected += this.HandleStreamConnected;
+            this.OnStreamDisconnected += this.HandleStreamDisconnected;
         }
 
         /// <inheritdoc />
@@ -119,16 +141,13 @@ namespace GoodFriend.Client.Http
                 return;
             }
 
-            // Dispose of the timer if it exists.
-            if (this.reconnectTimer is not null)
-            {
-                this.reconnectTimer.Elapsed -= this.HandleReconnectTimerElapse;
-                this.OnStreamConnected -= this.HandleStreamConnected;
-                this.OnStreamDisconnected -= this.HandleStreamDisconnected;
-                this.OnStreamHeartbeat -= this.HandleStreamConnected;
-                this.OnStreamException -= this.HandleStreamException;
-                this.reconnectTimer.Dispose();
-            }
+            // Dispose of the timer.
+            this.reconnectTimer.Elapsed -= this.HandleReconnectTimerElapse;
+            this.OnStreamConnected -= this.HandleStreamConnected;
+            this.OnStreamDisconnected -= this.HandleStreamDisconnected;
+            this.OnStreamHeartbeat -= this.HandleStreamConnected;
+            this.OnStreamException -= this.HandleStreamException;
+            this.reconnectTimer.Dispose();
 
             // Disconnect from the stream.
             try
@@ -154,12 +173,21 @@ namespace GoodFriend.Client.Http
         /// <param name="e"></param>
         private void HandleReconnectTimerElapse(object? sender, ElapsedEventArgs e)
         {
+            // Already reconnected, reset and stop the timer.
             if (this.ConnectionState is not SseConnectionState.Exception)
             {
-                this.reconnectTimer?.Stop();
+                this.reconnectTimer.Interval = this.settings.ReconnectDelayMin.TotalMilliseconds;
+                this.reconnectTimer.Stop();
                 return;
             }
+
             this.Connect();
+
+            // Increment delay unless we're already at the maximum delay.
+            if (this.reconnectTimer.Interval < this.settings.ReconnectDelayMax.TotalMilliseconds)
+            {
+                this.reconnectTimer.Interval += this.settings.ReconnectDelayIncrement.TotalMilliseconds;
+            }
         }
 
         /// <summary>
@@ -167,19 +195,27 @@ namespace GoodFriend.Client.Http
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="exception"></param>
-        private void HandleStreamException(object? sender, Exception exception) => this.reconnectTimer?.Start();
+        private void HandleStreamException(object? sender, Exception exception) => this.reconnectTimer.Start();
 
         /// <summary>
         ///     Handles the stream connecting.
         /// </summary>
         /// <param name="sender"></param>
-        private void HandleStreamConnected(object? sender) => this.reconnectTimer?.Stop();
+        private void HandleStreamConnected(object? sender)
+        {
+            this.reconnectTimer.Interval = this.settings.ReconnectDelayMin.TotalMilliseconds;
+            this.reconnectTimer.Stop();
+        }
 
         /// <summary>
         ///     Handles the stream disconnecting.
         /// </summary>
         /// <param name="sender"></param>
-        private void HandleStreamDisconnected(object? sender) => this.reconnectTimer?.Stop();
+        private void HandleStreamDisconnected(object? sender)
+        {
+            this.reconnectTimer.Interval = this.settings.ReconnectDelayMin.Milliseconds;
+            this.reconnectTimer.Stop();
+        }
 
         /// <summary>
         ///     Connects to the event stream.
@@ -198,7 +234,7 @@ namespace GoodFriend.Client.Http
             {
                 this.ConnectionState = SseConnectionState.Connecting;
 
-                using var stream = await this.httpClient.GetStreamAsync(this.endpoint);
+                using var stream = await this.httpClient.GetStreamAsync(this.url);
                 using var reader = new StreamReader(stream);
                 Exception? exception = null;
 

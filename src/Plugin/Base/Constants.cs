@@ -72,9 +72,8 @@ namespace GoodFriend.Plugin.Base
     ///     The client key used for this plugin.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class ClientKeyAttribute : Attribute
+    internal sealed class ClientKeyAttribute(string value) : Attribute
     {
-        public ClientKeyAttribute(string value) => this.Value = value;
-        public string Value { get; set; }
+        public string Value { get; set; } = value;
     }
 }
