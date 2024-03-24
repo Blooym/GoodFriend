@@ -74,7 +74,12 @@ async fn main() -> Result<()> {
     let args = Arc::from(GoodFriendArguments::parse());
 
     // Load and validate the configuration before starting.
-    let config = Config::get_or_create_from_path(&args.config_file)?;
+    let config = Config::get_or_create_from_path(&args.config_file).with_context(|| {
+        format!(
+            "Failed whilst trying to load or create configuration from {:?}",
+            args.config_file
+        )
+    })?;
     let config = Arc::from(RwLock::from(config));
 
     // Create a watcher that reloads the configuration is changed
