@@ -2,7 +2,6 @@ using Dalamud.Plugin;
 using GoodFriend.Plugin.Base;
 using Sirensong;
 
-
 namespace GoodFriend.Plugin
 {
     public sealed class GoodFriendPlugin : IDalamudPlugin
