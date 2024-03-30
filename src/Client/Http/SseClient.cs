@@ -213,7 +213,7 @@ namespace GoodFriend.Client.Http
         /// <param name="sender"></param>
         private void HandleStreamDisconnected(object? sender)
         {
-            this.reconnectTimer.Interval = this.settings.ReconnectDelayMin.Milliseconds;
+            this.reconnectTimer.Interval = this.settings.ReconnectDelayMin.TotalMilliseconds;
             this.reconnectTimer.Stop();
         }
 
