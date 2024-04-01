@@ -17,9 +17,9 @@ namespace GoodFriend.Plugin.UserInterface
         /// <summary>
         ///     All windows to add to the windowing system, holds all references.
         /// </summary>
-        private readonly Window[] windows = {
+        private readonly Window[] windows = [
             new MainWindow(),
-        };
+        ];
 
         /// <summary>
         ///     The configuration window.

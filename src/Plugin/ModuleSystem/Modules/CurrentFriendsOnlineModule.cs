@@ -91,7 +91,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
             Task.Run(async () =>
             {
                 // Wait for the delay after login.
-                await Task.Delay(this.Config.OnlineFriendShowDelay);
+                await Task.Delay(delay: this.Config.OnlineFriendShowDelay);
 
                 // Don't show a message if the player has no friends added.
                 if (FriendHelper.FriendList.Length is 0)

@@ -1,5 +1,4 @@
 using System.Threading;
-using System.Threading.Tasks;
 using Dalamud.Memory;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
@@ -266,7 +265,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(millisecondsTimeout: 50);
             }
 
             this.SetStoredValues();

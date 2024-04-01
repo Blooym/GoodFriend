@@ -50,14 +50,14 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow
             this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
 
 #if DEBUG
-            this.TitleBarButtons = new()
-            {
+            this.TitleBarButtons =
+            [
                 new() {
                     Icon = FontAwesomeIcon.Bug,
                     ShowTooltip = () => SiGui.Heading(Strings.UI_MainWindow_Button_Debug),
                     Click = (mouseButton) => this.CurrentScreen = MainWindowScreen.Debug,
                 },
-            };
+            ];
 #endif
         }
 
