@@ -265,7 +265,7 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         {
             while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
             {
-                Thread.Sleep(millisecondsTimeout: 50);
+                Thread.Sleep(50);
             }
 
             this.SetStoredValues();
