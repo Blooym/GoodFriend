@@ -262,53 +262,51 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLogin() =>
-                Task.Run(() =>
-                {
-                    while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
-                    {
-                        Thread.Sleep(100);
-                    }
+        private void OnLogin()
+        {
+            while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
+            {
+                Thread.Sleep(100);
+            }
 
-                    this.SetStoredValues();
+            this.SetStoredValues();
 
-                    Logger.Debug("Sending login event.");
+            Logger.Debug("Sending login event.");
 
-                    var salt = CryptoUtil.GenerateSalt();
-                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
-                    {
-                        ContentIdHash = hash,
-                        ContentIdSalt = salt,
-                        LoggedIn = true,
-                        DatacenterId = this.currentDatacenterId,
-                        TerritoryId = this.currentTerritoryId,
-                        WorldId = this.currentWorldId
-                    });
-                });
+            var salt = CryptoUtil.GenerateSalt();
+            var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+            new PostPlayerLoginStateRequest().Send(HttpClient, new()
+            {
+                ContentIdHash = hash,
+                ContentIdSalt = salt,
+                LoggedIn = true,
+                DatacenterId = this.currentDatacenterId,
+                TerritoryId = this.currentTerritoryId,
+                WorldId = this.currentWorldId
+            });
+        }
 
         /// <summary>
         ///     Called when the player logs out, sends a logout event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnLogout() =>
-            Task.Run(() =>
-                {
-                    var salt = CryptoUtil.GenerateSalt();
-                    var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                    Logger.Debug("Sending logout event.");
-                    new PostPlayerLoginStateRequest().Send(HttpClient, new()
-                    {
-                        ContentIdHash = hash,
-                        ContentIdSalt = salt,
-                        LoggedIn = false,
-                        DatacenterId = this.currentDatacenterId,
-                        TerritoryId = this.currentTerritoryId,
-                        WorldId = this.currentWorldId
-                    });
-                    this.ClearStoredValues();
-                });
+        private void OnLogout()
+        {
+            var salt = CryptoUtil.GenerateSalt();
+            var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+            Logger.Debug("Sending logout event.");
+            new PostPlayerLoginStateRequest().Send(HttpClient, new()
+            {
+                ContentIdHash = hash,
+                ContentIdSalt = salt,
+                LoggedIn = false,
+                DatacenterId = this.currentDatacenterId,
+                TerritoryId = this.currentTerritoryId,
+                WorldId = this.currentWorldId
+            });
+            this.ClearStoredValues();
+        }
 
         /// <summary>
         ///     Called when the framework updates, updates stored data that can change during gameplay.
