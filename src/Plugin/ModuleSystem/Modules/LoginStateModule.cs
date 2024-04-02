@@ -193,67 +193,71 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules
                 return;
             }
 
-            // Check if the local player exists.
-            var localPlayer = DalamudInjections.ClientState.LocalPlayer;
-            if (localPlayer is null)
+            DalamudInjections.Framework.Run(() =>
             {
-                Logger.Verbose("Ignoring player state update as the local player is null.");
-                return;
-            }
 
-            // Check if the local player is the same as the player who logged in/out.
-            var friendData = FriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
-            if (!friendData.HasValue)
-            {
-                Logger.Verbose($"Ignoring player event as the friend could not be found.");
-                return;
-            }
+                // Check if the local player exists.
+                var localPlayer = DalamudInjections.ClientState.LocalPlayer;
+                if (localPlayer is null)
+                {
+                    Logger.Verbose("Ignoring player state update as the local player is null.");
+                    return;
+                }
 
-            // Use the friend's data.
-            var friend = friendData.Value;
-            var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name).TextValue;
-            var friendFcTag = MemoryHelper.ReadSeStringNullTerminated((nint)friend.FCTag).TextValue;
-            var stateData = rawEvent.StateUpdateType.LoginStateChange.Value;
+                // Check if the local player is the same as the player who logged in/out.
+                var friendData = FriendUtil.GetFriendByHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+                if (!friendData.HasValue)
+                {
+                    Logger.Verbose($"Ignoring player event as the friend could not be found.");
+                    return;
+                }
 
-            Logger.Debug($"Received login state update from {friendName}, checking if it should be displayed.");
+                // Use the friend's data.
+                var friend = friendData.Value;
+                var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name).TextValue;
+                var friendFcTag = MemoryHelper.ReadSeStringNullTerminated((nint)friend.FCTag).TextValue;
+                var stateData = rawEvent.StateUpdateType.LoginStateChange.Value;
 
-            // Check if the friend is in the same free company.
-            if (this.Config.HideSameFC && friendFcTag == localPlayer.CompanyTag.TextValue)
-            {
-                Logger.Debug($"Ignoring login state update from {friendName} due to being in the same free company ({friendFcTag} == {localPlayer.CompanyTag.TextValue}).");
-                return;
-            }
+                Logger.Debug($"Received login state update from {friendName}, checking if it should be displayed.");
 
-            // Check if the friend is in the same homeworld.
-            if (this.Config.HideDifferentHomeworld && friend.HomeWorld != this.currentHomeworldId)
-            {
-                Logger.Debug($"Ignoring login state update from different homeworld ({friend.HomeWorld} != {this.currentHomeworldId}).");
-                return;
-            }
+                // Check if the friend is in the same free company.
+                if (this.Config.HideSameFC && friendFcTag == localPlayer.CompanyTag.TextValue)
+                {
+                    Logger.Debug($"Ignoring login state update from {friendName} due to being in the same free company ({friendFcTag} == {localPlayer.CompanyTag.TextValue}).");
+                    return;
+                }
 
-            // Check if the friend is in the same territory.
-            if (this.Config.HideDifferentTerritory && stateData.TerritoryId != this.currentTerritoryId)
-            {
-                Logger.Debug($"Ignoring login state update from different territory ({stateData.TerritoryId} != {this.currentTerritoryId}).");
-                return;
-            }
+                // Check if the friend is in the same homeworld.
+                if (this.Config.HideDifferentHomeworld && friend.HomeWorld != this.currentHomeworldId)
+                {
+                    Logger.Debug($"Ignoring login state update from different homeworld ({friend.HomeWorld} != {this.currentHomeworldId}).");
+                    return;
+                }
 
-            // Check if the friend is in the same world.
-            if (this.Config.HideDifferentWorld && stateData.WorldId != this.currentWorldId)
-            {
-                Logger.Debug($"Ignoring login state update from different world ({stateData.WorldId} != {this.currentWorldId}).");
-                return;
-            }
+                // Check if the friend is in the same territory.
+                if (this.Config.HideDifferentTerritory && stateData.TerritoryId != this.currentTerritoryId)
+                {
+                    Logger.Debug($"Ignoring login state update from different territory ({stateData.TerritoryId} != {this.currentTerritoryId}).");
+                    return;
+                }
 
-            // Check if the friend is in the same data center.
-            if (this.Config.HideDifferentDatacenter && stateData.DatacenterId != this.currentDatacenterId)
-            {
-                Logger.Debug($"Ignoring login state update from different data center ({stateData.DatacenterId} != {this.currentDatacenterId}).");
-                return;
-            }
+                // Check if the friend is in the same world.
+                if (this.Config.HideDifferentWorld && stateData.WorldId != this.currentWorldId)
+                {
+                    Logger.Debug($"Ignoring login state update from different world ({stateData.WorldId} != {this.currentWorldId}).");
+                    return;
+                }
 
-            // Send the message.
-            ChatHelper.Print(stateData.LoggedIn ? this.Config.LoginMessage.Format(friendName) : this.Config.LogoutMessage.Format(friendName));
+                // Check if the friend is in the same data center.
+                if (this.Config.HideDifferentDatacenter && stateData.DatacenterId != this.currentDatacenterId)
+                {
+                    Logger.Debug($"Ignoring login state update from different data center ({stateData.DatacenterId} != {this.currentDatacenterId}).");
+                    return;
+                }
+
+                // Send the message.
+                ChatHelper.Print(stateData.LoggedIn ? this.Config.LoginMessage.Format(friendName) : this.Config.LogoutMessage.Format(friendName));
+            });
         }
 
         /// <summary>
