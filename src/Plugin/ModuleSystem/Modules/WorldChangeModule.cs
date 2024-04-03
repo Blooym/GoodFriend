@@ -122,47 +122,49 @@ internal sealed class WorldChangeModule : BaseModule
     /// <param name="rawEvent"></param>
     private unsafe void OnPlayerStreamMessage(object? _, PlayerEventStreamUpdate rawEvent)
     {
-        // Ignore the event if receiving events is disabled.
         if (!this.Config.ReceiveEvents)
         {
             return;
         }
-
-        // Ignore the event if it is not a world change.
         if (!rawEvent.StateUpdateType.WorldChange.HasValue)
         {
-            Logger.Verbose("Ignoring player event as it is not a world change.");
+            Logger.Verbose("Ignoring world player event as it is not a world change.");
             return;
         }
-        var stateData = rawEvent.StateUpdateType.WorldChange.Value;
-
-        // Ignore the event if it does not come from the current world if enabled.
-        if (this.Config.OnlyShowCurrentWorld && stateData.WorldId != this.currentWorldId)
+        DalamudInjections.Framework.Run(() =>
         {
-            Logger.Verbose($"Ignoring player event as it is not from the current world (current: {stateData.WorldId} != {this.currentWorldId}).");
-            return;
-        }
 
-        // Find the friend that changed worlds, if not found then ignore.
-        var friendData = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
-        if (!friendData.HasValue)
-        {
-            Logger.Verbose($"Ignoring player event as the friend could not be found.");
-            return;
-        }
+            var worldChangeData = rawEvent.StateUpdateType.WorldChange.Value;
+            if (this.Config.OnlyShowCurrentWorld && worldChangeData.WorldId != this.currentWorldId)
+            {
+                Logger.Verbose($"Ignoring world player event as it is not from the current world (current: {worldChangeData.WorldId} != {this.currentWorldId}).");
+                return;
+            }
 
-        // Find the world name, if not found then ignore.
-        var friend = friendData.Value;
-        var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friend.Name);
-        var world = this.worldCache.GetRow(stateData.WorldId)?.Name;
-        if (world is null)
-        {
-            Logger.Warning($"Could not find world name for world id {stateData.WorldId}.");
-            return;
-        }
+            var friendFromhash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            if (!friendFromhash.HasValue)
+            {
+                Logger.Verbose($"Ignoring world player event as the friend could not be found.");
+                return;
+            }
+            var friendCharacterData = friendFromhash.Value;
 
-        // Print the message.
-        ChatHelper.Print(this.Config.ChangeMessage.Format(friendName, world));
+            // Ignore the event if the friend request is pending.
+            if (friendCharacterData.ExtraFlags == Constants.WaitingForFriendListApproval)
+            {
+                Logger.Debug($"Ignoring world player event for a pending friend request.");
+                return;
+            }
+
+            var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friendCharacterData.Name);
+            var worldName = this.worldCache.GetRow(worldChangeData.WorldId)?.Name;
+            if (worldName is null)
+            {
+                Logger.Warning($"Could not find world name for world id {worldChangeData.WorldId}.");
+                return;
+            }
+            ChatHelper.Print(this.Config.ChangeMessage.Format(friendName, worldName));
+        });
     }
 
     /// <summary>
