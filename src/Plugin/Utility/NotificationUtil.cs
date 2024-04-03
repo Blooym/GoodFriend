@@ -1,14 +1,13 @@
 using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
 
-namespace GoodFriend.Plugin.Utility
+namespace GoodFriend.Plugin.Utility;
+
+internal static class NotificationUtil
 {
-    internal static class NotificationUtil
+    public static void ShowErrorToast(string message)
     {
-        public static void ShowErrorToast(string message)
-        {
-            ToastHelper.ShowErrorToast(message);
-            SoundEffectHelper.PlaySound(SoundEffect.Se11);
-        }
+        ToastHelper.ShowErrorToast(message);
+        SoundEffectHelper.PlaySound(SoundEffect.Se11);
     }
 }

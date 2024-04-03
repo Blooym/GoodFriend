@@ -7,102 +7,101 @@ using System.Threading.Tasks;
 using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Json;
 
-namespace GoodFriend.Client.Http.Requests
-{
-    /// <summary>
-    ///     Represents the request data for sending a player world change.
-    /// </summary>
-    public class PostPlayerWorldChangeRequest : IHttpRequestHandler<PostPlayerWorldChangeRequest.RequestData, HttpResponseMessage>
-    {
-        private const string EndpointUrl = "api/playerevents/currentworld";
+namespace GoodFriend.Client.Http.Requests;
 
-        private readonly struct RequestBody
+/// <summary>
+///     Represents the request data for sending a player world change.
+/// </summary>
+public sealed class PostPlayerWorldChangeRequest : IHttpRequestHandler<PostPlayerWorldChangeRequest.RequestData, HttpResponseMessage>
+{
+    private const string EndpointUrl = "api/playerevents/currentworld";
+
+    private readonly struct RequestBody
+    {
+        public required uint WorldId { get; init; }
+    }
+
+    public readonly record struct RequestData
+    {
+        private readonly string contentIdHashBackingField;
+
+        /// <summary>
+        ///     The string of a hashed player ContentId.
+        /// </summary>
+        /// <remarks>
+        ///     - The given string must be at least 64 characters in length. <br/>
+        ///     - You cannot use the same hash across requests and must generate a new one each time. <br/>
+        /// </remarks>
+        public required string ContentIdHash
         {
-            public required uint WorldId { get; init; }
+            get => this.contentIdHashBackingField; init
+            {
+                if (value.Length < GlobalRequestData.Validation.ContentIdHashMinLength)
+                {
+                    throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
+                }
+                this.contentIdHashBackingField = value;
+            }
         }
 
-        public readonly record struct RequestData
+        private readonly string contentIdSaltBackingField;
+
+        /// <summary>
+        ///     The salt used to hash the player's ContentId.
+        /// </summary>
+        /// <remarks>
+        ///     The given string must be at least 32 characters in length.
+        /// </remarks>
+        public required string ContentIdSalt
         {
-            private readonly string contentIdHashBackingField;
-
-            /// <summary>
-            ///     The string of a hashed player ContentId.
-            /// </summary>
-            /// <remarks>
-            ///     - The given string must be at least 64 characters in length. <br/>
-            ///     - You cannot use the same hash across requests and must generate a new one each time. <br/>
-            /// </remarks>
-            public required string ContentIdHash
+            get => this.contentIdSaltBackingField; init
             {
-                get => this.contentIdHashBackingField; init
+                if (value.Length < GlobalRequestData.Validation.ContentIdSaltMinLength)
                 {
-                    if (value.Length < GlobalRequestData.Validation.ContentIdHashMinLength)
-                    {
-                        throw new ArgumentException("ContentIdHash must be at least 64 characters in length");
-                    }
-                    this.contentIdHashBackingField = value;
+                    throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
                 }
+                this.contentIdSaltBackingField = value;
             }
-
-            private readonly string contentIdSaltBackingField;
-
-            /// <summary>
-            ///     The salt used to hash the player's ContentId.
-            /// </summary>
-            /// <remarks>
-            ///     The given string must be at least 32 characters in length.
-            /// </remarks>
-            public required string ContentIdSalt
-            {
-                get => this.contentIdSaltBackingField; init
-                {
-                    if (value.Length < GlobalRequestData.Validation.ContentIdSaltMinLength)
-                    {
-                        throw new ArgumentException("ContentIdSalt must be at least 32 characters in length");
-                    }
-                    this.contentIdSaltBackingField = value;
-                }
-            }
-
-            /// <summary>
-            ///     The player's new world id.
-            /// </summary>
-            public required uint WorldId { get; init; }
         }
 
         /// <summary>
-        ///     Builds the request message.
+        ///     The player's new world id.
         /// </summary>
-        /// <param name="requestData"></param>
-        /// <returns></returns>
-        private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
-        {
-            Content = JsonContent.Create(new RequestBody()
-            {
-                WorldId = requestData.WorldId,
-            }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
-            }),
-            Headers =
-            {
-                { GlobalRequestData.Headers.ContentIdHash, requestData.ContentIdHash },
-                { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt }
-            },
-        };
+        public required uint WorldId { get; init; }
+    }
 
-        /// <inheritdoc />
-        public HttpResponseMessage Send(HttpClient httpClient, RequestData requestData)
+    /// <summary>
+    ///     Builds the request message.
+    /// </summary>
+    /// <param name="requestData"></param>
+    /// <returns></returns>
+    private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
+    {
+        Content = JsonContent.Create(new RequestBody()
         {
-            var message = BuildMessage(requestData);
-            return httpClient.Send(message);
-        }
+            WorldId = requestData.WorldId,
+        }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
+        }),
+        Headers =
+        {
+            { GlobalRequestData.Headers.ContentIdHash, requestData.ContentIdHash },
+            { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt }
+        },
+    };
 
-        /// <inheritdoc />
-        public Task<HttpResponseMessage> SendAsync(HttpClient httpClient, RequestData requestData)
-        {
-            var message = BuildMessage(requestData);
-            return httpClient.SendAsync(message);
-        }
+    /// <inheritdoc />
+    public HttpResponseMessage Send(HttpClient httpClient, RequestData requestData)
+    {
+        var message = BuildMessage(requestData);
+        return httpClient.Send(message);
+    }
+
+    /// <inheritdoc />
+    public Task<HttpResponseMessage> SendAsync(HttpClient httpClient, RequestData requestData)
+    {
+        var message = BuildMessage(requestData);
+        return httpClient.SendAsync(message);
     }
 }

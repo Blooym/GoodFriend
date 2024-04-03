@@ -1,79 +1,80 @@
 using System;
 using System.Reflection;
 
-namespace GoodFriend.Plugin.Base
+namespace GoodFriend.Plugin.Base;
+
+/// <summary>
+///     A collection of constant values used throughout the plugin.
+/// </summary>
+internal static class Constants
 {
     /// <summary>
-    ///     A collection of constant values used throughout the plugin.
+    ///     The plugin name.
     /// </summary>
-    internal static class Constants
+    public const string PluginName = "GoodFriend";
+
+    public const uint WaitingForFriendListApproval = 0x20;
+
+    /// <summary>
+    ///     Plugin build information.
+    /// </summary>
+    internal static class Build
     {
         /// <summary>
-        ///     The plugin name.
+        ///     The version of the plugin.
         /// </summary>
-        public const string PluginName = "GoodFriend";
+        public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0, 0, 0);
 
         /// <summary>
-        ///     Plugin build information.
+        ///     The version of the plugin as a string.
         /// </summary>
-        internal static class Build
-        {
-            /// <summary>
-            ///     The version of the plugin.
-            /// </summary>
-            public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0, 0, 0);
-
-            /// <summary>
-            ///     The version of the plugin as a string.
-            /// </summary>
-            public static readonly string VersionInformational = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown";
-
-            /// <summary>
-            ///     The build configuration that was used to compile the plugin.
-            /// </summary>
-            public static readonly string BuildConfiguration = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ?? "Unknown";
-
-            /// <summary>
-            ///     The client key used for this plugin.
-            /// </summary>
-            public static readonly string? ClientKey = Assembly.GetExecutingAssembly().GetCustomAttribute<ClientKeyAttribute>()?.Value;
-
-        }
+        public static readonly string VersionInformational = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown";
 
         /// <summary>
-        ///     Links to various places.
+        ///     The build configuration that was used to compile the plugin.
         /// </summary>
-        internal static class Link
-        {
-            /// <summary>
-            ///     The URL to the donation page.
-            /// </summary>
-            public const string Donate = "https://go.blooym.dev/donate";
-
-            /// <summary>
-            ///     The URL to sponsor the project.
-            /// </summary>
-            public const string Sponsors = "https://go.blooym.dev/sponsor";
-        }
+        public static readonly string BuildConfiguration = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyConfigurationAttribute>()?.Configuration ?? "Unknown";
 
         /// <summary>
-        ///     The plugin's directories.
+        ///     The client key used for this plugin.
         /// </summary>
-        internal static class Directory
-        {
-            /// <summary>
-            ///     The directory where the module configurations are stored.
-            /// </summary>
-            public static readonly string ModuleConfig = @$"{DalamudInjections.PluginInterface.ConfigDirectory}\ModuleConfig\";
-        }
+        public static readonly string? ClientKey = Assembly.GetExecutingAssembly().GetCustomAttribute<ClientKeyAttribute>()?.Value;
+
     }
 
     /// <summary>
-    ///     The client key used for this plugin.
+    ///     Links to various places.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    internal sealed class ClientKeyAttribute(string value) : Attribute
+    internal static class Link
     {
-        public string Value { get; set; } = value;
+        /// <summary>
+        ///     The URL to the donation page.
+        /// </summary>
+        public const string Donate = "https://go.blooym.dev/donate";
+
+        /// <summary>
+        ///     The URL to sponsor the project.
+        /// </summary>
+        public const string Sponsors = "https://go.blooym.dev/sponsor";
     }
+
+    /// <summary>
+    ///     The plugin's directories.
+    /// </summary>
+    internal static class Directory
+    {
+        /// <summary>
+        ///     The directory where the module configurations are stored.
+        /// </summary>
+        public static readonly string ModuleConfig = @$"{DalamudInjections.PluginInterface.ConfigDirectory}\ModuleConfig\";
+    }
+}
+
+/// <summary>
+///     The client key used for this plugin.
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly)]
+internal sealed class ClientKeyAttribute(string value) : Attribute
+{
+    public string Value { get; set; } = value;
 }
