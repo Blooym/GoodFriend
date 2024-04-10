@@ -70,7 +70,7 @@ internal static class DebugScreen
                     continue;
                 }
 
-                if (ImGui.Selectable(fName.ToString()))
+                if (ImGui.Selectable(fName))
                 {
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(f.ContentId, salt);

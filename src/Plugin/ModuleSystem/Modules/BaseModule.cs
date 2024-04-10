@@ -158,7 +158,7 @@ internal abstract class BaseModule
     }
 
     /// <summary>
-    ///     Called after the <see cref="DrawBase" /> method has finished drawing.
+    ///     Called after the <see cref="Draw" /> method has finished drawing.
     /// </summary>
     /// <remarks>
     ///     This method should be used by the module itself to draw its contents.

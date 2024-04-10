@@ -56,7 +56,7 @@ internal sealed class MainWindow : Window
             new() {
                 Icon = FontAwesomeIcon.Bug,
                 ShowTooltip = () => SiGui.Heading(Strings.UI_MainWindow_Button_Debug),
-                Click = (mouseButton) => this.CurrentScreen = MainWindowScreen.Debug,
+                Click = (_) => this.CurrentScreen = MainWindowScreen.Debug,
             },
         ];
 #endif

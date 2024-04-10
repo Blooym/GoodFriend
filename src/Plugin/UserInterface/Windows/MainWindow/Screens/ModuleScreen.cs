@@ -52,7 +52,7 @@ internal static class ModuleScreen
     {
         if (CurrentModule is null)
         {
-            ImGui.SetCursorPos(new((ImGui.GetContentRegionAvail().X / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).X / 2), (ImGui.GetContentRegionAvail().Y / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).Y / 2)));
+            ImGui.SetCursorPos(new(ImGui.GetContentRegionAvail().X / 2 - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).X / 2, ImGui.GetContentRegionAvail().Y / 2 - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).Y / 2));
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_ModuleScreen_SelectToView);
             return;
         }

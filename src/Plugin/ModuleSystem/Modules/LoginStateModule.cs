@@ -201,7 +201,7 @@ internal sealed class LoginStateModule : BaseModule
             var friendFromHash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendFromHash.HasValue)
             {
-                Logger.Verbose(message: $"Ignoring player event as a friend could not be found from the receieved hash.");
+                Logger.Verbose(message: $"Ignoring player event as a friend could not be found from the received hash.");
                 return;
             }
             var friendCharacterData = friendFromHash.Value;
@@ -253,8 +253,6 @@ internal sealed class LoginStateModule : BaseModule
     /// <summary>
     ///     Called when the player logs in.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogin()
     {
         while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
@@ -282,8 +280,6 @@ internal sealed class LoginStateModule : BaseModule
     /// <summary>
     ///     Called when the player logs out, sends a logout event.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogout()
     {
         var salt = CryptoUtil.GenerateSalt();
@@ -366,32 +362,32 @@ internal sealed class LoginStateModule : BaseModule
         protected override string Identifier { get; set; } = "LoginStateModule";
 
         /// <summary>
-        ///     Whether or not to receive login state events.
+        ///     Whether to receive login state events.
         /// </summary>
         public bool ReceiveEvents { get; set; } = true;
 
         /// <summary>
-        ///     Whether or not to hide notifications for the same free company.
+        ///     Whether to hide notifications for the same free company.
         /// </summary>
         public bool HideSameFC { get; set; } = true;
 
         /// <summary>
-        ///     Whether or not to hide notifications from users from different homeworlds.
+        ///     Whether to hide notifications from users from different homeworlds.
         /// </summary>
         public bool HideDifferentHomeworld { get; set; }
 
         /// <summary>
-        ///     Whether or not to hide notifications from users in different territories.
+        ///     Whether to hide notifications from users in different territories.
         /// </summary>
         public bool HideDifferentTerritory { get; set; }
 
         /// <summary>
-        ///     Whether or not to hide notifications from users in different worlds.
+        ///     Whether to hide notifications from users in different worlds.
         /// </summary>
         public bool HideDifferentWorld { get; set; }
 
         /// <summary>
-        ///     Whether or not to hide notifications from users in different data centers.
+        ///     Whether to hide notifications from users in different data centers.
         /// </summary>
         public bool HideDifferentDatacenter { get; set; } = true;
 
@@ -409,7 +405,7 @@ internal sealed class LoginStateModule : BaseModule
         ///     Validates a login/logout message.
         /// </summary>
         /// <param name="message">The message to validate.</param>
-        /// <returns>Whether or not the message is valid.</returns>
-        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 1, true);
+        /// <returns>Whether the message is valid.</returns>
+        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 1);
     }
 }

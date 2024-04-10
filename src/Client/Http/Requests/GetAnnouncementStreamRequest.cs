@@ -16,5 +16,5 @@ public static class GetAnnouncementStreamRequest
     /// <param name="httpClient">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
     /// <param name="settings">The settings for this client.</param>
     /// <returns>A new SSE client for the announcement stream.</returns>
-    public static SseClient<AnnouncementStreamUpdate> CreateSSEClient(HttpClient httpClient, SSEClientSettings settings) => new(httpClient, EndpointUrl, settings);
+    public static SseClient<AnnouncementStreamUpdate> CreateSseClient(HttpClient httpClient, SseClientSettings settings) => new(httpClient, EndpointUrl, settings);
 }

@@ -107,8 +107,6 @@ internal sealed class WorldChangeModule : BaseModule
     /// <summary>
     ///     Called when the player logs out to reset the world ID and first world update.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogout()
     {
         this.currentWorldId = 0;
@@ -236,7 +234,7 @@ internal sealed class WorldChangeModule : BaseModule
         ///     Validates a world change message.
         /// </summary>
         /// <param name="message">The message to validate.</param>
-        /// <returns>Whether or not the message is valid.</returns>
-        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 2, true);
+        /// <returns>Whether the message is valid.</returns>
+        public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 2);
     }
 }

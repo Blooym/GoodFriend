@@ -23,12 +23,12 @@ internal sealed class AnnouncementModule : BaseModule
     private AnnouncementModuleConfig Config { get; set; } = BaseModuleConfig.Load<AnnouncementModuleConfig>();
 
     /// <summary>
-    ///     Whether or not the client is allowed to send announcements.
+    ///     Whether the client is allowed to send announcements.
     /// </summary>
     private bool CanSendAnnouncements { get; set; }
 
     /// <summary>
-    ///     Whether or not a validation request is currently in progress.
+    ///     Whether a validation request is currently in progress.
     /// </summary>
     private bool IsValidationInProgress { get; set; }
 

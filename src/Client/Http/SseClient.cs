@@ -35,7 +35,7 @@ public enum SseConnectionState
     Exception,
 }
 
-public readonly struct SSEClientSettings
+public readonly struct SseClientSettings
 {
     /// <summary>
     ///     The minimum amount of time to wait between reconnection attempts
@@ -64,12 +64,12 @@ public sealed class SseClient<T> : IDisposable where T : struct
     private bool disposedValue;
 
     /// <summary>
-    ///     The HTTP client to use for requests. 
+    ///     The HTTP client to use for requests.
     /// </summary>
     private readonly HttpClient httpClient;
 
     /// <summary>
-    ///     The URL to connect to and receieve events from.
+    ///     The URL to connect to and receive events from.
     /// </summary>
     private readonly string url;
 
@@ -81,7 +81,7 @@ public sealed class SseClient<T> : IDisposable where T : struct
     /// <summary>
     ///     The settings for this client.
     /// </summary>
-    private readonly SSEClientSettings settings;
+    private readonly SseClientSettings settings;
 
     /// <summary>
     ///     The current connection state.
@@ -119,7 +119,7 @@ public sealed class SseClient<T> : IDisposable where T : struct
     /// <param name="httpClient">The HTTP client to use for requests. This must be a unique client as it will be managed once initialized.</param>
     /// <param name="url">The url to connect to.</param>
     /// <param name="settings">The settings for this client.</param>
-    public SseClient(HttpClient httpClient, string url, SSEClientSettings settings)
+    public SseClient(HttpClient httpClient, string url, SseClientSettings settings)
     {
         this.httpClient = httpClient;
         this.url = url;
@@ -234,7 +234,7 @@ public sealed class SseClient<T> : IDisposable where T : struct
         {
             this.ConnectionState = SseConnectionState.Connecting;
 
-            using var stream = await this.httpClient.GetStreamAsync(this.url);
+            await using var stream = await this.httpClient.GetStreamAsync(this.url);
             using var reader = new StreamReader(stream);
             Exception? exception = null;
 
@@ -243,7 +243,7 @@ public sealed class SseClient<T> : IDisposable where T : struct
 
             while (!reader.EndOfStream && this.ConnectionState == SseConnectionState.Connected)
             {
-                var message = reader.ReadLine();
+                var message = await reader.ReadLineAsync();
                 message = HttpUtility.UrlDecode(message);
 
                 if (message is null || message.Trim() == ":")
@@ -265,7 +265,6 @@ public sealed class SseClient<T> : IDisposable where T : struct
                 }
                 catch (JsonException)
                 {
-                    continue;
                 }
                 catch (Exception e)
                 {

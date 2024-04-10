@@ -104,8 +104,6 @@ internal sealed class PlayerEventStreamModule : BaseModule
     /// <summary>
     ///     Attempts to connect to relevant event streams when the player logs in.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogin()
     {
         if (IsPlayerStreamDisconnected())
@@ -117,8 +115,6 @@ internal sealed class PlayerEventStreamModule : BaseModule
     /// <summary>
     ///     Attempts to disconnect from relevant event streams when the player logs out.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogout()
     {
         if (IsPlayerStreamConnected())

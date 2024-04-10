@@ -43,7 +43,7 @@ internal static class SettingsScreen
         switch (CurrentSetting)
         {
             case SettingsOption.Api:
-                DrawAPISettings();
+                DrawApiSettings();
                 break;
         }
     }
@@ -53,7 +53,7 @@ internal static class SettingsScreen
     /// <summary>
     ///     Draws the general settings.
     /// </summary>
-    private static void DrawAPISettings()
+    private static void DrawApiSettings()
     {
         var apiUrl = Services.PluginConfiguration.ApiConfig.BaseUrl.ToString();
         if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true))
@@ -86,7 +86,7 @@ internal static class SettingsScreen
         if (revealSensitiveConfig)
         {
             var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
-            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken, ref authKey, 250, false))
+            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken, ref authKey, 250))
             {
                 if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
                 {

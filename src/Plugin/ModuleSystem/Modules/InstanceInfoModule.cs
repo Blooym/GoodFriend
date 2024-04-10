@@ -31,7 +31,7 @@ internal sealed class InstanceInfoModule : BaseModule
     private MetadataResponse? cachedMetadata;
 
     /// <summary>
-    ///     Whether or not the last metadata update failed.
+    ///     Whether the last metadata update failed.
     /// </summary>
     private bool lastMetadataUpdateFailed;
 

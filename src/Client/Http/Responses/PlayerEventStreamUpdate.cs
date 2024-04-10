@@ -27,7 +27,7 @@ public record struct PlayerEventStreamUpdate
 }
 
 /// <summary>
-///     Represents the state update type of a player event stream update.
+///     Represents the state update type of player event stream update.
 /// </summary>
 public record struct StateUpdateType
 {

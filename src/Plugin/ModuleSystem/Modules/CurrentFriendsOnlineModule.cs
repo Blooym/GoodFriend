@@ -65,7 +65,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
         var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
         SiGui.Text(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay);
-        if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds, false))
+        if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds))
         {
             this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
             this.Config.Save();
@@ -103,8 +103,8 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
             // Get how many friends are online.
             var onlineFriends = FriendHelper.FriendList.ToArray().Where(x => x.State.HasFlag(InfoProxyCommonList.CharacterData.OnlineStatus.Online));
-            var characterDatas = onlineFriends as InfoProxyCommonList.CharacterData[] ?? onlineFriends.ToArray();
-            var onlineFriendCount = characterDatas.Length;
+            var characterData = onlineFriends as InfoProxyCommonList.CharacterData[] ?? onlineFriends.ToArray();
+            var onlineFriendCount = characterData.Length;
             DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
             if (onlineFriendCount is 0)
             {
@@ -121,7 +121,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                 unsafe
                 {
                     var chatMessage = new SeStringBuilder().AddText(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline);
-                    foreach (var friend in characterDatas)
+                    foreach (var friend in characterData)
                     {
                         var name = MemoryHelper.ReadStringNullTerminated((nint)friend.Name);
                         var currentWorld = SirenCore.GetOrCreateService<LuminaCacheService<World>>().GetRow(friend.CurrentWorld)?.Name.ToString() ?? "Unknown";
@@ -154,12 +154,12 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
         protected override string Identifier { get; set; } = "CurrentFriendsOnlineModule";
 
         /// <summary>
-        ///     whether or not the online friend count notification should be shown.
+        ///     whether the online friend count notification should be shown.
         /// </summary>
         public bool ShowOnlineFriendCountOnLogin { get; set; } = true;
 
         /// <summary>
-        ///     Whether or not to add the names of each online friend to messages that show the number of online friends.
+        ///     Whether to add the names of each online friend to messages that show the number of online friends.
         /// </summary>
         public bool AddFriendNamesToOnlineCount { get; set; }
 

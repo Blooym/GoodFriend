@@ -68,22 +68,22 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
         }
 
         /// <summary>
-        ///     The Id of the player's current datacenter.
+        ///     The ID of the player's current datacenter.
         /// </summary>
         public required uint DatacenterId { get; init; }
 
         /// <summary>
-        ///     The Id player's current World.
+        ///     The ID player's current World.
         /// </summary>
         public required uint WorldId { get; init; }
 
         /// <summary>
-        ///     The Id of the player's current Territory.
+        ///     The ID of the player's current Territory.
         /// </summary>
         public required ushort TerritoryId { get; init; }
 
         /// <summary>
-        ///     Whether or not the player is now logged in.
+        ///     Whether the player is now logged in.
         /// </summary>
         public required bool LoggedIn { get; init; }
     }

@@ -50,7 +50,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
 
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
-        AnnouncementSseStream.OnStreamHeartbeat += this.OnAnnouncementStreamHeartbea2t;
+        AnnouncementSseStream.OnStreamHeartbeat += this.OnAnnouncementStreamHeartbeat;
         AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamEvent;
         AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
     }
@@ -65,7 +65,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
 
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
-        AnnouncementSseStream.OnStreamHeartbeat -= this.OnAnnouncementStreamHeartbea2t;
+        AnnouncementSseStream.OnStreamHeartbeat -= this.OnAnnouncementStreamHeartbeat;
         AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamEvent;
         AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
     }
@@ -104,8 +104,6 @@ internal sealed class AnnouncementStreamModule : BaseModule
     /// <summary>
     ///     Attempts to connect to relevant event streams when the player logs in.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogin()
     {
         if (IsAnnouncementStreamDisconnected())
@@ -117,8 +115,6 @@ internal sealed class AnnouncementStreamModule : BaseModule
     /// <summary>
     ///     Attempts to disconnect from relevant event streams when the player logs out.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void OnLogout()
     {
         if (IsAnnouncementStreamConnected())
@@ -131,7 +127,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     ///     Handles a heartbeat from the player event stream.
     /// </summary>
     /// <param name="sender"></param>
-    private void OnAnnouncementStreamHeartbea2t(object? sender)
+    private void OnAnnouncementStreamHeartbeat(object? sender)
     {
         Logger.Verbose("Heartbeat received from event stream.");
         this.LastHeartbeatTime = DateTime.Now;

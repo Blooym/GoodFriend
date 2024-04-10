@@ -18,9 +18,9 @@ namespace GoodFriend.Plugin.Base;
 internal static class Services
 {
     // SSE
-    private static readonly TimeSpan SSEReconnectDelayMin = TimeSpan.FromSeconds(30);
-    private static readonly TimeSpan SSEReconnectDelayMax = TimeSpan.FromMinutes(10);
-    private static readonly TimeSpan SSEReconnectDelayIncrement = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan SseReconnectDelayMin = TimeSpan.FromSeconds(30);
+    private static readonly TimeSpan SseReconnectDelayMax = TimeSpan.FromMinutes(10);
+    private static readonly TimeSpan SseReconnectDelayIncrement = TimeSpan.FromSeconds(30);
     public static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream { get; private set; } = null!;
     public static SseClient<AnnouncementStreamUpdate> AnnouncementSseStream { get; private set; } = null!;
 
@@ -41,23 +41,22 @@ internal static class Services
         PluginConfiguration = PluginConfiguration.Load();
         LocalizationService = new LocalizationService();
         HttpClient = CreateHttpClient(HappyEyeballsCallback);
-        PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new()
+        PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSseClient(CreateHttpClient(HappyEyeballsCallback), new()
         {
-            ReconnectDelayMin = SSEReconnectDelayMin,
-            ReconnectDelayMax = SSEReconnectDelayMax,
-            ReconnectDelayIncrement = SSEReconnectDelayIncrement
+            ReconnectDelayMin = SseReconnectDelayMin,
+            ReconnectDelayMax = SseReconnectDelayMax,
+            ReconnectDelayIncrement = SseReconnectDelayIncrement
         });
-        AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSSEClient(CreateHttpClient(HappyEyeballsCallback), new()
+        AnnouncementSseStream = GetAnnouncementStreamRequest.CreateSseClient(CreateHttpClient(HappyEyeballsCallback), new()
         {
-            ReconnectDelayMin = SSEReconnectDelayMin,
-            ReconnectDelayMax = SSEReconnectDelayMax,
-            ReconnectDelayIncrement = SSEReconnectDelayIncrement
+            ReconnectDelayMin = SseReconnectDelayMin,
+            ReconnectDelayMax = SseReconnectDelayMax,
+            ReconnectDelayIncrement = SseReconnectDelayIncrement
         });
         ModuleService = new ModuleService();
         WindowingService = new WindowingService();
     }
 
-    /// <inheritdoc />
     internal static void Dispose()
     {
         LocalizationService.Dispose();
