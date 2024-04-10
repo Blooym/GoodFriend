@@ -114,7 +114,7 @@
     <value>Déconnecté</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
-    <value>Déconnexion...</value>
+    <value>Déconnexion</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Erreur</value>

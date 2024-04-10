@@ -7,858 +7,719 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GoodFriend.Plugin.Localization
-{
+namespace GoodFriend.Plugin.Localization {
     using System;
-
-
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings
-    {
-
+    internal class Strings {
+        
         private static System.Resources.ResourceManager resourceMan;
-
+        
         private static System.Globalization.CultureInfo resourceCulture;
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Strings()
-        {
+        internal Strings() {
         }
-
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if (object.Equals(null, resourceMan))
-                {
+        internal static System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("GoodFriend.Plugin.Localization.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
             }
         }
-
-        internal static string Modules_LoginStateModule_Name
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_Name {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_Name", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_FilteringOptions
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_FilteringOptions {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_FilteringOptions", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideSameCompany
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideSameCompany {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideSameCompany", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideSameCompany_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideSameCompany_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideSameCompany_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffHomeworld
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffHomeworld {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffHomeworld", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffHomeworld_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffHomeworld_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffHomeworld_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffTerritory
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffTerritory {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffTerritory", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffTerritory_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffTerritory_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffTerritory_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffWorld
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffWorld {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffWorld", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffWorld_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffWorld_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffWorld_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffDC
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffDC {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffDC", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_HideDiffDC_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_HideDiffDC_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_HideDiffDC_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_MessageOptions
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_MessageOptions {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_MessageOptions", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LoginMessage
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LoginMessage {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LoginMessage", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LoginMessage_Tooltip
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LoginMessage_Tooltip {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LoginMessage_Tooltip", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LoginMessage_Invalid
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LoginMessage_Invalid {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LoginMessage_Invalid", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LogoutMessage
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LogoutMessage {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LogoutMessage", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LogoutMessage_Invalid
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LogoutMessage_Invalid {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LogoutMessage_Invalid", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_LogoutMessage_Tooltip
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_LogoutMessage_Tooltip {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_LogoutMessage_Tooltip", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_FilteringOptions
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_FilteringOptions {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_FilteringOptions", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_OnlyCurrentWorld", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_MessageOptions
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_MessageOptions {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_MessageOptions", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_WorldChangeMessage
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_WorldChangeMessage {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_WorldChangeMessage", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_Name
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_Name {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_Name", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatistics", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal", resourceCulture);
             }
         }
-
-        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat
-        {
-            get
-            {
+        
+        internal static string Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat {
+            get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_Name
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_Name {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_Name", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_MetadataFetch_Failed
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_MetadataFetch_Failed {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_MetadataFetch_Failed", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_MetadataFetch_Fetching
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_MetadataFetch_Fetching {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_MetadataFetch_Fetching", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_ConnectedClients_Count
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_ConnectedClients_Count {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_ConnectedClients_Count", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_Description_Title
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_Description_Title {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Title", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_Description_Unset
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_Description_Unset {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_Description_Unset", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_CustomLinks_Title
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_CustomLinks_Title {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_CustomLinks_Title", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_CustomLinks_Unset
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_CustomLinks_Unset {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_CustomLinks_Unset", resourceCulture);
             }
         }
-
-        internal static string Modules_InstanceInfoModule_MetadataFetch_LastFailed
-        {
-            get
-            {
+        
+        internal static string Modules_InstanceInfoModule_MetadataFetch_LastFailed {
+            get {
                 return ResourceManager.GetString("Modules_InstanceInfoModule_MetadataFetch_LastFailed", resourceCulture);
             }
         }
-
-        internal static string Modules_ModuleBase_CantDisplayError
-        {
-            get
-            {
+        
+        internal static string Modules_ModuleBase_CantDisplayError {
+            get {
                 return ResourceManager.GetString("Modules_ModuleBase_CantDisplayError", resourceCulture);
             }
         }
-
-        internal static string Modules_ModuleBase_FailedDraw
-        {
-            get
-            {
+        
+        internal static string Modules_ModuleBase_FailedDraw {
+            get {
                 return ResourceManager.GetString("Modules_ModuleBase_FailedDraw", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_DebugScreen_DetectedFriends
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_DebugScreen_DetectedFriends {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_DebugScreen_DetectedFriends", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_DebugScreen_DetectedFriends_Usage
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_DebugScreen_DetectedFriends_Usage {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_DebugScreen_DetectedFriends_Usage", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_DebugScreen_DetectedFriends_Copied
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_DebugScreen_DetectedFriends_Copied {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_DebugScreen_DetectedFriends_Copied", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_Enabled
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_Enabled {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Enabled", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_Loading
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_Loading {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Loading", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_Disabled
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_Disabled {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Disabled", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_Unloading
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_Unloading {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Unloading", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_Error
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_Error {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Error", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_ModuleScreen_SelectToView
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_ModuleScreen_SelectToView {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_SelectToView", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_RestartNeeded
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_RestartNeeded {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_RestartNeeded", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Setting_APIURL", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Setting_APIURL_Invalid", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL_Description
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Setting_APIURL_Description {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Setting_APIURL_Description", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_Button_Modules
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_Button_Modules {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_Button_Modules", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_Button_Settings
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_Button_Settings {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_Button_Settings", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_Button_Donate
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_Button_Donate {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_Button_Donate", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_Button_Debug
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_Button_Debug {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_Button_Debug", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_Title
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_Title {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_Title", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_Description
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_Description {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_EventSettings
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings_ReceieveEvents", resourceCulture);
             }
         }
-
-        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description
-        {
-            get
-            {
+        
+        internal static string Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description {
+            get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_EventSettings
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents", resourceCulture);
             }
         }
-
-        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description
-        {
-            get
-            {
+        
+        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description {
+            get {
                 return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_Name
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_Name {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_Name", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_Description
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_Description {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_Description", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_Header_Stream
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_Header_Stream {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_Header_Stream", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionStatus
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionStatus {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionStatus", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionState_Connected
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionState_Connected {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Connected", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionState_Connecting
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionState_Connecting {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Connecting", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionState_Disconnected
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionState_Disconnected {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Disconnected", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionState_Disconnecting
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionState_Disconnecting {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Disconnecting", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ConnectionState_Exception
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ConnectionState_Exception {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ConnectionState_Exception", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ReceiveOptions
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ReceiveOptions {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ReceiveOptions", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_ReceiveOptions_ShowKind
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_ReceiveOptions_ShowKind {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_ReceiveOptions_ShowKind", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_Header
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Header {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Header", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_Reauth
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Reauth {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Reauth", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuth
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_NoAuth {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_NoAuth", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_Notice
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Notice {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Notice", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_Send
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_Send {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_Send", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_HoldShift
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_HoldShift {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_HoldShift", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_SendSuccess
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_SendSuccess {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_SendSuccess", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_SendAnnouncement_SendError
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_SendAnnouncement_SendError {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_SendAnnouncement_SendError", resourceCulture);
             }
         }
-
-        internal static string Modules_AnnouncementModule_AnnouncementText
-        {
-            get
-            {
+        
+        internal static string Modules_AnnouncementModule_AnnouncementText {
+            get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_AnnouncementText", resourceCulture);
             }
         }
-
-        internal static string Modules_ModuleBase_NoAdditionalContent
-        {
-            get
-            {
+        
+        internal static string Modules_ModuleBase_NoAdditionalContent {
+            get {
                 return ResourceManager.GetString("Modules_ModuleBase_NoAdditionalContent", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Api_HideSensitive
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Api_HideSensitive {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_HideSensitive", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Api_ShowSensitive
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Api_ShowSensitive {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_ShowSensitive", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_AuthToken", resourceCulture);
             }
         }
-
-        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken_Description
-        {
-            get
-            {
+        
+        internal static string UI_MainWindow_SettingsScreen_Api_AuthToken_Description {
+            get {
                 return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Api_AuthToken_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_Name {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_Name", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_Description {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_Upon_Login {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_Upon_Login", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_SendFriendCount {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_SendFriendCount", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_NoFriendsOnline {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_NoFriendsOnline", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_CurrentFriendsOnlineModule_PluralFriendsOnline {
+            get {
+                return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_PluralFriendsOnline", resourceCulture);
+            }
+        }
+        
+        internal static string Modules_AnnouncementStreamModule_Name {
+            get {
+                return ResourceManager.GetString("Modules_AnnouncementStreamModule_Name", resourceCulture);
             }
         }
     }

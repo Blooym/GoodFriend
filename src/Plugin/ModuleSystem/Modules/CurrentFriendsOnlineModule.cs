@@ -7,6 +7,7 @@ using Dalamud.Interface.Components;
 using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Sirensong;
@@ -25,10 +26,10 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
     private CurrentFriendsOnlineModuleConfig Config { get; set; } = BaseModuleConfig.Load<CurrentFriendsOnlineModuleConfig>();
 
     /// <inheritdoc/>
-    public override string Name { get; } = "Friends Online";
+    public override string Name { get; } = Strings.Modules_CurrentFriendsOnlineModule_Name;
 
     /// <inheritdoc/>
-    public override string? Description { get; } = "Get notifications about the friends that are currently online. These notifications work regardless of whether not they have the plugin installed.";
+    public override string? Description { get; } = Strings.Modules_CurrentFriendsOnlineModule_Description;
 
     /// <inheritdoc/>
     public override ModuleTag Tag { get; } = ModuleTag.Notifications;
@@ -42,10 +43,10 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
     /// <inheritdoc/>
     protected override void DrawModule()
     {
-        SiGui.Heading("Upon Login");
+        SiGui.Heading(Strings.Modules_CurrentFriendsOnlineModule_UI_Upon_Login);
 
         var friendCountOnlineEnabled = this.Config.ShowOnlineFriendCountOnLogin;
-        if (SiGui.Checkbox("Send online friend count chat message", "Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.", ref friendCountOnlineEnabled))
+        if (SiGui.Checkbox(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount, Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description, ref friendCountOnlineEnabled))
         {
             this.Config.ShowOnlineFriendCountOnLogin = friendCountOnlineEnabled;
             this.Config.Save();
@@ -55,7 +56,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
         ImGui.BeginDisabled(!friendCountOnlineEnabled);
         ImGui.Indent();
         var namesOnLogin = this.Config.AddFriendNamesToOnlineCount;
-        if (SiGui.Checkbox("Include friend names", "Adds a list of the names of your online friends to the count message.", ref namesOnLogin))
+        if (SiGui.Checkbox(Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames, Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description, ref namesOnLogin))
         {
             this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
             this.Config.Save();
@@ -63,7 +64,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
         ImGui.Dummy(Spacing.ReadableSpacing);
 
         var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
-        SiGui.Text("Delay");
+        SiGui.Text(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay);
         if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds, false))
         {
             this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
@@ -75,7 +76,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
             this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
             this.Config.Save();
         }
-        SiGui.TextDisabledWrapped("The amount of seconds to wait after logging in to display the message. If online friends are not correctly shown on login then increase this value.");
+        SiGui.TextDisabledWrapped(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description);
         ImGui.Unindent();
         ImGui.EndDisabled();
     }
@@ -102,24 +103,25 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
             // Get how many friends are online.
             var onlineFriends = FriendHelper.FriendList.ToArray().Where(x => x.State.HasFlag(InfoProxyCommonList.CharacterData.OnlineStatus.Online));
-            var onlineFriendCount = onlineFriends.Count();
+            var characterDatas = onlineFriends as InfoProxyCommonList.CharacterData[] ?? onlineFriends.ToArray();
+            var onlineFriendCount = characterDatas.Length;
             DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
             if (onlineFriendCount is 0)
             {
-                ChatHelper.Print("You have no friends online.");
+                ChatHelper.Print(Strings.Modules_CurrentFriendsOnlineModule_NoFriendsOnline);
             }
             else
             {
                 if (!this.Config.AddFriendNamesToOnlineCount)
                 {
-                    ChatHelper.Print($"There are currently {onlineFriendCount} friends online.");
+                    ChatHelper.Print(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
                     return;
                 }
 
                 unsafe
                 {
-                    var chatMessage = new SeStringBuilder().AddText($"There are currently {onlineFriendCount} friends online:");
-                    foreach (var friend in onlineFriends)
+                    var chatMessage = new SeStringBuilder().AddText(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline);
+                    foreach (var friend in characterDatas)
                     {
                         var name = MemoryHelper.ReadStringNullTerminated((nint)friend.Name);
                         var currentWorld = SirenCore.GetOrCreateService<LuminaCacheService<World>>().GetRow(friend.CurrentWorld)?.Name.ToString() ?? "Unknown";

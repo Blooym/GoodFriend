@@ -115,7 +115,7 @@
     <value>Disconnected</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
-    <value>Disconnecting...</value>
+    <value>Disconnecting</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
     <value>Error</value>
@@ -320,5 +320,41 @@
   </data>
   <data name="UI_MainWindow_SettingsScreen_Api_AuthToken_Description" xml:space="preserve">
     <value>The authentication token to use for requests that require authentication. Only instance administrators will need to set this.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_Name" xml:space="preserve">
+    <value>Friends Online</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_Description" xml:space="preserve">
+    <value>Get notifications about the friends that are currently online. These notifications work regardless of whether not they have the plugin installed.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_Upon_Login" xml:space="preserve">
+    <value>Upon Login</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount" xml:space="preserve">
+    <value>Send online friend count chat message</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
+    <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames" xml:space="preserve">
+    <value>Include friend names</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description" xml:space="preserve">
+    <value>Adds a list of the names of your online friends to the count message.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description" xml:space="preserve">
+    <value>The amount of seconds to wait after logging in to display the message. If online friends are not correctly shown on login then increase this value.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_NoFriendsOnline" xml:space="preserve">
+    <value>You have no friends online.</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_PluralFriendsOnline" xml:space="preserve">
+    <value>There are currently {0} friends online.</value>
+  </data>
+  <data name="Modules_AnnouncementStreamModule_Name" xml:space="preserve">
+    <value>Announcements Connection</value>
   </data>
 </root>

@@ -32,7 +32,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     private uint HeartbeatsReceived { get; set; }
 
     /// <inheritdoc />
-    public override string Name => "Announcements Connection";
+    public override string Name => Strings.Modules_AnnouncementStreamModule_Name;
 
     /// <inheritdoc />
     public override ModuleTag Tag => ModuleTag.Connectivity;
