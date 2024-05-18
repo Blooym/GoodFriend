@@ -22,7 +22,7 @@ export default {
     return new Response(JSON.stringify({
       schemaVersion: 1,
       label: "Connected",
-      message: connectionsTotal.toString(),
+      message: parseInt(connectionsTotal).toLocaleString("en"),
       color: "brightgreen",
       cacheSeconds: env.CACHE_SECONDS || 3600,
     }));
