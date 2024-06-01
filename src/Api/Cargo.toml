@@ -12,7 +12,7 @@ http2 = ["rocket/http2"]
 tls = ["rocket/tls"]
 
 [dependencies]
-rocket = { version = "0.5.0", features = [
+rocket = { version = "0.5.1", features = [
     "json",
     "uuid",
 ], default-features = false }
