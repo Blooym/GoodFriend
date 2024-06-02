@@ -20,7 +20,7 @@ notify = { version = "6.1.1", default-features = false, features = [
     "macos_kqueue",
     "macos_fsevent",
 ] }
-anyhow = { version = "1.0.82", features = ["backtrace"] }
+anyhow = { version = "1.0.86", features = ["backtrace"] }
 clap = { version = "4.5.4", features = ["derive", "env"] }
 uuid = { version = "1.8.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
