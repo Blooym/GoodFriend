@@ -120,16 +120,16 @@ async fn main() -> Result<()> {
         .manage(channel::<AnnouncementMessage>(args.announce_sse_cap).0)
         .manage(config)
         .mount("/", static_files_routes())
-        .mount([&base_route, "/"].concat(), core_routes())
+        .mount([base_route, "/"].concat(), core_routes())
         .mount(
-            [&base_route, "/playerevents"].concat(),
+            [base_route, "/playerevents"].concat(),
             player_events_routes(),
         )
         .mount(
-            [&base_route, "/announcements"].concat(),
+            [base_route, "/announcements"].concat(),
             announcements_routes(),
         )
-        .mount([&base_route, "/auth"].concat(), auth_routes())
+        .mount([base_route, "/auth"].concat(), auth_routes())
         .attach(
             Shield::default()
                 .enable(shield::XssFilter::Enable)
