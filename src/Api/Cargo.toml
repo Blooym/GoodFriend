@@ -24,7 +24,7 @@ anyhow = { version = "1.0.86", features = ["backtrace"] }
 clap = { version = "4.5.4", features = ["derive", "env"] }
 uuid = { version = "1.8.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
-rust-embed = "8.3.0"
+rust-embed = "8.4.0"
 toml = "0.8.12"
 url = { version = "2.5.0", features = ["serde"] }
 rocket_prometheus = "0.10.0"
