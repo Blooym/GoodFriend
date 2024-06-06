@@ -241,7 +241,7 @@ internal sealed class LoginStateModule : BaseModule
                 Logger.Debug($"Ignoring login state update from different world.");
                 return;
             }
-            if (this.Config.HideDifferentDatacenter && this.worldCache.GetRow(loginStateData.WorldId)?.DataCenter.Row != localPlayer.HomeWorld.GameData?.DataCenter.Row)
+            if (this.Config.HideDifferentDatacenter && this.worldCache.GetRow(loginStateData.WorldId)?.DataCenter.Row != localPlayer.CurrentWorld.GameData?.DataCenter.Row)
             {
                 Logger.Debug($"Ignoring login state update from different data center.");
                 return;

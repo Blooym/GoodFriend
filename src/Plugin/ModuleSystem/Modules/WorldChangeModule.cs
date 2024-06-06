@@ -147,7 +147,7 @@ internal sealed class WorldChangeModule : BaseModule
             }
 
             // Skip if the event did not occur on the same datacenter as the event isn't useful in that case.
-            if (this.worldCache.GetRow(worldChangeData.WorldId)?.DataCenter.Row != localPlayer.HomeWorld.GameData?.DataCenter.Row)
+            if (this.worldCache.GetRow(worldChangeData.WorldId)?.DataCenter.Row != localPlayer.CurrentWorld.GameData?.DataCenter.Row)
             {
                 Logger.Verbose($"Ignoring world player event as it is not from the same datacenter.");
                 return;
