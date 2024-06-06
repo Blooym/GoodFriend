@@ -1,6 +1,6 @@
 [package]
 name = "goodfriend-api"
-version = "3.3.3"
+version = "3.4.0"
 edition = "2021"
 authors = ["Blooym"]
 license = "AGPL-3.0-only"
