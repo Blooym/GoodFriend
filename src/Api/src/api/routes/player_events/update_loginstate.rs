@@ -13,7 +13,6 @@ use rocket::{
 #[serde(crate = "rocket::serde")]
 pub struct UpdatePlayerLoginStateRequest {
     pub logged_in: bool,
-    pub datacenter_id: u32,
     pub world_id: u32,
     pub territory_id: u16,
 }
@@ -31,7 +30,6 @@ pub async fn post_loginstate(
         content_id_salt: content_id.salt,
         state_update_type: PlayerStateUpdateType::LoginStateChange {
             logged_in: update.logged_in,
-            datacenter_id: update.datacenter_id,
             world_id: update.world_id,
             territory_id: update.territory_id,
         },

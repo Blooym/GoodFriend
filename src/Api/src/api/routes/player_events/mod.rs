@@ -21,7 +21,6 @@ pub struct PlayerEventStreamUpdate {
 #[serde(crate = "rocket::serde")]
 pub enum PlayerStateUpdateType {
     LoginStateChange {
-        datacenter_id: u32,
         world_id: u32,
         territory_id: u16,
         logged_in: bool,

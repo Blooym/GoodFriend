@@ -50,12 +50,6 @@ public record struct StateUpdateType
 public record struct LoginStateChangeData
 {
     /// <summary>
-    ///     The ID of the datacenter for the event.
-    /// </summary>
-    [JsonPropertyName("datacenter_id")]
-    public uint DatacenterId { get; set; }
-
-    /// <summary>
     ///     The ID of the world for the event.
     /// </summary>
     [JsonPropertyName("world_id")]

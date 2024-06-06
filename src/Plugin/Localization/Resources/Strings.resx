@@ -223,7 +223,7 @@
     <value>Friend World Change</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds.</value>
+    <value>Automatically send and receive notifications when friends change worlds on your current datacenter.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
     <value>Event Settings</value>
@@ -334,7 +334,7 @@
     <value>Send online friend count chat message</value>
   </data>
   <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
-    <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.</value>
+    <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you will not be included.</value>
   </data>
   <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames" xml:space="preserve">
     <value>Include friend names</value>

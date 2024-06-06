@@ -129,16 +129,31 @@ internal sealed class WorldChangeModule : BaseModule
             Logger.Verbose("Ignoring world player event as it is not a world change.");
             return;
         }
+
         DalamudInjections.Framework.Run(() =>
         {
-
-            var worldChangeData = rawEvent.StateUpdateType.WorldChange.Value;
-            if (this.Config.OnlyShowCurrentWorld && worldChangeData.WorldId != this.currentWorldId)
+            var localPlayer = DalamudInjections.ClientState.LocalPlayer;
+            if (localPlayer is null)
             {
-                Logger.Verbose($"Ignoring world player event as it is not from the current world (current: {worldChangeData.WorldId} != {this.currentWorldId}).");
+                Logger.Verbose("Ignoring world player event as the local player is null (not logged in?).");
                 return;
             }
 
+            // Skip if WorldId is 0 as that's an invalid event.
+            var worldChangeData = rawEvent.StateUpdateType.WorldChange.Value;
+            if (worldChangeData.WorldId == 0)
+            {
+                return;
+            }
+
+            // Skip if the event did not occur on the same datacenter as the event isn't useful in that case.
+            if (this.worldCache.GetRow(worldChangeData.WorldId)?.DataCenter.Row != localPlayer.HomeWorld.GameData?.DataCenter.Row)
+            {
+                Logger.Verbose($"Ignoring world player event as it is not from the same datacenter.");
+                return;
+            }
+
+            // Skip if the event player is not on the players friendslist.
             var friendFromhash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendFromhash.HasValue)
             {
@@ -147,13 +162,21 @@ internal sealed class WorldChangeModule : BaseModule
             }
             var friendCharacterData = friendFromhash.Value;
 
-            // Ignore the event if the friend request is pending.
+            // Skip the event if the friend request is pending.
             if (friendCharacterData.ExtraFlags == Constants.WaitingForFriendListApproval)
             {
                 Logger.Debug($"Ignoring world player event for a pending friend request.");
                 return;
             }
 
+            // Skip if the player has requested to only see when people travel to their world.
+            if (this.Config.OnlyShowCurrentWorld && worldChangeData.WorldId != this.currentWorldId)
+            {
+                Logger.Debug($"Ignoring world player event as it is not from the current world.");
+                return;
+            }
+
+            // Show a message as long as world data can be fetched
             var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friendCharacterData.Name);
             var worldName = this.worldCache.GetRow(worldChangeData.WorldId)?.Name;
             if (worldName is null)

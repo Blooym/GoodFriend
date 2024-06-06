@@ -18,7 +18,6 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
 
     private readonly struct RequestBody
     {
-        public required uint DatacenterId { get; init; }
         public required uint WorldId { get; init; }
         public required ushort TerritoryId { get; init; }
         public required bool LoggedIn { get; init; }
@@ -68,11 +67,6 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
         }
 
         /// <summary>
-        ///     The ID of the player's current datacenter.
-        /// </summary>
-        public required uint DatacenterId { get; init; }
-
-        /// <summary>
         ///     The ID player's current World.
         /// </summary>
         public required uint WorldId { get; init; }
@@ -97,7 +91,6 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
     {
         Content = JsonContent.Create(new RequestBody()
         {
-            DatacenterId = requestData.DatacenterId,
             LoggedIn = requestData.LoggedIn,
             TerritoryId = requestData.TerritoryId,
             WorldId = requestData.WorldId

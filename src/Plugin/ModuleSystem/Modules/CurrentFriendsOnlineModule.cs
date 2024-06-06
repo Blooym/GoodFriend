@@ -123,18 +123,14 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                     var chatMessage = new SeStringBuilder().AddText(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline);
                     foreach (var friend in characterData)
                     {
+                        if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.Id != friend.CurrentWorld)
+                        {
+                            continue;
+                        }
+
                         var name = MemoryHelper.ReadStringNullTerminated((nint)friend.Name);
                         var currentWorld = SirenCore.GetOrCreateService<LuminaCacheService<World>>().GetRow(friend.CurrentWorld)?.Name.ToString() ?? "Unknown";
                         chatMessage.AddText($"\n - {name}");
-
-                        if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.Id != friend.CurrentWorld)
-                        {
-                            chatMessage
-                                .AddText("  ")
-                                .AddIcon(BitmapFontIcon.Aetheryte)
-                                .AddText(" ")
-                                .AddText(currentWorld);
-                        }
                     }
                     ChatHelper.Print(chatMessage.Build());
                 }

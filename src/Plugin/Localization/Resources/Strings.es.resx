@@ -222,7 +222,7 @@
     <value>Cambio de mundo de amigo</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Enviar y recibir notificaciones automáticamente cuando tus amigos viajen a otro mundo.</value>
+    <value>Automatically send and receive notifications when friends change worlds on your current datacenter.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
     <value>Configuración de eventos</value>

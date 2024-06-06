@@ -8,6 +8,9 @@ using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets;
+using Sirensong;
+using Sirensong.Cache;
 using Sirensong.Extensions;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
@@ -19,6 +22,8 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules;
 /// <inheritdoc />
 internal sealed class LoginStateModule : BaseModule
 {
+    private readonly LuminaCacheService<World> worldCache = SirenCore.GetOrCreateService<LuminaCacheService<World>>();
+
     /// <summary>
     ///     The current world ID.
     /// </summary>
@@ -28,11 +33,6 @@ internal sealed class LoginStateModule : BaseModule
     ///     The current territory ID.
     /// </summary>
     private ushort currentTerritoryId;
-
-    /// <summary>
-    ///     The current data center ID.
-    /// </summary>
-    private uint currentDatacenterId;
 
     /// <summary>
     ///     The current free company ID.
@@ -198,6 +198,7 @@ internal sealed class LoginStateModule : BaseModule
                 return;
             }
 
+            // Skip if the event player is not on the players friendslist.
             var friendFromHash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendFromHash.HasValue)
             {
@@ -222,27 +223,27 @@ internal sealed class LoginStateModule : BaseModule
             // Evaluate eligibility.
             if (this.Config.HideSameFC && friendFCTag == localPlayer.CompanyTag.TextValue)
             {
-                Logger.Debug($"Ignoring login state update from from the same free company ({friendFCTag} == {localPlayer.CompanyTag.TextValue}).");
+                Logger.Debug($"Ignoring login state update from from the same free company.");
                 return;
             }
-            else if (this.Config.HideDifferentHomeworld && friendCharacterData.HomeWorld != this.currentHomeworldId)
+            if (this.Config.HideDifferentHomeworld && friendCharacterData.HomeWorld != this.currentHomeworldId)
             {
-                Logger.Debug($"Ignoring login state update from different homeworld ({friendCharacterData.HomeWorld} != {this.currentHomeworldId}).");
+                Logger.Debug($"Ignoring login state update from different homeworld.");
                 return;
             }
-            else if (this.Config.HideDifferentTerritory && loginStateData.TerritoryId != this.currentTerritoryId)
+            if (this.Config.HideDifferentTerritory && loginStateData.TerritoryId != this.currentTerritoryId)
             {
-                Logger.Debug($"Ignoring login state update from different territory ({loginStateData.TerritoryId} != {this.currentTerritoryId}).");
+                Logger.Debug($"Ignoring login state update from different territory.");
                 return;
             }
-            else if (this.Config.HideDifferentWorld && loginStateData.WorldId != this.currentWorldId)
+            if (this.Config.HideDifferentWorld && loginStateData.WorldId != this.currentWorldId)
             {
-                Logger.Debug($"Ignoring login state update from different world ({loginStateData.WorldId} != {this.currentWorldId}).");
+                Logger.Debug($"Ignoring login state update from different world.");
                 return;
             }
-            else if (this.Config.HideDifferentDatacenter && loginStateData.DatacenterId != this.currentDatacenterId)
+            if (this.Config.HideDifferentDatacenter && this.worldCache.GetRow(loginStateData.WorldId)?.DataCenter.Row != localPlayer.HomeWorld.GameData?.DataCenter.Row)
             {
-                Logger.Debug($"Ignoring login state update from different data center ({loginStateData.DatacenterId} != {this.currentDatacenterId}).");
+                Logger.Debug($"Ignoring login state update from different data center.");
                 return;
             }
 
@@ -271,7 +272,6 @@ internal sealed class LoginStateModule : BaseModule
             ContentIdHash = hash,
             ContentIdSalt = salt,
             LoggedIn = true,
-            DatacenterId = this.currentDatacenterId,
             TerritoryId = this.currentTerritoryId,
             WorldId = this.currentWorldId
         });
@@ -290,7 +290,6 @@ internal sealed class LoginStateModule : BaseModule
             ContentIdHash = hash,
             ContentIdSalt = salt,
             LoggedIn = false,
-            DatacenterId = this.currentDatacenterId,
             TerritoryId = this.currentTerritoryId,
             WorldId = this.currentWorldId
         });
@@ -331,11 +330,10 @@ internal sealed class LoginStateModule : BaseModule
     {
         this.currentContentId = DalamudInjections.ClientState.LocalContentId;
         this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer!.HomeWorld.Id;
-        this.currentDatacenterId = DalamudInjections.ClientState.LocalPlayer.HomeWorld.GameData!.DataCenter.Row;
         this.currentTerritoryId = DalamudInjections.ClientState.TerritoryType;
         this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.GameData!.RowId;
 
-        Logger.Debug($"Set stored values: CID: {this.currentContentId}, HW: {this.currentHomeworldId}, DC: {this.currentDatacenterId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
+        Logger.Debug($"Set stored values: CID: {this.currentContentId}, HW: {this.currentHomeworldId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
     }
 
     /// <summary>
@@ -345,7 +343,6 @@ internal sealed class LoginStateModule : BaseModule
     {
         this.currentContentId = 0;
         this.currentHomeworldId = 0;
-        this.currentDatacenterId = 0;
         this.currentTerritoryId = 0;
         this.currentWorldId = 0;
 

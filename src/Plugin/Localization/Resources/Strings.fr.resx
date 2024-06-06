@@ -222,7 +222,7 @@
     <value>Changement de Monde d'Amis</value>
   </data>
   <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receieve notifications when friends change worlds.</value>
+    <value>Automatically send and receive notifications when friends change worlds on your current datacenter.</value>
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
     <value>Paramètres d'événement</value>
