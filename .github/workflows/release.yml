@@ -102,7 +102,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Publish Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           file: ./src/Api/Dockerfile
           context: ./src/Api/
