@@ -21,7 +21,7 @@ notify = { version = "6.1.1", default-features = false, features = [
     "macos_fsevent",
 ] }
 anyhow = { version = "1.0.86", features = ["backtrace"] }
-clap = { version = "4.5.4", features = ["derive", "env"] }
+clap = { version = "4.5.8", features = ["derive", "env"] }
 uuid = { version = "1.9.1", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
 rust-embed = "8.4.0"
