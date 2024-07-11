@@ -1,7 +1,6 @@
 using System.Threading;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
