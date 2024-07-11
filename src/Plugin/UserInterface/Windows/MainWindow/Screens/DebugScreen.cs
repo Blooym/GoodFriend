@@ -1,11 +1,9 @@
 #if DEBUG
 using System;
-using Dalamud.Memory;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
-using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -64,18 +62,17 @@ internal static class DebugScreen
                     continue;
                 }
 
-                var fName = MemoryHelper.ReadSeStringNullTerminated((nint)f.Name).ToString();
-                if (string.IsNullOrEmpty(fName))
+                if (string.IsNullOrEmpty(f.NameString))
                 {
                     continue;
                 }
 
-                if (ImGui.Selectable(fName))
+                if (ImGui.Selectable(f.NameString))
                 {
                     var salt = CryptoUtil.GenerateSalt();
                     var hash = CryptoUtil.HashValue(f.ContentId, salt);
-                    ImGui.SetClipboardText($"Friend: {fName} Hash: {hash} | Salt: {salt}");
-                    ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, fName), (ushort)ChatUiColourKey.LightPurple1);
+                    ImGui.SetClipboardText($"Friend: {f.NameString} Hash: {hash} | Salt: {salt}");
+                    ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, f.NameString), 708);
                 }
             }
         }

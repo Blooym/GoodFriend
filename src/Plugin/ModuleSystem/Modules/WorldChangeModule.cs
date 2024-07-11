@@ -1,4 +1,3 @@
-using Dalamud.Memory;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using GoodFriend.Client.Http.Requests;
@@ -177,14 +176,13 @@ internal sealed class WorldChangeModule : BaseModule
             }
 
             // Show a message as long as world data can be fetched
-            var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friendCharacterData.Name);
             var worldName = this.worldCache.GetRow(worldChangeData.WorldId)?.Name;
             if (worldName is null)
             {
                 Logger.Warning($"Could not find world name for world id {worldChangeData.WorldId}.");
                 return;
             }
-            ChatHelper.Print(this.Config.ChangeMessage.Format(friendName, worldName));
+            ChatHelper.Print(this.Config.ChangeMessage.Format(friendCharacterData.NameString, worldName));
         });
     }
 

@@ -2,7 +2,6 @@ version = 1
 
 [about]
 identifier = "My GoodFriend Server"
-banner_url = "https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png"
 description = "Hello, This is an example description!"
 
 [about.custom_urls]

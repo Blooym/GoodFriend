@@ -50,13 +50,13 @@ public record struct StateUpdateType
 public record struct LoginStateChangeData
 {
     /// <summary>
-    ///     The ID of the world for the event.
+    ///     The ID of the world the event occured in.
     /// </summary>
     [JsonPropertyName("world_id")]
     public uint WorldId { get; set; }
 
     /// <summary>
-    ///     The ID of the territory for the event.
+    ///     The ID of the territory the event occured in.
     /// </summary>
     [JsonPropertyName("territory_id")]
     public ushort TerritoryId { get; set; }

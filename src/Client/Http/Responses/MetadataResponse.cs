@@ -40,12 +40,6 @@ public readonly record struct About
     public readonly string Description { get; init; }
 
     /// <summary>
-    ///     The URL to the banner of the API.
-    /// </summary>
-    [JsonPropertyName("banner_url")]
-    public readonly Uri? BannerUrl { get; init; }
-
-    /// <summary>
     ///     Custom URLs.
     /// </summary>
     [JsonPropertyName("custom_urls")]

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
@@ -120,7 +119,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
                 unsafe
                 {
-                    var chatMessage = new SeStringBuilder().AddText(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline);
+                    var chatMessage = new SeStringBuilder().AddText(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
                     foreach (var friend in characterData)
                     {
                         if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.Id != friend.CurrentWorld)
@@ -128,9 +127,8 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                             continue;
                         }
 
-                        var name = MemoryHelper.ReadStringNullTerminated((nint)friend.Name);
                         var currentWorld = SirenCore.GetOrCreateService<LuminaCacheService<World>>().GetRow(friend.CurrentWorld)?.Name.ToString() ?? "Unknown";
-                        chatMessage.AddText($"\n - {name}");
+                        chatMessage.AddText($"\n - {friend.NameString}");
                     }
                     ChatHelper.Print(chatMessage.Build());
                 }

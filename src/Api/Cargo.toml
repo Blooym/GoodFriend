@@ -21,10 +21,10 @@ notify = { version = "6.1.1", default-features = false, features = [
     "macos_fsevent",
 ] }
 anyhow = { version = "1.0.86", features = ["backtrace"] }
-clap = { version = "4.5.8", features = ["derive", "env"] }
-uuid = { version = "1.9.1", features = ["v4", "serde"] }
+clap = { version = "4.5.9", features = ["derive", "env"] }
+uuid = { version = "1.10.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
-rust-embed = "8.4.0"
+rust-embed = "8.5.0"
 toml = "0.8.14"
 url = { version = "2.5.2", features = ["serde"] }
 rocket_prometheus = "0.10.1"

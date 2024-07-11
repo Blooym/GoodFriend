@@ -66,12 +66,6 @@ internal sealed class InstanceInfoModule : BaseModule
 
         var metadata = this.cachedMetadata.Value;
 
-        // TODO: Improve handling of STBI not loading image.
-        if (!string.IsNullOrWhiteSpace(metadata.About.BannerUrl?.ToString()))
-        {
-            SiGui.Image(metadata.About.BannerUrl.ToString(), ScalingMode.None, new(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().X / 3));
-        }
-
         // Server name
         ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.DalamudGrey3);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImGuiColors.DalamudGrey3);

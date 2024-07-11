@@ -93,7 +93,7 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
         {
             LoggedIn = requestData.LoggedIn,
             TerritoryId = requestData.TerritoryId,
-            WorldId = requestData.WorldId
+            WorldId = requestData.WorldId,
         }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
         {
             PropertyNamingPolicy = new SnakeCaseNamingPolicy(),

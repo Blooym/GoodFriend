@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 /// An authenticated user that has been validated from checking a request's authentication token.
 pub struct AuthenticatedUser {
-    pub token_hash: String,
+    // pub token_hash: String,
 }
 
 #[derive(Debug)]
@@ -68,7 +68,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
         }
 
         return Outcome::Success(AuthenticatedUser {
-            token_hash: authentication_token,
+            // token_hash: authentication_token,
         });
     }
 }

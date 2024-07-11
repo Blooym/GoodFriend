@@ -19,7 +19,6 @@ pub struct Config {
 pub struct ApiAboutConfig {
     pub identifier: String,
     pub description: String,
-    pub banner_url: Url,
     pub custom_urls: HashMap<String, Url>,
 }
 
@@ -44,7 +43,6 @@ impl Default for ApiAboutConfig {
     fn default() -> Self {
         Self {
             identifier: String::from("GoodFriend"),
-            banner_url: Url::parse("https://raw.githubusercontent.com/Blooym/GoodFriend/main/src/Api/static/banner.png").expect("Default banner URL parse error"),
             custom_urls: HashMap::default(),
             description: String::default(),
         }

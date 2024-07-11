@@ -1,7 +1,7 @@
 using System.Threading;
-using Dalamud.Memory;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
@@ -215,13 +215,11 @@ internal sealed class LoginStateModule : BaseModule
             }
 
             // Get the name and free company tag.
-            var friendName = MemoryHelper.ReadSeStringNullTerminated((nint)friendCharacterData.Name).TextValue;
-            var friendFCTag = MemoryHelper.ReadSeStringNullTerminated((nint)friendCharacterData.FCTag).TextValue;
             var loginStateData = rawEvent.StateUpdateType.LoginStateChange.Value;
-            Logger.Debug($"Received login state update from {friendName} - checking display eligibility.");
+            Logger.Debug($"Received login state update from {friendCharacterData.NameString} - checking display eligibility.");
 
             // Evaluate eligibility.
-            if (this.Config.HideSameFC && friendFCTag == localPlayer.CompanyTag.TextValue)
+            if (this.Config.HideSameFC && friendCharacterData.FCTagString == localPlayer.CompanyTag.TextValue)
             {
                 Logger.Debug($"Ignoring login state update from from the same free company.");
                 return;
@@ -247,7 +245,10 @@ internal sealed class LoginStateModule : BaseModule
                 return;
             }
 
-            ChatHelper.Print(loginStateData.LoggedIn ? this.Config.LoginMessage.Format(friendName) : this.Config.LogoutMessage.Format(friendName));
+            ChatHelper.Print(loginStateData.LoggedIn
+                ? this.Config.LoginMessage.Format(friendCharacterData.NameString)
+                : this.Config.LogoutMessage.Format(friendCharacterData.NameString)
+            );
         });
     }
 
@@ -273,7 +274,7 @@ internal sealed class LoginStateModule : BaseModule
             ContentIdSalt = salt,
             LoggedIn = true,
             TerritoryId = this.currentTerritoryId,
-            WorldId = this.currentWorldId
+            WorldId = this.currentWorldId,
         });
     }
 
@@ -291,7 +292,7 @@ internal sealed class LoginStateModule : BaseModule
             ContentIdSalt = salt,
             LoggedIn = false,
             TerritoryId = this.currentTerritoryId,
-            WorldId = this.currentWorldId
+            WorldId = this.currentWorldId,
         });
         this.ClearStoredValues();
     }

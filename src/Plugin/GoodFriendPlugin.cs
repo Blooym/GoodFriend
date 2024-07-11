@@ -10,7 +10,7 @@ public sealed class GoodFriendPlugin : IDalamudPlugin
     ///     The plugin's main entry point.
     /// </summary>
     /// <param name="pluginInterface"></param>
-    public GoodFriendPlugin(DalamudPluginInterface pluginInterface)
+    public GoodFriendPlugin(IDalamudPluginInterface pluginInterface)
     {
         SirenCore.Initialize(pluginInterface, Constants.PluginName);
         pluginInterface.Create<DalamudInjections>();
