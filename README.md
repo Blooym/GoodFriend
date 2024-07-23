@@ -18,7 +18,7 @@ A Dalamud plugin & associated web-API that provides improved in-game social func
 
 ---
 
-About
+## About
 GoodFriend is divided into three components:
 
 - [Plugin](./src/Plugin): Interacts with the API on behalf of the user and automatically handles any interactions. Also includes functionality that does not interact with the API and, as such, can be used standalone.
@@ -27,15 +27,15 @@ GoodFriend is divided into three components:
 
 - [API](./src/Api): A REST API that manages the actual communication between clients, as well as various other tasks. The API is designed with privacy in mind and can be easily self-hosted. By default, the provided plugin will use the official API instance, but this can be changed to any other instance if desired.
 
-## Why?
+### Why?
 
 GoodFriend was initially created as a way to work around the limitations of the in-game friend system, which does not provide notifications when friends logged in or out of the game; It has since been extended with additional functionality.
 
-## Drawbacks
+### Drawbacks
 
 Due to the nature of the implementation, only users with the plugin installed can send and receive events with the API, as the plugin is responsible for handling the actual event sending and receiving. This means that if you have the plugin installed but your friend does not, any functionality that depends on receiving data from them will not work. Unfortunately, the only way to address this is to ask your friends to install GoodFriend.
 
-## Features
+### Features
 
 - Easy-to-self-host API, a pre-built docker image is available on GitHub Container Registry for amd64 and arm64 architectures.
 - Privacy-focused design from end-to-end; no identifiable information is ever available about you when sent to other users.
