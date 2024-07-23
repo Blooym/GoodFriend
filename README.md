@@ -8,9 +8,9 @@ A Dalamud plugin & associated web-API that provides improved in-game social func
 
 [![Latest Version](https://img.shields.io/github/v/release/Blooym/GoodFriend?color=blue&label=Version)](https://github.com/Blooym/GoodFriend/releases/latest)
 [![Plugin Downloads](https://img.shields.io/endpoint?url=https://dalamud-dl-count.blooym.workers.dev/GoodFriend&label=Plugin%20Downloads)](https://github.com/Blooym/GoodFriend)
-[![Connected Users](https://img.shields.io/endpoint?url=https://gf-clients.blooym.workers.dev/&label=Connected%20Users)](https://github.com/Blooym/GoodFriend)
 [![Crowdin Localization](https://badges.crowdin.net/goodfriend/localized.svg)](https://crowdin.com/project/goodfriend)
 [![Licence](https://img.shields.io/github/license/Blooym/Wholist?color=blue&label=Licence)](https://github.com/Blooym/GoodFriend/blob/main/LICENSE)
+<!--[![Connected Users](https://img.shields.io/endpoint?url=https://gf-clients.blooym.workers.dev/&label=Connected%20Users)](https://github.com/Blooym/GoodFriend)-->
 
 **[Issues](https://github.com/Blooym/GoodFriend/issues) · [Pull Requests](https://github.com/Blooym/GoodFriend/pulls) · [Releases](https://github.com/Blooym/GoodFriend/releases/latest)**
 
