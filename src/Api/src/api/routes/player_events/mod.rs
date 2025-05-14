@@ -1,6 +1,5 @@
 mod stream;
 mod update_loginstate;
-mod update_world;
 
 use rocket::serde::{Deserialize, Serialize};
 
@@ -25,16 +24,8 @@ pub enum PlayerStateUpdateType {
         territory_id: u16,
         logged_in: bool,
     },
-    WorldChange {
-        world_id: u32,
-    },
 }
 
 pub fn routes() -> Vec<rocket::Route> {
-    routes![
-        update_loginstate::post_loginstate,
-        update_world::post_world,
-        stream::get_stream
-    ]
+    routes![update_loginstate::post_loginstate, stream::get_stream]
 }
-pub use self::stream::CONNECTED_PLAYER_EVENTS_CLIENTS;

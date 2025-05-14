@@ -77,27 +77,6 @@
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
     <value>Deine Nachricht muss {0} für den Spielernamen enthalten.</value>
   </data>
-  <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Filter Optionen</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
-    <value>Zeige nur aktuelle Welt</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description" xml:space="preserve">
-    <value>Wenn aktiv, wirst du nur benachrichtigt, wenn ein Freund auf deine aktuelle Welt wechselt.</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_MessageOptions" xml:space="preserve">
-    <value>Nachrichten Optionen</value>
-  </data>
-  <data name="Modules_LoginStateModule_UI_WorldChangeMessage" xml:space="preserve">
-    <value>Welt-Änderungsnachricht</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid" xml:space="preserve">
-    <value>Ungültige Welt-Änderung-Nachricht, bitte überprüfe deine Syntax.</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip" xml:space="preserve">
-    <value>Deine Nachricht muss {0} für den Spielernamen und {1} für den Weltnamen enthalten.</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_Name" xml:space="preserve">
     <value>Freund-Streamverbindung</value>
   </data>
@@ -176,21 +155,6 @@
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Copied" xml:space="preserve">
     <value>Daten von {0} in die Zwischenablage kopiert</value>
   </data>
-  <data name="UI_MainWindow_ModuleScreen_Enabled" xml:space="preserve">
-    <value>Aktiviert</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Loading" xml:space="preserve">
-    <value>Lädt</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Disabled" xml:space="preserve">
-    <value>Deaktiviert</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Unloading" xml:space="preserve">
-    <value>Entladen</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Error" xml:space="preserve">
-    <value>Fehler</value>
-  </data>
   <data name="UI_MainWindow_ModuleScreen_SelectToView" xml:space="preserve">
     <value>Wähle ein Modul aus, um seine Einstellungen anzuzeigen.</value>
   </data>
@@ -218,12 +182,6 @@
   <data name="UI_MainWindow_Button_Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
-  <data name="Modules_WorldChangeModule_Title" xml:space="preserve">
-    <value>Friend World Change</value>
-  </data>
-  <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds on your current datacenter.</value>
-  </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
     <value>Event Settings</value>
   </data>
@@ -233,23 +191,11 @@
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
     <value>Whether or not to receive events from other friends.</value>
   </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
-    <value>Event Settings</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
-    <value>Receive Events</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
-    <value>Whether or not to receive events from other friends.</value>
-  </data>
   <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
     <value>Announcements</value>
   </data>
   <data name="Modules_AnnouncementModule_Description" xml:space="preserve">
     <value>Announcements allow for instance administrators to communicate important information to players in real-time. You can control what kind of announcements you receive in the settings or send your own announcements if you are an instance administrator.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_Header_Stream" xml:space="preserve">
-    <value>Announcement Stream</value>
   </data>
   <data name="Modules_AnnouncementModule_ConnectionStatus" xml:space="preserve">
     <value>Connection State:</value>

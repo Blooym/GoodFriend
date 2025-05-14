@@ -77,27 +77,6 @@
   <data name="Modules_LoginStateModule_UI_LogoutMessage_Tooltip" xml:space="preserve">
     <value>Votre message doit contenir {0} pour le nom du joueur.</value>
   </data>
-  <data name="Modules_WorldChangeModule_UI_FilteringOptions" xml:space="preserve">
-    <value>Options de filtrage</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld" xml:space="preserve">
-    <value>Afficher uniquement le monde actuel</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description" xml:space="preserve">
-    <value>Lorsque cette option est activée, vous ne serez notifié que si un ami change vers votre monde actuel.</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_MessageOptions" xml:space="preserve">
-    <value>Options des messages</value>
-  </data>
-  <data name="Modules_LoginStateModule_UI_WorldChangeMessage" xml:space="preserve">
-    <value>Message du changement de monde</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid" xml:space="preserve">
-    <value>Message de changement de monde invalide. Veuillez vérifier votre syntaxe.</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip" xml:space="preserve">
-    <value>Votre message doit contenir {0} pour le nom du joueur et {1} pour le nom du monde.</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_Name" xml:space="preserve">
     <value>Connexion au flux d'amis</value>
   </data>
@@ -176,21 +155,6 @@
   <data name="UI_MainWindow_DebugScreen_DetectedFriends_Copied" xml:space="preserve">
     <value>Copie les données {0} dans le presse-papiers</value>
   </data>
-  <data name="UI_MainWindow_ModuleScreen_Enabled" xml:space="preserve">
-    <value>Activé</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Loading" xml:space="preserve">
-    <value>Chargement en cours</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Disabled" xml:space="preserve">
-    <value>Désactivé</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Unloading" xml:space="preserve">
-    <value>Déchargement</value>
-  </data>
-  <data name="UI_MainWindow_ModuleScreen_Error" xml:space="preserve">
-    <value>Erreur</value>
-  </data>
   <data name="UI_MainWindow_ModuleScreen_SelectToView" xml:space="preserve">
     <value>Sélectionnez un module pour afficher ses paramètres.</value>
   </data>
@@ -218,12 +182,6 @@
   <data name="UI_MainWindow_Button_Debug" xml:space="preserve">
     <value>Débogage</value>
   </data>
-  <data name="Modules_WorldChangeModule_Title" xml:space="preserve">
-    <value>Changement de Monde d'Amis</value>
-  </data>
-  <data name="Modules_WorldChangeModule_Description" xml:space="preserve">
-    <value>Automatically send and receive notifications when friends change worlds on your current datacenter.</value>
-  </data>
   <data name="Modules_LoginStateModule_UI_EventSettings" xml:space="preserve">
     <value>Paramètres d'événement</value>
   </data>
@@ -233,23 +191,11 @@
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
     <value>Recevoir ou non des événements d'autres amis.</value>
   </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings" xml:space="preserve">
-    <value>Paramètres d'événement</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
-    <value>Réception d'événements</value>
-  </data>
-  <data name="Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
-    <value>Recevoir ou non des événements d'autres amis.</value>
-  </data>
   <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
     <value>Announcements</value>
   </data>
   <data name="Modules_AnnouncementModule_Description" xml:space="preserve">
     <value>Announcements allow for instance administrators to communicate important information to players in real-time. You can control what kind of announcements you receive in the settings or send your own announcements if you are an instance administrator.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_Header_Stream" xml:space="preserve">
-    <value>Announcement Stream</value>
   </data>
   <data name="Modules_AnnouncementModule_ConnectionStatus" xml:space="preserve">
     <value>Connection State:</value>

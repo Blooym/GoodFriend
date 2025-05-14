@@ -8,7 +8,6 @@ use rocket::serde::{Deserialize, Serialize};
 pub fn routes() -> Vec<rocket::Route> {
     routes![get_stream, post_announcement]
 }
-pub use stream::CONNECTED_ANNOUNCEMENTS_CLIENTS;
 
 /// The type of announcement that is being made.
 #[derive(Debug, Clone, Serialize, Deserialize)]

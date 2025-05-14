@@ -12,7 +12,7 @@ internal sealed class WindowingService : IDisposable
     /// <summary>
     ///     The windowing system to use.
     /// </summary>
-    private readonly WindowSystem windowSystem = new(Constants.PluginName);
+    private readonly WindowSystem windowSystem = new(DalamudInjections.PluginInterface.InternalName);
 
     /// <summary>
     ///     All windows to add to the windowing system, holds all references.

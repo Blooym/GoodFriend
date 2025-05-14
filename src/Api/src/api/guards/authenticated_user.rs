@@ -5,12 +5,13 @@ use rocket::{
     tokio::sync::RwLock,
     Request,
 };
-use sha3::{Digest, Sha3_256};
+use sha2::{Digest, Sha512};
 use std::sync::Arc;
 
 /// An authenticated user that has been validated from checking a request's authentication token.
 pub struct AuthenticatedUser {
-    // pub token_hash: String,
+    #[allow(dead_code)]
+    pub token_hash: String,
 }
 
 #[derive(Debug)]
@@ -54,7 +55,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
         }
 
         // Hash the provided token for comparing it.
-        let mut hasher = Sha3_256::new();
+        let mut hasher = Sha512::new();
         hasher.update(authentication_token);
         let authentication_token = hex::encode(hasher.finalize());
 
@@ -68,7 +69,7 @@ impl<'r> FromRequest<'r> for AuthenticatedUser {
         }
 
         return Outcome::Success(AuthenticatedUser {
-            // token_hash: authentication_token,
+            token_hash: authentication_token,
         });
     }
 }

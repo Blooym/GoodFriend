@@ -165,48 +165,6 @@ namespace GoodFriend.Plugin.Localization {
             }
         }
         
-        internal static string Modules_WorldChangeModule_UI_FilteringOptions {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_FilteringOptions", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_OnlyCurrentWorld", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_OnlyCurrentWorld_Description", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_MessageOptions {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_MessageOptions", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_LoginStateModule_UI_WorldChangeMessage {
-            get {
-                return ResourceManager.GetString("Modules_LoginStateModule_UI_WorldChangeMessage", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_WorldChangeMessage_Invalid", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_WorldChangeMessage_Tooltip", resourceCulture);
-            }
-        }
-        
         internal static string Modules_PlayerStreamConnectionModule_Name {
             get {
                 return ResourceManager.GetString("Modules_PlayerStreamConnectionModule_Name", resourceCulture);
@@ -363,36 +321,6 @@ namespace GoodFriend.Plugin.Localization {
             }
         }
         
-        internal static string UI_MainWindow_ModuleScreen_Enabled {
-            get {
-                return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Enabled", resourceCulture);
-            }
-        }
-        
-        internal static string UI_MainWindow_ModuleScreen_Loading {
-            get {
-                return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Loading", resourceCulture);
-            }
-        }
-        
-        internal static string UI_MainWindow_ModuleScreen_Disabled {
-            get {
-                return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Disabled", resourceCulture);
-            }
-        }
-        
-        internal static string UI_MainWindow_ModuleScreen_Unloading {
-            get {
-                return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Unloading", resourceCulture);
-            }
-        }
-        
-        internal static string UI_MainWindow_ModuleScreen_Error {
-            get {
-                return ResourceManager.GetString("UI_MainWindow_ModuleScreen_Error", resourceCulture);
-            }
-        }
-        
         internal static string UI_MainWindow_ModuleScreen_SelectToView {
             get {
                 return ResourceManager.GetString("UI_MainWindow_ModuleScreen_SelectToView", resourceCulture);
@@ -447,18 +375,6 @@ namespace GoodFriend.Plugin.Localization {
             }
         }
         
-        internal static string Modules_WorldChangeModule_Title {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_Title", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_Description {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_Description", resourceCulture);
-            }
-        }
-        
         internal static string Modules_LoginStateModule_UI_EventSettings {
             get {
                 return ResourceManager.GetString("Modules_LoginStateModule_UI_EventSettings", resourceCulture);
@@ -477,24 +393,6 @@ namespace GoodFriend.Plugin.Localization {
             }
         }
         
-        internal static string Modules_WorldChangeModule_UI_EventSettings {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description {
-            get {
-                return ResourceManager.GetString("Modules_WorldChangeModule_UI_EventSettings_ReceieveEvents_Description", resourceCulture);
-            }
-        }
-        
         internal static string Modules_AnnouncementModule_Name {
             get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_Name", resourceCulture);
@@ -504,12 +402,6 @@ namespace GoodFriend.Plugin.Localization {
         internal static string Modules_AnnouncementModule_Description {
             get {
                 return ResourceManager.GetString("Modules_AnnouncementModule_Description", resourceCulture);
-            }
-        }
-        
-        internal static string Modules_AnnouncementModule_Header_Stream {
-            get {
-                return ResourceManager.GetString("Modules_AnnouncementModule_Header_Stream", resourceCulture);
             }
         }
         

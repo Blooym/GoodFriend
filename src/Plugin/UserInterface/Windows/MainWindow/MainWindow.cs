@@ -39,7 +39,7 @@ internal sealed class MainWindow : Window
     private MainWindowScreen CurrentScreen { get; set; } = MainWindowScreen.Modules;
 
     /// <inheritdoc />
-    public MainWindow() : base(Constants.PluginName)
+    public MainWindow() : base(DalamudInjections.PluginInterface.Manifest.Name)
     {
         this.Size = ImGuiHelpers.ScaledVector2(730, 530);
         this.SizeConstraints = new WindowSizeConstraints()

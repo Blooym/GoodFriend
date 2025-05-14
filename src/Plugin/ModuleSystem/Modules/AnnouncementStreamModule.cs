@@ -115,7 +115,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     /// <summary>
     ///     Attempts to disconnect from relevant event streams when the player logs out.
     /// </summary>
-    private void OnLogout()
+    private void OnLogout(int type, int code)
     {
         if (IsAnnouncementStreamConnected())
         {

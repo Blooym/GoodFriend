@@ -20,7 +20,6 @@ use rocket::{
     shield::{self, Shield},
     tokio::sync::{broadcast::channel, RwLock},
 };
-use rocket_prometheus::PrometheusMetrics;
 use std::{path::PathBuf, sync::Arc};
 
 #[derive(Parser, Clone, Debug)]
@@ -58,14 +57,6 @@ struct GoodFriendArguments {
     )]
     /// The route to put all non-static file API routes after.
     pub api_base_route: String,
-
-    #[arg(
-        long = "api-enable-metrics",
-        env = "GOODFRIEND_API_ENABLE_METRICS",
-        default_value_t = false
-    )]
-    /// Enable collection of Prometheus metric data and expose it at '/metrics'.
-    pub enable_api_metrics: bool,
 }
 
 #[rocket::main]
@@ -130,35 +121,7 @@ async fn main() -> Result<()> {
             announcements_routes(),
         )
         .mount([base_route, "/auth"].concat(), auth_routes())
-        .attach(
-            Shield::default()
-                .enable(shield::XssFilter::Enable)
-                .enable(shield::Frame::Deny)
-                .enable(shield::Referrer::NoReferrer)
-                .enable(shield::NoSniff::Enable)
-                .enable(shield::Prefetch::Off),
-        );
-
-    // TODO: find a better way to do this.
-    if args.enable_api_metrics {
-        let prometheus = PrometheusMetrics::new();
-
-        // Register custom metrics.
-        prometheus
-            .registry()
-            .register(Box::new(CONNECTED_PLAYER_EVENTS_CLIENTS.clone()))?;
-        prometheus
-            .registry()
-            .register(Box::new(CONNECTED_ANNOUNCEMENTS_CLIENTS.clone()))?;
-
-        rocket
-            .attach(prometheus.clone())
-            .mount("/metrics", prometheus)
-            .manage(args)
-            .launch()
-            .await?;
-    } else {
-        rocket.manage(args).launch().await?;
-    }
+        .attach(Shield::default().enable(shield::Frame::Deny));
+    rocket.manage(args).launch().await?;
     Ok(())
 }

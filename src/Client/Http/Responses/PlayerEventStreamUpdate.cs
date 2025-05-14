@@ -36,12 +36,6 @@ public record struct StateUpdateType
     /// </summary>
     [JsonPropertyName("LoginStateChange")]
     public LoginStateChangeData? LoginStateChange { get; set; }
-
-    /// <summary>
-    ///     Represents the data received relating to a world change.
-    /// </summary>
-    [JsonPropertyName("WorldChange")]
-    public WorldChangeData? WorldChange { get; set; }
 }
 
 /// <summary>
@@ -66,16 +60,4 @@ public record struct LoginStateChangeData
     /// </summary>
     [JsonPropertyName("logged_in")]
     public bool LoggedIn { get; set; }
-}
-
-/// <summary>
-///     Represents the data received relating to a world change.
-/// </summary>
-public record struct WorldChangeData
-{
-    /// <summary>
-    ///     The ID of the world the player moved to.
-    /// </summary>
-    [JsonPropertyName("world_id")]
-    public uint WorldId { get; set; }
 }

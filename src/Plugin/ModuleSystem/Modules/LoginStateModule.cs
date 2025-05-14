@@ -7,9 +7,6 @@ using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using Sirensong;
-using Sirensong.Cache;
 using Sirensong.Extensions;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
@@ -21,8 +18,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules;
 /// <inheritdoc />
 internal sealed class LoginStateModule : BaseModule
 {
-    private readonly LuminaCacheService<World> worldCache = SirenCore.GetOrCreateService<LuminaCacheService<World>>();
-
     /// <summary>
     ///     The current world ID.
     /// </summary>
@@ -65,10 +60,13 @@ internal sealed class LoginStateModule : BaseModule
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
 
-        if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer is not null)
+        DalamudInjections.Framework.RunOnFrameworkThread(() =>
         {
-            this.SetStoredValues();
-        }
+            if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer is not null)
+            {
+                this.SetStoredValues();
+            }
+        });
     }
 
     /// <inheritdoc />
@@ -238,7 +236,7 @@ internal sealed class LoginStateModule : BaseModule
                 Logger.Debug($"Ignoring login state update from different world.");
                 return;
             }
-            if (this.Config.HideDifferentDatacenter && this.worldCache.GetRow(loginStateData.WorldId)?.DataCenter.Row != localPlayer.CurrentWorld.GameData?.DataCenter.Row)
+            if (this.Config.HideDifferentDatacenter && Services.WorldSheet.GetRow(loginStateData.WorldId).DataCenter.RowId != localPlayer.CurrentWorld.Value.DataCenter.RowId)
             {
                 Logger.Debug($"Ignoring login state update from different data center.");
                 return;
@@ -280,7 +278,7 @@ internal sealed class LoginStateModule : BaseModule
     /// <summary>
     ///     Called when the player logs out, sends a logout event.
     /// </summary>
-    private void OnLogout()
+    private void OnLogout(int type, int code)
     {
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
@@ -310,9 +308,9 @@ internal sealed class LoginStateModule : BaseModule
 
         // Update current world.
         var currentWorld = DalamudInjections.ClientState.LocalPlayer?.CurrentWorld;
-        if (currentWorld is not null && currentWorld.Id != 0 && currentWorld.Id != this.currentWorldId)
+        if (currentWorld.HasValue && currentWorld.Value.RowId != 0 && currentWorld.Value.RowId != this.currentWorldId)
         {
-            this.currentWorldId = currentWorld.Id;
+            this.currentWorldId = currentWorld.Value.RowId;
         }
 
         // Update current territory.
@@ -329,9 +327,9 @@ internal sealed class LoginStateModule : BaseModule
     private void SetStoredValues()
     {
         this.currentContentId = DalamudInjections.ClientState.LocalContentId;
-        this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer!.HomeWorld.Id;
+        this.currentHomeworldId = DalamudInjections.ClientState.LocalPlayer!.HomeWorld.RowId;
         this.currentTerritoryId = DalamudInjections.ClientState.TerritoryType;
-        this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.GameData!.RowId;
+        this.currentWorldId = DalamudInjections.ClientState.LocalPlayer.CurrentWorld.RowId;
 
         Logger.Debug($"Set stored values: CID: {this.currentContentId}, HW: {this.currentHomeworldId}, T: {this.currentTerritoryId}, W: {this.currentWorldId}");
     }

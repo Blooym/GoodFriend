@@ -2,8 +2,8 @@
   "Author": "Blooym",
   "Name": "GoodFriend",
   "InternalName": "GoodFriend",
-  "Punchline": "Major improvements to the in-game friend system, like getting login and logout notifications for your friends, and much more.",
-  "Description": "A plugin that improves to the in-game friend system.\n\nKey Features:\n- Send and receive notifications when your friends login and logout*.\n- Get notified when your friends use the world visit system*.\n- Chat messages showing how many of your friends are online when you log in.\n- Private in design, all identifying information is hashed before being sent to the server.\n\n * Other friends must also have GoodFriend installed.",
+  "Punchline": "Improvements to the in-game friend system, including login and logout notifications for your friends, and more.",
+  "Description": "Key Features:\n- Send and receive notifications when your friend using GoodFriend log in and log out.\n- Chat messages showing how many of your friends are online when you log in.\n\nDevelopers note on using this plugin after 7.0:\nAs of Patch 7.0 some data GoodFriend uses to identify players in events has become available to everyone who is nearby your character in-game, not just your friends and party members; GoodFriend itself will still only show notifications for people you have added on your in-game friends list, but please only use this plugin if you're comfortable with your login/logout events being theoretically visible to people not on your friends list.",
   "RepoUrl": "https://github.com/Blooym/GoodFriend",
   "Tags": [
     "Friend",

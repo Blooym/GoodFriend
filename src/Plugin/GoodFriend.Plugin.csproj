@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/9.0.2">
+<Project Sdk="Dalamud.NET.Sdk/12.0.2">
   <!-- Project Information -->
   <PropertyGroup>
     <Title>GoodFriend.Plugin</Title>
     <Authors>Blooym</Authors>
     <AssemblyName>GoodFriend</AssemblyName>
-    <Description>Major improvements to the in-game friend system, like getting login and logout notifications for your friends, and much more.</Description>
-    <Version>3.4.0.0</Version>
+    <Description>Major improvements to the in-game friend system, like getting login and logout
+      notifications for your friends, and much more.</Description>
+    <Version>3.5.0.0</Version>
     <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
   </PropertyGroup>
 
@@ -25,7 +26,8 @@
       </AssemblyAttribute>
     </ItemGroup>
   </Target>
-  <Target Name="EnsureClientKeySet" BeforeTargets="PrepareForBuild" Condition="'$(PLOGON_SECRET_CLIENT_KEY)' == '' And '$(Configuration)' != 'Debug'">
+  <Target Name="EnsureClientKeySet" BeforeTargets="PrepareForBuild"
+    Condition="'$(PLOGON_SECRET_CLIENT_KEY)' == '' And '$(Configuration)' != 'Debug'">
     <Error Text="Cannot build in release without PLOGON_SECRET_CLIENT_KEY set in environment." />
   </Target>
 

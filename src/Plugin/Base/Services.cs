@@ -9,6 +9,8 @@ using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem;
 using GoodFriend.Plugin.UserInterface;
+using Lumina.Excel;
+using Lumina.Excel.Sheets;
 
 namespace GoodFriend.Plugin.Base;
 
@@ -28,6 +30,7 @@ internal static class Services
     private static LocalizationService LocalizationService { get; set; } = null!;
     public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
     public static ModuleService ModuleService { get; private set; } = null!;
+    public static ExcelSheet<World> WorldSheet { get; private set; } = null!;
 
     public static HttpClient HttpClient { get; private set; } = null!;
     private static HappyEyeballsCallback HappyEyeballsCallback { get; set; } = null!;
@@ -53,6 +56,7 @@ internal static class Services
             ReconnectDelayMax = SseReconnectDelayMax,
             ReconnectDelayIncrement = SseReconnectDelayIncrement
         });
+        WorldSheet = DalamudInjections.DataManager.GetExcelSheet<World>();
         ModuleService = new ModuleService();
         WindowingService = new WindowingService();
     }

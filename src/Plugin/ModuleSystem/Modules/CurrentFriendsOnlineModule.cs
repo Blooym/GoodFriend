@@ -8,9 +8,6 @@ using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using Sirensong;
-using Sirensong.Cache;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -102,7 +99,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
             // Get how many friends are online.
             var onlineFriends = FriendHelper.FriendList.ToArray().Where(x => x.State.HasFlag(InfoProxyCommonList.CharacterData.OnlineStatus.Online));
-            var characterData = onlineFriends as InfoProxyCommonList.CharacterData[] ?? onlineFriends.ToArray();
+            var characterData = onlineFriends as InfoProxyCommonList.CharacterData[] ?? [.. onlineFriends];
             var onlineFriendCount = characterData.Length;
             DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
             if (onlineFriendCount is 0)
@@ -122,12 +119,12 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                     var chatMessage = new SeStringBuilder().AddText(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
                     foreach (var friend in characterData)
                     {
-                        if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.Id != friend.CurrentWorld)
+                        if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.RowId != friend.CurrentWorld)
                         {
                             continue;
                         }
 
-                        var currentWorld = SirenCore.GetOrCreateService<LuminaCacheService<World>>().GetRow(friend.CurrentWorld)?.Name.ToString() ?? "Unknown";
+                        var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ToString() ?? "Unknown";
                         chatMessage.AddText($"\n - {friend.NameString}");
                     }
                     ChatHelper.Print(chatMessage.Build());

@@ -25,7 +25,7 @@ GoodFriend is divided into three components:
 
 - [Client](./src/Client): A usage-agnostic client library that wraps API calls and includes things like an SSE client and automatic request serialization/deserialization. This library is used by the plugin to interact with the API but is not directly tied to Dalamud so can, in theory, can be used by any application (although it's not recommended).
 
-- [API](./src/Api): A REST API that manages the actual communication between clients, as well as various other tasks. The API is designed with privacy in mind and can be easily self-hosted. By default, the provided plugin will use the official API instance, but this can be changed to any other instance if desired.
+- [API](./src/Api): A REST API that manages the actual communication between clients, as well as various other tasks. By default, the provided plugin will use the official API instance, but this can be changed to any other instance if desired.
 
 ### Why?
 
@@ -38,7 +38,6 @@ Due to the nature of the implementation, only users with the plugin installed ca
 ### Features
 
 - Easy-to-self-host API, a pre-built docker image is available on GitHub Container Registry for amd64 and arm64 architectures.
-- Privacy-focused design from end-to-end; no identifiable information is ever available about you when sent to other users.
 - Notifications for when friends using GoodFriend login or logout.
 - Notifications for when friends using GoodFriend change worlds. 
 - Notifications of how many friends are online when you login.

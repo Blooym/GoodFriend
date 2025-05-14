@@ -1,15 +1,12 @@
 using System;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-#if !DEBUG
-using System.Reflection;
-#endif
 
 namespace GoodFriend.Plugin.Utility;
 
 internal static class CryptoUtil
 {
-#if !DEBUG
     /// <summary>
     ///     Gets signature bytes for the current assembly.
     /// </summary>
@@ -19,9 +16,7 @@ internal static class CryptoUtil
     ///    build.
     /// </remarks>
     /// <returns>The signature bytes.</returns>
-    // to hex string
     private static string GetSignatureBytes() => Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString();
-#endif
 
     /// <summary>
     ///     Generates a random salt of the given length.
@@ -44,11 +39,7 @@ internal static class CryptoUtil
     /// <returns>The hashed value.</returns>
     public static string HashValue(object value, string salt)
     {
-#if DEBUG
-        var toHash = $"{value}{salt}";
-#else
         var toHash = $"{value}{salt}{GetSignatureBytes()}";
-#endif
         var outcome = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(toHash)));
         return outcome;
     }

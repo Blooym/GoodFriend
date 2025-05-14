@@ -39,7 +39,7 @@ internal sealed class InstanceInfoModule : BaseModule
     public override string Name { get; } = Strings.Modules_InstanceInfoModule_Name;
 
     /// <inheritdoc />
-    public override ModuleTag Tag { get; } = ModuleTag.Information;
+    public override ModuleTag Tag { get; } = ModuleTag.Connectivity;
 
     /// <inheritdoc />
     public override uint DisplayWeight { get; } = 1;

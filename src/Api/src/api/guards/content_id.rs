@@ -19,8 +19,7 @@ static SEEN_CONTENT_ID_HASHES: Mutex<Vec<String>> = Mutex::new(Vec::new());
 
 /// A guard that checks if a Content ID hash has already been seen by all endpoints using this guard.
 /// This forces a new hash to be used for each event where this guard is used.
-/// Used to prevent spamming of the same event and improves privacy by removing the ability track the same
-/// hash across multiple events.
+/// Used to prevent spamming of the same event multiple times without re-processing the hash and salt.
 ///
 /// Note: This guard will fail if the `content_id_hash` query parameter is missing.
 pub struct UniqueContentId {
