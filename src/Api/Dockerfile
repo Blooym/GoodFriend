@@ -38,9 +38,8 @@ FROM scratch AS runtime
 COPY --from=user /etc/passwd /etc/passwd
 COPY --from=user /bin/false /bin/false
 USER goodfriend
-ENV ROCKET_ADDRESS=0.0.0.0
-ENV ROCKET_PORT=8000
-EXPOSE 8000
+ENV GOODFRIEND_API_ADDRESS=0.0.0.0:8001
+EXPOSE 8001
 
 COPY --from=build /build/target/release/goodfriend-api /usr/bin/
 

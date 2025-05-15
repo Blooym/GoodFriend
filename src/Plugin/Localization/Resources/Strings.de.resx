@@ -90,7 +90,7 @@
     <value>Verbunden</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
-    <value>Verbinden...</value>
+    <value>Verbinden</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
     xml:space="preserve">
@@ -127,9 +127,6 @@
   </data>
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Fehler beim Abrufen der Metadaten, versuche es später erneut.</value>
-  </data>
-  <data name="Modules_InstanceInfoModule_MetadataFetch_Fetching" xml:space="preserve">
-    <value>Abrufen von Metadaten...</value>
   </data>
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>Derzeit sind {0} Spieler online</value>

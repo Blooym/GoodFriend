@@ -90,7 +90,7 @@
     <value>已连接</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
-    <value>Connecting...</value>
+    <value>Connecting</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
     xml:space="preserve">
@@ -128,9 +128,7 @@
   <data name="Modules_InstanceInfoModule_MetadataFetch_Failed" xml:space="preserve">
     <value>Failed to fetch metadata, will try again later.</value>
   </data>
-  <data name="Modules_InstanceInfoModule_MetadataFetch_Fetching" xml:space="preserve">
-    <value>Fetching metadata...</value>
-  </data>
+
   <data name="Modules_InstanceInfoModule_ConnectedClients_Count" xml:space="preserve">
     <value>There are currently {0} players online</value>
   </data>
