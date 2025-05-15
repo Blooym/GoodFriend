@@ -1,5 +1,8 @@
 {
     "recommendations": [
-        "ms-dotnettools.csharp"
+        "ms-dotnettools.csharp",
+        "rust-lang.rust-analyzer",
+        "serayuzgur.crates",
+        "tamasfe.even-better-toml"
     ]
 }
