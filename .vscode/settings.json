@@ -10,4 +10,8 @@
     "dotnet.codeLens.enableReferencesCodeLens": true,
     "dotnet.formatting.organizeImportsOnFormat": true,
     "dotnet.defaultSolution": "Wholist.sln",
+    // Rust
+    "rust-analyzer.linkedProjects": [
+        "./src/Api/Cargo.toml"
+    ],
 }
