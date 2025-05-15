@@ -3,6 +3,6 @@ use rocket::http::Status;
 
 /// Validates an authentication key via the authentication guard and returns OK if it's valid.
 #[post("/validate")]
-pub async fn get_validate_auth(_user: AuthenticatedUser) -> Status {
+pub async fn get_validate_auth(_auth_user: AuthenticatedUser) -> Status {
     Status::Ok
 }
