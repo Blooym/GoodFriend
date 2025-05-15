@@ -7,12 +7,14 @@ on:
       - "src/Plugin/**.cs"
       - "src/Plugin/*.csproj"
       - "src/Plugin/packages.lock.json"
+      - "src/Sirensong/**.cs"
   pull_request:
     branches: ["main"]
     paths:
       - "src/Plugin/**.cs"
       - "src/Plugin/*.csproj"
       - "src/Plugin/packages.lock.json"
+      - "src/Sirensong/**.cs"
     types: [ready_for_review, opened, synchronize]
 
 jobs:
