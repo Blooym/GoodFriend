@@ -1,13 +1,13 @@
 # ----------
 #    USER
 # ----------
-FROM alpine:latest as user
+FROM alpine:latest AS user
 RUN adduser -S -s /bin/false -D goodfriend
 
 # -----------
 #    BUILD
 # -----------
-FROM rust:1-alpine as build
+FROM rust:1-alpine AS build
 WORKDIR /build
 
 # Install essential build tools.
@@ -33,7 +33,7 @@ RUN cargo build ${RUSTC_APP_FLAGS}
 # -----------
 #   RUNTIME
 # -----------
-FROM scratch as runtime
+FROM scratch AS runtime
 
 COPY --from=user /etc/passwd /etc/passwd
 COPY --from=user /bin/false /bin/false

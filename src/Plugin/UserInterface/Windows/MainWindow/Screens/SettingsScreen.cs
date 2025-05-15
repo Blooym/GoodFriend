@@ -61,7 +61,7 @@ internal static class SettingsScreen
     {
         var groupKey = Services.PluginConfiguration.ApiConfig.PrivateGroupKey;
         SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Setting_GroupKey);
-        if (SiGui.InputText("##groupKey", ref groupKey, 250, true, ImGuiInputTextFlags.Password))
+        if (SiGui.InputText("##groupKey", ref groupKey, 250, false, ImGuiInputTextFlags.Password))
         {
             Services.PluginConfiguration.ApiConfig.PrivateGroupKey = groupKey;
             Services.PluginConfiguration.Save();
@@ -106,7 +106,7 @@ internal static class SettingsScreen
 
         var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
         SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken);
-        if (SiGui.InputText("##authToken", ref authKey, 250, true, ImGuiInputTextFlags.Password))
+        if (SiGui.InputText("##authToken", ref authKey, 250, false, ImGuiInputTextFlags.Password))
         {
             if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
             {
