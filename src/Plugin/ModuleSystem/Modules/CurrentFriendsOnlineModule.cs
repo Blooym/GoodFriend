@@ -118,7 +118,10 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
 
                 unsafe
                 {
-                    var chatMessage = new SeStringBuilder().AddText(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
+
+                    var chatMessage = new SeStringBuilder().AddText(onlineFriendCount == 1
+                        ? string.Format(Strings.Modules_CurrentFriendsOnlineModule_SingularFriendOnline, onlineFriendCount)
+                        : string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
                     foreach (var friend in characterData)
                     {
                         if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.RowId != friend.CurrentWorld)
@@ -126,7 +129,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                             continue;
                         }
 
-                        var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ToString() ?? "Unknown";
+                        var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ExtractText() ?? "Unknown";
                         chatMessage.AddText($"\n - {friend.NameString}");
                     }
                     ChatHelper.Print(chatMessage.Build());

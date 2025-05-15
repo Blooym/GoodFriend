@@ -316,4 +316,7 @@
   <data name="Modules_AnnouncementStreamModule_Name" xml:space="preserve">
     <value>Announcements Connection</value>
   </data>
+  <data name="Modules_CurrentFriendsOnlineModule_SingularFriendOnline" xml:space="preserve">
+    <value>There is currently {0} friend online.</value>
+  </data>
 </root>
