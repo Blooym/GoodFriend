@@ -1,9 +1,6 @@
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Text.Json;
-using GoodFriend.Client.Http;
-using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using Sirensong.UserInterface;
@@ -16,29 +13,6 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules;
 /// </summary>
 internal abstract class BaseModule
 {
-    /// <summary>
-    ///     The PlayerEvent SSE stream.
-    /// </summary>
-    /// <remarks>
-    ///    This is a convenience property for <see cref="Services.PlayerEventSseStream"/>.
-    /// </remarks>
-    protected static SseClient<PlayerEventStreamUpdate> PlayerEventSseStream => Services.PlayerEventSseStream;
-
-    /// <summary>
-    ///     The Announcement SSE stream.
-    /// </summary>
-    /// <remarks>
-    ///    This is a convenience property for <see cref="Services.AnnouncementSseStream"/>.
-    /// </remarks>
-    protected static SseClient<AnnouncementStreamUpdate> AnnouncementSseStream => Services.AnnouncementSseStream;
-
-    /// <summary>
-    ///     The shared HttpClient.
-    /// </summary>
-    /// <remarks>
-    ///    This is a convenience property for <see cref="Services.HttpClient"/>.
-    /// </remarks>
-    protected static HttpClient HttpClient => Services.HttpClient;
 
     /// <summary>
     ///     a name for this module.
@@ -291,7 +265,6 @@ internal enum ModuleState
 /// </summary>
 internal enum ModuleTag
 {
-    Information,
     Notifications,
     Connectivity,
 }

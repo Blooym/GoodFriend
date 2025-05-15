@@ -8,7 +8,7 @@ namespace GoodFriend.Plugin.Base;
 /// </summary>
 internal static class Constants
 {
-    public const uint WaitingForFriendListApproval = 0x20;
+    public const uint WaitingForFriendListApprovalStatus = 0x20;
 
     /// <summary>
     ///     Plugin build information.
@@ -19,7 +19,6 @@ internal static class Constants
         ///     The client key used for this plugin.
         /// </summary>
         public static readonly string? ClientKey = Assembly.GetExecutingAssembly().GetCustomAttribute<ClientKeyAttribute>()?.Value;
-
     }
 
     /// <summary>

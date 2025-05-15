@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
 
     </xsd:element>
@@ -13,10 +14,12 @@
     <value>1.3</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Modules_LoginStateModule_Name" xml:space="preserve">
     <value>Friend Login &amp; Logout</value>
@@ -90,10 +93,12 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
     <value>Connecting...</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
+    xml:space="preserve">
     <value>Disconnected</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting"
+    xml:space="preserve">
     <value>Disconnecting</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
@@ -102,16 +107,20 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Connection Statistics</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal"
+    xml:space="preserve">
     <value>Events received: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent"
+    xml:space="preserve">
     <value>Last event: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal"
+    xml:space="preserve">
     <value>Heartbeats received: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat"
+    xml:space="preserve">
     <value>Last heartbeat: {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
@@ -189,8 +198,9 @@
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
     <value>Receive Events</value>
   </data>
-  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description" xml:space="preserve">
-    <value>Whether or not to receive events from other friends.</value>
+  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description"
+    xml:space="preserve">
+    <value>Whether to receive events from other friends.</value>
   </data>
   <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
     <value>Announcements</value>
@@ -279,19 +289,22 @@
   <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount" xml:space="preserve">
     <value>Send online friend count chat message</value>
   </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description"
+    xml:space="preserve">
     <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you will not be included.</value>
   </data>
   <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames" xml:space="preserve">
     <value>Include friend names</value>
   </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description" xml:space="preserve">
+  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description"
+    xml:space="preserve">
     <value>Adds a list of the names of your online friends to the count message.</value>
   </data>
   <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay" xml:space="preserve">
     <value>Delay</value>
   </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description" xml:space="preserve">
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description"
+    xml:space="preserve">
     <value>The amount of seconds to wait after logging in to display the message. If online friends are not correctly shown on login then increase this value.</value>
   </data>
   <data name="Modules_CurrentFriendsOnlineModule_NoFriendsOnline" xml:space="preserve">

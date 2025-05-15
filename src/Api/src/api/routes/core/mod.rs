@@ -1,8 +1,7 @@
 mod health;
-mod metadata;
 
-use crate::api::routes::core::{health::get_health, metadata::get_metadata};
+use crate::api::routes::core::health::get_health;
 
 pub fn routes() -> Vec<rocket::Route> {
-    routes![get_health, get_metadata]
+    routes![get_health]
 }

@@ -55,7 +55,7 @@ internal sealed class LoginStateModule : BaseModule
     /// <inheritdoc />
     protected override void OnEnable()
     {
-        PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
+        Services.PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
         DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -72,7 +72,7 @@ internal sealed class LoginStateModule : BaseModule
     /// <inheritdoc />
     protected override void OnDisable()
     {
-        PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
+        Services.PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
         DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -205,7 +205,7 @@ internal sealed class LoginStateModule : BaseModule
             var friendCharacterData = friendFromHash.Value;
 
             // Ignore the event if the friend request is pending.
-            if (friendCharacterData.ExtraFlags == Constants.WaitingForFriendListApproval)
+            if (friendCharacterData.ExtraFlags == Constants.WaitingForFriendListApprovalStatus)
             {
                 Logger.Debug($"Ignoring login state event for a pending friend request.");
                 return;
@@ -265,7 +265,7 @@ internal sealed class LoginStateModule : BaseModule
 
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-        new PostPlayerLoginStateRequest().Send(HttpClient, new()
+        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
         {
             ContentIdHash = hash,
             ContentIdSalt = salt,
@@ -283,7 +283,7 @@ internal sealed class LoginStateModule : BaseModule
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
         Logger.Debug("Sending logout event.");
-        new PostPlayerLoginStateRequest().Send(HttpClient, new()
+        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
         {
             ContentIdHash = hash,
             ContentIdSalt = salt,

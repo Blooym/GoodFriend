@@ -1,5 +1,6 @@
 #if DEBUG
 using System;
+using Dalamud.Interface.Utility.Raii;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
@@ -52,31 +53,32 @@ internal static class DebugScreen
         SiGui.Heading(Strings.UI_MainWindow_DebugScreen_DetectedFriends);
         SiGui.TextWrapped(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Usage);
         ImGui.Dummy(Spacing.SectionSpacing);
-
-        if (ImGui.BeginChild("DebugFriendList"))
+        using (var child = ImRaii.Child("DebugFriendList"))
         {
-            foreach (var f in FriendHelper.FriendList)
+            if (child.Success)
             {
-                if (f.ExtraFlags == Constants.WaitingForFriendListApproval)
+                foreach (var f in FriendHelper.FriendList)
                 {
-                    continue;
-                }
+                    if (f.ExtraFlags == Constants.WaitingForFriendListApprovalStatus)
+                    {
+                        continue;
+                    }
 
-                if (string.IsNullOrEmpty(f.NameString))
-                {
-                    continue;
-                }
+                    if (string.IsNullOrEmpty(f.NameString))
+                    {
+                        continue;
+                    }
 
-                if (ImGui.Selectable(f.NameString))
-                {
-                    var salt = CryptoUtil.GenerateSalt();
-                    var hash = CryptoUtil.HashValue(f.ContentId, salt);
-                    ImGui.SetClipboardText($"Friend: {f.NameString} Hash: {hash} | Salt: {salt}");
-                    ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, f.NameString), 708);
+                    if (ImGui.Selectable(f.NameString))
+                    {
+                        var salt = CryptoUtil.GenerateSalt();
+                        var hash = CryptoUtil.HashValue(f.ContentId, salt);
+                        ImGui.SetClipboardText($"Friend: {f.NameString} Hash: {hash} | Salt: {salt}");
+                        ChatHelper.Print(string.Format(Strings.UI_MainWindow_DebugScreen_DetectedFriends_Copied, f.NameString), 708);
+                    }
                 }
             }
         }
-        ImGui.EndChild();
     }
 
     private enum DebugOption

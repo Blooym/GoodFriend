@@ -10,7 +10,7 @@ internal static class FriendUtil
     /// </summary>
     /// <param name="contentIdHash">The content ID hash to search for.</param>
     /// <param name="contentIdSalt">The salt used to hash the original content ID.</param>
-    /// <returns>The friend if found, otherwise null.</returns>
+    /// <returns>The friend's CharacterData if matched.</returns>
     public static InfoProxyCommonList.CharacterData? GetFriendFromHash(string contentIdHash, string contentIdSalt)
     {
         foreach (var friend in FriendHelper.FriendList)

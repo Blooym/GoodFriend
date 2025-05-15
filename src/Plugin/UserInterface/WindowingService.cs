@@ -51,7 +51,6 @@ internal sealed class WindowingService : IDisposable
         this.windowSystem.RemoveAllWindows();
         DalamudInjections.PluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
         DalamudInjections.PluginInterface.UiBuilder.OpenConfigUi -= this.ConfigWindow.Toggle;
-
         this.disposedValue = true;
     }
 }

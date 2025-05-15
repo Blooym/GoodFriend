@@ -4,14 +4,14 @@ using GoodFriend.Plugin.Base;
 
 namespace GoodFriend.Plugin.Localization;
 
-internal sealed class LocalizationService : IDisposable
+internal sealed class LocalizationManager : IDisposable
 {
     private bool disposedValue;
 
     /// <summary>
     ///     Creates a new resource manager and sets up resources.
     /// </summary>
-    public LocalizationService()
+    public LocalizationManager()
     {
         this.SetupLocalization(DalamudInjections.PluginInterface.UiLanguage);
         DalamudInjections.PluginInterface.LanguageChanged += this.SetupLocalization;
@@ -35,6 +35,7 @@ internal sealed class LocalizationService : IDisposable
     /// <param name="language">The language to use.</param>
     private void SetupLocalization(string language)
     {
+        ObjectDisposedException.ThrowIf(this.disposedValue, this);
         try
         {
             Logger.Information($"Setting up localization for {language}");

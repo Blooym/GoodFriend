@@ -27,13 +27,12 @@ internal static class Services
     public static SseClient<AnnouncementStreamUpdate> AnnouncementSseStream { get; private set; } = null!;
 
     private static WindowingService WindowingService { get; set; } = null!;
-    private static LocalizationService LocalizationService { get; set; } = null!;
+    private static LocalizationManager LocalizationService { get; set; } = null!;
+    private static HappyEyeballsCallback HappyEyeballsCallback { get; set; } = null!;
     public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
     public static ModuleService ModuleService { get; private set; } = null!;
     public static ExcelSheet<World> WorldSheet { get; private set; } = null!;
-
     public static HttpClient HttpClient { get; private set; } = null!;
-    private static HappyEyeballsCallback HappyEyeballsCallback { get; set; } = null!;
 
     /// <summary>
     ///     Initializes the service class.
@@ -42,7 +41,7 @@ internal static class Services
     {
         HappyEyeballsCallback = new HappyEyeballsCallback();
         PluginConfiguration = PluginConfiguration.Load();
-        LocalizationService = new LocalizationService();
+        LocalizationService = new LocalizationManager();
         HttpClient = CreateHttpClient(HappyEyeballsCallback);
         PlayerEventSseStream = GetPlayerEventStreamRequest.CreateSseClient(CreateHttpClient(HappyEyeballsCallback), new()
         {

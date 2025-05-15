@@ -8,21 +8,18 @@ namespace GoodFriend.Plugin.Utility;
 internal static class CryptoUtil
 {
     /// <summary>
-    ///     Gets signature bytes for the current assembly.
+    ///     Gets the module version identifier of the current assembly.
     /// </summary>
     /// <remarks>
-    ///    This is used as a salt for hashing values in release builds as it allows only users on the same build to
-    ///    read the hashed values unless this value is reverse engineered - although it will still change on every
-    ///    build.
+    ///    This is used as a salt for hashing values as it allows only users on the same build to
+    ///    read the hashed values unless this value is extracted manually.
     /// </remarks>
-    /// <returns>The signature bytes.</returns>
-    private static string GetSignatureBytes() => Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToString();
+    private static Guid GetModuleVersionId() => Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId;
 
     /// <summary>
     ///     Generates a random salt of the given length.
     /// </summary>
     /// <param name="length">The length of the salt to generate.</param>
-    /// <returns>The generated salt.</returns>
     public static string GenerateSalt(uint length = 32)
     {
         using var seed = RandomNumberGenerator.Create();
@@ -36,10 +33,9 @@ internal static class CryptoUtil
     /// </summary>
     /// <param name="value">The value to hash.</param>
     /// <param name="salt">The salt to use.</param>
-    /// <returns>The hashed value.</returns>
     public static string HashValue(object value, string salt)
     {
-        var toHash = $"{value}{salt}{GetSignatureBytes()}";
+        var toHash = $"{value}{DateTime.UtcNow:yyyyMMddHH}{salt}{GetModuleVersionId()}";
         var outcome = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(toHash)));
         return outcome;
     }

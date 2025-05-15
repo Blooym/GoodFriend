@@ -19,7 +19,7 @@ internal sealed class ModuleService : IDisposable
     public ModuleService()
     {
         // Load required modules first and then by load priority.
-        var modules = LoadModules().OrderByDescending(x => x.LoadPriority).ToList();
+        var modules = LoadModules().OrderByDescending(x => x.LoadPriority);
         foreach (var module in modules)
         {
             Logger.Information($"Requesting load from module {module.GetType().FullName} with priority {module.LoadPriority}.");
@@ -52,7 +52,6 @@ internal sealed class ModuleService : IDisposable
                 {
                     continue;
                 }
-
                 Logger.Information($"Creating instance of module {module.FullName}.");
                 var ctor = module.GetConstructor(Type.EmptyTypes) ?? throw new InvalidOperationException($"The module {module.FullName} does not have a parameterless constructor.");
                 var instance = (BaseModule)ctor.Invoke(null);

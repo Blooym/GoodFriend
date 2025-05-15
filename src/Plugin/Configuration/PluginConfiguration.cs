@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using Dalamud.Configuration;
 using GoodFriend.Plugin.Base;
-using Newtonsoft.Json;
 
 namespace GoodFriend.Plugin.Configuration;
 
@@ -11,6 +10,11 @@ namespace GoodFriend.Plugin.Configuration;
 /// </summary>
 internal sealed class PluginConfiguration : IPluginConfiguration
 {
+    /// <summary>
+    ///     The default API URL to use.
+    /// </summary>
+    private static readonly Uri DefaultBaseUri = new("https://goodfriend.blooym.dev");
+
     /// <summary>
     ///     The current configuration version, incremented on breaking changes.
     /// </summary>
@@ -27,17 +31,8 @@ internal sealed class PluginConfiguration : IPluginConfiguration
     public sealed class ApiConfiguration
     {
         /// <summary>
-        ///     The default API URL to use.
+        ///     The Base URL to use when interacting with the API.
         /// </summary>
-        [JsonIgnore]
-        public static readonly Uri DefaultBaseUri = new("https://aether.blooym.dev/v3/");
-
-        /// <summary>
-        ///     The BaseURL to use when interacting with the API.
-        /// </summary>
-        /// <remarks>
-        ///     This requires a restart to take effect.
-        /// </remarks>
         public Uri BaseUrl { get; set; } = DefaultBaseUri;
 
         /// <summary>
@@ -49,7 +44,7 @@ internal sealed class PluginConfiguration : IPluginConfiguration
     /// <summary>
     ///     Saves the current configuration to disk.
     /// </summary>
-    internal void Save() => DalamudInjections.PluginInterface.SavePluginConfig(this);
+    public void Save() => DalamudInjections.PluginInterface.SavePluginConfig(this);
 
     /// <summary>
     ///     Loads the configuration from the disk or creates a new one if not found.
@@ -58,13 +53,10 @@ internal sealed class PluginConfiguration : IPluginConfiguration
     public static PluginConfiguration Load()
     {
         var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
-
-        // Migrate api version if not up to date
-        var apiBaseUrl = config.ApiConfig.BaseUrl.AbsoluteUri;
-        if (apiBaseUrl.StartsWith("https://aether.blooym.dev", true, CultureInfo.InvariantCulture) && !apiBaseUrl.Contains("/v3/", StringComparison.InvariantCultureIgnoreCase))
+        if (config.ApiConfig.BaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", true, CultureInfo.InvariantCulture))
         {
-            Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
-            config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
+            Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {DefaultBaseUri}");
+            config.ApiConfig.BaseUrl = DefaultBaseUri;
             config.Save();
         }
         return config;

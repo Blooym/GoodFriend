@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
+using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
@@ -49,32 +50,33 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
         }
         ImGui.Dummy(Spacing.ReadableSpacing);
 
-        ImGui.BeginDisabled(!friendCountOnlineEnabled);
-        ImGui.Indent();
-        var namesOnLogin = this.Config.AddFriendNamesToOnlineCount;
-        if (SiGui.Checkbox(Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames, Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description, ref namesOnLogin))
+        using (ImRaii.Disabled(!friendCountOnlineEnabled))
         {
-            this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
+            ImGui.Indent();
+            var namesOnLogin = this.Config.AddFriendNamesToOnlineCount;
+            if (SiGui.Checkbox(Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames, Strings.Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description, ref namesOnLogin))
+            {
+                this.Config.AddFriendNamesToOnlineCount = namesOnLogin;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
-        var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
-        SiGui.Text(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay);
-        if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds))
-        {
-            this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
-            this.Config.Save();
+            var time = (int)this.Config.OnlineFriendShowDelay.TotalSeconds;
+            SiGui.Text(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay);
+            if (SiGui.SliderInt("##OnlineFriendShowDelaySlider", ref time, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMinSeconds, CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayMaxSeconds))
+            {
+                this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(time);
+                this.Config.Save();
+            }
+            ImGui.SameLine();
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.ArrowsSpin))
+            {
+                this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
+                this.Config.Save();
+            }
+            SiGui.TextDisabledWrapped(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description);
+            ImGui.Unindent();
         }
-        ImGui.SameLine();
-        if (ImGuiComponents.IconButton(FontAwesomeIcon.ArrowsSpin))
-        {
-            this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
-            this.Config.Save();
-        }
-        SiGui.TextDisabledWrapped(Strings.Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description);
-        ImGui.Unindent();
-        ImGui.EndDisabled();
     }
 
     private void OnLogin()

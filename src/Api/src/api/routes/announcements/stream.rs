@@ -2,7 +2,7 @@ use super::AnnouncementMessage;
 use crate::api::guards::client_key::ClientKey;
 use rocket::response::stream::{Event, EventStream};
 use rocket::tokio::select;
-use rocket::tokio::sync::broadcast::{error::RecvError, Sender};
+use rocket::tokio::sync::broadcast::{Sender, error::RecvError};
 use rocket::{Shutdown, State};
 
 /// Get a stream of announcements.

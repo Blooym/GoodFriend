@@ -1,7 +1,7 @@
 [package]
 name = "goodfriend-api"
 version = "3.5.0"
-edition = "2021"
+edition = "2024"
 authors = ["Blooym"]
 license = "AGPL-3.0-only"
 repository = "https://github.com/Blooym/GoodFriend"
@@ -16,15 +16,10 @@ rocket = { version = "0.5.1", features = [
     "json",
     "uuid",
 ], default-features = false }
-notify = { version = "8.0.0", default-features = false, features = [
-    "macos_kqueue",
-    "macos_fsevent",
-] }
 anyhow = { version = "1.0.98", features = ["backtrace"] }
 clap = { version = "4.5.38", features = ["derive", "env"] }
 uuid = { version = "1.16.0", features = ["v4", "serde"] }
 dotenvy = "0.15.7"
-toml = "0.8.22"
 url = { version = "2.5.4", features = ["serde"] }
 hex = "0.4.3"
 sha2 = "0.10.9"

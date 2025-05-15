@@ -1,10 +1,10 @@
 use super::AnnouncementMessage;
 use crate::api::guards::authenticated_user::AuthenticatedUser;
+use rocket::State;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::serde::uuid::Uuid;
 use rocket::tokio::sync::broadcast::Sender;
-use rocket::State;
 
 /// Send an announcement to the announcement stream.
 #[post("/send", data = "<announcement>", format = "json")]

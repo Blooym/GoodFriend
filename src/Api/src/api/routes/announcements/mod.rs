@@ -25,7 +25,6 @@ enum AnnouncementKind {
 enum AnnouncementCause {
     Manual,
     Automatic,
-    Scheduled,
 }
 
 // Represents an announcement sent to other clients.

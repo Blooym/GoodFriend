@@ -1,4 +1,5 @@
 using System.Linq;
+using Dalamud.Interface.Utility.Raii;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem.Modules;
@@ -14,7 +15,7 @@ internal static class ModuleScreen
     /// <summary>
     ///     The current module.
     /// </summary>
-    private static BaseModule? CurrentModule { get; set; } = Services.ModuleService.GetModule<InstanceInfoModule>();
+    private static BaseModule? CurrentModule { get; set; } = Services.ModuleService.GetModule<LoginStateModule>();
 
     /// <summary>
     ///     Draws the list panel of the main window.
@@ -52,7 +53,7 @@ internal static class ModuleScreen
     {
         if (CurrentModule is null)
         {
-            ImGui.SetCursorPos(new(ImGui.GetContentRegionAvail().X / 2 - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).X / 2, ImGui.GetContentRegionAvail().Y / 2 - ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).Y / 2));
+            ImGui.SetCursorPos(new((ImGui.GetContentRegionAvail().X / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).X / 2), (ImGui.GetContentRegionAvail().Y / 2) - (ImGui.CalcTextSize(Strings.UI_MainWindow_ModuleScreen_SelectToView).Y / 2)));
             SiGui.TextDisabledWrapped(Strings.UI_MainWindow_ModuleScreen_SelectToView);
             return;
         }
@@ -65,10 +66,12 @@ internal static class ModuleScreen
             SiGui.TextWrapped(CurrentModule.Description);
             ImGui.Dummy(Spacing.SectionSpacing);
         }
-        if (ImGui.BeginChild("PluginSettingsListChildScrolling"))
+        using (var child = ImRaii.Child("PluginSettingsListChildScrolling"))
         {
-            CurrentModule.Draw();
+            if (child.Success)
+            {
+                CurrentModule.Draw();
+            }
         }
-        ImGui.EndChild();
     }
 }

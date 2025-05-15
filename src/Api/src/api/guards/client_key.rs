@@ -1,11 +1,10 @@
-use crate::config::Config;
 use rocket::{
+    Request,
     http::Status,
     request::{FromRequest, Outcome},
-    tokio::sync::RwLock,
-    Request,
 };
-use std::sync::Arc;
+
+use crate::Arguments;
 
 /// A key provided from the client that represents the software that they are using to make the request.
 ///
@@ -28,22 +27,19 @@ impl<'r> FromRequest<'r> for ClientKey {
     type Error = ClientKeyGuardError;
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        // Read the configuration or return an error if unable to.
-        let Some(config) = req.rocket().state::<Arc<RwLock<Config>>>() else {
+        let Some(config) = req.rocket().state::<Arguments>() else {
             return Outcome::Error((
                 Status::InternalServerError,
                 ClientKeyGuardError::ConfigurationStateFailure,
             ));
         };
-        let config = config.read().await;
 
         // If there are no configured keys, just return a success even if the keys isn't valid
         // as we have nothing to validate it against.
         if config
-            .security
             .allowed_client_keys
             .as_ref()
-            .map_or(true, |s| s.is_empty())
+            .is_none_or(|s| s.is_empty())
         {
             return Outcome::Success(Self(
                 req.headers()
@@ -66,10 +62,9 @@ impl<'r> FromRequest<'r> for ClientKey {
 
         // Check if this key is in the configuration.
         if !config
-            .security
             .allowed_client_keys
             .as_ref()
-            .map_or(false, |s| s.contains(&key))
+            .is_some_and(|s| s.contains(&key))
         {
             return Outcome::Error((Status::Forbidden, ClientKeyGuardError::InvalidKey));
         }

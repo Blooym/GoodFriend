@@ -13,6 +13,7 @@ internal static class SettingsScreen
 {
     private static SettingsOption CurrentSetting { get; set; } = SettingsOption.Api;
     private static bool restartRequired;
+    private static bool revealSensitiveConfig;
 
     /// <summary>
     ///     Draws the settings list.
@@ -47,8 +48,6 @@ internal static class SettingsScreen
                 break;
         }
     }
-
-    private static bool revealSensitiveConfig;
 
     /// <summary>
     ///     Draws the general settings.

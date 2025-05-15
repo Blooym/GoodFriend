@@ -43,16 +43,19 @@ internal sealed class AnnouncementStreamModule : BaseModule
     /// <inheritdoc />
     protected override void OnEnable()
     {
-        if (DalamudInjections.ClientState.IsLoggedIn && IsAnnouncementStreamDisconnected())
+        DalamudInjections.Framework.RunOnFrameworkThread(() =>
         {
-            AnnouncementSseStream.Connect();
-        }
+            if (DalamudInjections.ClientState.IsLoggedIn && IsAnnouncementStreamDisconnected())
+            {
+                Services.AnnouncementSseStream.Connect();
+            }
+        });
 
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
-        AnnouncementSseStream.OnStreamHeartbeat += this.OnAnnouncementStreamHeartbeat;
-        AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamEvent;
-        AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
+        Services.AnnouncementSseStream.OnStreamHeartbeat += this.OnAnnouncementStreamHeartbeat;
+        Services.AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamEvent;
+        Services.AnnouncementSseStream.OnStreamException += this.OnAnnouncementStreamException;
     }
 
     /// <inheritdoc />
@@ -60,14 +63,14 @@ internal sealed class AnnouncementStreamModule : BaseModule
     {
         if (IsAnnouncementStreamConnected())
         {
-            AnnouncementSseStream.Connect();
+            Services.AnnouncementSseStream.Connect();
         }
 
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
-        AnnouncementSseStream.OnStreamHeartbeat -= this.OnAnnouncementStreamHeartbeat;
-        AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamEvent;
-        AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
+        Services.AnnouncementSseStream.OnStreamHeartbeat -= this.OnAnnouncementStreamHeartbeat;
+        Services.AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamEvent;
+        Services.AnnouncementSseStream.OnStreamException -= this.OnAnnouncementStreamException;
     }
 
     /// <inheritdoc />
@@ -75,7 +78,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     {
         SiGui.TextWrapped(Strings.Modules_AnnouncementModule_ConnectionStatus);
         ImGui.SameLine();
-        switch (AnnouncementSseStream.ConnectionState)
+        switch (Services.AnnouncementSseStream.ConnectionState)
         {
             case SseConnectionState.Connected:
                 SiGui.TextColoured(Colours.Success, Strings.Modules_AnnouncementModule_ConnectionState_Connected);
@@ -108,7 +111,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     {
         if (IsAnnouncementStreamDisconnected())
         {
-            AnnouncementSseStream.Connect();
+            Services.AnnouncementSseStream.Connect();
         }
     }
 
@@ -119,7 +122,7 @@ internal sealed class AnnouncementStreamModule : BaseModule
     {
         if (IsAnnouncementStreamConnected())
         {
-            AnnouncementSseStream.Disconnect();
+            Services.AnnouncementSseStream.Disconnect();
         }
     }
 
@@ -157,11 +160,11 @@ internal sealed class AnnouncementStreamModule : BaseModule
     ///     If the player event stream is connected or connecting.
     /// </summary>
     /// <returns></returns>
-    private static bool IsAnnouncementStreamConnected() => AnnouncementSseStream.ConnectionState is SseConnectionState.Connected or SseConnectionState.Connecting;
+    private static bool IsAnnouncementStreamConnected() => Services.AnnouncementSseStream.ConnectionState is SseConnectionState.Connected or SseConnectionState.Connecting;
 
     /// <summary>
     ///     If the player event stream is disconnected or disconnecting.
     /// </summary>
     /// <returns></returns>
-    private static bool IsAnnouncementStreamDisconnected() => AnnouncementSseStream.ConnectionState is SseConnectionState.Disconnected or SseConnectionState.Disconnecting;
+    private static bool IsAnnouncementStreamDisconnected() => Services.AnnouncementSseStream.ConnectionState is SseConnectionState.Disconnected or SseConnectionState.Disconnecting;
 }

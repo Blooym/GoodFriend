@@ -4,6 +4,7 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using GoodFriend.Plugin.Base;
@@ -31,7 +32,7 @@ internal sealed class MainWindow : Window
     /// <summary>
     ///     The space left at the bottom of the window wrapper.
     /// </summary>
-    private const uint WindowWrapperBottomSpace = 40;
+    private const uint WindowWrapperBottomSpace = 35;
 
     /// <summary>
     ///     The currently selected tab.
@@ -41,14 +42,15 @@ internal sealed class MainWindow : Window
     /// <inheritdoc />
     public MainWindow() : base(DalamudInjections.PluginInterface.Manifest.Name)
     {
-        this.Size = ImGuiHelpers.ScaledVector2(730, 530);
+        this.Size = ImGuiHelpers.ScaledVector2(750, 550);
         this.SizeConstraints = new WindowSizeConstraints()
         {
-            MinimumSize = ImGuiHelpers.ScaledVector2(730, 530),
-            MaximumSize = ImGuiHelpers.ScaledVector2(1400, 900)
+            MinimumSize = ImGuiHelpers.ScaledVector2(750, 550),
         };
         this.SizeCondition = ImGuiCond.FirstUseEver;
-        this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse;
+        this.Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse;
+        this.AllowPinning = false;
+        this.AllowClickthrough = false;
 
 #if DEBUG
         this.TitleBarButtons =
@@ -66,39 +68,40 @@ internal sealed class MainWindow : Window
     public override void Draw()
     {
         SiGui.TextDisabledWrapped(this.CurrentScreen.ToString());
-        if (ImGui.BeginChild("MainWindowWrapper", new(0, ImGui.GetContentRegionAvail().Y - WindowWrapperBottomSpace), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+        using (var child = ImRaii.Child("MainWindowWrapper", new(0, ImGui.GetContentRegionAvail().Y - (WindowWrapperBottomSpace * ImGuiHelpers.GlobalScale)), false, ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
         {
-            switch (this.CurrentScreen)
+            if (child.Success)
             {
-                case MainWindowScreen.Modules:
-                    DrawModules();
-                    break;
-                case MainWindowScreen.Settings:
-                    DrawSettings();
-                    break;
+                switch (this.CurrentScreen)
+                {
+                    case MainWindowScreen.Modules:
+                        DrawModules();
+                        break;
+                    case MainWindowScreen.Settings:
+                        DrawSettings();
+                        break;
 #if DEBUG
-                case MainWindowScreen.Debug:
-                    DrawDebug();
-                    break;
+                    case MainWindowScreen.Debug:
+                        DrawDebug();
+                        break;
 #endif
+                }
             }
         }
-        ImGui.EndChild();
         ImGui.Dummy(Spacing.ReadableSpacing);
-
         ButtonRowComponent.DrawRow(new Dictionary<(FontAwesomeIcon, Vector4?, string), Action>
-        {
-            { (FontAwesomeIcon.Home, null, Strings.UI_MainWindow_Button_Modules), () => this.CurrentScreen = MainWindowScreen.Modules },
-            { (FontAwesomeIcon.Cog, null, Strings.UI_MainWindow_Button_Settings), () => this.CurrentScreen = MainWindowScreen.Settings },
-            { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, Strings.UI_MainWindow_Button_Donate), () => Util.OpenLink(Constants.Link.Donate) },
-        });
+                {
+                    { (FontAwesomeIcon.Home, null, Strings.UI_MainWindow_Button_Modules), () => this.CurrentScreen = MainWindowScreen.Modules },
+                    { (FontAwesomeIcon.Cog, null, Strings.UI_MainWindow_Button_Settings), () => this.CurrentScreen = MainWindowScreen.Settings },
+                    { (FontAwesomeIcon.Heart, ImGuiColors.ParsedPurple, Strings.UI_MainWindow_Button_Donate), () => Util.OpenLink(Constants.Link.Donate) },
+                });
     }
 
     /// <summary>
     ///     Draws the module content.
     /// </summary>
     private static void DrawModules()
-    => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+    => PanelComponent.DrawSplitPanels("MainWindowPanel", ImGui.GetContentRegionAvail().X * SidebarWidthPercentage * ImGuiHelpers.GlobalScale, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
         ModuleScreen.DrawModuleList,
         ModuleScreen.DrawModuleDetails);
 
@@ -106,13 +109,13 @@ internal sealed class MainWindow : Window
     ///     Draws the settings content.
     /// </summary>
     private static void DrawSettings()
-        => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+        => PanelComponent.DrawSplitPanels("MainWindowPanel", ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
             SettingsScreen.DrawSettingsList,
             SettingsScreen.DrawSettingDetails);
 
 #if DEBUG
     private static void DrawDebug()
-        => PanelComponent.DrawSplitPanels(ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
+        => PanelComponent.DrawSplitPanels("MainWindowPanel", ImGui.GetContentRegionAvail().X * SidebarWidthPercentage, ImGui.GetContentRegionAvail().X * ListWidthPercentage,
             DebugScreen.DrawDebugList,
             DebugScreen.DrawDebugDetails);
 #endif
@@ -131,7 +134,6 @@ internal sealed class MainWindow : Window
         ///     The settings tab.
         /// </summary>
         Settings,
-
 
 #if DEBUG
         /// <summary>

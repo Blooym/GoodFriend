@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dalamud.Interface.Utility.Raii;
 using GoodFriend.Client.Http.Enums;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
@@ -59,12 +60,12 @@ internal sealed class AnnouncementModule : BaseModule
     /// <inheritdoc />
     protected override void OnEnable()
     {
-        AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
+        Services.AnnouncementSseStream.OnStreamMessage += this.OnAnnouncementStreamMessage;
         this.RunValidateAuthTokenTask();
     }
 
     /// <inheritdoc />
-    protected override void OnDisable() => AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
+    protected override void OnDisable() => Services.AnnouncementSseStream.OnStreamMessage -= this.OnAnnouncementStreamMessage;
 
     /// <inheritdoc />
     protected override void DrawModule()
@@ -97,51 +98,57 @@ internal sealed class AnnouncementModule : BaseModule
         {
             var tokenSet = !string.IsNullOrWhiteSpace(Services.PluginConfiguration.ApiConfig.AuthKey);
             SiGui.TextWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin);
-            ImGui.BeginDisabled(!tokenSet);
-            if (ImGui.Button(tokenSet ? Strings.Modules_AnnouncementModule_SendAnnouncement_Reauth : Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuth))
+            using (ImRaii.Disabled(!tokenSet))
             {
-                this.RunValidateAuthTokenTask();
+                if (ImGui.Button(tokenSet ? Strings.Modules_AnnouncementModule_SendAnnouncement_Reauth : Strings.Modules_AnnouncementModule_SendAnnouncement_NoAuth))
+                {
+                    this.RunValidateAuthTokenTask();
+                }
             }
-            ImGui.EndDisabled();
         }
         else
         {
             SiGui.TextWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_Notice);
-            if (ImGui.BeginCombo("Kind", this.sendAnnouncementKind.ToString()))
+            using (var combo = ImRaii.Combo("Kind", this.sendAnnouncementKind.ToString()))
             {
-                foreach (var kind in Enum.GetValues<AnnouncementKind>())
+                if (combo.Success)
                 {
-                    if (ImGui.Selectable(kind.ToString(), kind == this.sendAnnouncementKind))
+                    foreach (var kind in Enum.GetValues<AnnouncementKind>())
                     {
-                        this.sendAnnouncementKind = kind;
+                        if (ImGui.Selectable(kind.ToString(), kind == this.sendAnnouncementKind))
+                        {
+                            this.sendAnnouncementKind = kind;
+                        }
                     }
                 }
-                ImGui.EndCombo();
             }
 
-            if (ImGui.BeginCombo("Channel", this.sendAnnouncementChannel == string.Empty ? "Everyone" : this.sendAnnouncementChannel))
+            using (var combo = ImRaii.Combo("Channel", this.sendAnnouncementChannel == string.Empty ? "Everyone" : this.sendAnnouncementChannel))
             {
-                if (ImGui.Selectable("Everyone", this.sendAnnouncementChannel == string.Empty))
+                if (combo.Success)
                 {
-                    this.sendAnnouncementChannel = string.Empty;
-                }
-                foreach (var channel in CustomAnnouncementChannels.All)
-                {
-                    if (ImGui.Selectable(channel, channel == this.sendAnnouncementChannel))
+                    if (ImGui.Selectable("Everyone", this.sendAnnouncementChannel == string.Empty))
                     {
-                        this.sendAnnouncementChannel = channel;
+                        this.sendAnnouncementChannel = string.Empty;
+                    }
+                    foreach (var channel in CustomAnnouncementChannels.All)
+                    {
+                        if (ImGui.Selectable(channel, channel == this.sendAnnouncementChannel))
+                        {
+                            this.sendAnnouncementChannel = channel;
+                        }
                     }
                 }
-                ImGui.EndCombo();
             }
 
             SiGui.InputTextMultiline("Message", ref this.sendAnnouncementText, 430, new(0, 100));
-            ImGui.BeginDisabled(!ImGui.IsKeyDown(ImGuiKey.LeftShift) || string.IsNullOrWhiteSpace(this.sendAnnouncementText));
-            if (ImGui.Button(Strings.Modules_AnnouncementModule_SendAnnouncement_Send))
+            using (ImRaii.Disabled(!ImGui.IsKeyDown(ImGuiKey.LeftShift) || string.IsNullOrWhiteSpace(this.sendAnnouncementText)))
             {
-                this.RunSendAnnouncementTask();
+                if (ImGui.Button(Strings.Modules_AnnouncementModule_SendAnnouncement_Send))
+                {
+                    this.RunSendAnnouncementTask();
+                }
             }
-            ImGui.EndDisabled();
             SiGui.TextDisabledWrapped(Strings.Modules_AnnouncementModule_SendAnnouncement_HoldShift);
         }
     }
@@ -166,7 +173,7 @@ internal sealed class AnnouncementModule : BaseModule
                         Logger.Information("Authentication token is not set so cannot validate.");
                         return;
                     }
-                    var validateRequest = new PostValidateAuthRequest().Send(HttpClient, new()
+                    var validateRequest = new PostValidateAuthRequest().Send(Services.HttpClient, new()
                     {
                         AuthenticationToken = Services.PluginConfiguration.ApiConfig.AuthKey
                     });
@@ -190,7 +197,7 @@ internal sealed class AnnouncementModule : BaseModule
     private void RunSendAnnouncementTask()
         => Task.Run(() =>
             {
-                var outcome = new PostAnnouncementRequest().Send(HttpClient, new()
+                var outcome = new PostAnnouncementRequest().Send(Services.HttpClient, new()
                 {
                     AuthenticationToken = Services.PluginConfiguration.ApiConfig.AuthKey,
                     Kind = this.sendAnnouncementKind,
@@ -302,9 +309,8 @@ internal sealed class AnnouncementModule : BaseModule
         /// <summary>
         ///     All custom announcement channels.
         /// </summary>
-        public static string[] All { get; } = typeof(CustomAnnouncementChannels).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+        public static string[] All { get; } = [.. typeof(CustomAnnouncementChannels).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
             .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.FieldType == typeof(string))
-            .Select(x => (string)x.GetRawConstantValue()!)
-            .ToArray();
+            .Select(x => (string)x.GetRawConstantValue()!)];
     }
 }
