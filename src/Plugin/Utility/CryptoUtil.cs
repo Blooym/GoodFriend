@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using GoodFriend.Plugin.Base;
 
 namespace GoodFriend.Plugin.Utility;
 
@@ -35,8 +36,9 @@ internal static class CryptoUtil
     /// <param name="salt">The salt to use.</param>
     public static string HashValue(object value, string salt)
     {
-        var toHash = $"{value}{DateTime.UtcNow:yyyyMMddHH}{salt}{GetModuleVersionId()}";
-        var outcome = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(toHash)));
-        return outcome;
+        var dataBytes = Encoding.UTF8.GetBytes($"{value}{DateTime.UtcNow:yyyyMMddHH}{salt}{GetModuleVersionId()}");
+        var keyBytes = Encoding.UTF8.GetBytes(Services.PluginConfiguration.ApiConfig.PrivateGroupKey);
+        using var hmac = new HMACSHA256(keyBytes);
+        return Convert.ToHexString(hmac.ComputeHash(dataBytes));
     }
 }

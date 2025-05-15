@@ -41,6 +41,11 @@ internal sealed class PluginConfiguration : IPluginConfiguration
         ///     The authentication key to use with authenticated requests.
         /// </summary>
         public string AuthKey { get; set; } = string.Empty;
+
+        /// <summary>
+        ///     An optional additional key used when hashing any identifable value to ensure they can only be read by others in the same group.
+        /// </summary>
+        public string PrivateGroupKey { get; set; } = string.Empty;
     }
 
     /// <summary>

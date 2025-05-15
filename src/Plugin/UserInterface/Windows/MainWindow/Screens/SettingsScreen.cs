@@ -14,9 +14,8 @@ namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
 
 internal static class SettingsScreen
 {
-    private static SettingsOption CurrentSetting { get; set; } = SettingsOption.Api;
+    private static SettingsOption CurrentSetting { get; set; } = SettingsOption.Privacy;
     private static bool restartRequired;
-    private static bool revealSensitiveConfig;
 
     /// <summary>
     ///     Draws the settings list.
@@ -46,10 +45,29 @@ internal static class SettingsScreen
         SiGui.Heading(CurrentSetting.ToString());
         switch (CurrentSetting)
         {
-            case SettingsOption.Api:
+            case SettingsOption.Privacy:
+                DrawPrivacySettings();
+                break;
+            case SettingsOption.API:
                 DrawApiSettings();
                 break;
         }
+    }
+
+    /// <summary>
+    ///     Draws the privacy settings.
+    /// </summary>
+    private static void DrawPrivacySettings()
+    {
+        var groupKey = Services.PluginConfiguration.ApiConfig.PrivateGroupKey;
+        SiGui.Text("Group Key");
+        if (SiGui.InputText("##groupKey", ref groupKey, 250, true, ImGuiInputTextFlags.Password))
+        {
+            Services.PluginConfiguration.ApiConfig.PrivateGroupKey = groupKey;
+            Services.PluginConfiguration.Save();
+        }
+        SiGui.TextDisabledWrapped("A group key allows for you to make sure that any event you send via the GoodFriend network is only visible to others who are using the exact same group key as you; Consider it kind of like a shared password for your event data.");
+        ImGui.Dummy(Spacing.ReadableSpacing);
     }
 
     /// <summary>
@@ -86,31 +104,23 @@ internal static class SettingsScreen
         SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
         ImGui.Dummy(Spacing.ReadableSpacing);
 
-        if (ImGui.Button(revealSensitiveConfig ? Strings.UI_MainWindow_SettingsScreen_Api_HideSensitive : Strings.UI_MainWindow_SettingsScreen_Api_ShowSensitive))
+        var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
+        SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken);
+        if (SiGui.InputText("##authToken", ref authKey, 250, true, ImGuiInputTextFlags.Password))
         {
-            revealSensitiveConfig = !revealSensitiveConfig;
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
-
-        if (revealSensitiveConfig)
-        {
-            var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
-            SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken);
-            if (SiGui.InputText("##authToken", ref authKey, 250))
+            if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
             {
-                if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
-                {
-                    restartRequired = true;
-                    Services.PluginConfiguration.ApiConfig.AuthKey = authKey;
-                    Services.PluginConfiguration.Save();
-                }
+                restartRequired = true;
+                Services.PluginConfiguration.ApiConfig.AuthKey = authKey;
+                Services.PluginConfiguration.Save();
             }
-            SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken_Description);
         }
+        SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken_Description);
     }
 
     private enum SettingsOption
     {
-        Api,
+        Privacy,
+        API,
     }
 }
