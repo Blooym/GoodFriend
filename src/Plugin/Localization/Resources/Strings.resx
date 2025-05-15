@@ -319,4 +319,7 @@
   <data name="Modules_CurrentFriendsOnlineModule_SingularFriendOnline" xml:space="preserve">
     <value>There is currently {0} friend online.</value>
   </data>
+  <data name="UI_ResetToDefault" xml:space="preserve">
+    <value>Reset to default</value>
+  </data>
 </root>

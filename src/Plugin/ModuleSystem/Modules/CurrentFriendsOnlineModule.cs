@@ -69,7 +69,7 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                 this.Config.Save();
             }
             ImGui.SameLine();
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.ArrowsSpin))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Sync, Strings.UI_ResetToDefault))
             {
                 this.Config.OnlineFriendShowDelay = TimeSpan.FromSeconds(CurrentFriendsOnlineModuleConfig.OnlineFriendShowDelayDefaultSeconds);
                 this.Config.Save();

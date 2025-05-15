@@ -78,7 +78,7 @@ internal static class SettingsScreen
             }
         }
         ImGui.SameLine();
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Sync, "Reset to default"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Sync, Strings.UI_ResetToDefault))
         {
             Services.PluginConfiguration.ApiConfig.BaseUrl = PluginConfiguration.ApiConfiguration.DefaultBaseUri;
             Services.PluginConfiguration.Save();

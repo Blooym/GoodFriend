@@ -620,5 +620,11 @@ namespace GoodFriend.Plugin.Localization {
                 return ResourceManager.GetString("Modules_CurrentFriendsOnlineModule_SingularFriendOnline", resourceCulture);
             }
         }
+        
+        internal static string UI_ResetToDefault {
+            get {
+                return ResourceManager.GetString("UI_ResetToDefault", resourceCulture);
+            }
+        }
     }
 }
