@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.repository }}-${{github.ref_name}}
+  group: ${{ github.repository }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -53,7 +53,9 @@ jobs:
           file: ./src/Api/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache-from: type=gha
