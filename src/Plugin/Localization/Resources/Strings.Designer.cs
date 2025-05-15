@@ -626,5 +626,17 @@ namespace GoodFriend.Plugin.Localization {
                 return ResourceManager.GetString("UI_ResetToDefault", resourceCulture);
             }
         }
+        
+        internal static string UI_MainWindow_SettingsScreen_Setting_GroupKey {
+            get {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Setting_GroupKey", resourceCulture);
+            }
+        }
+        
+        internal static string UI_MainWindow_SettingsScreen_Setting_GroupKey_Description {
+            get {
+                return ResourceManager.GetString("UI_MainWindow_SettingsScreen_Setting_GroupKey_Description", resourceCulture);
+            }
+        }
     }
 }

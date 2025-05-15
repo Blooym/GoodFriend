@@ -60,13 +60,13 @@ internal static class SettingsScreen
     private static void DrawPrivacySettings()
     {
         var groupKey = Services.PluginConfiguration.ApiConfig.PrivateGroupKey;
-        SiGui.Text("Group Key");
+        SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Setting_GroupKey);
         if (SiGui.InputText("##groupKey", ref groupKey, 250, true, ImGuiInputTextFlags.Password))
         {
             Services.PluginConfiguration.ApiConfig.PrivateGroupKey = groupKey;
             Services.PluginConfiguration.Save();
         }
-        SiGui.TextDisabledWrapped("A group key allows for you to make sure that any event you send via the GoodFriend network is only visible to others who are using the exact same group key as you; Consider it kind of like a shared password for your event data.");
+        SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_GroupKey_Description);
         ImGui.Dummy(Spacing.ReadableSpacing);
     }
 

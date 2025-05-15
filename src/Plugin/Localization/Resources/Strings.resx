@@ -322,4 +322,10 @@
   <data name="UI_ResetToDefault" xml:space="preserve">
     <value>Reset to default</value>
   </data>
+  <data name="UI_MainWindow_SettingsScreen_Setting_GroupKey" xml:space="preserve">
+    <value>Group Key</value>
+  </data>
+  <data name="UI_MainWindow_SettingsScreen_Setting_GroupKey_Description" xml:space="preserve">
+    <value>A group key allows for you to make sure that any event you send via the GoodFriend network is only visible to others who are using the exact same group key as you; Consider it kind of like a shared password for your event data.</value>
+  </data>
 </root>
