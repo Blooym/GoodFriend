@@ -1,6 +1,12 @@
 name: "Test Client"
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/Client/**.cs"
+      - "src/Client/*.csproj"
+      - "src/Client/packages.lock.json"
   pull_request:
     branches: ["main"]
     paths:

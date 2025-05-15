@@ -1,6 +1,12 @@
 name: "Test API"
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/Api/**.rs"
+      - "src/Api/Cargo.toml"
+      - "src/Api/Cargo.lock"
   pull_request:
     branches: ["main"]
     paths:

@@ -1,6 +1,12 @@
 name: "Test Plugin"
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/Plugin/**.cs"
+      - "src/Plugin/*.csproj"
+      - "src/Plugin/packages.lock.json"
   pull_request:
     branches: ["main"]
     paths:
@@ -55,4 +61,4 @@ jobs:
         working-directory: src/Plugin
         run: | 
           dotnet build -c ${{ matrix.build_mode }}
-          echo "Checksum: $(sha512sum bin/x64/${{ matrix.build_mode }}/GoodFriend.dll)"
+          echo "Checksum: $(sha512sum bin/${{ matrix.build_mode }}/GoodFriend.dll)"

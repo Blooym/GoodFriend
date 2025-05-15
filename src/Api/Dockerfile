@@ -34,9 +34,14 @@ RUN cargo build ${RUSTC_APP_FLAGS}
 #   RUNTIME
 # -----------
 FROM scratch as runtime
-WORKDIR /app
 
 COPY --from=user /etc/passwd /etc/passwd
 COPY --from=user /bin/false /bin/false
 USER goodfriend
-ENV ROCKET_ADDRESS=0.0.0.0bin
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8000
+EXPOSE 8000
+
+COPY --from=build /build/target/release/goodfriend-api /usr/bin/
+
+ENTRYPOINT ["/usr/bin/goodfriend-api"]
