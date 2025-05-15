@@ -1,5 +1,8 @@
 using System;
+using Dalamud.Interface;
+using Dalamud.Interface.Components;
 using GoodFriend.Plugin.Base;
+using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
 using ImGuiNET;
 using Sirensong.Game.Enums;
@@ -55,7 +58,8 @@ internal static class SettingsScreen
     private static void DrawApiSettings()
     {
         var apiUrl = Services.PluginConfiguration.ApiConfig.BaseUrl.ToString();
-        if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL, ref apiUrl, 250, true))
+        SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL);
+        if (SiGui.InputText("##apiUrl", ref apiUrl, 250, true))
         {
             try
             {
@@ -73,6 +77,12 @@ internal static class SettingsScreen
                 SoundEffectHelper.PlaySound(SoundEffect.Se11);
             }
         }
+        ImGui.SameLine();
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Sync, "Reset to default"))
+        {
+            Services.PluginConfiguration.ApiConfig.BaseUrl = PluginConfiguration.ApiConfiguration.DefaultBaseUri;
+            Services.PluginConfiguration.Save();
+        }
         SiGui.TextDisabledWrapped(Strings.UI_MainWindow_SettingsScreen_Setting_APIURL_Description);
         ImGui.Dummy(Spacing.ReadableSpacing);
 
@@ -85,7 +95,8 @@ internal static class SettingsScreen
         if (revealSensitiveConfig)
         {
             var authKey = Services.PluginConfiguration.ApiConfig.AuthKey;
-            if (SiGui.InputText(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken, ref authKey, 250))
+            SiGui.Text(Strings.UI_MainWindow_SettingsScreen_Api_AuthToken);
+            if (SiGui.InputText("##authToken", ref authKey, 250))
             {
                 if (authKey != Services.PluginConfiguration.ApiConfig.AuthKey)
                 {

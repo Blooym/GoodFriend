@@ -10,10 +10,7 @@ namespace GoodFriend.Plugin.Configuration;
 /// </summary>
 internal sealed class PluginConfiguration : IPluginConfiguration
 {
-    /// <summary>
-    ///     The default API URL to use.
-    /// </summary>
-    private static readonly Uri DefaultBaseUri = new("https://goodfriend.blooym.dev");
+
 
     /// <summary>
     ///     The current configuration version, incremented on breaking changes.
@@ -30,6 +27,11 @@ internal sealed class PluginConfiguration : IPluginConfiguration
     /// </summary>
     public sealed class ApiConfiguration
     {
+        /// <summary>
+        ///     The default API URL to use.
+        /// </summary>
+        public static readonly Uri DefaultBaseUri = new("https://goodfriend.blooym.dev");
+
         /// <summary>
         ///     The Base URL to use when interacting with the API.
         /// </summary>
@@ -55,8 +57,8 @@ internal sealed class PluginConfiguration : IPluginConfiguration
         var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         if (config.ApiConfig.BaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", true, CultureInfo.InvariantCulture))
         {
-            Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {DefaultBaseUri}");
-            config.ApiConfig.BaseUrl = DefaultBaseUri;
+            Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
+            config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
             config.Save();
         }
         return config;
