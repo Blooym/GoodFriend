@@ -1,78 +1,23 @@
 name: "Release"
-
+run-name: "Release API for ${{ github.sha }}"
 on:
   push:
-    tags:
-      - "v*.*.*.*"
+    branches: 
+      - main
+    paths: 
+      - "src/Api/**"
+  workflow_dispatch:
 
-permissions:
-  contents: write
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+concurrency:
+  group: ${{ github.repository }}-${{github.ref_name}}
+  cancel-in-progress: true
 
 jobs:
-  Plugin:
+  api:
     runs-on: ubuntu-latest
     env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      DOTNET_VERSION: 7.0.x
-    defaults:
-      run:
-        working-directory: ./src/Plugin/
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: recursive
-
-      - name: Get Tag Name
-        run: echo "tag=$(echo ${{ github.ref }} | sed 's/refs\/tags\///' | sed 's/v//')" >> $GITHUB_ENV
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Setup Dalamud
-        uses: Blooym/setup-dalamud@v1
-        with:
-          branch: release
-
-      - name: Cache Nuget Packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore Nuget Packages
-        run: dotnet restore
-
-      - name: Build Plugin
-        env:
-          PLOGON_SECRET_CLIENT_KEY: ${{ secrets.PLOGON_SECRET_CLIENT_KEY }}
-        run: |
-          dotnet build --configuration Release --nologo -p:AssemblyVersion=${{ env.tag }}
-          sha512sum bin/Release/GoodFriend.dll > checksums.txt
-          sha512sum bin/Release/GoodFriend.Client.dll >> checksums.txt
-          sha512sum bin/Release/Sirensong.dll >> checksums.txt
-          cat checksums.txt
-
-      - name: Release
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631
-        with:
-          generate_release_notes: true
-          prerelease: false
-          files: |
-            src/Plugin/bin/Release/GoodFriend/latest.zip
-            src/Plugin/checksums.txt
-
-  Api:
-    runs-on: ubuntu-latest
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
     permissions:
       contents: read
       packages: write
@@ -104,8 +49,8 @@ jobs:
       - name: Build & Publish Image
         uses: docker/build-push-action@v6
         with:
-          file: ./src/Api/Dockerfile
-          context: ./src/Api/
+          context: .
+          file: ./Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -113,3 +58,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Cleanup old images
+        uses: vlaurin/action-ghcr-prune@0cf7d39f88546edd31965acba78cdcb0be14d641
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          container: goodfriend
+          keep-younger-than: 7
+          prune-untagged: true

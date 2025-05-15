@@ -1,21 +1,15 @@
-name: "Docker Changes"
+name: "Test Docker"
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "src/Api/Dockerfile"
-      - "src/Api/.dockerignore"
   pull_request:
     branches: ["main"]
     paths:
       - "src/Api/Dockerfile"
       - "src/Api/.dockerignore"
     types: [ready_for_review, opened, synchronize]
-  workflow_dispatch:
 
 jobs:
-  Build-Image:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Checkout

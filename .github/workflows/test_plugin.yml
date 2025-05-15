@@ -1,0 +1,58 @@
+name: "Test Plugin"
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/Plugin/**.cs"
+      - "src/Plugin/*.csproj"
+      - "src/Plugin/packages.lock.json"
+    types: [ready_for_review, opened, synchronize]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_mode: ["Release", "Debug"]
+        dalamud-branch: ["release", "stg"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Setup Dalamud
+        uses: Blooym/setup-dalamud@v1
+        with:
+          branch: ${{ matrix.dalamud-branch }}
+
+      - name: Check for Lint Errors
+        id: lint
+        working-directory: src/Plugin
+        continue-on-error: true
+        run: | 
+          dotnet format --verify-no-changes > lint.txt 2>&1
+
+      - name: Report Lint Errors
+        working-directory: src/Plugin
+        if : steps.lint.outcome == 'failure'
+        run: |
+          cat lint.txt | sed -E 's/^(.*)$/::warning:: \1/g'
+
+      - name: Restore Project
+        working-directory: src/Plugin
+        run: dotnet restore
+
+      - name: Build Project
+        working-directory: src/Plugin
+        run: | 
+          dotnet build -c ${{ matrix.build_mode }}
+          echo "Checksum: $(sha512sum bin/x64/${{ matrix.build_mode }}/GoodFriend.dll)"

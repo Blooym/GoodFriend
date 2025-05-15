@@ -1,12 +1,6 @@
-name: "API Changes"
+name: "Test API"
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "src/Api/**.rs"
-      - "src/Api/Cargo.toml"
-      - "src/Api/Cargo.lock"
   pull_request:
     branches: ["main"]
     paths:
@@ -14,7 +8,6 @@ on:
       - "src/Api/Cargo.toml"
       - "src/Api/Cargo.lock"
     types: [ready_for_review, opened, synchronize]
-  workflow_dispatch:
 
 jobs:
   Test:

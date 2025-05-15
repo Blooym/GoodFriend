@@ -1,12 +1,6 @@
-name: "Client Changes"
+name: "Test Client"
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - "src/Client/**.cs"
-      - "src/Client/*.csproj"
-      - "src/Client/packages.lock.json"
   pull_request:
     branches: ["main"]
     paths:
@@ -14,7 +8,6 @@ on:
       - "src/Client/*.csproj"
       - "src/Client/packages.lock.json"
     types: [ready_for_review, opened, synchronize]
-  workflow_dispatch:
 
 jobs:
   Test:
