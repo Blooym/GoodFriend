@@ -30,5 +30,10 @@ pub async fn post_announcement(
         return Status::InternalServerError;
     };
 
+    println!(
+        "   >> Sent announcement event to {} subscribers",
+        announcements_stream.receiver_count()
+    );
+
     Status::Ok
 }

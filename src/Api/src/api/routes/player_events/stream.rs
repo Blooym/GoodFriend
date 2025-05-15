@@ -9,10 +9,10 @@ use rocket::{Shutdown, State};
 #[get("/stream")]
 pub async fn get_stream(
     _build_guard: ClientKey,
-    player_event_queue: &State<Sender<PlayerEventStreamUpdate>>,
+    player_event_stream: &State<Sender<PlayerEventStreamUpdate>>,
     mut end: Shutdown,
 ) -> EventStream![] {
-    let mut rx = player_event_queue.subscribe();
+    let mut rx = player_event_stream.subscribe();
     EventStream! {
         loop {
             let msg = select! {

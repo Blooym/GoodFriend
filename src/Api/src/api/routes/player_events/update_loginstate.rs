@@ -3,9 +3,9 @@ use crate::api::guards::{client_key::ClientKey, content_id::UniqueContentId};
 use rocket::serde::json::Json;
 use rocket::tokio::sync::broadcast::Sender;
 use rocket::{
+    State,
     response::status,
     serde::{Deserialize, Serialize},
-    State,
 };
 
 /// A request to send an update of the players current logged in state.
@@ -23,9 +23,9 @@ pub async fn post_loginstate(
     _build_guard: ClientKey,
     content_id: UniqueContentId,
     update: Json<UpdatePlayerLoginStateRequest>,
-    queue: &State<Sender<PlayerEventStreamUpdate>>,
+    player_event_stream: &State<Sender<PlayerEventStreamUpdate>>,
 ) -> status::Accepted<()> {
-    let _ = queue.send(PlayerEventStreamUpdate {
+    let _ = player_event_stream.send(PlayerEventStreamUpdate {
         content_id_hash: content_id.hash,
         content_id_salt: content_id.salt,
         state_update_type: PlayerStateUpdateType::LoginStateChange {
@@ -34,5 +34,9 @@ pub async fn post_loginstate(
             territory_id: update.territory_id,
         },
     });
+    println!(
+        "   >> Sent loginstate event to {} subscribers",
+        player_event_stream.receiver_count()
+    );
     status::Accepted(())
 }
