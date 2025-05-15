@@ -1,6 +1,7 @@
 use super::AnnouncementMessage;
 use crate::{AppState, extractors::AuthenticatedUser};
 use axum::{Json, extract::State, http::StatusCode};
+use tracing::info;
 use uuid::Uuid;
 
 pub async fn post_announcement(
@@ -20,7 +21,7 @@ pub async fn post_announcement(
         return StatusCode::INTERNAL_SERVER_ERROR;
     };
 
-    println!(
+    info!(
         "Sent announcement event to {} subscribers",
         state.announcement_events_stream.receiver_count()
     );

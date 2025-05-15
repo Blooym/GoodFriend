@@ -5,6 +5,7 @@ use crate::{
 };
 use axum::{Json, extract::State, http::StatusCode};
 use serde::Deserialize;
+use tracing::info;
 
 #[derive(Debug, Deserialize)]
 pub struct UpdatePlayerLoginStateRequest {
@@ -28,7 +29,7 @@ pub async fn send_loginstate_handler(
             territory_id: update.territory_id,
         },
     });
-    println!(
+    info!(
         "Sent loginstate event to {} subscribers",
         state.player_events_stream.receiver_count()
     );
