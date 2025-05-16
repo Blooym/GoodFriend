@@ -14,19 +14,11 @@
         "resolved": "1.2.25",
         "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
       },
-      "BitFaster.Caching": {
-        "type": "Transitive",
-        "resolved": "2.5.3",
-        "contentHash": "Vo/39qcam5Xe+DbyfH0JZyqPswdOoa7jv4PGtRJ6Wj8AU+aZ+TuJRlJcIe+MQjRTJwliI8k8VSQpN8sEoBIv2g=="
-      },
       "goodfriend.client": {
         "type": "Project"
       },
       "sirensong": {
-        "type": "Project",
-        "dependencies": {
-          "Bitfaster.Caching": "[2.5.3, )"
-        }
+        "type": "Project"
       }
     }
   }
