@@ -8,7 +8,6 @@ using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Sirensong.Extensions;
-using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 using Sirensong.Utility;
@@ -242,7 +241,7 @@ internal sealed class LoginStateModule : BaseModule
                 return;
             }
 
-            ChatHelper.Print(loginStateData.LoggedIn
+            DalamudInjections.ChatGui.Print(loginStateData.LoggedIn
                 ? this.Config.LoginMessage.Format(friendCharacterData.NameString)
                 : this.Config.LogoutMessage.Format(friendCharacterData.NameString)
             );
