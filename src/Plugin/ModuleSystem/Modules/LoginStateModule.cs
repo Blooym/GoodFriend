@@ -1,4 +1,3 @@
-using System.Threading;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using GoodFriend.Client.Http.Requests;
@@ -185,7 +184,7 @@ internal sealed class LoginStateModule : BaseModule
             Logger.Verbose("Received player state update that is not a login/logout.");
             return;
         }
-        DalamudInjections.Framework.Run(() =>
+        DalamudInjections.Framework.RunOnFrameworkThread(() =>
         {
             var localPlayer = DalamudInjections.ClientState.LocalPlayer;
             if (localPlayer is null)
@@ -253,11 +252,6 @@ internal sealed class LoginStateModule : BaseModule
     /// </summary>
     private void OnLogin()
     {
-        while (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
-        {
-            Thread.Sleep(50);
-        }
-
         this.SetStoredValues();
 
         Logger.Debug("Sending login event.");

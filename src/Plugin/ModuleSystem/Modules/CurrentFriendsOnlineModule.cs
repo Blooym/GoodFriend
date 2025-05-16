@@ -91,50 +91,52 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
         {
             // Wait for the delay after login.
             await Task.Delay(this.Config.OnlineFriendShowDelay);
-
-            // Don't show a message if the player has no friends added.
-            if (FriendHelper.FriendList.Length is 0)
+            await DalamudInjections.Framework.RunOnFrameworkThread(() =>
             {
-                DalamudInjections.PluginLog.Debug("Friends list was empty upon logging in");
-                return;
-            }
-
-            // Get how many friends are online.
-            var onlineFriends = FriendHelper.FriendList.ToArray().Where(x => x.State.HasFlag(InfoProxyCommonList.CharacterData.OnlineStatus.Online));
-            var characterData = onlineFriends as InfoProxyCommonList.CharacterData[] ?? [.. onlineFriends];
-            var onlineFriendCount = characterData.Length;
-            DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
-            if (onlineFriendCount is 0)
-            {
-                ChatHelper.Print(Strings.Modules_CurrentFriendsOnlineModule_NoFriendsOnline);
-            }
-            else
-            {
-                if (!this.Config.AddFriendNamesToOnlineCount)
+                // Don't show a message if the player has no friends added.
+                if (FriendHelper.FriendList.Length is 0)
                 {
-                    ChatHelper.Print(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
+                    DalamudInjections.PluginLog.Debug("Friends list was empty upon logging in");
                     return;
                 }
 
-                unsafe
+                // Get how many friends are online.
+                var onlineFriends = FriendHelper.FriendList.ToArray().Where(x => x.State.HasFlag(InfoProxyCommonList.CharacterData.OnlineStatus.Online));
+                var characterData = onlineFriends as InfoProxyCommonList.CharacterData[] ?? [.. onlineFriends];
+                var onlineFriendCount = characterData.Length;
+                DalamudInjections.PluginLog.Debug($"Player has {onlineFriendCount} friends online right now, sending chat message.");
+                if (onlineFriendCount is 0)
                 {
-
-                    var chatMessage = new SeStringBuilder().AddText(onlineFriendCount == 1
-                        ? string.Format(Strings.Modules_CurrentFriendsOnlineModule_SingularFriendOnline, onlineFriendCount)
-                        : string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
-                    foreach (var friend in characterData)
-                    {
-                        if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.RowId != friend.CurrentWorld)
-                        {
-                            continue;
-                        }
-
-                        var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ExtractText() ?? "Unknown";
-                        chatMessage.AddText($"\n - {friend.NameString}");
-                    }
-                    ChatHelper.Print(chatMessage.Build());
+                    DalamudInjections.ChatGui.Print(Strings.Modules_CurrentFriendsOnlineModule_NoFriendsOnline);
                 }
-            }
+                else
+                {
+                    if (!this.Config.AddFriendNamesToOnlineCount)
+                    {
+                        DalamudInjections.ChatGui.Print(string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
+                        return;
+                    }
+
+                    unsafe
+                    {
+
+                        var chatMessage = new SeStringBuilder().AddText(onlineFriendCount == 1
+                            ? string.Format(Strings.Modules_CurrentFriendsOnlineModule_SingularFriendOnline, onlineFriendCount)
+                            : string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
+                        foreach (var friend in characterData)
+                        {
+                            if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.RowId != friend.CurrentWorld)
+                            {
+                                continue;
+                            }
+
+                            var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ExtractText() ?? "Unknown";
+                            chatMessage.AddText($"\n - {friend.NameString}");
+                        }
+                        DalamudInjections.ChatGui.Print(chatMessage.Build());
+                    }
+                }
+            });
         });
     }
 
