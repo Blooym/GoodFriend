@@ -125,13 +125,11 @@ internal sealed class CurrentFriendsOnlineModule : BaseModule
                             : string.Format(Strings.Modules_CurrentFriendsOnlineModule_PluralFriendsOnline, onlineFriendCount));
                         foreach (var friend in characterData)
                         {
-                            if (DalamudInjections.ClientState.LocalPlayer?.CurrentWorld.RowId != friend.CurrentWorld)
-                            {
-                                continue;
-                            }
-
-                            var currentWorld = Services.WorldSheet.GetRow(friend.CurrentWorld).Name.ExtractText() ?? "Unknown";
                             chatMessage.AddText($"\n - {friend.NameString}");
+                            if (DalamudInjections.ClientState.LocalPlayer?.HomeWorld.RowId != friend.HomeWorld)
+                            {
+                                chatMessage.AddText(" ").AddIcon(BitmapFontIcon.CrossWorld).AddText(Services.WorldSheet.GetRow(friend.HomeWorld).Name.ExtractText());
+                            }
                         }
                         DalamudInjections.ChatGui.Print(chatMessage.Build());
                     }
