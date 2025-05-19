@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
 
     </xsd:element>
@@ -53,9 +52,6 @@
   <data name="Modules_LoginStateModule_UI_HideDiffWorld_Description" xml:space="preserve">
     <value>Ignorar eventos de amigos que inicien o cierren sesión en mundos diferentes al tuyo.</value>
   </data>
-  <data name="Modules_LoginStateModule_UI_HideDiffDC" xml:space="preserve">
-    <value>Ignore different datacenter</value>
-  </data>
   <data name="Modules_LoginStateModule_UI_HideDiffDC_Description" xml:space="preserve">
     <value>Ignorar eventos de amigos que inicien o cierren sesión en un datacenter diferente al tuyo.</value>
   </data>
@@ -83,21 +79,13 @@
   <data name="Modules_PlayerStreamConnectionModule_Name" xml:space="preserve">
     <value>Conexión al flujo de eventos de jugadores</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus" xml:space="preserve">
-    <value>Connection State:</value>
-  </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Conectad@</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting" xml:space="preserve">
-    <value>Conectando</value>
-  </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
     <value>Desconectad@</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
     <value>Desconectando</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
@@ -106,20 +94,16 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Estado de Conexión</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
     <value>Eventos recibidos: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Último evento: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
     <value>Heartbeats recibidos: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Último Heartbeat: {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
@@ -194,122 +178,19 @@
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
     <value>Recibir eventos</value>
   </data>
-  <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description"
-    xml:space="preserve">
-    <value>Esto determina si quieres recibir eventos de otros amigos o no.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
-    <value>Announcements</value>
-  </data>
-  <data name="Modules_AnnouncementModule_Description" xml:space="preserve">
-    <value>Announcements allow for instance administrators to communicate important information to players in real-time. You can control what kind of announcements you receive in the settings or send your own announcements if you are an instance administrator.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_ConnectionStatus" xml:space="preserve">
-    <value>Connection State:</value>
-  </data>
   <data name="Modules_AnnouncementModule_ConnectionState_Connected" xml:space="preserve">
     <value>Conectad@</value>
-  </data>
-  <data name="Modules_AnnouncementModule_ConnectionState_Connecting" xml:space="preserve">
-    <value>Connecting</value>
   </data>
   <data name="Modules_AnnouncementModule_ConnectionState_Disconnected" xml:space="preserve">
     <value>Desconectad@</value>
   </data>
   <data name="Modules_AnnouncementModule_ConnectionState_Disconnecting" xml:space="preserve">
-    <value>Disconnecting</value>
+    <value>Desconectando</value>
   </data>
   <data name="Modules_AnnouncementModule_ConnectionState_Exception" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="Modules_AnnouncementModule_ReceiveOptions" xml:space="preserve">
-    <value>Announcement Receive Options</value>
-  </data>
-  <data name="Modules_AnnouncementModule_ReceiveOptions_ShowKind" xml:space="preserve">
-    <value>Show '{0}' announcements</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_Header" xml:space="preserve">
-    <value>Send Announcement</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_NoAuthNotAdmin" xml:space="preserve">
-    <value>You must be an instance administrator with a valid authentication token set in the plugin settings to send announcements. If you are just using this plugin regularly, you can ignore this section.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_Reauth" xml:space="preserve">
-    <value>Re-attempt authentication</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_NoAuth" xml:space="preserve">
-    <value>No authentication token set</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_Notice" xml:space="preserve">
-    <value>Please note that all connected clients will receive your announcement as soon as you send it, be responsible.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_Send" xml:space="preserve">
-    <value>Send</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_HoldShift" xml:space="preserve">
-    <value>Hold shift to send announcement.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_SendSuccess" xml:space="preserve">
-    <value>Announcement sucessfully sent.</value>
-  </data>
-  <data name="Modules_AnnouncementModule_SendAnnouncement_SendError" xml:space="preserve">
-    <value>Failed to send announcement: {0}</value>
-  </data>
-  <data name="Modules_AnnouncementModule_AnnouncementText" xml:space="preserve">
-    <value>Announcement: {0}</value>
-  </data>
-  <data name="Modules_ModuleBase_NoAdditionalContent" xml:space="preserve">
-    <value>This module does not have configuration options or content to display.</value>
-  </data>
-  <data name="UI_MainWindow_SettingsScreen_Api_HideSensitive" xml:space="preserve">
-    <value>Hide Sensitive Settings</value>
-  </data>
-  <data name="UI_MainWindow_SettingsScreen_Api_ShowSensitive" xml:space="preserve">
-    <value>Show Sensitive Settings</value>
-  </data>
-  <data name="UI_MainWindow_SettingsScreen_Api_AuthToken" xml:space="preserve">
-    <value>Auth Token</value>
-  </data>
-  <data name="UI_MainWindow_SettingsScreen_Api_AuthToken_Description" xml:space="preserve">
-    <value>The authentication token to use for requests that require authentication. Only instance administrators will need to set this.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_Name" xml:space="preserve">
-    <value>Friends Online</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_Description" xml:space="preserve">
-    <value>Get notifications about the friends that are currently online. These notifications work regardless of whether not they have the plugin installed.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_Upon_Login" xml:space="preserve">
-    <value>Upon Login</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount" xml:space="preserve">
-    <value>Send online friend count chat message</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description"
-    xml:space="preserve">
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
     <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames" xml:space="preserve">
-    <value>Include friend names</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_IncludeFriendNames_Description"
-    xml:space="preserve">
-    <value>Adds a list of the names of your online friends to the count message.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay" xml:space="preserve">
-    <value>Delay</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Delay_Description"
-    xml:space="preserve">
-    <value>The amount of seconds to wait after logging in to display the message. If online friends are not correctly shown on login then increase this value.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_NoFriendsOnline" xml:space="preserve">
-    <value>You have no friends online.</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_PluralFriendsOnline" xml:space="preserve">
-    <value>There are currently {0} friends online.</value>
-  </data>
-  <data name="Modules_AnnouncementStreamModule_Name" xml:space="preserve">
-    <value>Announcements Connection</value>
   </data>
 </root>
