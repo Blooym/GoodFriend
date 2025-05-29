@@ -1,11 +1,8 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using GoodFriend.Client.Http.Interfaces;
-using GoodFriend.Client.Json;
 using MessagePack;
 
 namespace GoodFriend.Client.Http.Requests;
@@ -94,19 +91,22 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
     /// <returns></returns>
     private static HttpRequestMessage BuildMessage(RequestData requestData) => new(HttpMethod.Post, EndpointUrl)
     {
-        Content = JsonContent.Create(new RequestBody()
+        Content = new ByteArrayContent(MessagePackSerializer.Serialize(new RequestBody()
         {
             LoggedIn = requestData.LoggedIn,
             TerritoryId = requestData.TerritoryId,
             WorldId = requestData.WorldId,
-        }, MediaTypeHeaderValue.Parse("application/json"), new JsonSerializerOptions
+        }))
         {
-            PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
-        }),
+            Headers = {
+                ContentType = new MediaTypeHeaderValue("application/x-msgpack")
+            }
+        },
         Headers =
         {
             { GlobalRequestData.Headers.ContentIdHash, requestData.ContentIdHash },
-            { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt },
+            { GlobalRequestData.Headers.ContentIdSalt, requestData.ContentIdSalt
+},
         },
     };
 
