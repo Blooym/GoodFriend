@@ -1,15 +1,15 @@
 [package]
 name = "goodfriend-api"
-version = "3.6.0"
+version = "3.7.0"
 edition = "2024"
 
 [dependencies]
 axum = { version = "0.8.4", features = ["http2", "multipart", "macros"] }
 anyhow = "1.0.98"
-clap = { version = "4.5.37", features = ["derive", "env"] }
+clap = { version = "4.5.39", features = ["derive", "env"] }
 dotenvy = "0.15.7"
-tokio = { version = "1.45.0", features = ["macros", "rt-multi-thread", "net"] }
-tower-http = { version = "0.6.2", features = [
+tokio = { version = "1.45.1", features = ["macros", "rt-multi-thread", "net"] }
+tower-http = { version = "0.6.4", features = [
     "catch-panic",
     "normalize-path",
     "timeout",
@@ -21,4 +21,5 @@ tokio-stream = { version = "0.1.17", features = ["sync"] }
 serde = { version = "1.0.219", features = ["derive"] }
 sha2 = "0.10.9"
 hex = "0.4.3"
-uuid = { version = "1.16.0", features = ["serde", "v4"] }
+uuid = { version = "1.17.0", features = ["serde", "v4"] }
+axum-msgpack = "0.5.0"

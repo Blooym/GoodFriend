@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GoodFriend.Client.Http.Interfaces;
 using GoodFriend.Client.Json;
+using MessagePack;
 
 namespace GoodFriend.Client.Http.Requests;
 
@@ -16,10 +17,14 @@ public sealed class PostPlayerLoginStateRequest : IHttpRequestHandler<PostPlayer
 {
     private const string EndpointUrl = "api/playerevents/loginstate";
 
-    private readonly struct RequestBody
+    [MessagePackObject(AllowPrivate = true)]
+    internal readonly struct RequestBody
     {
+        [Key(0)]
         public required uint WorldId { get; init; }
+        [Key(1)]
         public required ushort TerritoryId { get; init; }
+        [Key(2)]
         public required bool LoggedIn { get; init; }
     }
 

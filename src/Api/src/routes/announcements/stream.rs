@@ -15,10 +15,7 @@ pub async fn announcement_event_sse_handler(
 ) -> Sse<impl Stream<Item = Result<Event, Infallible>>> {
     let rx = state.announcement_events_stream.subscribe();
     let stream = BroadcastStream::new(rx).filter_map(|msg| match msg {
-        Ok(data) => Some(Ok(Event::default()
-            .event("announcement")
-            .json_data(data)
-            .unwrap())),
+        Ok(data) => Some(Ok(Event::default().json_data(data).unwrap())),
         Err(_) => None,
     });
     Sse::new(stream).keep_alive(KeepAlive::default())

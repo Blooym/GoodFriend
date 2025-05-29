@@ -25,13 +25,9 @@ enum AnnouncementCause {
 pub struct AnnouncementMessage {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<Uuid>,
-
     message: String,
-
     kind: AnnouncementKind,
-
     cause: AnnouncementCause,
-
     #[serde(skip_serializing_if = "Option::is_none")]
     channel: Option<String>,
 }

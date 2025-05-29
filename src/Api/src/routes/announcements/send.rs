@@ -1,13 +1,14 @@
 use super::AnnouncementMessage;
 use crate::{AppState, extractors::AuthenticatedUser};
-use axum::{Json, extract::State, http::StatusCode};
+use axum::{extract::State, http::StatusCode};
+use axum_msgpack::MsgPack;
 use tracing::info;
 use uuid::Uuid;
 
 pub async fn post_announcement(
     _user: AuthenticatedUser,
     State(state): State<AppState>,
-    Json(mut payload): Json<AnnouncementMessage>,
+    MsgPack(mut payload): MsgPack<AnnouncementMessage>,
 ) -> StatusCode {
     if payload.id.is_none() {
         payload.id = Some(Uuid::new_v4());
