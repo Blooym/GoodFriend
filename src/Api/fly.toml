@@ -1,0 +1,15 @@
+# fly.toml app configuration file generated for goodfriend on 2025-05-29T01:16:44Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'goodfriend'
+primary_region = 'fra'
+
+[build]
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256
