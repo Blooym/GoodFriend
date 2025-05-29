@@ -17,7 +17,7 @@ A Dalamud plugin & associated webserver that provides improved in-game social fu
 ---
 
 ## About
-GoodFriend is divided into three components:
+GoodFriend is divided into two components:
 
 - [Plugin](./src/Plugin): Interacts with the server on behalf of the user and automatically handles any interactions. Also includes functionality that does not interact with the server and, as such, can be used standalone.
 
