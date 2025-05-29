@@ -3,19 +3,15 @@
     "updateRemoteUserUID": true,
     "containerUser": "dev",
     "remoteUser": "dev",
-    "postAttachCommand": "cd ./src/Api && cargo build && cd ../Plugin && dotnet build",
+    "postAttachCommand": "cd ./src/Server && dotnet build && cd ../Plugin && dotnet build",
     "containerEnv": {
-        "PLOGON_SECRET_CLIENT_KEY": "GOODFRIEND_DEV_BUILD",
         "DOTNET_TELEMTRY_OPTOUT": "1",
         "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1"
     },
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-dotnettools.csharp",
-                "rust-lang.rust-analyzer",
-                "serayuzgur.crates",
-                "tamasfe.even-better-toml"
+                "ms-dotnettools.csharp"
             ]
         }
     }

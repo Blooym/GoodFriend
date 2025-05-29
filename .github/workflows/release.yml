@@ -1,11 +1,11 @@
 name: "Release"
-run-name: "Release API for ${{ github.sha }}"
+run-name: "Release Server for ${{ github.sha }}"
 on:
   push:
     branches: 
       - main
     paths: 
-      - "src/Api/**"
+      - "src/Server/**"
   workflow_dispatch:
 
 concurrency:
@@ -49,8 +49,8 @@ jobs:
       - name: Build & Publish Image
         uses: docker/build-push-action@v6
         with:
-          context: ./src/Api
-          file: ./src/Api/Dockerfile
+          context: ./src/Server
+          file: ./src/Server/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |

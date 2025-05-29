@@ -1,53 +1,57 @@
-name: "Test API"
+name: "Test Server"
 
 on:
   push:
     branches: ["main"]
     paths:
-      - "src/Api/**.rs"
-      - "src/Api/Cargo.toml"
-      - "src/Api/Cargo.lock"
+      - "src/Server/**.cs"
+      - "src/Server/*.csproj"
+      - "src/Server/packages.lock.json"
   pull_request:
     branches: ["main"]
     paths:
-      - "src/Api/**.rs"
-      - "src/Api/Cargo.toml"
-      - "src/Api/Cargo.lock"
+      - "src/Server/**.cs"
+      - "src/Server/*.csproj"
+      - "src/Server/packages.lock.json"
     types: [ready_for_review, opened, synchronize]
 
 jobs:
-  Test:
-    if: github.event.pull_request.draft == false || github.event_name == 'push'
+  Build:
     runs-on: ubuntu-latest
-    defaults:
-        run:
-          working-directory: ./src/Api/
     strategy:
-        matrix:
-          rust: [stable]
+      fail-fast: false
+      matrix:
+        build_mode: ["Release", "Debug"]
     steps:
-      - name: GitHub Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: recursive
+          submodules: true
 
-      - name: Setup Rust toolchain
-        uses: hecrj/setup-rust-action@v2
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
         with:
-          toolchain: stable
-          components: rustfmt, clippy
-            
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "./src/Api/"
+          dotnet-version: 9.x
 
-      - name: Run Tests
-        run: cargo test --all
+      - name: Check for Lint Errors
+        id: lint
+        working-directory: src/Server
+        continue-on-error: true
+        run: | 
+          dotnet format --verify-no-changes > lint.txt 2>&1
 
-      - name: Run Clippy
-        run: cargo clippy --all -- -D warnings
+      - name: Report Lint Errors
+        working-directory: src/Server
+        if : steps.lint.outcome == 'failure'
+        run: |
+          cat lint.txt | sed -E 's/^(.*)$/::warning:: \1/g'
 
-      - name: Run Rustfmt
-        run: cargo fmt --all --check
+      - name: Restore Project
+        working-directory: src/Server
+        run: dotnet restore
+
+      - name: Build Project
+        working-directory: src/Server
+        run: | 
+          dotnet build -c ${{ matrix.build_mode }}

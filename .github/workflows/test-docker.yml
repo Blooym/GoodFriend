@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - "src/Api/Dockerfile"
-      - "src/Api/.dockerignore"
+      - "src/Server/Dockerfile"
+      - "src/Server/.dockerignore"
     types: [ready_for_review, opened, synchronize]
 
 jobs:
@@ -21,8 +21,8 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
-          context: ./src/Api/
-          file: ./src/Api/Dockerfile
+          context: ./src/Server/
+          file: ./src/Server/Dockerfile
           push: false
           tags: testbuild/testbuild:latest
           cache-from: type=gha
