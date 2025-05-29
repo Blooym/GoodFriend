@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Plugin", "Plugin\GoodFriend.Plugin.csproj", "{ABA4CF9C-7259-4EC3-8A72-80DCE4194A18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Client", "Client\GoodFriend.Client.csproj", "{E475CA3B-446F-4DF6-A99A-466D805134AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodFriend.Server", "Server\GoodFriend.Server.csproj", "{E475CA3B-446F-4DF6-A99A-466D805134AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

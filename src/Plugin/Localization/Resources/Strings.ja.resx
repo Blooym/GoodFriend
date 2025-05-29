@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
 
     </xsd:element>
@@ -28,13 +29,16 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>接続済み</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
+    xml:space="preserve">
     <value>切断</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal"
+    xml:space="preserve">
     <value>Events receieved: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal"
+    xml:space="preserve">
     <value>Heartbeats receieved: {0}</value>
   </data>
   <data name="UI_MainWindow_SettingsScreen_Setting_APIURL" xml:space="preserve">
@@ -43,13 +47,8 @@
   <data name="UI_MainWindow_Button_Settings" xml:space="preserve">
     <value>設定</value>
   </data>
-  <data name="Modules_AnnouncementModule_ConnectionState_Connected" xml:space="preserve">
-    <value>接続済み</value>
-  </data>
-  <data name="Modules_AnnouncementModule_ConnectionState_Disconnected" xml:space="preserve">
-    <value>切断</value>
-  </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description"
+    xml:space="preserve">
     <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.</value>
   </data>
 </root>

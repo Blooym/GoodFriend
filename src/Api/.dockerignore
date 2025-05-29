@@ -1,8 +1,0 @@
-# Secrets
-*.env
-
-# Data
-data/
-
-# Builds
-target/

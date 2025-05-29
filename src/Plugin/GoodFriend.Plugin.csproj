@@ -18,19 +18,6 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
-  <!-- Custom Runtime Variables -->
-  <Target Name="SetCustomVars" BeforeTargets="BeforeBuild">
-    <ItemGroup>
-      <AssemblyAttribute Include="GoodFriend.Plugin.Base.ClientKey">
-        <_Parameter1>$(PLOGON_SECRET_CLIENT_KEY)</_Parameter1>
-      </AssemblyAttribute>
-    </ItemGroup>
-  </Target>
-  <Target Name="EnsureClientKeySet" BeforeTargets="PrepareForBuild"
-    Condition="'$(PLOGON_SECRET_CLIENT_KEY)' == '' And '$(Configuration)' != 'Debug'">
-    <Error Text="Cannot build in release without PLOGON_SECRET_CLIENT_KEY set in environment." />
-  </Target>
-
   <!-- Localization -->
   <ItemGroup>
     <EmbeddedResource Update="Localization\Resources\Strings.resx">
@@ -48,7 +35,10 @@
 
   <!-- Packages -->
   <ItemGroup>
-    <ProjectReference Include="../Client/GoodFriend.Client.csproj" />
     <ProjectReference Include="../Sirensong/Sirensong/Sirensong.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.5" />
   </ItemGroup>
 </Project>

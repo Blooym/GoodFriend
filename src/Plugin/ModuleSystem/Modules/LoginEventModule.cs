@@ -1,11 +1,13 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
-using GoodFriend.Client.Http.Requests;
-using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
+using Microsoft.AspNetCore.SignalR.Client;
 using Sirensong.Extensions;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -14,8 +16,10 @@ using Sirensong.Utility;
 namespace GoodFriend.Plugin.ModuleSystem.Modules;
 
 /// <inheritdoc />
-internal sealed class LoginStateModule : BaseModule
+internal sealed class LoginEventModule : BaseModule
 {
+    private bool cancelAutoReconnect;
+
     /// <summary>
     ///     The current world ID.
     /// </summary>
@@ -48,12 +52,12 @@ internal sealed class LoginStateModule : BaseModule
     /// <summary>
     ///     The configuration for this module.
     /// </summary>
-    private LoginStateModuleConfig Config { get; } = BaseModuleConfig.Load<LoginStateModuleConfig>();
+    private LoginEventModuleConfig Config { get; } = BaseModuleConfig.Load<LoginEventModuleConfig>();
 
     /// <inheritdoc />
     protected override void OnEnable()
     {
-        Services.PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
+        Services.PlayerEventHub.On<string, string, uint, ushort, bool>("ReceiveLoginEvent", this.HandlePlayerStreamMessage);
         DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -64,23 +68,60 @@ internal sealed class LoginStateModule : BaseModule
             {
                 this.SetStoredValues();
             }
+            if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
+            {
+                this.TryStartConnectionAsync();
+            }
         });
     }
 
     /// <inheritdoc />
     protected override void OnDisable()
     {
-        Services.PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
+        this.cancelAutoReconnect = true;
+        if (IsPlayerStreamConnected())
+        {
+            Services.PlayerEventHub.StopAsync();
+        }
+        Services.PlayerEventHub.Remove("ReceiveLoginEvent");
         DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
-
         this.ClearStoredValues();
     }
 
     /// <inheritdoc />
     protected override void DrawModule()
     {
+        // Connection status
+        SiGui.Heading("Connection");
+        SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
+        ImGui.SameLine();
+        switch (Services.PlayerEventHub.State)
+        {
+            case HubConnectionState.Connected:
+                SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
+                break;
+            case HubConnectionState.Connecting:
+                SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting);
+                break;
+            case HubConnectionState.Disconnected:
+                SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected);
+                break;
+            case HubConnectionState.Reconnecting:
+                SiGui.TextColoured(Colours.Warning, "Reconnecting");
+                break;
+        }
+        ImGui.Dummy(Spacing.ReadableSpacing);
+
+        if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
+        {
+            if (ImGui.Button("Manual Reconnect"))
+            {
+                Services.PlayerEventHub.StartAsync();
+            }
+        }
+
         // Event settings
         SiGui.Heading(Strings.Modules_LoginStateModule_UI_EventSettings);
         var receiveEvents = this.Config.ReceiveEvents;
@@ -138,7 +179,7 @@ internal sealed class LoginStateModule : BaseModule
         var loginMessage = this.Config.LoginMessage;
         if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LoginMessage, ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
         {
-            switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
+            switch (LoginEventModuleConfig.ValidateMessage(loginMessage))
             {
                 case true:
                     this.Config.LoginMessage = loginMessage.TrimAndSquish();
@@ -154,7 +195,7 @@ internal sealed class LoginStateModule : BaseModule
         var logoutMessage = this.Config.LogoutMessage;
         if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LogoutMessage, ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
         {
-            switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
+            switch (LoginEventModuleConfig.ValidateMessage(logoutMessage))
             {
                 case true:
                     this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
@@ -171,17 +212,11 @@ internal sealed class LoginStateModule : BaseModule
     /// <summary>
     ///     Called when a player state update is received.
     /// </summary>
-    /// <param name="sender"></param>
     /// <param name="rawEvent"></param>
-    private unsafe void HandlePlayerStreamMessage(object? sender, PlayerEventStreamUpdate rawEvent)
+    private unsafe void HandlePlayerStreamMessage(string contentIdHash, string contentIdSalt, uint worldId, ushort territoryId, bool loggedIn)
     {
         if (!this.Config.ReceiveEvents)
         {
-            return;
-        }
-        if (!rawEvent.StateUpdateType.LoginStateChange.HasValue)
-        {
-            Logger.Verbose("Received player state update that is not a login/logout.");
             return;
         }
         DalamudInjections.Framework.RunOnFrameworkThread(() =>
@@ -194,7 +229,7 @@ internal sealed class LoginStateModule : BaseModule
             }
 
             // Skip if the event player is not on the players friendslist.
-            var friendFromHash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            var friendFromHash = FriendUtil.GetFriendFromHash(contentIdHash, contentIdSalt);
             if (!friendFromHash.HasValue)
             {
                 Logger.Verbose(message: $"Ignoring player event as a friend could not be found from the received hash.");
@@ -210,7 +245,6 @@ internal sealed class LoginStateModule : BaseModule
             }
 
             // Get the name and free company tag.
-            var loginStateData = rawEvent.StateUpdateType.LoginStateChange.Value;
             Logger.Debug($"Received login state update from {friendCharacterData.NameString} - checking display eligibility.");
 
             // Evaluate eligibility.
@@ -224,23 +258,23 @@ internal sealed class LoginStateModule : BaseModule
                 Logger.Debug($"Ignoring login state update from different homeworld.");
                 return;
             }
-            if (this.Config.HideDifferentTerritory && loginStateData.TerritoryId != this.currentTerritoryId)
+            if (this.Config.HideDifferentTerritory && territoryId != this.currentTerritoryId)
             {
                 Logger.Debug($"Ignoring login state update from different territory.");
                 return;
             }
-            if (this.Config.HideDifferentWorld && loginStateData.WorldId != this.currentWorldId)
+            if (this.Config.HideDifferentWorld && worldId != this.currentWorldId)
             {
                 Logger.Debug($"Ignoring login state update from different world.");
                 return;
             }
-            if (this.Config.HideDifferentDatacenter && Services.WorldSheet.GetRow(loginStateData.WorldId).DataCenter.RowId != localPlayer.CurrentWorld.Value.DataCenter.RowId)
+            if (this.Config.HideDifferentDatacenter && Services.WorldSheet.GetRow(worldId).DataCenter.RowId != localPlayer.CurrentWorld.Value.DataCenter.RowId)
             {
                 Logger.Debug($"Ignoring login state update from different data center.");
                 return;
             }
 
-            DalamudInjections.ChatGui.Print(loginStateData.LoggedIn
+            DalamudInjections.ChatGui.Print(loggedIn
                 ? this.Config.LoginMessage.Format(friendCharacterData.NameString)
                 : this.Config.LogoutMessage.Format(friendCharacterData.NameString)
             );
@@ -253,18 +287,25 @@ internal sealed class LoginStateModule : BaseModule
     private void OnLogin()
     {
         this.SetStoredValues();
-
-        Logger.Debug("Sending login event.");
-
-        var salt = CryptoUtil.GenerateSalt();
-        var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
+        if (IsPlayerStreamDisconnected())
         {
-            ContentIdHash = hash,
-            ContentIdSalt = salt,
-            LoggedIn = true,
-            TerritoryId = this.currentTerritoryId,
-            WorldId = this.currentWorldId,
+            this.TryStartConnectionAsync();
+        }
+        Logger.Debug("Sending login event.");
+        Task.Run(async () =>
+        {
+            var waitAttempts = 0;
+            while (Services.PlayerEventHub.State is not HubConnectionState.Connected && waitAttempts != 5)
+            {
+                await Task.Delay(3000);
+                waitAttempts++;
+            }
+            await DalamudInjections.Framework.RunOnFrameworkThread(() =>
+            {
+                var salt = CryptoUtil.GenerateSalt();
+                var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+                Services.PlayerEventHub.InvokeAsync("SendLoginEvent", hash, salt, this.currentWorldId, this.currentTerritoryId, true);
+            });
         });
     }
 
@@ -276,14 +317,12 @@ internal sealed class LoginStateModule : BaseModule
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
         Logger.Debug("Sending logout event.");
-        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
+        Services.PlayerEventHub.InvokeAsync("SendLoginEvent", hash, salt, this.currentWorldId, this.currentTerritoryId, false);
+        this.cancelAutoReconnect = true;
+        if (IsPlayerStreamConnected())
         {
-            ContentIdHash = hash,
-            ContentIdSalt = salt,
-            LoggedIn = false,
-            TerritoryId = this.currentTerritoryId,
-            WorldId = this.currentWorldId,
-        });
+            Services.PlayerEventHub.StopAsync();
+        }
         this.ClearStoredValues();
     }
 
@@ -341,7 +380,7 @@ internal sealed class LoginStateModule : BaseModule
     }
 
     /// <inheritdoc />
-    private sealed class LoginStateModuleConfig : BaseModuleConfig
+    private sealed class LoginEventModuleConfig : BaseModuleConfig
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }
@@ -396,4 +435,45 @@ internal sealed class LoginStateModule : BaseModule
         /// <returns>Whether the message is valid.</returns>
         public static bool ValidateMessage(string message) => Validator.TestFormatString(message, 1);
     }
+
+    private async void TryStartConnectionAsync()
+    {
+        var connected = false;
+        var policy = new Services.ForeverRetryPolicy();
+        var retryContext = new RetryContext();
+        while (!this.cancelAutoReconnect && !connected && Services.PlayerEventHub.State is HubConnectionState.Disconnected)
+        {
+            try
+            {
+                await Services.PlayerEventHub.StartAsync(default);
+                connected = true;
+            }
+            catch (Exception ex)
+            {
+                var reconnectTimer = policy.NextRetryDelay(retryContext);
+                retryContext.PreviousRetryCount++;
+                if (!reconnectTimer.HasValue)
+                {
+                    this.cancelAutoReconnect = true;
+                    break;
+                }
+                DalamudInjections.PluginLog.Error($"Initial connection attempt failed. Retrying in {reconnectTimer} seconds. Error: {ex.Message}");
+                await Task.Delay(reconnectTimer.Value, CancellationToken.None);
+                retryContext.ElapsedTime += reconnectTimer.Value;
+            }
+        }
+    }
+
+
+    /// <summary>
+    ///     If the player event stream is connected or connecting.
+    /// </summary>
+    /// <returns></returns>
+    private static bool IsPlayerStreamConnected() => Services.PlayerEventHub.State is HubConnectionState.Connected or HubConnectionState.Connecting or HubConnectionState.Reconnecting;
+
+    /// <summary>
+    ///     If the player event stream is disconnected or disconnecting.
+    /// </summary>
+    /// <returns></returns>
+    private static bool IsPlayerStreamDisconnected() => Services.PlayerEventHub.State is HubConnectionState.Disconnected;
 }

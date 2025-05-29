@@ -9,13 +9,12 @@ using Sirensong.UserInterface.Style;
 
 namespace GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
 
-// TODO: cleanup the gui code here.
 internal static class ModuleScreen
 {
     /// <summary>
     ///     The current module.
     /// </summary>
-    private static BaseModule? CurrentModule { get; set; } = Services.ModuleService.GetModule<LoginStateModule>();
+    private static BaseModule? CurrentModule { get; set; } = Services.ModuleService.GetModule<LoginEventModule>();
 
     /// <summary>
     ///     Draws the list panel of the main window.
