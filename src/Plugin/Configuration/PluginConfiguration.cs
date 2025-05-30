@@ -55,7 +55,7 @@ internal sealed class PluginConfiguration : IPluginConfiguration
         var config = DalamudInjections.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         if (config.ApiConfig.BaseUrl.AbsoluteUri.StartsWith("https://aether.blooym.dev", true, CultureInfo.InvariantCulture))
         {
-            Logger.Information($"Updating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
+            Logger.Information($"Migrating API Base URL from old version {config.ApiConfig.BaseUrl} to new version {ApiConfiguration.DefaultBaseUri}");
             config.ApiConfig.BaseUrl = ApiConfiguration.DefaultBaseUri;
             config.Save();
         }

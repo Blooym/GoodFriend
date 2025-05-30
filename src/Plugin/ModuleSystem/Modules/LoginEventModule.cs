@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
@@ -64,6 +65,8 @@ internal sealed class LoginEventModule : BaseModule
     {
         this.startConnectionCancellationSource = new();
         Services.HubManager.PlayerEventHub.On<string, string, uint, ushort, bool>("ReceiveLoginEvent", this.HandlePlayerStreamMessage);
+        Services.HubManager.PlayerEventHub.Reconnecting += this.OnHubConnectionReconnecting;
+        Services.HubManager.PlayerEventHub.Reconnected += OnHubConnectionReconnected;
         DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
@@ -90,6 +93,8 @@ internal sealed class LoginEventModule : BaseModule
             Services.HubManager.PlayerEventHub.StopAsync();
         }
         Services.HubManager.PlayerEventHub.Remove("ReceiveLoginEvent");
+        Services.HubManager.PlayerEventHub.Reconnecting -= this.OnHubConnectionReconnecting;
+        Services.HubManager.PlayerEventHub.Reconnected -= OnHubConnectionReconnected;
         DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
@@ -301,14 +306,14 @@ internal sealed class LoginEventModule : BaseModule
             {
                 await Task.Delay(3000);
                 waitAttempts++;
-                DalamudInjections.PluginLog.Debug($"Hub not in connected state - attempt {waitAttempts}");
+                Logger.Debug($"Hub not in connected state - attempt {waitAttempts}");
             }
             if (waitAttempts == 5)
             {
-                DalamudInjections.PluginLog.Warning("Hub did not reach connected state a reasonable time - aborting login event");
+                Logger.Warning("Hub did not reach connected state a reasonable time - aborting login event");
                 return;
             }
-            Logger.Debug("Sending login event.");
+            Logger.Information("Sending login event.");
             await DalamudInjections.Framework.RunOnFrameworkThread(() =>
             {
                 var salt = CryptoUtil.GenerateSalt();
@@ -328,12 +333,12 @@ internal sealed class LoginEventModule : BaseModule
 
         if (Services.HubManager.PlayerEventHub.State is HubConnectionState.Connected)
         {
-            Logger.Debug("Sending logout event.");
+            Logger.Information("Sending logout event.");
             Services.HubManager.PlayerEventHub.InvokeAsync("SendLoginEvent", hash, salt, this.currentWorldId, this.currentTerritoryId, false);
         }
         else
         {
-            DalamudInjections.PluginLog.Warning("Hub not in connected state - aborting logout event");
+            Logger.Warning("Hub not in connected state - aborting logout event");
         }
 
         this.startConnectionCancellationSource.Cancel();
@@ -371,6 +376,21 @@ internal sealed class LoginEventModule : BaseModule
         {
             this.currentTerritoryId = currentTerritory;
         }
+    }
+
+    public Task OnHubConnectionReconnecting(Exception? e)
+    {
+        if (e is not null)
+        {
+            Logger.Error($"Hub connection closed due to exception {e.Message}");
+        }
+        return Task.CompletedTask;
+    }
+
+    public static Task OnHubConnectionReconnected(string? newConnectionId)
+    {
+        Logger.Information($"Hub connection restored successfully - {(newConnectionId is not null ? $"new connection id is {newConnectionId}" : "using same connection id")}");
+        return Task.CompletedTask;
     }
 
     /// <summary>

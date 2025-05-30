@@ -14,24 +14,25 @@ internal sealed class HubManager : IDisposable
     public readonly HubConnection PlayerEventHub;
 
     public HubManager() => this.PlayerEventHub = new HubConnectionBuilder()
-        .AddMessagePackProtocol(opt =>
-            opt.SerializerOptions
-            .WithCompression(MessagePackCompression.Lz4Block)
-            .WithResolver(CompositeResolver.Create(
-                StandardResolver.Instance,
-                BuiltinResolver.Instance,
-                AttributeFormatterResolver.Instance,
-                DynamicEnumAsStringResolver.Instance,
-                DynamicGenericResolver.Instance,
-                DynamicUnionResolver.Instance,
-                DynamicObjectResolver.Instance,
-                PrimitiveObjectResolver.Instance,
-                StandardResolver.Instance
-            )))
-        .WithAutomaticReconnect(new ForeverRetryPolicy())
-        .WithUrl(new Uri(Services.PluginConfiguration.ApiConfig.BaseUrl, "/hubs/playerevents"))
-        .Build();
+       .AddMessagePackProtocol(opt =>
+           opt.SerializerOptions
+           .WithCompression(MessagePackCompression.Lz4Block)
+           .WithResolver(CompositeResolver.Create(
+               StandardResolver.Instance,
+               BuiltinResolver.Instance,
+               AttributeFormatterResolver.Instance,
+               DynamicEnumAsStringResolver.Instance,
+               DynamicGenericResolver.Instance,
+               DynamicUnionResolver.Instance,
+               DynamicObjectResolver.Instance,
+               PrimitiveObjectResolver.Instance,
+               StandardResolver.Instance
+           )))
+       .WithAutomaticReconnect(new ForeverRetryPolicy())
+       .WithUrl(new Uri(Services.PluginConfiguration.ApiConfig.BaseUrl, "/hubs/playerevents"))
+       .Build();
 
+    /// <inheritdoc />
     public void Dispose() => this.PlayerEventHub.DisposeAsync().AsTask().GetAwaiter().GetResult();
 
     /// <summary>
@@ -51,6 +52,7 @@ internal sealed class HubManager : IDisposable
                 try
                 {
                     await hub.StartAsync(cancellationToken);
+                    Logger.Information($"Connection to hub established - id: {hub.ConnectionId}");
                     connected = true;
                 }
                 catch (Exception ex)
@@ -61,7 +63,7 @@ internal sealed class HubManager : IDisposable
                     {
                         break;
                     }
-                    DalamudInjections.PluginLog.Error($"Initial connection attempt failed. Retrying in {reconnectTimer}. Error: {ex.Message}");
+                    Logger.Error($"Connection attempt failed. Retrying in {reconnectTimer} - error: {ex.Message}");
                     await Task.Delay(reconnectTimer.Value, cancellationToken);
                     retryContext.ElapsedTime += reconnectTimer.Value;
                 }
@@ -69,7 +71,7 @@ internal sealed class HubManager : IDisposable
         }
         catch (OperationCanceledException cancel)
         {
-            DalamudInjections.PluginLog.Debug($"StartAsyncWithRetry was cancelled via cancellation token", cancel);
+            Logger.Information($"StartAsyncWithRetry was cancelled via cancellation token - {cancel.Message}");
         }
     }
 }
