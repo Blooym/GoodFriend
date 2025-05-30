@@ -1,14 +1,10 @@
-using System;
+using GoodFriend.Networking.SignalR;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem;
 using GoodFriend.Plugin.UserInterface;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
-using MessagePack;
-using MessagePack.Resolvers;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GoodFriend.Plugin.Base;
 
@@ -22,7 +18,7 @@ internal static class Services
     public static PluginConfiguration PluginConfiguration { get; private set; } = null!;
     public static ModuleService ModuleService { get; private set; } = null!;
     public static ExcelSheet<World> WorldSheet { get; private set; } = null!;
-    public static HubConnection PlayerEventHub = null!;
+    public static HubManager HubManager = null!;
 
     /// <summary>
     ///     Initializes the service class.
@@ -30,25 +26,8 @@ internal static class Services
     internal static void Initialize()
     {
         PluginConfiguration = PluginConfiguration.Load();
+        HubManager = new();
         LocalizationService = new LocalizationManager();
-        PlayerEventHub = new HubConnectionBuilder()
-            .AddMessagePackProtocol(opt =>
-                opt.SerializerOptions
-                .WithCompression(MessagePackCompression.Lz4Block)
-                .WithResolver(CompositeResolver.Create(
-                    StandardResolver.Instance,
-                    BuiltinResolver.Instance,
-                    AttributeFormatterResolver.Instance,
-                    DynamicEnumAsStringResolver.Instance,
-                    DynamicGenericResolver.Instance,
-                    DynamicUnionResolver.Instance,
-                    DynamicObjectResolver.Instance,
-                    PrimitiveObjectResolver.Instance,
-                    StandardResolver.Instance
-                )))
-            .WithAutomaticReconnect(new ForeverRetryPolicy())
-            .WithUrl(new Uri(PluginConfiguration.ApiConfig.BaseUrl, "/hubs/playerevents"))
-            .Build();
         WorldSheet = DalamudInjections.DataManager.GetExcelSheet<World>();
         ModuleService = new ModuleService();
         WindowingService = new WindowingService();
@@ -59,17 +38,6 @@ internal static class Services
         LocalizationService.Dispose();
         WindowingService.Dispose();
         ModuleService.Dispose();
-        PlayerEventHub.DisposeAsync().AsTask().GetAwaiter().GetResult();
-    }
-
-    internal sealed class ForeverRetryPolicy : IRetryPolicy
-    {
-        public TimeSpan? NextRetryDelay(RetryContext retryContext) => retryContext.PreviousRetryCount switch
-        {
-            0 => (TimeSpan?)TimeSpan.FromSeconds(10),
-            1 => (TimeSpan?)TimeSpan.FromSeconds(30),
-            2 => (TimeSpan?)TimeSpan.FromSeconds(60),
-            _ => (TimeSpan?)TimeSpan.FromSeconds(120),
-        };
+        HubManager.Dispose();
     }
 }
