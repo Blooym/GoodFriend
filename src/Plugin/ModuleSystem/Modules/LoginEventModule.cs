@@ -458,7 +458,7 @@ internal sealed class LoginEventModule : BaseModule
                     this.cancelAutoReconnect = true;
                     break;
                 }
-                DalamudInjections.PluginLog.Error($"Initial connection attempt failed. Retrying in {reconnectTimer} seconds. Error: {ex.Message}");
+                DalamudInjections.PluginLog.Error($"Initial connection attempt failed. Retrying in {reconnectTimer}. Error: {ex.Message}");
                 await Task.Delay(reconnectTimer.Value, CancellationToken.None);
                 retryContext.ElapsedTime += reconnectTimer.Value;
             }
