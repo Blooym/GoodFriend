@@ -438,6 +438,7 @@ internal sealed class LoginEventModule : BaseModule
 
     private async void TryStartConnectionAsync()
     {
+        this.cancelAutoReconnect = false;
         var connected = false;
         var policy = new Services.ForeverRetryPolicy();
         var retryContext = new RetryContext();
