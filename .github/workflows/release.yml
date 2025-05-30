@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  api:
+  server:
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
