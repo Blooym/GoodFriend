@@ -25,8 +25,7 @@ internal sealed class HubManager : IDisposable
                DynamicGenericResolver.Instance,
                DynamicUnionResolver.Instance,
                DynamicObjectResolver.Instance,
-               PrimitiveObjectResolver.Instance,
-               StandardResolver.Instance
+               PrimitiveObjectResolver.Instance
            )))
        .WithAutomaticReconnect(new ForeverRetryPolicy())
        .WithUrl(new Uri(Services.PluginConfiguration.ApiConfig.BaseUrl, "/hubs/playerevents"))
