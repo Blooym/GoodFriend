@@ -43,7 +43,7 @@ internal sealed class LocalizationManager : IDisposable
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to initialise localization for {language}: {e.Message}");
+            Logger.Error($"Failed to set language to {language}: {e.Message}");
         }
     }
 }

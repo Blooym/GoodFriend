@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
 
     </xsd:element>
@@ -83,12 +82,10 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected" xml:space="preserve">
     <value>Conectad@</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected" xml:space="preserve">
     <value>Desconectad@</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnecting" xml:space="preserve">
     <value>Desconectando</value>
   </data>
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatus_Exception" xml:space="preserve">
@@ -97,20 +94,16 @@
   <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics" xml:space="preserve">
     <value>Estado de Conexión</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_EventsTotal" xml:space="preserve">
     <value>Eventos recibidos: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastEvent" xml:space="preserve">
     <value>Último evento: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_HeartbeatsTotal" xml:space="preserve">
     <value>Heartbeats recibidos: {0}</value>
   </data>
-  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat"
-    xml:space="preserve">
+  <data name="Modules_PlayerStreamConnectionModule_ConnectionStatistics_LastHeartbeat" xml:space="preserve">
     <value>Último Heartbeat: {0}</value>
   </data>
   <data name="Modules_InstanceInfoModule_Name" xml:space="preserve">
@@ -185,8 +178,19 @@
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents" xml:space="preserve">
     <value>Recibir eventos</value>
   </data>
-  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description"
-    xml:space="preserve">
+  <data name="Modules_AnnouncementModule_ConnectionState_Connected" xml:space="preserve">
+    <value>Conectad@</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Disconnected" xml:space="preserve">
+    <value>Desconectad@</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Disconnecting" xml:space="preserve">
+    <value>Desconectando</value>
+  </data>
+  <data name="Modules_AnnouncementModule_ConnectionState_Exception" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Modules_CurrentFriendsOnlineModule_UI_SendFriendCount_Description" xml:space="preserve">
     <value>Sends a message in chat showing how many friends are online when you log in to a character. Friends that are on different worlds than you may not always be included.</value>
   </data>
 </root>

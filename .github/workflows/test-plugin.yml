@@ -61,5 +61,8 @@ jobs:
 
       - name: Build Project
         working-directory: src/Plugin
+        env:
+          PLOGON_SECRET_CLIENT_KEY: ci-build
         run: | 
           dotnet build -c ${{ matrix.build_mode }}
+          echo "Checksum: $(sha512sum bin/${{ matrix.build_mode }}/GoodFriend.dll)"

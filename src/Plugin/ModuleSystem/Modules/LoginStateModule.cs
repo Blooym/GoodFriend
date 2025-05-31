@@ -1,14 +1,11 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
-using GoodFriend.Networking.SignalR;
+using GoodFriend.Client.Http.Requests;
+using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
-using Microsoft.AspNetCore.SignalR.Client;
 using Sirensong.Extensions;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
@@ -17,9 +14,7 @@ using Sirensong.Utility;
 namespace GoodFriend.Plugin.ModuleSystem.Modules;
 
 /// <inheritdoc />
-#pragma warning disable CA1001 // Types that own disposable fields should be disposable
-internal sealed class LoginEventModule : BaseModule
-#pragma warning restore CA1001 // Types that own disposable fields should be disposable
+internal sealed class LoginStateModule : BaseModule
 {
     /// <summary>
     ///     The current world ID.
@@ -41,11 +36,6 @@ internal sealed class LoginEventModule : BaseModule
     /// </summary>
     private ulong currentContentId;
 
-    /// <summary>
-    ///     The cancellation token for aborting an attempt to connect to a hub.
-    /// </summary>
-    private CancellationTokenSource startConnectionCancellationSource = null!;
-
     /// <inheritdoc />
     public override string Name => Strings.Modules_LoginStateModule_Name;
 
@@ -58,27 +48,21 @@ internal sealed class LoginEventModule : BaseModule
     /// <summary>
     ///     The configuration for this module.
     /// </summary>
-    private LoginEventModuleConfig Config { get; } = BaseModuleConfig.Load<LoginEventModuleConfig>();
+    private LoginStateModuleConfig Config { get; } = BaseModuleConfig.Load<LoginStateModuleConfig>();
 
     /// <inheritdoc />
     protected override void OnEnable()
     {
-        this.startConnectionCancellationSource = new();
-        Services.HubManager.PlayerEventHub.On<string, string, uint, ushort, bool>("ReceiveLoginEvent", this.HandlePlayerStreamMessage);
-        Services.HubManager.PlayerEventHub.Reconnecting += this.OnHubConnectionReconnecting;
-        Services.HubManager.PlayerEventHub.Reconnected += OnHubConnectionReconnected;
+        Services.PlayerEventSseStream.OnStreamMessage += this.HandlePlayerStreamMessage;
         DalamudInjections.Framework.Update += this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login += this.OnLogin;
         DalamudInjections.ClientState.Logout += this.OnLogout;
+
         DalamudInjections.Framework.RunOnFrameworkThread(() =>
         {
             if (DalamudInjections.ClientState.IsLoggedIn && DalamudInjections.ClientState.LocalPlayer is not null)
             {
                 this.SetStoredValues();
-            }
-            if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected())
-            {
-                HubManager.StartAsyncWithRetry(Services.HubManager.PlayerEventHub, this.startConnectionCancellationSource.Token);
             }
         });
     }
@@ -86,50 +70,17 @@ internal sealed class LoginEventModule : BaseModule
     /// <inheritdoc />
     protected override void OnDisable()
     {
-        this.startConnectionCancellationSource.Cancel();
-        this.startConnectionCancellationSource.Dispose();
-        if (IsPlayerStreamConnected())
-        {
-            Services.HubManager.PlayerEventHub.StopAsync();
-        }
-        Services.HubManager.PlayerEventHub.Remove("ReceiveLoginEvent");
-        Services.HubManager.PlayerEventHub.Reconnecting -= this.OnHubConnectionReconnecting;
-        Services.HubManager.PlayerEventHub.Reconnected -= OnHubConnectionReconnected;
+        Services.PlayerEventSseStream.OnStreamMessage -= this.HandlePlayerStreamMessage;
         DalamudInjections.Framework.Update -= this.OnFrameworkUpdate;
         DalamudInjections.ClientState.Login -= this.OnLogin;
         DalamudInjections.ClientState.Logout -= this.OnLogout;
+
         this.ClearStoredValues();
     }
 
     /// <inheritdoc />
     protected override void DrawModule()
     {
-        // Connection status
-        SiGui.Heading("Connection");
-        SiGui.TextWrapped(Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus);
-        ImGui.SameLine();
-        switch (Services.HubManager.PlayerEventHub.State)
-        {
-            case HubConnectionState.Connected:
-                SiGui.TextColoured(Colours.Success, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connected);
-                break;
-            case HubConnectionState.Connecting:
-                SiGui.TextColoured(Colours.Warning, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Connecting);
-                break;
-            case HubConnectionState.Disconnected:
-                SiGui.TextColoured(Colours.Error, Strings.Modules_PlayerStreamConnectionModule_ConnectionStatus_Disconnected);
-                break;
-            case HubConnectionState.Reconnecting:
-                SiGui.TextColoured(Colours.Warning, "Reconnecting");
-                break;
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
-
-        if (DalamudInjections.ClientState.IsLoggedIn && IsPlayerStreamDisconnected() && ImGui.Button("Manual Reconnect"))
-        {
-            Services.HubManager.PlayerEventHub.StartAsync();
-        }
-
         // Event settings
         SiGui.Heading(Strings.Modules_LoginStateModule_UI_EventSettings);
         var receiveEvents = this.Config.ReceiveEvents;
@@ -187,7 +138,7 @@ internal sealed class LoginEventModule : BaseModule
         var loginMessage = this.Config.LoginMessage;
         if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LoginMessage, ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
         {
-            switch (LoginEventModuleConfig.ValidateMessage(loginMessage))
+            switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
             {
                 case true:
                     this.Config.LoginMessage = loginMessage.TrimAndSquish();
@@ -203,7 +154,7 @@ internal sealed class LoginEventModule : BaseModule
         var logoutMessage = this.Config.LogoutMessage;
         if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LogoutMessage, ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
         {
-            switch (LoginEventModuleConfig.ValidateMessage(logoutMessage))
+            switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
             {
                 case true:
                     this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
@@ -220,11 +171,17 @@ internal sealed class LoginEventModule : BaseModule
     /// <summary>
     ///     Called when a player state update is received.
     /// </summary>
+    /// <param name="sender"></param>
     /// <param name="rawEvent"></param>
-    private unsafe void HandlePlayerStreamMessage(string contentIdHash, string contentIdSalt, uint worldId, ushort territoryId, bool loggedIn)
+    private unsafe void HandlePlayerStreamMessage(object? sender, PlayerEventStreamUpdate rawEvent)
     {
         if (!this.Config.ReceiveEvents)
         {
+            return;
+        }
+        if (!rawEvent.StateUpdateType.LoginStateChange.HasValue)
+        {
+            Logger.Verbose("Received player state update that is not a login/logout.");
             return;
         }
         DalamudInjections.Framework.RunOnFrameworkThread(() =>
@@ -237,7 +194,7 @@ internal sealed class LoginEventModule : BaseModule
             }
 
             // Skip if the event player is not on the players friendslist.
-            var friendFromHash = FriendUtil.GetFriendFromHash(contentIdHash, contentIdSalt);
+            var friendFromHash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendFromHash.HasValue)
             {
                 Logger.Verbose(message: $"Ignoring player event as a friend could not be found from the received hash.");
@@ -253,6 +210,7 @@ internal sealed class LoginEventModule : BaseModule
             }
 
             // Get the name and free company tag.
+            var loginStateData = rawEvent.StateUpdateType.LoginStateChange.Value;
             Logger.Debug($"Received login state update from {friendCharacterData.NameString} - checking display eligibility.");
 
             // Evaluate eligibility.
@@ -266,23 +224,23 @@ internal sealed class LoginEventModule : BaseModule
                 Logger.Debug($"Ignoring login state update from different homeworld.");
                 return;
             }
-            if (this.Config.HideDifferentTerritory && territoryId != this.currentTerritoryId)
+            if (this.Config.HideDifferentTerritory && loginStateData.TerritoryId != this.currentTerritoryId)
             {
                 Logger.Debug($"Ignoring login state update from different territory.");
                 return;
             }
-            if (this.Config.HideDifferentWorld && worldId != this.currentWorldId)
+            if (this.Config.HideDifferentWorld && loginStateData.WorldId != this.currentWorldId)
             {
                 Logger.Debug($"Ignoring login state update from different world.");
                 return;
             }
-            if (this.Config.HideDifferentDatacenter && Services.WorldSheet.GetRow(worldId).DataCenter.RowId != localPlayer.CurrentWorld.Value.DataCenter.RowId)
+            if (this.Config.HideDifferentDatacenter && Services.WorldSheet.GetRow(loginStateData.WorldId).DataCenter.RowId != localPlayer.CurrentWorld.Value.DataCenter.RowId)
             {
                 Logger.Debug($"Ignoring login state update from different data center.");
                 return;
             }
 
-            DalamudInjections.ChatGui.Print(loggedIn
+            DalamudInjections.ChatGui.Print(loginStateData.LoggedIn
                 ? this.Config.LoginMessage.Format(friendCharacterData.NameString)
                 : this.Config.LogoutMessage.Format(friendCharacterData.NameString)
             );
@@ -295,31 +253,18 @@ internal sealed class LoginEventModule : BaseModule
     private void OnLogin()
     {
         this.SetStoredValues();
-        if (IsPlayerStreamDisconnected())
+
+        Logger.Debug("Sending login event.");
+
+        var salt = CryptoUtil.GenerateSalt();
+        var hash = CryptoUtil.HashValue(this.currentContentId, salt);
+        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
         {
-            HubManager.StartAsyncWithRetry(Services.HubManager.PlayerEventHub, this.startConnectionCancellationSource.Token);
-        }
-        Task.Run(async () =>
-        {
-            var waitAttempts = 0;
-            while (Services.HubManager.PlayerEventHub.State is not HubConnectionState.Connected && waitAttempts != 5)
-            {
-                await Task.Delay(3000);
-                waitAttempts++;
-                Logger.Debug($"Hub not in connected state - attempt {waitAttempts}");
-            }
-            if (waitAttempts == 5)
-            {
-                Logger.Warning("Hub did not reach connected state a reasonable time - aborting login event");
-                return;
-            }
-            Logger.Information("Sending login event.");
-            await DalamudInjections.Framework.RunOnFrameworkThread(() =>
-            {
-                var salt = CryptoUtil.GenerateSalt();
-                var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-                Services.HubManager.PlayerEventHub.InvokeAsync("SendLoginEvent", hash, salt, this.currentWorldId, this.currentTerritoryId, true);
-            });
+            ContentIdHash = hash,
+            ContentIdSalt = salt,
+            LoggedIn = true,
+            TerritoryId = this.currentTerritoryId,
+            WorldId = this.currentWorldId,
         });
     }
 
@@ -330,24 +275,15 @@ internal sealed class LoginEventModule : BaseModule
     {
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
-
-        if (Services.HubManager.PlayerEventHub.State is HubConnectionState.Connected)
+        Logger.Debug("Sending logout event.");
+        new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
         {
-            Logger.Information("Sending logout event.");
-            Services.HubManager.PlayerEventHub.InvokeAsync("SendLoginEvent", hash, salt, this.currentWorldId, this.currentTerritoryId, false);
-        }
-        else
-        {
-            Logger.Warning("Hub not in connected state - aborting logout event");
-        }
-
-        this.startConnectionCancellationSource.Cancel();
-        this.startConnectionCancellationSource.Dispose();
-        this.startConnectionCancellationSource = new();
-        if (IsPlayerStreamConnected())
-        {
-            Services.HubManager.PlayerEventHub.StopAsync();
-        }
+            ContentIdHash = hash,
+            ContentIdSalt = salt,
+            LoggedIn = false,
+            TerritoryId = this.currentTerritoryId,
+            WorldId = this.currentWorldId,
+        });
         this.ClearStoredValues();
     }
 
@@ -378,21 +314,6 @@ internal sealed class LoginEventModule : BaseModule
         }
     }
 
-    public Task OnHubConnectionReconnecting(Exception? e)
-    {
-        if (e is not null)
-        {
-            Logger.Error($"Hub connection closed due to exception {e.Message}");
-        }
-        return Task.CompletedTask;
-    }
-
-    public static Task OnHubConnectionReconnected(string? newConnectionId)
-    {
-        Logger.Information($"Hub connection restored successfully - {(newConnectionId is not null ? $"new connection id is {newConnectionId}" : "using same connection id")}");
-        return Task.CompletedTask;
-    }
-
     /// <summary>
     ///     Sets stored values to their current values, will error if the local player is null.
     /// </summary>
@@ -415,23 +336,12 @@ internal sealed class LoginEventModule : BaseModule
         this.currentHomeworldId = 0;
         this.currentTerritoryId = 0;
         this.currentWorldId = 0;
+
         Logger.Debug("Cleared stored all values.");
     }
 
-    /// <summary>
-    ///     If the player event stream is connected or connecting.
-    /// </summary>
-    /// <returns></returns>
-    private static bool IsPlayerStreamConnected() => Services.HubManager.PlayerEventHub.State is HubConnectionState.Connected or HubConnectionState.Connecting or HubConnectionState.Reconnecting;
-
-    /// <summary>
-    ///     If the player event stream is disconnected or disconnecting.
-    /// </summary>
-    /// <returns></returns>
-    private static bool IsPlayerStreamDisconnected() => Services.HubManager.PlayerEventHub.State is HubConnectionState.Disconnected;
-
     /// <inheritdoc />
-    private sealed class LoginEventModuleConfig : BaseModuleConfig
+    private sealed class LoginStateModuleConfig : BaseModuleConfig
     {
         /// <inheritdoc />
         public override uint Version { get; protected set; }

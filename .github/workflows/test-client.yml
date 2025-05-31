@@ -1,0 +1,65 @@
+name: "Test Client"
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/Client/**.cs"
+      - "src/Client/*.csproj"
+      - "src/Client/packages.lock.json"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "src/Client/**.cs"
+      - "src/Client/*.csproj"
+      - "src/Client/packages.lock.json"
+    types: [ready_for_review, opened, synchronize]
+
+jobs:
+  Test:
+    if: github.event.pull_request.draft == false || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./src/Client/
+    env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+    
+      - name: Cache Nuget Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: 9.x
+        
+      - name: Restore Nuget Packages
+        run: dotnet restore
+
+      - name: Build Client
+        run: dotnet build --no-restore --nologo
+
+      - name: Check for Lint Errors
+        id: lint
+        continue-on-error: true
+        run: | 
+          dotnet format --verify-no-changes > lint.txt 2>&1
+
+      - name: Report Lint Errors
+        if : steps.lint.outcome == 'failure'
+        run: |
+          cat lint.txt | sed -E 's/^(.*)$/::warning:: \1/g'
+
+      - name: Run Tests
+        run: dotnet test --no-restore --no-build --verbosity normal
