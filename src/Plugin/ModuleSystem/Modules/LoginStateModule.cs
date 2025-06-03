@@ -1,5 +1,6 @@
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.UI.Info;
 using GoodFriend.Client.Http.Requests;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
@@ -7,6 +8,7 @@ using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
 using ImGuiNET;
 using Sirensong.Extensions;
+using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 using Sirensong.Utility;
@@ -16,6 +18,11 @@ namespace GoodFriend.Plugin.ModuleSystem.Modules;
 /// <inheritdoc />
 internal sealed class LoginStateModule : BaseModule
 {
+    /// <summary>
+    ///     A cache of the current players friend list data for usage when it becomes unavailable due to game conditions.
+    /// </summary>
+    private readonly InfoProxyCommonList.CharacterData[] cachedFriendList = new InfoProxyCommonList.CharacterData[200];
+
     /// <summary>
     ///     The current world ID.
     /// </summary>
@@ -194,7 +201,7 @@ internal sealed class LoginStateModule : BaseModule
             }
 
             // Skip if the event player is not on the players friendslist.
-            var friendFromHash = FriendUtil.GetFriendFromHash(rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
+            var friendFromHash = FriendUtil.GetFriendFromHash(this.cachedFriendList, rawEvent.ContentIdHash, rawEvent.ContentIdSalt);
             if (!friendFromHash.HasValue)
             {
                 Logger.Verbose(message: $"Ignoring player event as a friend could not be found from the received hash.");
@@ -253,9 +260,7 @@ internal sealed class LoginStateModule : BaseModule
     private void OnLogin()
     {
         this.SetStoredValues();
-
         Logger.Debug("Sending login event.");
-
         var salt = CryptoUtil.GenerateSalt();
         var hash = CryptoUtil.HashValue(this.currentContentId, salt);
         new PostPlayerLoginStateRequest().Send(Services.HttpClient, new()
@@ -297,6 +302,13 @@ internal sealed class LoginStateModule : BaseModule
         if (!DalamudInjections.ClientState.IsLoggedIn || DalamudInjections.ClientState.LocalPlayer is null)
         {
             return;
+        }
+
+        // Update friends list cache.
+        var friendsList = FriendHelper.FriendList;
+        if (!friendsList.IsEmpty)
+        {
+            friendsList.CopyTo(this.cachedFriendList);
         }
 
         // Update current world.

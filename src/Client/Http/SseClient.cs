@@ -59,7 +59,10 @@ public readonly struct SseClientSettings
 /// <typeparam name="T">The type of data to expect from the stream.</typeparam>
 public sealed class SseClient<T> : IDisposable where T : struct
 {
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { IncludeFields = true, WriteIndented = true };
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        IncludeFields = true,
+    };
 
     private bool disposedValue;
 
@@ -293,13 +296,12 @@ public sealed class SseClient<T> : IDisposable where T : struct
     public void Disconnect()
     {
         ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SseClient<T>));
-
         if (this.ConnectionState is SseConnectionState.Disconnecting or SseConnectionState.Disconnected)
         {
             return;
         }
         this.ConnectionState = SseConnectionState.Disconnecting;
-
+        this.httpClient.CancelPendingRequests();
         this.ConnectionState = SseConnectionState.Disconnected;
         this.OnStreamDisconnected?.Invoke(this);
     }

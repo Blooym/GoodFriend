@@ -1,6 +1,6 @@
 [package]
 name = "goodfriend-api"
-version = "3.7.1"
+version = "3.7.2"
 edition = "2024"
 
 [dependencies]
@@ -9,7 +9,7 @@ anyhow = "1.0.98"
 clap = { version = "4.5.39", features = ["derive", "env"] }
 dotenvy = "0.15.7"
 tokio = { version = "1.45.1", features = ["macros", "rt-multi-thread", "net"] }
-tower-http = { version = "0.6.4", features = [
+tower-http = { version = "0.6.5", features = [
     "catch-panic",
     "normalize-path",
     "timeout",
