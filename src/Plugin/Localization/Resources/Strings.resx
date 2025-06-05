@@ -197,7 +197,7 @@
   </data>
   <data name="Modules_LoginStateModule_UI_EventSettings_ReceieveEvents_Description"
     xml:space="preserve">
-    <value>Whether to receive events from other friends.</value>
+    <value>Whether to receive events from other friends. You will still send events to your friends regardless.</value>
   </data>
   <data name="Modules_AnnouncementModule_Name" xml:space="preserve">
     <value>Announcements</value>

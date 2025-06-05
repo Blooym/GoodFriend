@@ -1,3 +1,4 @@
+using Dalamud.Interface.Utility.Raii;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
@@ -99,80 +100,84 @@ internal sealed class LoginStateModule : BaseModule
         ImGui.Dummy(Spacing.ReadableSpacing);
 
         // Filtering
-        SiGui.Heading(Strings.Modules_LoginStateModule_UI_FilteringOptions);
-        var hideSameFc = this.Config.HideSameFC;
-        if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideSameCompany, Strings.Modules_LoginStateModule_UI_HideSameCompany_Description, ref hideSameFc))
+        using (ImRaii.Disabled(!receiveEvents))
         {
-            this.Config.HideSameFC = hideSameFc;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
 
-        var hideDifferentHomeworld = this.Config.HideDifferentHomeworld;
-        if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffHomeworld, Strings.Modules_LoginStateModule_UI_HideDiffHomeworld_Description, ref hideDifferentHomeworld))
-        {
-            this.Config.HideDifferentHomeworld = hideDifferentHomeworld;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
-
-        var hideDifferentTerritory = this.Config.HideDifferentTerritory;
-        if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffTerritory, Strings.Modules_LoginStateModule_UI_HideDiffTerritory_Description, ref hideDifferentTerritory))
-        {
-            this.Config.HideDifferentTerritory = hideDifferentTerritory;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
-
-        var hideDifferentWorld = this.Config.HideDifferentWorld;
-        if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffWorld, Strings.Modules_LoginStateModule_UI_HideDiffWorld_Description, ref hideDifferentWorld))
-        {
-            this.Config.HideDifferentWorld = hideDifferentWorld;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.ReadableSpacing);
-
-        var hideDifferentDatacenter = this.Config.HideDifferentDatacenter;
-        if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffDC, Strings.Modules_LoginStateModule_UI_HideDiffDC_Description, ref hideDifferentDatacenter))
-        {
-            this.Config.HideDifferentDatacenter = hideDifferentDatacenter;
-            this.Config.Save();
-        }
-        ImGui.Dummy(Spacing.SectionSpacing);
-
-        // Messages
-        SiGui.Heading(Strings.Modules_LoginStateModule_UI_MessageOptions);
-        var loginMessage = this.Config.LoginMessage;
-        if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LoginMessage, ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
-        {
-            switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
+            SiGui.Heading(Strings.Modules_LoginStateModule_UI_FilteringOptions);
+            var hideSameFc = this.Config.HideSameFC;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideSameCompany, Strings.Modules_LoginStateModule_UI_HideSameCompany_Description, ref hideSameFc))
             {
-                case true:
-                    this.Config.LoginMessage = loginMessage.TrimAndSquish();
-                    this.Config.Save();
-                    break;
-                case false:
-                    NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LoginMessage_Invalid);
-                    break;
+                this.Config.HideSameFC = hideSameFc;
+                this.Config.Save();
             }
-        }
-        SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LoginMessage_Tooltip);
+            ImGui.Dummy(Spacing.ReadableSpacing);
 
-        var logoutMessage = this.Config.LogoutMessage;
-        if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LogoutMessage, ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
-        {
-            switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
+            var hideDifferentHomeworld = this.Config.HideDifferentHomeworld;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffHomeworld, Strings.Modules_LoginStateModule_UI_HideDiffHomeworld_Description, ref hideDifferentHomeworld))
             {
-                case true:
-                    this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
-                    this.Config.Save();
-                    break;
-                case false:
-                    NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LogoutMessage_Invalid);
-                    break;
+                this.Config.HideDifferentHomeworld = hideDifferentHomeworld;
+                this.Config.Save();
             }
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            var hideDifferentTerritory = this.Config.HideDifferentTerritory;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffTerritory, Strings.Modules_LoginStateModule_UI_HideDiffTerritory_Description, ref hideDifferentTerritory))
+            {
+                this.Config.HideDifferentTerritory = hideDifferentTerritory;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            var hideDifferentWorld = this.Config.HideDifferentWorld;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffWorld, Strings.Modules_LoginStateModule_UI_HideDiffWorld_Description, ref hideDifferentWorld))
+            {
+                this.Config.HideDifferentWorld = hideDifferentWorld;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.ReadableSpacing);
+
+            var hideDifferentDatacenter = this.Config.HideDifferentDatacenter;
+            if (SiGui.Checkbox(Strings.Modules_LoginStateModule_UI_HideDiffDC, Strings.Modules_LoginStateModule_UI_HideDiffDC_Description, ref hideDifferentDatacenter))
+            {
+                this.Config.HideDifferentDatacenter = hideDifferentDatacenter;
+                this.Config.Save();
+            }
+            ImGui.Dummy(Spacing.SectionSpacing);
+
+            // Messages
+            SiGui.Heading(Strings.Modules_LoginStateModule_UI_MessageOptions);
+            var loginMessage = this.Config.LoginMessage;
+            if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LoginMessage, ref loginMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            {
+                switch (LoginStateModuleConfig.ValidateMessage(loginMessage))
+                {
+                    case true:
+                        this.Config.LoginMessage = loginMessage.TrimAndSquish();
+                        this.Config.Save();
+                        break;
+                    case false:
+                        NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LoginMessage_Invalid);
+                        break;
+                }
+            }
+            SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LoginMessage_Tooltip);
+
+            var logoutMessage = this.Config.LogoutMessage;
+            if (SiGui.InputText(Strings.Modules_LoginStateModule_UI_LogoutMessage, ref logoutMessage, 256, true, ImGuiInputTextFlags.EnterReturnsTrue))
+            {
+                switch (LoginStateModuleConfig.ValidateMessage(logoutMessage))
+                {
+                    case true:
+                        this.Config.LogoutMessage = logoutMessage.TrimAndSquish();
+                        this.Config.Save();
+                        break;
+                    case false:
+                        NotificationUtil.ShowErrorToast(Strings.Modules_LoginStateModule_UI_LogoutMessage_Invalid);
+                        break;
+                }
+            }
+            SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LogoutMessage_Tooltip);
         }
-        SiGui.AddTooltip(Strings.Modules_LoginStateModule_UI_LogoutMessage_Tooltip);
     }
 
     /// <summary>
