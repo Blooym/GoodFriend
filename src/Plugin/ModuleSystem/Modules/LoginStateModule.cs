@@ -221,6 +221,14 @@ internal sealed class LoginStateModule : BaseModule
                 return;
             }
 
+            // Ignore the event if the friend has no name.
+            // This state shouldn't be possible, but it has been observed a few times.
+            if (string.IsNullOrWhiteSpace(friendCharacterData.NameString))
+            {
+                Logger.Warning($"Login state event matched via hash but the name was null or empty. Event ID {rawEvent.ContentIdHash}");
+                return;
+            }
+
             // Get the name and free company tag.
             var loginStateData = rawEvent.StateUpdateType.LoginStateChange.Value;
             Logger.Debug($"Received login state update from {friendCharacterData.NameString} - checking display eligibility.");
@@ -311,7 +319,7 @@ internal sealed class LoginStateModule : BaseModule
 
         // Update friends list cache.
         var friendsList = FriendHelper.FriendList;
-        if (!friendsList.IsEmpty)
+        if (!friendsList.IsEmpty && friendsList.Length != 0)
         {
             friendsList.CopyTo(this.cachedFriendList);
         }
