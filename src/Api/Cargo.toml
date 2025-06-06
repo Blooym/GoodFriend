@@ -4,15 +4,14 @@ version = "3.7.2"
 edition = "2024"
 
 [dependencies]
-axum = { version = "0.8.4", features = ["http2", "multipart", "macros"] }
+axum = { version = "0.8.4", features = ["http2"] }
 anyhow = "1.0.98"
 clap = { version = "4.5.39", features = ["derive", "env"] }
 dotenvy = "0.15.7"
 tokio = { version = "1.45.1", features = ["macros", "rt-multi-thread", "net"] }
-tower-http = { version = "0.6.5", features = [
+tower-http = { version = "0.6.6", features = [
     "catch-panic",
     "normalize-path",
-    "timeout",
     "trace",
 ] }
 tracing = "0.1.41"
@@ -23,3 +22,4 @@ sha2 = "0.10.9"
 hex = "0.4.3"
 uuid = { version = "1.17.0", features = ["serde", "v4"] }
 axum-msgpack = "0.5.0"
+moka = { version = "0.12.10", features = ["future", "once_cell"] }
