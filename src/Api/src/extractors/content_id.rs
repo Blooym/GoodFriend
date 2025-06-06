@@ -52,8 +52,8 @@ where
             .ok_or(ContentIdExtractError::SaltMissing)?
             .to_string();
 
-        if content_id_hash.len() != CONTENT_ID_HASH_LENGTH
-            || content_id_salt.len() != CONTENT_ID_SALT_LENGTH
+        if content_id_hash.len() < CONTENT_ID_HASH_LENGTH
+            || content_id_salt.len() < CONTENT_ID_SALT_LENGTH
         {
             return Err(ContentIdExtractError::HashOrSaltInvalid);
         }
