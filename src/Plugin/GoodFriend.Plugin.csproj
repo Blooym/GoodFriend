@@ -8,7 +8,7 @@
     <Description>Major improvements to the in-game friend system, like getting login and logout
       notifications for your friends, and much more.</Description>
     <Version>3.7.2.1</Version>
-    <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Blooym/Dalamud.GoodFriend</PackageProjectUrl>
   </PropertyGroup>
 
   <!-- Build Configuration -->

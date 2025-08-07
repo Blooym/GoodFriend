@@ -7,7 +7,7 @@
     <Authors>Blooym</Authors>
     <Description>A client for interacting with any compatiable GoodFriend API.</Description>
     <Version>3.7.2.1</Version>
-    <PackageProjectUrl>https://github.com/Blooym/GoodFriend</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Blooym/Dalamud.GoodFriend</PackageProjectUrl>
   </PropertyGroup>
 
   <!-- Build Configuration -->
