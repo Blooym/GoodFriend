@@ -1,3 +1,4 @@
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
@@ -7,7 +8,6 @@ using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
-using ImGuiNET;
 using Sirensong.Extensions;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;

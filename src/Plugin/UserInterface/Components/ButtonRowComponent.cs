@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using ImGuiNET;
 using Sirensong.UserInterface;
 
 namespace GoodFriend.Plugin.UserInterface.Components;
@@ -14,7 +14,7 @@ internal static class ButtonRowComponent
     ///     Draws a row of buttons.
     /// </summary>
     /// <param name="buttons"></param>
-    public static void DrawRow(Dictionary<(FontAwesomeIcon, Vector4?, string), Action> buttons)
+    public static void DrawRow(Dictionary<(FontAwesomeIcon icon, Vector4? iconSize, string tooltip), Action> buttons)
     {
         if (buttons.Count == 0)
         {
@@ -23,11 +23,11 @@ internal static class ButtonRowComponent
 
         foreach (var button in buttons)
         {
-            if (ImGuiComponents.IconButton(button.Key.Item1, button.Key.Item2))
+            if (ImGuiComponents.IconButton(button.Key.icon, button.Key.iconSize))
             {
                 button.Value();
             }
-            SiGui.AddTooltip(button.Key.Item3);
+            SiGui.AddTooltip(button.Key.tooltip);
             ImGui.SameLine();
         }
     }

@@ -1,10 +1,10 @@
 using System;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Configuration;
 using GoodFriend.Plugin.Localization;
-using ImGuiNET;
 using Sirensong.Game.Enums;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;

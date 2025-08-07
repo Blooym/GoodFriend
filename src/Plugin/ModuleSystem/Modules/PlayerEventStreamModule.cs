@@ -1,9 +1,9 @@
 using System;
+using Dalamud.Bindings.ImGui;
 using GoodFriend.Client.Http;
 using GoodFriend.Client.Http.Responses;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
-using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 

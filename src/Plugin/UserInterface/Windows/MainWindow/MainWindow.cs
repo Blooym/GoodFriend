@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
@@ -11,7 +12,6 @@ using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.UserInterface.Components;
 using GoodFriend.Plugin.UserInterface.Windows.MainWindow.Screens;
-using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 

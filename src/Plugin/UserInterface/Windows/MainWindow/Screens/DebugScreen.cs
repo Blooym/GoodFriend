@@ -1,10 +1,10 @@
 #if DEBUG
 using System;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.Utility;
-using ImGuiNET;
 using Sirensong.Game.Helpers;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;

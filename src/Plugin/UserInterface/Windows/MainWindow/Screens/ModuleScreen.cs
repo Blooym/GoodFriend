@@ -1,9 +1,9 @@
 using System.Linq;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
 using GoodFriend.Plugin.Base;
 using GoodFriend.Plugin.Localization;
 using GoodFriend.Plugin.ModuleSystem.Modules;
-using ImGuiNET;
 using Sirensong.UserInterface;
 using Sirensong.UserInterface.Style;
 
